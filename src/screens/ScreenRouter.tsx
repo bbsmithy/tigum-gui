@@ -3,7 +3,8 @@ import { CreateNewTopic } from "./CreateNewTopic";
 
 export enum SCREENS {
   CREATE_NEW_TOPIC,
-  TOPIC
+  TOPIC,
+  NONE
 }
 
 type ScreenType = {

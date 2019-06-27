@@ -5,8 +5,8 @@ import { MainContent } from "./main-content-view";
 import { ScreenRouter, SCREENS } from "./screens/ScreenRouter";
 
 const App: React.FC = () => {
-  const [screen, setScreen] = useState(SCREENS.TOPIC);
-  const [data, setData] = useState();
+  const [screen, setScreen] = useState(SCREENS.NONE);
+  const [data, setData] = useState({});
 
   const navigate = (screen: SCREENS, data: object) => {
     setScreen(screen);
@@ -15,7 +15,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <SideBar />
+      <SideBar navigate={navigate} />
       <MainContent>
         <ScreenRouter screen={screen} data={data} />
       </MainContent>

@@ -2,10 +2,10 @@
 
 Frontend for Tigum online learning tool, built with React/Typescript
 
-# What is Tigum?
-Tigum is a tool for creating your own personalized learning experience using content collected from the internet.
 
 # Motivation
+
+Tigum is a tool for creating your own personalized learning experience using content collected from the internet.
 
 Over the last few years I've been learning how to write software. About 95% of the resources I have used have been videos, blog posts and offical documentation. The internet has given me the access to a world of knowledge which has allowed me to enter into a career in software and so far I love it.
 

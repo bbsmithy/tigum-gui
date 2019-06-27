@@ -1,9 +1,16 @@
 import logo from "../logo.png";
 import React from "react";
 import { NoTopicsMessage } from "./NoTopicsMessage";
+import { SCREENS } from "../screens/ScreenRouter";
 
-export const SideBar: React.FC = () => {
-  const onCreateNewTopic = () => {};
+interface SideBarProps {
+  navigate: (screen: SCREENS, data: object) => void;
+}
+
+export const SideBar = ({ navigate }: SideBarProps) => {
+  const onClickNewTopic = () => {
+    navigate(SCREENS.CREATE_NEW_TOPIC, {});
+  };
 
   return (
     <div id="sidebar">
@@ -11,7 +18,7 @@ export const SideBar: React.FC = () => {
         <div id="logo-container">
           <img src={logo} id="logo" />
         </div>
-        <button id="new-btn" onClick={onCreateNewTopic}>
+        <button id="new-btn" onClick={onClickNewTopic}>
           <span>New Topic</span>
           <i className="fas fa-plus-circle" />
         </button>

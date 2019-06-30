@@ -1,3 +1,6 @@
+![alt text](https://github.com/bbsmithy/tigum-gui/blob/master/src/logo.png)
+
+
 # tigum-gui
 
 Frontend for Tigum online learning tool, built with React/Typescript

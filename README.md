@@ -32,5 +32,6 @@ If you feel like notes/collection of resources on a particular topic could help 
 
 ## GUI
 
+![alt text](https://github.com/bbsmithy/tigum-gui/blob/master/tigum-gui-layout-v1.png)
 
 

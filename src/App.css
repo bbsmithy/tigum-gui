@@ -86,3 +86,22 @@ body {
   font-size: 13px;
   font-weight: 300;
 }
+
+.topic-item-name {
+  font-weight: 100;
+  line-height: 0;
+}
+
+.topic-item-date {
+  font-weight: 100;
+  color: grey;
+}
+
+.topic-item-container {
+  padding: 10px;
+  border-bottom: 1px solid rgb(235, 236, 237);
+}
+
+.topic-item-container-selected {
+  border-right: 4px solid black;
+}

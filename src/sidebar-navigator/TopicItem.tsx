@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export type Topic = {
   name: string;
@@ -10,10 +10,17 @@ interface TopicItemProps {
 }
 
 export const TopicItem = ({ topic }: TopicItemProps) => {
+  const [selected, setSelected] = useState(false);
+
   return (
-    <div>
-      <h3>{topic.name}</h3>
-      <i>{topic.date}</i>
+    <div
+      className={`topic-item-container ${
+        selected ? "topic-item-container-selected" : ""
+      }`}
+      onClick={() => setSelected(!selected)}
+    >
+      <h3 className="topic-item-name">{topic.name}</h3>
+      <i className="topic-item-date">{topic.date}</i>
     </div>
   );
 };

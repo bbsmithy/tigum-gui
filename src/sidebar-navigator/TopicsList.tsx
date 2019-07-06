@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TopicItem, Topic } from "./TopicItem";
 
 interface TopicsListProps {
@@ -6,10 +6,17 @@ interface TopicsListProps {
 }
 
 export const TopicsList = ({ topics }: TopicsListProps) => {
+  const [selectedId, setSelected] = useState(0);
+
   return (
-    <div>
-      {topics.map(topic => (
-        <TopicItem topic={topic} />
+    <div style={{ overflow: "scroll", height: "100%" }}>
+      {topics.map((topic, index) => (
+        <TopicItem
+          topic={topic}
+          selected={selectedId === index}
+          id={index}
+          onSelectItem={setSelected}
+        />
       ))}
     </div>
   );

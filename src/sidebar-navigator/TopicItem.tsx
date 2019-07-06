@@ -7,17 +7,27 @@ export type Topic = {
 
 interface TopicItemProps {
   topic: Topic;
+  selected: boolean;
+  id: number;
+  onSelectItem: (id: number) => void;
 }
 
-export const TopicItem = ({ topic }: TopicItemProps) => {
-  const [selected, setSelected] = useState(false);
+export const TopicItem = ({
+  topic,
+  selected,
+  id,
+  onSelectItem
+}: TopicItemProps) => {
+  const onSelect = () => {
+    onSelectItem(id);
+  };
 
   return (
     <div
       className={`topic-item-container ${
         selected ? "topic-item-container-selected" : ""
       }`}
-      onClick={() => setSelected(!selected)}
+      onClick={onSelect}
     >
       <h3 className="topic-item-name">{topic.name}</h3>
       <i className="topic-item-date">{topic.date}</i>

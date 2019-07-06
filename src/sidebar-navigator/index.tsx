@@ -12,7 +12,30 @@ const topics = [
   { name: "A history of the OSI Model", date: "12th March 2019" },
   { name: "Carl Jung | Dreams", date: "13th Febuary 2019" },
   { name: "Rust procedural macros", date: "12th July 2018" },
-  { name: "React hooks", date: "12th June 2018" }
+  { name: "React hooks", date: "12th June 2018" },
+  { name: "A history of the OSI Model", date: "12th March 2019" },
+  { name: "Carl Jung | Dreams", date: "13th Febuary 2019" },
+  { name: "Rust procedural macros", date: "12th July 2018" },
+  { name: "A history of the OSI Model", date: "12th March 2019" },
+  { name: "Carl Jung | Dreams", date: "13th Febuary 2019" },
+  { name: "Rust procedural macros", date: "12th July 2018" },
+  { name: "A history of the OSI Model", date: "12th March 2019" },
+  { name: "Carl Jung | Dreams", date: "13th Febuary 2019" },
+  { name: "Rust procedural macros", date: "12th July 2018" },
+  { name: "A history of the OSI Model", date: "12th March 2019" },
+  { name: "Carl Jung | Dreams", date: "13th Febuary 2019" },
+  { name: "Rust procedural macros", date: "12th July 2018" },
+  { name: "A history of the OSI Model", date: "12th March 2019" },
+  { name: "Carl Jung | Dreams", date: "13th Febuary 2019" },
+  { name: "Rust procedural macros", date: "12th July 2018" },
+  { name: "Carl Jung | Dreams", date: "13th Febuary 2019" },
+  { name: "Rust procedural macros", date: "12th July 2018" },
+  { name: "A history of the OSI Model", date: "12th March 2019" },
+  { name: "Carl Jung | Dreams", date: "13th Febuary 2019" },
+  { name: "Rust procedural macros", date: "12th July 2018" },
+  { name: "A history of the OSI Model", date: "12th March 2019" },
+  { name: "Carl Jung | Dreams", date: "13th Febuary 2019" },
+  { name: "Rust procedural macros", date: "12th July 2018" }
 ];
 
 export const SideBar = ({ navigate }: SideBarProps) => {

@@ -17,8 +17,8 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <SideBar navigate={navigate} />
-      <TopicNavigationBar />
       <MainContent>
+        <TopicNavigationBar />
         <ScreenRouter screen={screen} data={data} />
       </MainContent>
     </div>

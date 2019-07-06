@@ -1,0 +1,27 @@
+#topic-navigation-bar {
+  position: fixed;
+  background-color: white;
+  border-bottom: 1px solid rgb(235, 236, 237);
+  border-left: 1px solid rgb(235, 236, 237);
+  width: 100%;
+  height: 46px;
+}
+
+#topic-header {
+  font-weight: 100;
+  display: inline-block;
+  margin-left: 2%;
+  width: 35%;
+}
+
+#topic-controls-container {
+  display: inline-block;
+  margin-top: 6px;
+  width: 60%;
+}
+
+.topic-nav-btn {
+  padding: 7px;
+  margin-right: 3px;
+  margin-left: 3px;
+}

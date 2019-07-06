@@ -1,18 +1,15 @@
 import React from "react";
-
-type topic = {
-  name: string;
-};
+import { TopicItem, Topic } from "./TopicItem";
 
 interface TopicsListProps {
-  topics: Array<topic>;
+  topics: Array<Topic>;
 }
 
 export const TopicsList = ({ topics }: TopicsListProps) => {
   return (
     <div>
-      {topics.map(({ name }: topic) => (
-        <h3>{name}</h3>
+      {topics.map(topic => (
+        <TopicItem topic={topic} />
       ))}
     </div>
   );

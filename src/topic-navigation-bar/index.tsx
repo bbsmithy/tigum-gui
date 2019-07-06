@@ -4,7 +4,7 @@ import "./styles.css";
 export const TopicNavigationBar: React.FC = () => {
   return (
     <nav id="topic-navigation-bar">
-      <span id="topic-header">Rust Ownership And Borrowing</span>
+      <p id="topic-header">Rust Ownership And Borrowing</p>
       <div id="topic-controls-container">
         <button className="btn topic-nav-btn">
           <i className="fas fa-pen-square" /> My Notes

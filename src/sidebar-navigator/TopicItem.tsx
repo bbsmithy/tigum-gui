@@ -29,7 +29,9 @@ export const TopicItem = ({
       }`}
       onClick={onSelect}
     >
-      <h3 className="topic-item-name">{topic.name}</h3>
+      <div className="topic-item-name-container">
+        <span className="topic-item-name">{topic.name}</span>
+      </div>
       <i className="topic-item-date">{topic.date}</i>
     </div>
   );

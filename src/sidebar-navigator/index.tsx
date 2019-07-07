@@ -55,7 +55,7 @@ export const SideBar = ({ navigate }: SideBarProps) => {
         </button>
       </div>
       <div id="sidebar-list">
-        {topics.length && <TopicsList topics={topics} />}
+        {topics.length && <TopicsList topics={topics} navigate={navigate} />}
         {topics.length === 0 && <NoTopicsMessage />}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 export type Topic = {
   name: string;
@@ -9,7 +9,7 @@ interface TopicItemProps {
   topic: Topic;
   selected: boolean;
   id: number;
-  onSelectItem: (id: number) => void;
+  onSelectItem: (id: number, topic: Topic) => void;
 }
 
 export const TopicItem = ({
@@ -19,7 +19,7 @@ export const TopicItem = ({
   onSelectItem
 }: TopicItemProps) => {
   const onSelect = () => {
-    onSelectItem(id);
+    onSelectItem(id, topic);
   };
 
   return (

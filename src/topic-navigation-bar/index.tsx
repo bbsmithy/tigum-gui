@@ -1,10 +1,14 @@
 import React from "react";
 import "./styles.css";
 
-export const TopicNavigationBar: React.FC = () => {
+interface TopicNavigationBarProps {
+  title: string;
+}
+
+export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
   return (
     <nav id="topic-navigation-bar">
-      <p id="topic-header">Rust Ownership And Borrowing</p>
+      <p id="topic-header">{title}</p>
       <div id="topic-controls-container">
         <button className="btn topic-nav-btn">
           <i className="fas fa-pen-square" /> My Notes

@@ -11,7 +11,7 @@ export enum SCREENS {
 
 type ScreenType = {
   screen: SCREENS;
-  data: object;
+  data: any;
 };
 
 export const ScreenRouter = ({ screen, data }: ScreenType) => {

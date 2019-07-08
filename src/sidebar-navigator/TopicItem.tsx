@@ -3,6 +3,7 @@ import React from "react";
 export type Topic = {
   name: string;
   date: string;
+  content: string;
 };
 
 interface TopicItemProps {

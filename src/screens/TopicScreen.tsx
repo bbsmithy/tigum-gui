@@ -8,7 +8,7 @@ interface TopicProps {
 export const TopicScreen = ({ data }: TopicProps) => {
   return (
     <div id="topic-screen-container">
-      <h1>{data.name}</h1>
+      <p>{data.content}</p>
     </div>
   );
 };

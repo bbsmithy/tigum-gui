@@ -1,18 +1,19 @@
 import logo from "../logo.png";
 import React from "react";
 import { NoTopicsMessage } from "./NoTopicsMessage";
-import { SCREENS } from "../screens/ScreenRouter";
+import { TOPIC_SCREENS } from "../routers/TopicRouter";
 import { TopicsList } from "./TopicsList";
 import { Topic } from "./TopicItem";
 
 interface SideBarProps {
-  navigate: (screen: SCREENS, data: any) => void;
+  navigate: (screen: TOPIC_SCREENS, data: any) => void;
+  screen: TOPIC_SCREENS;
   topics: Array<Topic>;
 }
 
-export const SideBar = ({ navigate, topics }: SideBarProps) => {
+export const SideBar = ({ navigate, screen, topics }: SideBarProps) => {
   const onClickNewTopic = () => {
-    navigate(SCREENS.CREATE_NEW_TOPIC, {});
+    navigate(TOPIC_SCREENS.VIDEOS, {});
   };
 
   return (
@@ -27,7 +28,9 @@ export const SideBar = ({ navigate, topics }: SideBarProps) => {
         </button>
       </div>
       <div id="sidebar-list">
-        {topics.length && <TopicsList topics={topics} navigate={navigate} />}
+        {topics.length && (
+          <TopicsList topics={topics} screen={screen} navigate={navigate} />
+        )}
         {topics.length === 0 && <NoTopicsMessage />}
       </div>
     </div>

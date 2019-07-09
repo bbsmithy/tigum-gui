@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { TopicItem, Topic } from "./TopicItem";
-import { SCREENS } from "../screens/ScreenRouter";
+import { TOPIC_SCREENS } from "../routers/TopicRouter";
 
 interface TopicsListProps {
   topics: Array<Topic>;
-  navigate: (screen: SCREENS, data: object) => void;
+  screen: TOPIC_SCREENS;
+  navigate: (screen: TOPIC_SCREENS, data: object) => void;
 }
 
-export const TopicsList = ({ topics, navigate }: TopicsListProps) => {
+export const TopicsList = ({ topics, screen, navigate }: TopicsListProps) => {
   const [selectedId, setSelected] = useState(0);
 
   const selectTopicItem = (id: number, topic: Topic) => {
     setSelected(id);
-    navigate(SCREENS.TOPIC, topic);
+    navigate(screen, topic);
   };
 
   return (

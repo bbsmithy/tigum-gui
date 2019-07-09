@@ -83,10 +83,8 @@ body {
 }
 
 .btn {
-  border-width: 0;
-  outline: none;
+  border: 1px solid rgb(235, 236, 237);
   border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   background-color: white;
   color: black;
   font-size: 13px;
@@ -121,4 +119,9 @@ body {
 
 #topic-screen-container {
   margin-top: 60px;
+}
+
+.topic-section-container {
+  margin-top: 30px;
+  padding: 30px;
 }

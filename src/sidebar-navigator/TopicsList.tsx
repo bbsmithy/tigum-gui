@@ -17,7 +17,7 @@ export const TopicsList = ({ topics, screen, navigate }: TopicsListProps) => {
   };
 
   return (
-    <div style={{ overflow: "scroll", height: "100%" }}>
+    <React.Fragment>
       {topics.map((topic, index) => (
         <TopicItem
           topic={topic}
@@ -26,6 +26,6 @@ export const TopicsList = ({ topics, screen, navigate }: TopicsListProps) => {
           onSelectItem={selectTopicItem}
         />
       ))}
-    </div>
+    </React.Fragment>
   );
 };

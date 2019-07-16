@@ -1,5 +1,4 @@
 import React from "react";
-import { CreateNewTopic } from "../screens/main-screens/CreateNewTopic";
 import {
   MyNotes,
   Videos,

@@ -58,7 +58,7 @@ body {
 
 #sidebar-list {
   direction: rtl;
-  overflow: scroll;
+  overflow: auto;
   height: 100%;
 }
 
@@ -77,7 +77,7 @@ body {
 
 #main-content {
   position: absolute;
-  overflow: scroll;
+  overflow-y: auto;
   left: 20%;
   font-family: Arial, Helvetica, sans-serif;
 }

@@ -11,13 +11,13 @@
   font-weight: 800;
   display: inline-block;
   margin-left: 2%;
-  width: 35%;
+  width: 30%;
 }
 
 #topic-controls-container {
   display: inline-block;
   margin-top: 6px;
-  width: 60%;
+  width: 65%;
 }
 
 .topic-nav-btn {

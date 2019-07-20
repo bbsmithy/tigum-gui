@@ -62,6 +62,9 @@ export const TopicNavigationBar = ({
         <button className="btn topic-nav-btn" onClick={navigateToDocuments}>
           <i className="fas fa-file-alt" /> Documents
         </button>
+        <button className="btn topic-nav-btn" onClick={navigateToDocuments}>
+          <i className="fas fa-bullseye" /> Exercises
+        </button>
       </div>
     </nav>
   );

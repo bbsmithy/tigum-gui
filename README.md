@@ -3,7 +3,7 @@
 
 # tigum-gui
 
-Frontend for Tigum online learning tool, built with React/Typescript
+Frontend for Tigum centralized learning tool, built with React/Typescript
 
 
 # Motivation

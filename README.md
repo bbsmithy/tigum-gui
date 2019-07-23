@@ -8,6 +8,8 @@ Frontend for Tigum centralized learning tool, built with React/Typescript
 
 # Motivation
 
+Tigum aims to make it possible for people to base their education online.
+
 The problem with basing your education soley online is that it is difficult to gain an in depth understanding of specific topics with so many resources shouting for attention. Tigum aims to improve the experience of personalized online education, by centralizing resources you find most useful in one place, and helping you refine your knowledge on topics over time.
 
 Over the last few years I've been learning how to write software. About 95% of the resources I have used have been videos, blog posts and offical documentation. The internet has given me the access to a world of knowledge which has allowed me to enter into a career in software.

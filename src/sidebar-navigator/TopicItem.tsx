@@ -1,8 +1,8 @@
 import React from "react";
 
 export type Topic = {
-  name: string;
-  date: string;
+  title: string;
+  date_created: string;
   content: string;
 };
 
@@ -31,9 +31,10 @@ export const TopicItem = ({
       onClick={onSelect}
     >
       <div className="topic-item-name-container">
-        <span className="topic-item-name">{topic.name}</span>
+        {console.log(topic)}
+        <span className="topic-item-name">{topic.title}</span>
       </div>
-      <i className="topic-item-date">{topic.date}</i>
+      <i className="topic-item-date">{topic.date_created}</i>
     </div>
   );
 };

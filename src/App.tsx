@@ -46,7 +46,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <SideBar navigate={navigate} screen={screen} topics={topics} />
+      <SideBar navigate={navigate} screen={screen} />
       <MainContent
         screen={screen}
         title={data.name}

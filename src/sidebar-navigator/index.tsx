@@ -1,5 +1,5 @@
 import logo from "../logo.png";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NoTopicsMessage } from "./NoTopicsMessage";
 import { TOPIC_SCREENS } from "../routers/TopicRouter";
 import { TopicsList } from "./TopicsList";
@@ -8,13 +8,37 @@ import { Topic } from "./TopicItem";
 interface SideBarProps {
   navigate: (screen: TOPIC_SCREENS, data: any) => void;
   screen: TOPIC_SCREENS;
-  topics: Array<Topic>;
 }
 
-export const SideBar = ({ navigate, screen, topics }: SideBarProps) => {
+interface TopicsState {
+  loading: boolean;
+  data: any[];
+}
+
+export const SideBar: React.FC<SideBarProps> = ({
+  navigate,
+  screen
+}: SideBarProps) => {
+  const [topics, setTopics] = useState<TopicsState>({
+    loading: true,
+    data: []
+  });
+
   const onClickNewTopic = () => {
     navigate(TOPIC_SCREENS.VIDEOS, {});
   };
+
+  useEffect(() => {
+    const fetchTopics = async () => {
+      const result = await fetch("http://localhost:8000/topics");
+      result.json().then(topics => {
+        let topicsData: any[] = Array.isArray(topics) ? topics : [topics];
+        setTopics({ loading: false, data: topicsData });
+      });
+    };
+
+    fetchTopics();
+  }, []);
 
   return (
     <div id="sidebar">
@@ -28,10 +52,14 @@ export const SideBar = ({ navigate, screen, topics }: SideBarProps) => {
         </button>
       </div>
       <div id="sidebar-list">
-        {topics.length && (
-          <TopicsList topics={topics} screen={screen} navigate={navigate} />
+        {topics.data.length && !topics.loading && (
+          <TopicsList
+            topics={topics.data}
+            screen={screen}
+            navigate={navigate}
+          />
         )}
-        {topics.length === 0 && <NoTopicsMessage />}
+        {topics.data.length === 0 && !topics.loading && <NoTopicsMessage />}
       </div>
     </div>
   );

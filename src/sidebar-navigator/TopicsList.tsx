@@ -9,7 +9,7 @@ interface TopicsListProps {
 }
 
 export const TopicsList = ({ topics, screen, navigate }: TopicsListProps) => {
-  const [selectedId, setSelected] = useState(0);
+  const [selectedId, setSelected] = useState();
 
   const selectTopicItem = (id: number, topic: Topic) => {
     setSelected(id);
@@ -18,6 +18,7 @@ export const TopicsList = ({ topics, screen, navigate }: TopicsListProps) => {
 
   return (
     <React.Fragment>
+      {console.log(topics)}
       {topics.map((topic, index) => (
         <TopicItem
           topic={topic}

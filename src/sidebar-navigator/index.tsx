@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { NoTopicsMessage } from "./NoTopicsMessage";
 import { TOPIC_SCREENS } from "../routers/TopicRouter";
 import { TopicsList } from "./TopicsList";
-import { Topic } from "./TopicItem";
+import { getTopics } from "../client-lib/";
 
 interface SideBarProps {
   navigate: (screen: TOPIC_SCREENS, data: any) => void;
@@ -30,13 +30,10 @@ export const SideBar: React.FC<SideBarProps> = ({
 
   useEffect(() => {
     const fetchTopics = async () => {
-      const result = await fetch("http://localhost:8000/topics");
-      result.json().then(topics => {
-        let topicsData: any[] = Array.isArray(topics) ? topics : [topics];
-        setTopics({ loading: false, data: topicsData });
-      });
+      const topics = await getTopics([1,2,3]);
+      setTopics({loading: false, data: topics})
     };
-
+    
     fetchTopics();
   }, []);
 
@@ -52,13 +49,12 @@ export const SideBar: React.FC<SideBarProps> = ({
         </button>
       </div>
       <div id="sidebar-list">
-        {topics.data.length && !topics.loading && (
           <TopicsList
             topics={topics.data}
+            loading={topics.loading}
             screen={screen}
             navigate={navigate}
           />
-        )}
         {topics.data.length === 0 && !topics.loading && <NoTopicsMessage />}
       </div>
     </div>

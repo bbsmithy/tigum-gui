@@ -6,9 +6,10 @@ interface TopicsListProps {
   topics: Array<Topic>;
   screen: TOPIC_SCREENS;
   navigate: (screen: TOPIC_SCREENS, data: object) => void;
+  loading: boolean;
 }
 
-export const TopicsList = ({ topics, screen, navigate }: TopicsListProps) => {
+export const TopicsList = ({ topics, screen, navigate, loading }: TopicsListProps) => {
   const [selectedId, setSelected] = useState();
 
   const selectTopicItem = (id: number, topic: Topic) => {
@@ -16,10 +17,14 @@ export const TopicsList = ({ topics, screen, navigate }: TopicsListProps) => {
     navigate(screen, topic);
   };
 
+  const renderLoading = () => {
+    return "Loading"
+  }
+
   return (
     <React.Fragment>
-      {console.log(topics)}
-      {topics.map((topic, index) => (
+      {loading && renderLoading()}
+      {!loading && topics.map((topic, index) => (
         <TopicItem
           topic={topic}
           selected={selectedId === index}

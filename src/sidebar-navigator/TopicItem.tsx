@@ -31,7 +31,6 @@ export const TopicItem = ({
       onClick={onSelect}
     >
       <div className="topic-item-name-container">
-        {console.log(topic)}
         <span className="topic-item-name">{topic.title}</span>
       </div>
       <i className="topic-item-date">{topic.date_created}</i>

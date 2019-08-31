@@ -3,6 +3,7 @@ import React from "react";
 export type Topic = {
   title: string;
   date_created: string;
+  topic_id: number;
   content: string;
 };
 

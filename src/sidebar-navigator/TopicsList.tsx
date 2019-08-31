@@ -27,6 +27,7 @@ export const TopicsList = ({ topics, screen, navigate, loading }: TopicsListProp
       {!loading && topics.map((topic, index) => (
         <TopicItem
           topic={topic}
+          key={topic.topic_id}
           selected={selectedId === index}
           id={index}
           onSelectItem={selectTopicItem}

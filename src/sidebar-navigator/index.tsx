@@ -57,6 +57,10 @@ export const SideBar: React.FC<SideBarProps> = ({
           />
         {topics.data.length === 0 && !topics.loading && <NoTopicsMessage />}
       </div>
+      <div id="sidebar-search-mentors-container">
+        <div className="display-inline" id="search-button">Search</div>
+        <div className="display-inline" id="mentors-button">Mentors</div>
+      </div>
     </div>
   );
 };

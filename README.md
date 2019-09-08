@@ -1,10 +1,8 @@
 ![alt text](https://github.com/bbsmithy/tigum-gui/blob/master/src/logo.png)
 
-
 # tigum-gui
 
 Frontend for Tigum centralized learning tool, built with React/Typescript
-
 
 # Motivation
 
@@ -21,19 +19,13 @@ Access to this tool will be completely private but if I wish to share that conte
 # V1 flow
 
 ## Researching phase
+
 While going through web articles or videos about a ceratin topic e.g "A history of HTTP", you will be able to grab content that is useful to you from websites (intially content will be text, images or youtube videos). First select content by draging mouse over. Second click on tigum extension. Third save under topic ("A history of HTTP") or create new one, you will then be asked if you want to switch on auto save for ("A history of HTTP") for this session. If you select yes then every time you select content and press tigum-extension that content will be saved under "A history of HTTP" in your tigum account.
 
 ## Refining phase
+
 You can go to a topic you've collected some resources on in the tigum-gui. From here you can take you own notes along side those resources e.g "A history of HTTP" you could write the high level specs for GET POST DELETE in your own words etc and have youtube video embedded from a section of youtube video that describes this well. Combining your own thoughts and knowledge on a subject along with other peoples resources is a great way to learn concepts quickly. Its important to note that you may not even have external resources under a topic. Tigum puts no rescritions on what goes in a topic.
 
 ## Sharing phase
+
 If you feel like notes/collection of resources on a particular topic could help other people, you can share that on the tigum public feed. Other users can up vote your topic if they found it useful to them and their research. You can also export your topic resources to html or pdf doc and share with others that way.
-
-
-# V1 Layout
-
-## GUI
-
-![alt text](https://github.com/bbsmithy/tigum-gui/blob/master/tigum-gui-layout-v1.png)
-
-

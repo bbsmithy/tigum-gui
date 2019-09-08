@@ -5,7 +5,8 @@ import {
   ArticleSnippets,
   Code,
   Images,
-  Documents
+  Documents,
+  Loading
 } from "../screens/topic-screens/";
 import { Topic } from "../sidebar-navigator/TopicItem";
 
@@ -16,6 +17,7 @@ export enum TOPIC_SCREENS {
   CODE,
   IMAGES,
   DOCUMENTS,
+  LOADING,
   NONE
 }
 
@@ -39,6 +41,8 @@ export const TopicRouter = ({ screen, data, navigate }: TopicRouterType) => {
       return <Images data={data} />;
     case TOPIC_SCREENS.DOCUMENTS:
       return <Documents data={data} />;
+    case TOPIC_SCREENS.LOADING:
+      return <Loading data={data} />;
     default:
       return <div>Howya</div>;
   }

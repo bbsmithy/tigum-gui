@@ -3,12 +3,10 @@ import { TopicNavigationBar } from "../topic-navigation-bar";
 import { TopicRouter } from "../routers/TopicRouter";
 
 export const MainContent = (props: any) => {
-  const topicNavigate = () => {};
-
-  return (
-    <div id="main-content">
+  const renderTopicViewer = () => (
+    <>
       <TopicNavigationBar
-        title={props.title}
+        title={props.data.title}
         navigate={props.navigate}
         data={props.data}
       />
@@ -17,6 +15,16 @@ export const MainContent = (props: any) => {
         data={props.data}
         navigate={props.navigate}
       />
+    </>
+  );
+
+  const renderLoading = () => {
+    return <h3>Loading</h3>;
+  };
+
+  return (
+    <div id="main-content">
+      {props.data ? renderTopicViewer() : renderLoading()}
     </div>
   );
 };

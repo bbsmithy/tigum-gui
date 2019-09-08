@@ -32,7 +32,7 @@ export const Modal = (props: ModalProps) => {
         <div className="modal-body">
           <input
             type="text"
-            placeholder="Enter Title"
+            placeholder="Title"
             id="topic-title-input"
             value={topicTitle}
             onChange={onChangeTitle}

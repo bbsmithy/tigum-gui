@@ -9,8 +9,13 @@ interface TopicsListProps {
   loading: boolean;
 }
 
-export const TopicsList = ({ topics, screen, navigate, loading }: TopicsListProps) => {
-  const [selectedId, setSelected] = useState();
+export const TopicsList = ({
+  topics,
+  screen,
+  navigate,
+  loading
+}: TopicsListProps) => {
+  const [selectedId, setSelected] = useState(0);
 
   const selectTopicItem = (id: number, topic: Topic) => {
     setSelected(id);
@@ -18,21 +23,22 @@ export const TopicsList = ({ topics, screen, navigate, loading }: TopicsListProp
   };
 
   const renderLoading = () => {
-    return "Loading"
-  }
+    return "Loading";
+  };
 
   return (
     <React.Fragment>
       {loading && renderLoading()}
-      {!loading && topics.map((topic, index) => (
-        <TopicItem
-          topic={topic}
-          key={topic.topic_id}
-          selected={selectedId === index}
-          id={index}
-          onSelectItem={selectTopicItem}
-        />
-      ))}
+      {!loading &&
+        topics.map((topic, index) => (
+          <TopicItem
+            topic={topic}
+            key={topic.topic_id}
+            selected={selectedId === index}
+            id={index}
+            onSelectItem={selectTopicItem}
+          />
+        ))}
     </React.Fragment>
   );
 };

@@ -30,12 +30,13 @@ export const SideBar: React.FC<SideBarProps> = ({
     toggleModal();
   };
 
-  useEffect(() => {
-    const fetchTopics = async () => {
-      const topics = await getTopics([]);
-      setTopics({ loading: false, data: topics });
-    };
+  const fetchTopics = async () => {
+    const topics = await getTopics([]);
+    setTopics({ loading: false, data: topics });
+    navigate(TOPIC_SCREENS.MY_NOTES, topics[0]);
+  };
 
+  useEffect(() => {
     fetchTopics();
   }, []);
 

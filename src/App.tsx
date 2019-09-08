@@ -37,8 +37,8 @@ const topics = [
 ];
 
 const App: React.FC = () => {
-  const [screen, setScreen] = useState(TOPIC_SCREENS.MY_NOTES);
-  const [data, setData] = useState(topics[0]);
+  const [screen, setScreen] = useState(TOPIC_SCREENS.LOADING);
+  const [data, setData] = useState();
   const [modalOpen, setModalOpen] = useState(false);
 
   const navigate = (screen: TOPIC_SCREENS, data: any) => {
@@ -53,12 +53,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <SideBar navigate={navigate} screen={screen} toggleModal={toggleModal} />
-      <MainContent
-        screen={screen}
-        title={data.name}
-        data={data}
-        navigate={navigate}
-      />
+      <MainContent screen={screen} data={data} navigate={navigate} />
       <Modal display={modalOpen} toggleModal={toggleModal} />
     </div>
   );

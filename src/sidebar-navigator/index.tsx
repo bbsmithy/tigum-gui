@@ -8,6 +8,7 @@ import { getTopics } from "../client-lib/";
 interface SideBarProps {
   navigate: (screen: TOPIC_SCREENS, data: any) => void;
   screen: TOPIC_SCREENS;
+  toggleModal: () => void;
 }
 
 interface TopicsState {
@@ -17,7 +18,8 @@ interface TopicsState {
 
 export const SideBar: React.FC<SideBarProps> = ({
   navigate,
-  screen
+  screen,
+  toggleModal
 }: SideBarProps) => {
   const [topics, setTopics] = useState<TopicsState>({
     loading: true,
@@ -25,15 +27,15 @@ export const SideBar: React.FC<SideBarProps> = ({
   });
 
   const onClickNewTopic = () => {
-    navigate(TOPIC_SCREENS.VIDEOS, {});
+    toggleModal();
   };
 
   useEffect(() => {
     const fetchTopics = async () => {
-      const topics = await getTopics([1,2,3]);
-      setTopics({loading: false, data: topics})
+      const topics = await getTopics([]);
+      setTopics({ loading: false, data: topics });
     };
-    
+
     fetchTopics();
   }, []);
 
@@ -49,17 +51,21 @@ export const SideBar: React.FC<SideBarProps> = ({
         </button>
       </div>
       <div id="sidebar-list">
-          <TopicsList
-            topics={topics.data}
-            loading={topics.loading}
-            screen={screen}
-            navigate={navigate}
-          />
+        <TopicsList
+          topics={topics.data}
+          loading={topics.loading}
+          screen={screen}
+          navigate={navigate}
+        />
         {topics.data.length === 0 && !topics.loading && <NoTopicsMessage />}
       </div>
       <div id="sidebar-search-mentors-container">
-        <div className="display-inline" id="search-button">Search</div>
-        <div className="display-inline" id="mentors-button">Mentors</div>
+        <div className="display-inline" id="search-button">
+          Search
+        </div>
+        <div className="display-inline" id="mentors-button">
+          Mentors
+        </div>
       </div>
     </div>
   );

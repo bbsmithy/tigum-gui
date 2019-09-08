@@ -4,7 +4,7 @@ body {
 }
 
 .display-inline {
-  display: inline-block
+  display: inline-block;
 }
 
 #logo {
@@ -78,28 +78,28 @@ body {
   background-color: white;
   border-top: 1px solid rgb(235, 236, 237);
   width: 100%;
-  bottom: 0
+  bottom: 0;
 }
 
 #mentors-button {
   width: 42.75%;
   padding: 20px 10px 20px 10px;
-  text-align: center
+  text-align: center;
 }
 
-#mentors-button:hover{
-  background-color: #efefef
+#mentors-button:hover {
+  background-color: #efefef;
 }
 
-#search-button{
+#search-button {
   width: 42.75%;
   padding: 20px 10px 20px 10px;
   border-right: 1px solid rgb(235, 236, 237);
-  text-align: center
+  text-align: center;
 }
 
-#search-button:hover{
-  background-color: #efefef
+#search-button:hover {
+  background-color: #efefef;
 }
 
 #no-topics-container {
@@ -159,4 +159,117 @@ body {
 .topic-section-container {
   margin-top: 30px;
   padding: 30px;
+}
+
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modal-show {
+  display: block;
+}
+
+.modal-hidden {
+  display: none;
+}
+
+/* Modal Header */
+.modal-header {
+  padding: 2px 12px;
+  border-bottom: 1px solid rgb(235, 236, 237);
+  color: black;
+}
+
+.modal-header h2 {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* Modal Body */
+.modal-body {
+  padding: 2px 16px;
+}
+
+/* Modal Footer */
+.modal-footer {
+  height: 30px;
+  padding: 12px;
+  border-top: 1px solid rgb(235, 236, 237);
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+/* Add Animation */
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#topic-title-input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+#create-topic-btn {
+  float: right;
+  font-weight: 500;
+  background-color: #008bf3;
+  color: white;
+  padding: 6px;
+  border-radius: 5px;
+}
+
+#create-topic-btn:hover {
+  background-color: #0a73c4;
+}
+
+button:focus {
+  outline: 0;
 }

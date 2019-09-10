@@ -26,9 +26,10 @@ const App: React.FC = () => {
   };
 
   const fetchTopics = async () => {
-    const topics = await getTopics([]);
-    setTopics({ loading: false, data: topics });
-    navigate(TOPIC_SCREENS.MY_NOTES, topics[0]);
+    const newTopics = await getTopics([]);
+    const orderedTopics = newTopics.reverse();
+    navigate(TOPIC_SCREENS.MY_NOTES, orderedTopics[0]);
+    setTopics({ loading: false, data: orderedTopics });
   };
 
   useEffect(() => {

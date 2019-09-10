@@ -19,6 +19,7 @@ export const Modal = (props: ModalProps) => {
       const res = await createTopic(topicTitle, []);
       if (res.status === 200) {
         props.refresh();
+        props.toggleModal();
       }
     } catch (e) {
       console.log(e);

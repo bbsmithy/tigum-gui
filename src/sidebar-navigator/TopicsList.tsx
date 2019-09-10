@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TopicItem, Topic } from "./TopicItem";
 import { TOPIC_SCREENS } from "../routers/TopicRouter";
 
@@ -27,7 +27,7 @@ export const TopicsList = ({
   };
 
   return (
-    <React.Fragment>
+    <div id="topics-list-container">
       {loading && renderLoading()}
       {!loading &&
         topics.map((topic, index) => (
@@ -39,6 +39,6 @@ export const TopicsList = ({
             onSelectItem={selectTopicItem}
           />
         ))}
-    </React.Fragment>
+    </div>
   );
 };

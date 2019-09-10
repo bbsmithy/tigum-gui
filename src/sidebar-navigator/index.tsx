@@ -1,44 +1,26 @@
 import logo from "../logo.png";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NoTopicsMessage } from "./NoTopicsMessage";
 import { TOPIC_SCREENS } from "../routers/TopicRouter";
 import { TopicsList } from "./TopicsList";
-import { getTopics } from "../client-lib/";
+import { TopicsState } from "../types";
 
 interface SideBarProps {
   navigate: (screen: TOPIC_SCREENS, data: any) => void;
   screen: TOPIC_SCREENS;
   toggleModal: () => void;
-}
-
-interface TopicsState {
-  loading: boolean;
-  data: any[];
+  topics: TopicsState;
 }
 
 export const SideBar: React.FC<SideBarProps> = ({
   navigate,
   screen,
-  toggleModal
+  toggleModal,
+  topics
 }: SideBarProps) => {
-  const [topics, setTopics] = useState<TopicsState>({
-    loading: true,
-    data: []
-  });
-
   const onClickNewTopic = () => {
     toggleModal();
   };
-
-  const fetchTopics = async () => {
-    const topics = await getTopics([]);
-    setTopics({ loading: false, data: topics });
-    navigate(TOPIC_SCREENS.MY_NOTES, topics[0]);
-  };
-
-  useEffect(() => {
-    fetchTopics();
-  }, []);
 
   return (
     <div id="sidebar">

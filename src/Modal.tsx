@@ -4,6 +4,7 @@ import { createTopic } from "./client-lib/";
 interface ModalProps {
   display: boolean;
   toggleModal: () => void;
+  refresh: () => void;
 }
 
 export const Modal = (props: ModalProps) => {
@@ -13,8 +14,15 @@ export const Modal = (props: ModalProps) => {
     setTopicTitle(e.target.value);
   };
 
-  const onClickCreateTopic = () => {
-    createTopic(topicTitle, []);
+  const onClickCreateTopic = async () => {
+    try {
+      const res = await createTopic(topicTitle, []);
+      if (res.status === 200) {
+        props.refresh();
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

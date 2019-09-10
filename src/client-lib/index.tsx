@@ -32,6 +32,6 @@ export const createTopic = async (
       },
       body: JSON.stringify({ title, topic_content })
     });
-    return await res.json();
+    return await res;
   } catch (e) {}
 };

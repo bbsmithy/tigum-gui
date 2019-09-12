@@ -2,8 +2,6 @@
   position: fixed;
   background-color: white;
   width: 100%;
-  border-bottom: 1px solid rgb(235, 236, 237);
-
 }
 
 #topic-header {
@@ -11,17 +9,22 @@
   display: inline-block;
   margin-left: 2%;
   width: 30%;
-  font-size: 20px
+  font-size: 20px;
 }
 
 #topic-controls-container {
   display: inline-block;
   width: 60%;
-  align-content: flex-end
+  align-content: flex-end;
 }
 
 .topic-nav-btn {
+  border: 1px solid rgb(235, 236, 237);
   padding: 6px;
   margin-right: 3px;
   margin-left: 3px;
+}
+
+.topic-nav-btn:focus {
+  border: 1px solid black !important;
 }

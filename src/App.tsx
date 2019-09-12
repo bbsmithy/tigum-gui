@@ -6,6 +6,7 @@ import { Modal } from "./Modal";
 import { TOPIC_SCREENS } from "./routers/TopicRouter";
 import { getTopics } from "./client-lib/";
 import { TopicsState } from "./types/";
+import AppContextProvider from "./contexts/AppContext";
 
 const App: React.FC = () => {
   const [screen, setScreen] = useState(TOPIC_SCREENS.LOADING);
@@ -38,18 +39,20 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <SideBar
-        navigate={navigate}
-        screen={screen}
-        topics={topics}
-        toggleModal={toggleModal}
-      />
-      <MainContent screen={screen} data={data} navigate={navigate} />
-      <Modal
-        display={modalOpen}
-        toggleModal={toggleModal}
-        refresh={fetchTopics}
-      />
+      <AppContextProvider>
+        <SideBar
+          navigate={navigate}
+          screen={screen}
+          topics={topics}
+          toggleModal={toggleModal}
+        />
+        <MainContent screen={screen} data={data} navigate={navigate} />
+        <Modal
+          display={modalOpen}
+          toggleModal={toggleModal}
+          refresh={fetchTopics}
+        />
+      </AppContextProvider>
     </div>
   );
 };

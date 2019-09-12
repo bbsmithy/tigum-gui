@@ -35,3 +35,50 @@ export const createTopic = async (
     return await res;
   } catch (e) {}
 };
+
+export const updateTopic = async (topic: any) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/topics/${topic.topic_id}`, {
+      method: "PUT",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ...topic })
+    });
+    return await res;
+  } catch (e) {}
+};
+
+export const createNote = async (title: String) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/notes/create-note`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ title, note_content: [] })
+    });
+    return await res;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getNotes = async (note_ids: Array<number>) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/notes/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ids: note_ids })
+    });
+    return await res;
+  } catch (e) {
+    console.log(e);
+  }
+};

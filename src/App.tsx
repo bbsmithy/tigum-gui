@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEventHandler } from "react";
 import "./App.css";
 import { SideBar } from "./sidebar-navigator";
 import { MainContent } from "./main-content-view";
-import { Modal } from "./Modal";
+import { Modal } from "./components/Modal";
 import { TOPIC_SCREENS } from "./routers/TopicRouter";
 import { getTopics } from "./client-lib/";
 import { TopicsState } from "./types/";
 import AppContextProvider from "./contexts/AppContext";
+import { createTopic } from "./client-lib/";
 
 const App: React.FC = () => {
   const [screen, setScreen] = useState(TOPIC_SCREENS.LOADING);
@@ -16,6 +17,7 @@ const App: React.FC = () => {
     loading: true,
     data: []
   });
+  const [topicTitle, setTopicTitle] = useState("");
 
   const navigate = (screen: TOPIC_SCREENS, data: any) => {
     setScreen(screen);
@@ -37,6 +39,22 @@ const App: React.FC = () => {
     fetchTopics();
   }, []);
 
+  const onClickCreateTopic = async () => {
+    try {
+      const res = await createTopic(topicTitle, []);
+      if (res.status === 200) {
+        fetchTopics();
+        toggleModal();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
+    setTopicTitle(e.currentTarget.value);
+  };
+
   return (
     <div className="App">
       <AppContextProvider>
@@ -50,8 +68,18 @@ const App: React.FC = () => {
         <Modal
           display={modalOpen}
           toggleModal={toggleModal}
-          refresh={fetchTopics}
-        />
+          onClickAction={onClickCreateTopic}
+          buttonText="Create"
+          title="Create Topic"
+        >
+          <input
+            type="text"
+            placeholder="Title"
+            id="topic-title-input"
+            value={topicTitle}
+            onChange={onChangeTitle}
+          />
+        </Modal>
       </AppContextProvider>
     </div>
   );

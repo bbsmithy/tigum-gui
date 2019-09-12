@@ -7,7 +7,7 @@ type AppContextType = {
   resources: Array<any>;
 };
 
-const AppContext = createContext({});
+export const AppContext = createContext({});
 
 class AppContextProvider extends Component {
   state: AppContextType = {

@@ -1,5 +1,5 @@
 import React from "react";
-import { AllNotes } from "../screens/note-screens";
+import { AllNotes, ViewNote } from "../screens/note-screens";
 import { Topic } from "../sidebar-navigator/TopicItem";
 
 export enum NOTE_SCREENS {
@@ -10,15 +10,23 @@ export enum NOTE_SCREENS {
 type NoteRouterType = {
   screen: NOTE_SCREENS;
   topic: Topic;
+  note: any;
   setTopic: (topic: any) => void;
+  navigate: (screen: NOTE_SCREENS, note: any) => void;
 };
 
-export const NoteRouter = ({ screen, topic, setTopic }: NoteRouterType) => {
+export const NoteRouter = ({
+  screen,
+  topic,
+  setTopic,
+  navigate,
+  note
+}: NoteRouterType) => {
   switch (screen) {
     case NOTE_SCREENS.ALL_NOTES:
-      return <AllNotes topic={topic} setTopic={setTopic} />;
+      return <AllNotes topic={topic} setTopic={setTopic} navigate={navigate} />;
     case NOTE_SCREENS.VIEW_NOTE:
-      return;
+      return <ViewNote navigate={navigate} topic={topic} note={note} />;
     default:
       return <div>Howya</div>;
   }

@@ -3,6 +3,7 @@ import { NewNote, Note } from "../../components";
 import { Modal } from "../../components/Modal";
 import { createNote, getNotes, updateTopic } from "../../client-lib";
 import { AppContext } from "../../contexts/AppContext";
+import { NOTE_SCREENS } from "../../routers/NoteRouter";
 
 export const AllNotes = (props: any) => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
@@ -57,7 +58,12 @@ export const AllNotes = (props: any) => {
     setNoteTitle(e.currentTarget.value);
   };
 
-  const renderNotes = () => notes.map(note => <Note title={note.title} />);
+  const onClickNote = (note: any) => {
+    props.navigate(NOTE_SCREENS.VIEW_NOTE, note);
+  };
+
+  const renderNotes = () =>
+    notes.map(note => <Note note={note} onClick={onClickNote} />);
 
   return (
     <div className="topic-section-container">

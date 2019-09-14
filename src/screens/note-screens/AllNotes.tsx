@@ -13,19 +13,23 @@ export const AllNotes = (props: any) => {
     setNewNoteModalOpen(!newNoteModalIsOpen);
   };
 
-  const fetchNotes = async () => {
+  const fetchNotes = async (topic_content: Array<number>) => {
     try {
-      const res = await getNotes([]);
+      const res = await getNotes(topic_content);
       if (res.status === 200) {
         const body = await res.json();
-        setNotes(body);
+        setNotes(body.reverse());
       }
     } catch (e) {}
   };
 
   useEffect(() => {
-    fetchNotes();
+    fetchNotes(props.topic.topic_content);
   }, []);
+
+  useEffect(() => {
+    fetchNotes(props.topic.topic_content);
+  }, [props.topic.topic_content]);
 
   const updateTopicContent = async (newNoteId: number) => {
     const res = await updateTopic({
@@ -40,8 +44,9 @@ export const AllNotes = (props: any) => {
     if (res.status === 200) {
       const body = await res.json();
       const topicUpdate = await updateTopicContent(body.id);
+      const topicJson = await topicUpdate.json();
       if (topicUpdate.status === 200) {
-        fetchNotes();
+        props.setTopic(topicJson);
         toggleModal();
         setNoteTitle("");
       }
@@ -56,8 +61,8 @@ export const AllNotes = (props: any) => {
 
   return (
     <div className="topic-section-container">
-      {renderNotes()}
       <NewNote onClick={toggleModal} />
+      {renderNotes()}
       <Modal
         title="New Note"
         display={newNoteModalIsOpen}

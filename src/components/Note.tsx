@@ -1,16 +1,9 @@
-import React, { useState } from "react";
-import logo from "../logo.png";
+import React from "react";
 
 export const Note = (props: any) => {
   return (
-    <div className="card">
-      <img src={logo} alt="Avatar" />
-      <div className="container">
-        <h4>
-          <b>John Doe</b>
-        </h4>
-        <p>Architect & Engineer</p>
-      </div>
+    <div className="note-card" onClick={props.onClick}>
+      <h4>{props.title}</h4>
     </div>
   );
 };

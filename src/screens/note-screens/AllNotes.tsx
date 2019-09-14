@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent } from "react";
-import { NewNote } from "../../components";
+import React, { useState, ChangeEvent, useEffect } from "react";
+import { NewNote, Note } from "../../components";
 import { Modal } from "../../components/Modal";
 import { createNote, getNotes, updateTopic } from "../../client-lib";
 import { AppContext } from "../../contexts/AppContext";
@@ -7,14 +7,25 @@ import { AppContext } from "../../contexts/AppContext";
 export const AllNotes = (props: any) => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
   const [noteTitle, setNoteTitle] = useState("");
-
-  const appContext = AppContext;
-
-  console.log(props);
+  const [notes, setNotes] = useState([]);
 
   const toggleModal = () => {
     setNewNoteModalOpen(!newNoteModalIsOpen);
   };
+
+  const fetchNotes = async () => {
+    try {
+      const res = await getNotes([]);
+      if (res.status === 200) {
+        const body = await res.json();
+        setNotes(body);
+      }
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
 
   const updateTopicContent = async (newNoteId: number) => {
     const res = await updateTopic({
@@ -30,6 +41,7 @@ export const AllNotes = (props: any) => {
       const body = await res.json();
       const topicUpdate = await updateTopicContent(body.id);
       if (topicUpdate.status === 200) {
+        fetchNotes();
         toggleModal();
         setNoteTitle("");
       }
@@ -40,8 +52,11 @@ export const AllNotes = (props: any) => {
     setNoteTitle(e.currentTarget.value);
   };
 
+  const renderNotes = () => notes.map(note => <Note title={note.title} />);
+
   return (
     <div className="topic-section-container">
+      {renderNotes()}
       <NewNote onClick={toggleModal} />
       <Modal
         title="New Note"

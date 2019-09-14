@@ -23,26 +23,32 @@ export enum TOPIC_SCREENS {
 
 type TopicRouterType = {
   screen: TOPIC_SCREENS;
-  data: Topic;
-  navigate: (screen: TOPIC_SCREENS, data: any) => void;
+  topic: Topic;
+  navigate: (screen: TOPIC_SCREENS, topic: any) => void;
+  setTopic: (topic: any) => void;
 };
 
-export const TopicRouter = ({ screen, data, navigate }: TopicRouterType) => {
+export const TopicRouter = ({
+  screen,
+  topic,
+  navigate,
+  setTopic
+}: TopicRouterType) => {
   switch (screen) {
     case TOPIC_SCREENS.MY_NOTES:
-      return <MyNotes data={data} />;
+      return <MyNotes topic={topic} setTopic={setTopic} />;
     case TOPIC_SCREENS.VIDEOS:
-      return <Videos data={data} />;
+      return <Videos topic={topic} />;
     case TOPIC_SCREENS.ARTICLE_SNIPPETS:
-      return <ArticleSnippets data={data} />;
+      return <ArticleSnippets topic={topic} />;
     case TOPIC_SCREENS.CODE:
-      return <Code data={data} />;
+      return <Code topic={topic} />;
     case TOPIC_SCREENS.IMAGES:
-      return <Images data={data} />;
+      return <Images topic={topic} />;
     case TOPIC_SCREENS.DOCUMENTS:
-      return <Documents data={data} />;
+      return <Documents topic={topic} />;
     case TOPIC_SCREENS.LOADING:
-      return <Loading data={data} />;
+      return <Loading topic={topic} />;
     default:
       return <div>Howya</div>;
   }

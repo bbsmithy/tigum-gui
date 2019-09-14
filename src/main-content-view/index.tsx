@@ -6,13 +6,14 @@ export const MainContent = (props: any) => {
   const renderTopicViewer = () => (
     <>
       <TopicNavigationBar
-        title={props.data.title}
+        title={props.topic.title}
         navigate={props.navigate}
-        data={props.data}
+        topic={props.topic}
       />
       <TopicRouter
         screen={props.screen}
-        data={props.data}
+        topic={props.topic}
+        setTopic={props.setTopic}
         navigate={props.navigate}
       />
     </>
@@ -24,7 +25,7 @@ export const MainContent = (props: any) => {
 
   return (
     <div id="main-content">
-      {props.data ? renderTopicViewer() : renderLoading()}
+      {props.topic ? renderTopicViewer() : renderLoading()}
     </div>
   );
 };

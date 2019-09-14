@@ -4,37 +4,37 @@ import "./styles.css";
 
 interface TopicNavigationBarProps {
   title: string;
-  data: any;
-  navigate: (screen: TOPIC_SCREENS, data: any) => void;
+  topic: any;
+  navigate: (screen: TOPIC_SCREENS, topic: any) => void;
 }
 
 export const TopicNavigationBar = ({
   title,
-  data,
+  topic,
   navigate
 }: TopicNavigationBarProps) => {
   const navigateToMyNotes = () => {
-    navigate(TOPIC_SCREENS.MY_NOTES, data);
+    navigate(TOPIC_SCREENS.MY_NOTES, topic);
   };
 
   const navigateToVideos = () => {
-    navigate(TOPIC_SCREENS.VIDEOS, data);
+    navigate(TOPIC_SCREENS.VIDEOS, topic);
   };
 
   const navigateToArticleSnippets = () => {
-    navigate(TOPIC_SCREENS.ARTICLE_SNIPPETS, data);
+    navigate(TOPIC_SCREENS.ARTICLE_SNIPPETS, topic);
   };
 
   const navigateToCode = () => {
-    navigate(TOPIC_SCREENS.CODE, data);
+    navigate(TOPIC_SCREENS.CODE, topic);
   };
 
   const navigateToImages = () => {
-    navigate(TOPIC_SCREENS.IMAGES, data);
+    navigate(TOPIC_SCREENS.IMAGES, topic);
   };
 
   const navigateToDocuments = () => {
-    navigate(TOPIC_SCREENS.DOCUMENTS, data);
+    navigate(TOPIC_SCREENS.DOCUMENTS, topic);
   };
 
   return (

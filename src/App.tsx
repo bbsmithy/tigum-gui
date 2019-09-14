@@ -11,7 +11,7 @@ import { createTopic } from "./client-lib/";
 
 const App: React.FC = () => {
   const [screen, setScreen] = useState(TOPIC_SCREENS.LOADING);
-  const [data, setData] = useState();
+  const [topic, setTopic] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [topics, setTopics] = useState<TopicsState>({
     loading: true,
@@ -19,9 +19,9 @@ const App: React.FC = () => {
   });
   const [topicTitle, setTopicTitle] = useState("");
 
-  const navigate = (screen: TOPIC_SCREENS, data: any) => {
+  const navigate = (screen: TOPIC_SCREENS, topic: any) => {
     setScreen(screen);
-    setData(data);
+    setTopic(topic);
   };
 
   const toggleModal = () => {
@@ -64,7 +64,12 @@ const App: React.FC = () => {
           topics={topics}
           toggleModal={toggleModal}
         />
-        <MainContent screen={screen} data={data} navigate={navigate} />
+        <MainContent
+          screen={screen}
+          topic={topic}
+          navigate={navigate}
+          setTopic={setTopic}
+        />
         <Modal
           display={modalOpen}
           toggleModal={toggleModal}

@@ -1,5 +1,6 @@
 import React from "react";
 import { NOTE_SCREENS } from "../../routers/NoteRouter";
+import { TextEditor } from "../../components/TextEditor";
 
 export const ViewNote = (props: any) => {
   const onClickNote = (note: any) => {
@@ -12,7 +13,8 @@ export const ViewNote = (props: any) => {
         <i className="fa fa-arrow-left" />
       </span>
 
-      <h3 className="note-title">{props.note.title}</h3>
+      <h4 className="note-title">{props.note.title}</h4>
+      <TextEditor />
     </div>
   );
 };

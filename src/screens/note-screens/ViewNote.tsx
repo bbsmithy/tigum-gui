@@ -8,13 +8,15 @@ export const ViewNote = (props: any) => {
   };
 
   return (
-    <div className="topic-section-container">
-      <span className="back-btn-note" onClick={onClickNote}>
-        <i className="fa fa-arrow-left" />
-      </span>
+    <div className="view-note-container">
+      <div>
+        <span className="back-btn-note" onClick={onClickNote}>
+          <i className="fa fa-arrow-left" />
+        </span>
 
-      <h4 className="note-title">{props.note.title}</h4>
-      <TextEditor />
+        <h2 className="note-title">{props.note.title}</h2>
+        <TextEditor />
+      </div>
     </div>
   );
 };

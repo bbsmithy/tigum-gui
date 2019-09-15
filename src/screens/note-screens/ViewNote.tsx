@@ -1,6 +1,6 @@
 import React from "react";
 import { NOTE_SCREENS } from "../../routers/NoteRouter";
-import { TextEditor } from "../../components/TextEditor";
+import TextEditor from "../../components/Editor/TextEditor";
 
 export const ViewNote = (props: any) => {
   const onClickNote = (note: any) => {

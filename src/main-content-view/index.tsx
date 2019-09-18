@@ -3,21 +3,27 @@ import { TopicNavigationBar } from "../topic-navigation-bar";
 import { TopicRouter } from "../routers/TopicRouter";
 
 export const MainContent = (props: any) => {
-  const renderTopicViewer = () => (
-    <>
-      <TopicNavigationBar
-        title={props.topic.title}
-        navigate={props.navigate}
-        topic={props.topic}
-      />
-      <TopicRouter
-        screen={props.screen}
-        topic={props.topic}
-        setTopic={props.setTopic}
-        navigate={props.navigate}
-      />
-    </>
-  );
+  const renderTopicViewer = () => {
+    if (props.topic) {
+      return (
+        <>
+          <TopicNavigationBar
+            title={props.topic.title}
+            navigate={props.navigate}
+            topic={props.topic}
+          />
+          <TopicRouter
+            screen={props.screen}
+            topic={props.topic}
+            setTopic={props.setTopic}
+            navigate={props.navigate}
+          />
+        </>
+      );
+    } else {
+      return <h3>No topics</h3>;
+    }
+  };
 
   const renderLoading = () => {
     return <h3>Loading</h3>;
@@ -25,7 +31,8 @@ export const MainContent = (props: any) => {
 
   return (
     <div id="main-content">
-      {props.topic ? renderTopicViewer() : renderLoading()}
+      {console.log(props.loading)}
+      {props.loading ? renderLoading() : renderTopicViewer()}
     </div>
   );
 };

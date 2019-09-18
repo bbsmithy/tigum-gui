@@ -82,3 +82,23 @@ export const getNotes = async (note_ids: Array<number>) => {
     console.log(e);
   }
 };
+
+export const createResource = async (
+  content_type: String,
+  content: String,
+  generated_by: String
+) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/resources/create-resource`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ content_type, content, generated_by })
+    });
+    return await res;
+  } catch (e) {
+    console.log(e);
+  }
+};

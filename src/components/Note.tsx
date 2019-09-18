@@ -6,7 +6,7 @@ export const Note = (props: any) => {
   };
 
   return (
-    <div className="note-card" onClick={navigateToNote}>
+    <div className="card" onClick={navigateToNote}>
       <h4>{props.note.title}</h4>
     </div>
   );

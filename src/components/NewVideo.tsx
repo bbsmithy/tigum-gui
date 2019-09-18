@@ -1,10 +1,10 @@
 import React from "react";
 
-export const NewNote = (props: any) => {
+export const NewVideo = (props: any) => {
   return (
     <div className="card" onClick={props.onClick}>
       <i className="fas fa-plus"></i>
-      <h4 className="new-text">New Note</h4>
+      <h4 className="new-text">New Video</h4>
     </div>
   );
 };

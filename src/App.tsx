@@ -67,6 +67,7 @@ const App: React.FC = () => {
         <MainContent
           screen={screen}
           topic={topic}
+          loading={topics.loading}
           navigate={navigate}
           setTopic={setTopic}
         />

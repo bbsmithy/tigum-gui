@@ -21,7 +21,8 @@ export const getTopics = async (topicIds: Array<number>) => {
 
 export const createTopic = async (
   title: String,
-  topic_content: Array<number>
+  notes: Array<number>,
+  resources: Array<number>
 ) => {
   try {
     const res = await fetch(`${BASE_API_URL}/topics/create-topic`, {
@@ -30,7 +31,7 @@ export const createTopic = async (
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
-      body: JSON.stringify({ title, topic_content })
+      body: JSON.stringify({ title, notes, resources })
     });
     return await res;
   } catch (e) {}
@@ -96,6 +97,22 @@ export const createResource = async (
         "X-User-ID": "test-user-id"
       },
       body: JSON.stringify({ content_type, content, generated_by })
+    });
+    return await res;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const getResources = async (ids: Array<number>) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/resources/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ids })
     });
     return await res;
   } catch (e) {

@@ -24,17 +24,17 @@ export const AllNotes = (props: any) => {
   };
 
   useEffect(() => {
-    fetchNotes(props.topic.topic_content);
+    fetchNotes(props.topic.notes);
   }, []);
 
   useEffect(() => {
-    fetchNotes(props.topic.topic_content);
-  }, [props.topic.topic_content]);
+    fetchNotes(props.topic.notes);
+  }, [props.topic.notes]);
 
   const updateTopicContent = async (newNoteId: number) => {
     const res = await updateTopic({
       ...props.topic,
-      topic_content: [...props.topic.topic_content, newNoteId]
+      notes: [...props.topic.notes, newNoteId]
     });
     return await res;
   };

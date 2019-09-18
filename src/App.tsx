@@ -41,7 +41,7 @@ const App: React.FC = () => {
 
   const onClickCreateTopic = async () => {
     try {
-      const res = await createTopic(topicTitle, []);
+      const res = await createTopic(topicTitle, [], []);
       if (res.status === 200) {
         fetchTopics();
         toggleModal();

@@ -38,7 +38,7 @@ export const TopicRouter = ({
     case TOPIC_SCREENS.MY_NOTES:
       return <MyNotes topic={topic} setTopic={setTopic} />;
     case TOPIC_SCREENS.VIDEOS:
-      return <Videos topic={topic} />;
+      return <Videos topic={topic} setTopic={setTopic} />;
     case TOPIC_SCREENS.ARTICLE_SNIPPETS:
       return <ArticleSnippets topic={topic} />;
     case TOPIC_SCREENS.CODE:

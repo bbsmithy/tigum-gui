@@ -87,7 +87,8 @@ export const getNotes = async (note_ids: Array<number>) => {
 export const createResource = async (
   content_type: String,
   content: String,
-  generated_by: String
+  generated_by: String,
+  title: String
 ) => {
   try {
     const res = await fetch(`${BASE_API_URL}/resources/create-resource`, {
@@ -96,7 +97,7 @@ export const createResource = async (
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
-      body: JSON.stringify({ content_type, content, generated_by })
+      body: JSON.stringify({ content_type, content, generated_by, title })
     });
     return await res;
   } catch (e) {

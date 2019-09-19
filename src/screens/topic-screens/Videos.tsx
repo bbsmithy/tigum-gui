@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NewVideo } from "../../components/NewVideo";
-import { Modal } from "../../components/Modal";
+import { Modal, VideoCard } from "../../components/";
 import { createResource, updateTopic, getResources } from "../../client-lib";
 import { getEmbedFromUrl } from "../../util/resource_to_html";
 
@@ -43,7 +43,7 @@ export const Videos = (props: any) => {
   };
   const createVideoResource = async () => {
     const videoEmbed = getEmbedFromUrl(videoUrl);
-    const res = await createResource("VIDEO", videoEmbed, "USER");
+    const res = await createResource("VIDEO", videoEmbed, "USER", videoTitle);
     if (res.status === 200) {
       const body = await res.json();
       const update = await updateTopicContent(body.id);
@@ -64,15 +64,17 @@ export const Videos = (props: any) => {
   };
 
   const renderVideoResources = () => {
+    console.log(videoResources);
     return videoResources.resources.map(video => {
-      return <div dangerouslySetInnerHTML={{ __html: video.content }}></div>;
+      console.log(video);
+      return <VideoCard html={video.content} title={video.title} />;
     });
   };
 
   return (
-    <div className="topic-section-container">
+    <div className="video-page-container">
       <NewVideo onClick={toggleModal} />
-      {!videoResources.loading && renderVideoResources()}
+      <div>{!videoResources.loading && renderVideoResources()}</div>
       <Modal
         title="New Video"
         display={displayVideoModal}

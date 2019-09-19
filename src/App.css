@@ -116,7 +116,6 @@ body {
 
 #main-content {
   position: absolute;
-  overflow-y: auto;
   left: 20%;
   width: 80%;
   font-family: Arial, Helvetica, sans-serif;
@@ -285,20 +284,13 @@ button:focus {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
-/* Add some padding inside the card container */
-.new-note-card-container {
-  padding: 10px 20px 10px 20px;
-}
-
 .card {
-  text-align: center;
   display: inline-block;
-  width: 200px;
   margin: 10px;
   /* Add shadows to create the "card" effect */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 3px 1px -2px rgba(0, 0, 0, 0.12),
+    0 2px 2px 0 rgba(0, 0, 0, 0.14);
   transition: 0.3s;
-  padding: 10px 20px 10px 20px;
 }
 
 .new-text {
@@ -324,4 +316,62 @@ button:focus {
   padding: 35px;
   margin: 30px auto;
   width: 70%;
+}
+
+.video-page-container {
+  margin: auto;
+  width: 60%;
+  height: 100%;
+  padding-top: 60px;
+}
+
+.video-card {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  padding: 10px 10px 5px 10px;
+  margin: 10px;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.video-card-iframe-container {
+  height: 450px;
+}
+
+/* On mouse-over, add a deeper shadow */
+.new-button:hover {
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.new-button {
+  box-shadow: 1px 2px 4px 1px rgba(0, 0, 0, 0.2);
+  padding: 2px;
+  text-align: center;
+  transition: 0.3s;
+  border-radius: 50px;
+  background-color: white;
+  width: 150px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+}
+
+.note-sub-title {
+  color: gray;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 5px;
+}
+
+.note-card-title {
+  font-size: 18px;
+  line-height: 0px;
+}
+
+.new-note-card-container {
+  padding: 10px 20px 10px 20px;
+}
+
+.note-card-container {
+  width: 250px;
 }

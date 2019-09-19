@@ -12,12 +12,14 @@ export const MainContent = (props: any) => {
             navigate={props.navigate}
             topic={props.topic}
           />
-          <TopicRouter
-            screen={props.screen}
-            topic={props.topic}
-            setTopic={props.setTopic}
-            navigate={props.navigate}
-          />
+          <div className="topic-route-container">
+            <TopicRouter
+              screen={props.screen}
+              topic={props.topic}
+              setTopic={props.setTopic}
+              navigate={props.navigate}
+            />
+          </div>
         </>
       );
     } else {

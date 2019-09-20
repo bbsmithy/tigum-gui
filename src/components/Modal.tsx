@@ -25,7 +25,7 @@ export const Modal = (props: ModalProps) => {
         <div className="modal-body">{props.children}</div>
         <div className="modal-footer">
           <button
-            className="btn"
+            className="f6 link dim br2 ph3 pv2 mb2 dib white bg-blue"
             id="create-topic-btn"
             onClick={props.onClickAction}
           >

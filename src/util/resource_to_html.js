@@ -3,11 +3,10 @@ export const getEmbedFromUrl = url => {
   const match = url.match(regExp);
 
   if (match && match[2].length == 11) {
-    const url = `<iframe width='100%' height='100%' src='https://www.youtube.com/embed/${
+    const embedUrl = `<iframe width='100%' height='100%' src='https://www.youtube.com/embed/${
       match[2]
     }' frameborder="0" allowfullscreen></iframe>`;
-    return url;
-  } else {
-    return "error";
+    const thumbnailUrl = `https://img.youtube.com/vi/${match[2]}/0.jpg`;
+    return { embedUrl, thumbnailUrl };
   }
 };

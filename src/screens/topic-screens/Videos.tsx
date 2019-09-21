@@ -42,15 +42,24 @@ export const Videos = (props: any) => {
     return await res;
   };
   const createVideoResource = async () => {
-    const videoEmbed = getEmbedFromUrl(videoUrl);
-    const res = await createResource("VIDEO", videoEmbed, "USER", videoTitle);
-    if (res.status === 200) {
-      const body = await res.json();
-      const update = await updateTopicContent(body.id);
-      if (update.status === 200) {
-        const topicJson = await update.json();
-        props.setTopic(topicJson);
-        toggleModal();
+    const { embedUrl, thumbnailUrl } = getEmbedFromUrl(videoUrl);
+    if (embedUrl && thumbnailUrl) {
+      console.log(embedUrl, thumbnailUrl);
+      const res = await createResource(
+        "VIDEO",
+        embedUrl,
+        "USER",
+        videoTitle,
+        thumbnailUrl
+      );
+      if (res.status === 200) {
+        const body = await res.json();
+        const update = await updateTopicContent(body.id);
+        if (update.status === 200) {
+          const topicJson = await update.json();
+          props.setTopic(topicJson);
+          toggleModal();
+        }
       }
     }
   };
@@ -64,17 +73,35 @@ export const Videos = (props: any) => {
   };
 
   const renderVideoResources = () => {
-    console.log(videoResources);
     return videoResources.resources.map(video => {
-      console.log(video);
-      return <VideoCard html={video.content} title={video.title} />;
+      return (
+        <VideoCard
+          html={video.content}
+          title={video.title}
+          thumbnail_img={video.thumbnail_img}
+        />
+      );
     });
+  };
+
+  const renderVideoPlayer = () => {
+    return (
+      <div>
+        <div
+          dangerouslySetInnerHTML={{ __html: props.html }}
+          className="video-card-iframe-container"
+        ></div>
+        <h3>{props.title}</h3>
+      </div>
+    );
   };
 
   return (
     <div className="video-page-container">
       <NewVideo onClick={toggleModal} />
-      <div>{!videoResources.loading && renderVideoResources()}</div>
+      <div className="center w-100 ph3">
+        {!videoResources.loading && renderVideoResources()}
+      </div>
       <Modal
         title="New Video"
         display={displayVideoModal}

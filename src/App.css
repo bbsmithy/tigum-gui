@@ -321,8 +321,6 @@ button:focus {
 }
 
 .video-page-container {
-  margin: auto;
-  width: 60%;
   height: 100%;
   padding-top: 60px;
 }
@@ -362,12 +360,10 @@ button:focus {
   color: gray;
   font-size: 12px;
   font-style: italic;
-  line-height: 5px;
 }
 
 .note-card-title {
   font-size: 18px;
-  line-height: 0px;
 }
 
 .new-note-card-container {

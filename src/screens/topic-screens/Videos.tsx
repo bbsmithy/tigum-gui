@@ -12,6 +12,7 @@ export const Videos = (props: any) => {
     resources: [],
     loading: true
   });
+  const [selectedVideo, setSelectedVideo] = useState();
 
   const fetchResources = async (ids: Array<number>) => {
     const res = await getResources(ids);
@@ -72,6 +73,10 @@ export const Videos = (props: any) => {
     setVideoUrl(e.currentTarget.value);
   };
 
+  const onClickVideoCard = (video: any) => {
+    setSelectedVideo(video);
+  };
+
   const renderVideoResources = () => {
     return videoResources.resources.map(video => {
       return (
@@ -79,6 +84,7 @@ export const Videos = (props: any) => {
           html={video.content}
           title={video.title}
           thumbnail_img={video.thumbnail_img}
+          onClick={onClickVideoCard}
         />
       );
     });
@@ -86,12 +92,12 @@ export const Videos = (props: any) => {
 
   const renderVideoPlayer = () => {
     return (
-      <div>
+      <div className="center">
         <div
-          dangerouslySetInnerHTML={{ __html: props.html }}
+          dangerouslySetInnerHTML={{ __html: selectedVideo.html }}
           className="video-card-iframe-container"
         ></div>
-        <h3>{props.title}</h3>
+        <h3>{selectedVideo.title}</h3>
       </div>
     );
   };
@@ -100,7 +106,8 @@ export const Videos = (props: any) => {
     <div className="video-page-container">
       <NewVideo onClick={toggleModal} />
       <div className="center w-100 ph3">
-        {!videoResources.loading && renderVideoResources()}
+        {selectedVideo && renderVideoPlayer()}
+        {!videoResources.loading && !selectedVideo && renderVideoResources()}
       </div>
       <Modal
         title="New Video"

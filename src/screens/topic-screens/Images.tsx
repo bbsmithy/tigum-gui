@@ -3,8 +3,9 @@ import React from "react";
 export const Images = (props: any) => {
   return (
     <div className="topic-section-container">
-      <h1>Images</h1>
-      <p>{props.topic.content}</p>
+      <div className="no-resources-message">
+        <i className="fas fa-images" /> <span>No videos yet</span>
+      </div>
     </div>
   );
 };

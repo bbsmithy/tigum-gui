@@ -1,4 +1,5 @@
 import React from "react";
+import { truncated } from "../util/strings";
 
 type VideoCardProps = {
   html: string;
@@ -12,13 +13,7 @@ export const VideoCard = (props: VideoCardProps) => {
     props.onClick({ title: props.title, html: props.html });
   };
 
-  const turncatedTitle = () => {
-    if (props.title.length > 40) {
-      const shortTitle = props.title.slice(0, 40);
-      return `${shortTitle}...`;
-    }
-    return props.title;
-  };
+  const title = truncated(props.title, 40);
 
   return (
     <article
@@ -26,10 +21,10 @@ export const VideoCard = (props: VideoCardProps) => {
       onClick={onSelect}
     >
       <img src={props.thumbnail_img} className="db w-100 br2 br--top" />
-      <div className="pa2 ph3-ns pv3-ns h4">
-        <div className="dt w-100 mt1">
+      <div className="ph3-ns pv3-ns h3 ba b--black-10">
+        <div className="dt w-100">
           <div className="dtc">
-            <h2 className="f6 f4-ns mv0">{turncatedTitle()}</h2>
+            <h2 className="f6 f5-ns mv0">{title}</h2>
           </div>
         </div>
       </div>

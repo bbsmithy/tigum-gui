@@ -3,8 +3,9 @@ import React from "react";
 export const Code = (props: any) => {
   return (
     <div className="topic-section-container">
-      <h1>Code</h1>
-      <p>{props.topic.content}</p>
+      <div className="no-resources-message">
+        <i className="fas fa-code" /> <span>No code yet</span>
+      </div>
     </div>
   );
 };

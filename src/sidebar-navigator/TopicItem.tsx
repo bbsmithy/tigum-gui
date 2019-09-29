@@ -1,5 +1,6 @@
 import React from "react";
 import { getDate } from "../util/date";
+import { goto } from "../navigation";
 
 export type Topic = {
   title: string;
@@ -22,6 +23,7 @@ export const TopicItem = ({
   onSelectItem
 }: TopicItemProps) => {
   const onSelect = () => {
+    goto(`topic/${id}`);
     onSelectItem(id, topic);
   };
 

@@ -67,7 +67,7 @@ export const AllNotes = (props: any) => {
     } else {
       return (
         <div className="no-resources-message">
-          <i className="fab fa-youtube" /> <span>No notes yet</span>
+          <i className="fas fa-pen-square" /> <span>No notes yet</span>
         </div>
       );
     }

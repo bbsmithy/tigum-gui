@@ -71,7 +71,7 @@ body {
 
 #sidebar-header {
   border-bottom: 1px solid rgb(235, 236, 237);
-  padding: 14.5px;
+  padding: 13px;
 }
 
 #sidebar-search-mentors-container {
@@ -155,15 +155,6 @@ body {
 
 .topic-item-container-selected {
   border-right: 4px solid black;
-}
-
-#topic-screen-container {
-  margin-top: 60px;
-}
-
-.topic-section-container {
-  margin-top: 35px;
-  padding: 30px;
 }
 
 .modal {
@@ -315,14 +306,13 @@ button:focus {
 }
 
 .view-note-container {
-  padding: 35px;
-  margin: 30px auto;
+  padding: 10px;
+  margin: auto;
   width: 70%;
 }
 
 .video-page-container {
   height: 100%;
-  padding-top: 60px;
 }
 
 .video-card {

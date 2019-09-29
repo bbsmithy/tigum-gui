@@ -1,21 +1,11 @@
 #topic-navigation-bar {
   position: fixed;
   background-color: white;
-  width: 100%;
 }
 
 #topic-header {
   font-weight: 800;
-  display: inline-block;
-  margin-left: 2%;
-  width: 30%;
   font-size: 20px;
-}
-
-#topic-controls-container {
-  display: inline-block;
-  width: 60%;
-  align-content: flex-end;
 }
 
 .topic-nav-btn {

@@ -17,7 +17,7 @@ export const VideoCard = (props: VideoCardProps) => {
 
   return (
     <article
-      className="br2 ba dark-gray b--black-10 mv4 w-100 w-50-m w-20-l mw dib ma3"
+      className="br2 ba dark-gray b--black-10 mv3 w-100 w-50-m w-20-l mw dib ma3"
       onClick={onSelect}
     >
       <img src={props.thumbnail_img} className="db w-100 br2 br--top" />

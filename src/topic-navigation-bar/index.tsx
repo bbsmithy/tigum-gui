@@ -42,32 +42,52 @@ export const TopicNavigationBar = ({
   };
 
   return (
-    <nav id="topic-navigation-bar">
-      <p id="topic-header">{title}</p>
-      <div id="topic-controls-container">
-        <button className="btn topic-nav-btn" onClick={navigateToMyNotes}>
+    <nav className="dt w-100 border-box pa3 ph3-ns bb b--light-gray">
+      <h2 className="dtc v-mid w-25" id="topic-header" title="Home">
+        {title}
+      </h2>
+      <div className="dtc v-mid w-75 tr">
+        <button
+          className="btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns"
+          onClick={navigateToMyNotes}
+        >
           <i className="fas fa-pen-square" /> My Notes
         </button>
-        <button className="btn topic-nav-btn" onClick={navigateToVideos}>
+        <button
+          className="btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns"
+          onClick={navigateToVideos}
+        >
           <i className="fab fa-youtube" /> Videos
         </button>
         <button
-          className="btn topic-nav-btn"
+          className="btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns"
           onClick={navigateToArticleSnippets}
         >
           <i className="fas fa-newspaper" /> Article Snippets
         </button>
-        <button className="btn topic-nav-btn" onClick={navigateToCode}>
+        <button
+          className="btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns"
+          onClick={navigateToCode}
+        >
           <i className="fas fa-code" /> Code
         </button>
-        <button className="btn topic-nav-btn" onClick={navigateToImages}>
+        <button
+          className="btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns"
+          onClick={navigateToImages}
+        >
           <i className="fas fa-images" /> Images
         </button>
-        <button className="btn topic-nav-btn" onClick={navigateToDocuments}>
+        <button
+          className="btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns"
+          onClick={navigateToDocuments}
+        >
           <i className="fas fa-file-alt" /> Documents
         </button>
-        <button className="btn topic-nav-btn" onClick={navigateToExcercises}>
-          <i className="fas fa-bullseye" /> Exercises
+        <button
+          className="btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns"
+          onClick={navigateToExcercises}
+        >
+          <i className="fas fa-bullseye" /> Excercises
         </button>
       </div>
     </nav>

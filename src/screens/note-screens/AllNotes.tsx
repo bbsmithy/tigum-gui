@@ -61,8 +61,17 @@ export const AllNotes = (props: any) => {
     props.navigate(NOTE_SCREENS.VIEW_NOTE, note);
   };
 
-  const renderNotes = () =>
-    notes.map(note => <Note note={note} onClick={onClickNote} />);
+  const renderNotes = () => {
+    if (notes.length) {
+      return notes.map(note => <Note note={note} onClick={onClickNote} />);
+    } else {
+      return (
+        <div className="no-resources-message">
+          <i className="fab fa-youtube" /> <span>No notes yet</span>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="topic-section-container">

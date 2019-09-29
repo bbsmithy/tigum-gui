@@ -23,7 +23,7 @@ body {
   outline: none;
   border-radius: 2px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-
+  padding: 6px;
   background-color: white;
   color: black;
   font-size: 13px;
@@ -335,7 +335,7 @@ button:focus {
 }
 
 .video-card-iframe-container {
-  height: 450px;
+  height: 550px;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -372,4 +372,12 @@ button:focus {
 
 .note-card-container {
   width: 25%;
+}
+
+.no-resources-message {
+  font-size: 40px;
+  font-weight: 100;
+  color: gray;
+  margin-top: 200px;
+  text-align: center;
 }

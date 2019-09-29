@@ -78,26 +78,33 @@ export const Videos = (props: any) => {
   };
 
   const renderVideoResources = () => {
-    return videoResources.resources.map(video => {
-      return (
-        <VideoCard
-          html={video.content}
-          title={video.title}
-          thumbnail_img={video.thumbnail_img}
-          onClick={onClickVideoCard}
-        />
-      );
-    });
+    if (videoResources.resources.length) {
+      return videoResources.resources.map(video => {
+        return (
+          <VideoCard
+            html={video.content}
+            title={video.title}
+            thumbnail_img={video.thumbnail_img}
+            onClick={onClickVideoCard}
+          />
+        );
+      });
+    }
+    return (
+      <div className="no-resources-message">
+        <i className="fab fa-youtube" /> <span>No videos yet</span>
+      </div>
+    );
   };
 
   const renderVideoPlayer = () => {
     return (
-      <div className="center">
+      <div className="center w-70 h-60 video-player">
+        <h3>{selectedVideo.title}</h3>
         <div
           dangerouslySetInnerHTML={{ __html: selectedVideo.html }}
           className="video-card-iframe-container"
         ></div>
-        <h3>{selectedVideo.title}</h3>
       </div>
     );
   };

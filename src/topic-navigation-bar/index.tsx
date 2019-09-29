@@ -37,6 +37,10 @@ export const TopicNavigationBar = ({
     navigate(TOPIC_SCREENS.DOCUMENTS, topic);
   };
 
+  const navigateToExcercises = () => {
+    navigate(TOPIC_SCREENS.EXCERCISES, topic);
+  };
+
   return (
     <nav id="topic-navigation-bar">
       <p id="topic-header">{title}</p>
@@ -62,7 +66,7 @@ export const TopicNavigationBar = ({
         <button className="btn topic-nav-btn" onClick={navigateToDocuments}>
           <i className="fas fa-file-alt" /> Documents
         </button>
-        <button className="btn topic-nav-btn" onClick={navigateToDocuments}>
+        <button className="btn topic-nav-btn" onClick={navigateToExcercises}>
           <i className="fas fa-bullseye" /> Exercises
         </button>
       </div>

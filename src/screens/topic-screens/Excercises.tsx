@@ -1,10 +1,10 @@
 import React from "react";
 
-export const Documents = (props: any) => {
+export const Excercises = (props: any) => {
   return (
     <div className="topic-section-container">
       <div className="no-resources-message">
-        <i className="fas fa-file-alt" /> <span>No documents yet</span>
+        <i className="fas fa-bullseye" /> <span>No excercises yet</span>
       </div>
     </div>
   );

@@ -5,3 +5,4 @@ export { Images } from "./Images";
 export { Documents } from "./Documents";
 export { Loading } from "./Loading";
 export { MyNotes } from "./MyNotes";
+export { Excercises } from "./Excercises";

@@ -6,7 +6,8 @@ import {
   Code,
   Images,
   Documents,
-  Loading
+  Loading,
+  Excercises
 } from "../screens/topic-screens/";
 import { Topic } from "../sidebar-navigator/TopicItem";
 
@@ -17,6 +18,7 @@ export enum TOPIC_SCREENS {
   CODE,
   IMAGES,
   DOCUMENTS,
+  EXCERCISES,
   LOADING,
   NONE
 }
@@ -47,6 +49,8 @@ export const TopicRouter = ({
       return <Images topic={topic} />;
     case TOPIC_SCREENS.DOCUMENTS:
       return <Documents topic={topic} />;
+    case TOPIC_SCREENS.EXCERCISES:
+      return <Excercises />;
     case TOPIC_SCREENS.LOADING:
       return <Loading topic={topic} />;
     default:

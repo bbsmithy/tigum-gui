@@ -15,7 +15,7 @@ export const getTopics = async (topicIds: Array<number>) => {
     });
     return await res.json();
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 };
 
@@ -34,7 +34,9 @@ export const createTopic = async (
       body: JSON.stringify({ title, notes, resources })
     });
     return await res;
-  } catch (e) {}
+  } catch (e) {
+    throw e;
+  }
 };
 
 export const updateTopic = async (topic: any) => {
@@ -49,7 +51,9 @@ export const updateTopic = async (topic: any) => {
       body: JSON.stringify({ ...topic })
     });
     return await res;
-  } catch (e) {}
+  } catch (e) {
+    throw e;
+  }
 };
 
 export const createNote = async (title: String) => {
@@ -64,7 +68,22 @@ export const createNote = async (title: String) => {
     });
     return await res;
   } catch (e) {
-    console.log(e);
+    throw e;
+  }
+};
+
+export const deleteNote = async (note_id: number) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/notes/${note_id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      }
+    });
+    return await res;
+  } catch (e) {
+    throw e;
   }
 };
 
@@ -80,7 +99,7 @@ export const getNotes = async (note_ids: Array<number>) => {
     });
     return await res;
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 };
 
@@ -108,7 +127,7 @@ export const createResource = async (
     });
     return await res;
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 };
 
@@ -124,6 +143,6 @@ export const getResources = async (ids: Array<number>) => {
     });
     return await res;
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 };

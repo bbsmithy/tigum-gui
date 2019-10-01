@@ -1,5 +1,6 @@
 import React from "react";
 import { TOPIC_SCREENS } from "../routers/TopicRouter";
+import { OptionsButton, Option } from "../components/OptionsButton";
 import "./styles.css";
 
 interface TopicNavigationBarProps {
@@ -7,6 +8,10 @@ interface TopicNavigationBarProps {
   topic: any;
   navigate: (screen: TOPIC_SCREENS, topic: any) => void;
 }
+
+const topicMenuOptions: Array<Option> = [
+  { title: "Test", icon: "fa-trash", onClick: () => {} }
+];
 
 export const TopicNavigationBar = ({
   title,
@@ -42,10 +47,11 @@ export const TopicNavigationBar = ({
   };
 
   return (
-    <nav className="dt w-100 border-box pa3 ph3-ns bb b--light-gray">
-      <h2 className="dtc v-mid w-25" id="topic-header" title="Home">
-        {title}
-      </h2>
+    <nav className="dt w-100 border-box ph3-ns bb b--light-gray">
+      <div className="dtc w-25">
+        <h2 id="topic-header">{title}</h2>
+        <OptionsButton options={topicMenuOptions} />
+      </div>
       <div className="dtc v-mid w-75 tr">
         <button
           className="btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns"

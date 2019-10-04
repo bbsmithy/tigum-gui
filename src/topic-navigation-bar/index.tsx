@@ -47,7 +47,7 @@ export const TopicNavigationBar = ({
   };
 
   return (
-    <nav className="dt w-100 border-box ph3-ns bb b--light-gray">
+    <nav className="dt w-100 border-box ph3-ns bb b--light-gray pa1">
       <div className="dtc w-25">
         <h2 id="topic-header">{title}</h2>
         <OptionsButton options={topicMenuOptions} />

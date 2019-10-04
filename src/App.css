@@ -382,7 +382,7 @@ button:focus {
 }
 
 .options-list-item {
-  padding: 5px;
+  padding: 5px 10px 5px 10px;
   border-bottom: 1px gray;
 }
 
@@ -398,6 +398,8 @@ button:focus {
 .options-list-item span {
   font-size: 12px;
   font-weight: 600;
+
+  cursor: pointer;
 }
 
 .option-list-icon {

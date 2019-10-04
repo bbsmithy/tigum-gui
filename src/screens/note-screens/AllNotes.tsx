@@ -32,11 +32,10 @@ export const AllNotes = (props: any) => {
   }, [props.topic.notes]);
 
   const updateTopicContent = async (newNoteId: number) => {
-    const res = await updateTopic({
+    return await updateTopic({
       ...props.topic,
       notes: [...props.topic.notes, newNoteId]
     });
-    return await res;
   };
 
   const createNewNote = async () => {

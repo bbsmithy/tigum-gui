@@ -10,7 +10,7 @@ interface TopicNavigationBarProps {
 }
 
 const topicMenuOptions: Array<Option> = [
-  { title: "Test", icon: "fa-trash", onClick: () => {} }
+  { title: "Delete", icon: "fas fa-trash", onClick: () => {} }
 ];
 
 export const TopicNavigationBar = ({

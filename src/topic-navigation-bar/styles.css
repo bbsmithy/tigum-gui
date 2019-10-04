@@ -6,6 +6,7 @@
 #topic-header {
   font-weight: 800;
   font-size: 20px;
+  display: inline-block;
 }
 
 .topic-nav-btn {

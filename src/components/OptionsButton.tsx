@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export type Option = {
   title: string;
@@ -8,8 +8,6 @@ export type Option = {
 
 type OptionsListProps = {
   options: Array<Option>;
-  positionX: number;
-  positionY: number;
 };
 
 type OptionsButtonProps = {
@@ -18,43 +16,36 @@ type OptionsButtonProps = {
 
 const OptionsList = (props: OptionsListProps) => {
   return (
-    <div
-      style={{
-        position: "absolute"
-      }}
-    >
+    <div className="options-list-container">
       {props.options.map(option => {
-        return <div>{option.title}</div>;
+        return (
+          <div className="options-list-item">
+            <i className={option.icon} />
+            <span>{option.title}</span>
+          </div>
+        );
       })}
     </div>
   );
 };
 
 export const OptionsButton = (props: OptionsButtonProps) => {
-  const [showOptions, setShowOptions] = useState({
-    show: false,
-    positionX: 0,
-    positionY: 0
-  });
+  const [showOptions, setShowOptions] = useState(false);
 
   const onClickMenu = (e: any) => {
-    setShowOptions({
-      show: true,
-      positionX: e.clientX,
-      positionY: e.clientY
+    e.stopPropagation();
+    window.addEventListener("click", () => {
+      setShowOptions(false);
     });
+    setShowOptions(true);
   };
 
   return (
-    <div onClick={onClickMenu}>
-      <i className="fas fa-ellipsis-v" />
-      {showOptions.show && (
-        <OptionsList
-          options={props.options}
-          positionX={showOptions.positionX}
-          positionY={showOptions.positionY}
-        />
-      )}
+    <div onClick={onClickMenu} className="dib ph3">
+      <div className="pa1 tc br-100 options-btn">
+        <i className="fas fa-ellipsis-v" />
+      </div>
+      {showOptions && <OptionsList options={props.options} />}
     </div>
   );
 };

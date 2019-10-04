@@ -371,3 +371,30 @@ button:focus {
   margin-top: 200px;
   text-align: center;
 }
+
+.options-list-container {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  position: absolute;
+  background-color: white;
+  border-radius: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.options-list-item {
+  padding: 5px;
+  border-bottom: 1px gray;
+}
+
+.options-list-item:hover {
+  background-color: #efefef;
+}
+
+.options-btn-selected {
+  background-color: #efefef;
+  width: 27px;
+}
+
+.options-list-item span {
+  font-size: 12px;
+}

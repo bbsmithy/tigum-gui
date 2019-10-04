@@ -397,4 +397,10 @@ button:focus {
 
 .options-list-item span {
   font-size: 12px;
+  font-weight: 600;
+}
+
+.option-list-icon {
+  font-size: 12px;
+  margin-right: 5px;
 }

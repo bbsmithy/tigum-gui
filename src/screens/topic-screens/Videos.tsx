@@ -85,6 +85,7 @@ export const Videos = (props: any) => {
             html={video.content}
             title={video.title}
             thumbnail_img={video.thumbnail_img}
+            resource_id={video.resource_id}
             onClick={onClickVideoCard}
           />
         );

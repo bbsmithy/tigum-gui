@@ -19,7 +19,7 @@ const OptionsList = (props: OptionsListProps) => {
     <div className="options-list-container">
       {props.options.map(option => {
         return (
-          <div className="options-list-item">
+          <div className="options-list-item" onClick={option.onClick}>
             <i className={`${option.icon} option-list-icon`} />
             <span>{option.title}</span>
           </div>

@@ -131,6 +131,22 @@ export const createResource = async (
   }
 };
 
+export const deleteResource = async (resource_id: number) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/resources/${resource_id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      }
+    });
+    console.log(res);
+    return res;
+  } catch (e) {
+    throw e;
+  }
+};
+
 export const getResources = async (ids: Array<number>) => {
   try {
     const res = await fetch(`${BASE_API_URL}/resources/`, {

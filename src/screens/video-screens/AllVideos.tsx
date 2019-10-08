@@ -3,6 +3,7 @@ import { NewVideo } from "../../components/NewVideo";
 import { Modal, VideoCard } from "../../components/";
 import { createResource, updateTopic, getResources } from "../../client-lib";
 import { getEmbedFromUrl } from "../../util/resource_to_html";
+import { VIDEO_SCREENS } from "../../routers/VideoRouter";
 
 export const AllVideos = (props: any) => {
   const [displayVideoModal, setVideoModal] = useState(false);
@@ -73,7 +74,7 @@ export const AllVideos = (props: any) => {
   };
 
   const onClickVideoCard = (video: any) => {
-    setSelectedVideo(video);
+    props.navigate(VIDEO_SCREENS.VIDEO_PLAYER, video);
   };
 
   const renderVideoResources = () => {

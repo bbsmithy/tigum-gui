@@ -4,6 +4,7 @@ import { Modal, VideoCard } from "../../components/";
 import { createResource, updateTopic, getResources } from "../../client-lib";
 import { getEmbedFromUrl } from "../../util/resource_to_html";
 import { VIDEO_SCREENS } from "../../routers/VideoRouter";
+import { number } from "prop-types";
 
 export const AllVideos = (props: any) => {
   const [displayVideoModal, setVideoModal] = useState(false);
@@ -13,20 +14,14 @@ export const AllVideos = (props: any) => {
     resources: [],
     loading: true
   });
-  const [selectedVideo, setSelectedVideo] = useState();
 
   const fetchResources = async (ids: Array<number>) => {
     const res = await getResources(ids);
     if (res.status === 200) {
       const body = await res.json();
-      console.log(body);
       setVideoResources({ resources: body.reverse(), loading: false });
     }
   };
-
-  useEffect(() => {
-    fetchResources(props.topic.resources);
-  }, []);
 
   useEffect(() => {
     fetchResources(props.topic.resources);
@@ -77,16 +72,24 @@ export const AllVideos = (props: any) => {
     props.navigate(VIDEO_SCREENS.VIDEO_PLAYER, video);
   };
 
+  const onDeleteVideoCard = (index: number) => {
+    let refreshedVideoResources = [...videoResources.resources];
+    delete refreshedVideoResources[index];
+    setVideoResources({ resources: refreshedVideoResources, loading: false });
+  };
+
   const renderVideoResources = () => {
     if (videoResources.resources.length) {
-      return videoResources.resources.map(video => {
+      return videoResources.resources.map((video, index) => {
         return (
           <VideoCard
             html={video.content}
             title={video.title}
             thumbnail_img={video.thumbnail_img}
             resource_id={video.resource_id}
+            index={index}
             onClick={onClickVideoCard}
+            onDelete={onDeleteVideoCard}
           />
         );
       });
@@ -102,7 +105,7 @@ export const AllVideos = (props: any) => {
     <div className="video-page-container">
       <NewVideo onClick={toggleModal} />
       <div className="center w-100 ph3">
-        {!videoResources.loading && !selectedVideo && renderVideoResources()}
+        {!videoResources.loading && renderVideoResources()}
       </div>
       <Modal
         title="New Video"

@@ -8,7 +8,9 @@ type VideoCardProps = {
   title: string;
   thumbnail_img: string;
   resource_id: number;
+  index: number;
   onClick: (video: any) => void;
+  onDelete: (index: number) => void;
 };
 
 export const VideoCard = (props: VideoCardProps) => {
@@ -16,11 +18,20 @@ export const VideoCard = (props: VideoCardProps) => {
     props.onClick({ title: props.title, html: props.html });
   };
 
+  const deleteVideo = async () => {
+    try {
+      await deleteResource(props.resource_id);
+      props.onDelete(props.index);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const videoCardOptions = [
     {
       title: "Delete",
       icon: "fas fa-trash",
-      onClick: () => deleteResource(props.resource_id)
+      onClick: deleteVideo
     }
   ];
 

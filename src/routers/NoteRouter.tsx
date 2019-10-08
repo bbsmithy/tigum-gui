@@ -12,7 +12,7 @@ type NoteRouterType = {
   topic: Topic;
   note: any;
   setTopic: (topic: any) => void;
-  navigate: (screen: NOTE_SCREENS, note: any) => void;
+  navigate: (screen: NOTE_SCREENS, note: {}) => void;
 };
 
 export const NoteRouter = ({
@@ -26,7 +26,7 @@ export const NoteRouter = ({
     case NOTE_SCREENS.ALL_NOTES:
       return <AllNotes topic={topic} setTopic={setTopic} navigate={navigate} />;
     case NOTE_SCREENS.VIEW_NOTE:
-      return <ViewNote navigate={navigate} topic={topic} note={note} />;
+      return <ViewNote navigate={navigate} note={note} />;
     default:
       return <div>Howya</div>;
   }

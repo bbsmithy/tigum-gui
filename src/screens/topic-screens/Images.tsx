@@ -4,7 +4,7 @@ export const Images = (props: any) => {
   return (
     <div className="topic-section-container">
       <div className="no-resources-message">
-        <i className="fas fa-images" /> <span>No videos yet</span>
+        <i className="fas fa-images" /> <span>No images yet</span>
       </div>
     </div>
   );

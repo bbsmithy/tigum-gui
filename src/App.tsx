@@ -4,10 +4,10 @@ import { SideBar } from "./sidebar-navigator";
 import { MainContent } from "./main-content-view";
 import { Modal } from "./components/Modal";
 import { TOPIC_SCREENS } from "./routers/TopicRouter";
-import { getTopics } from "./client-lib/";
+import { getTopics } from "./client-lib/api";
 import { TopicsState } from "./types/";
 import AppContextProvider from "./contexts/AppContext";
-import { createTopic } from "./client-lib/";
+import { createTopic } from "./client-lib/api";
 
 const App: React.FC = () => {
   const [screen, setScreen] = useState(TOPIC_SCREENS.LOADING);

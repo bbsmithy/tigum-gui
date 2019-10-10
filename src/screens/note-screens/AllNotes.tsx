@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { NewNote, Note } from "../../components";
 import { Modal } from "../../components/Modal";
-import { createNote, getNotes, updateTopic } from "../../client-lib";
+import { createNote, getNotes, updateTopic } from "../../client-lib/api";
 import { NOTE_SCREENS } from "../../routers/NoteRouter";
 
 export const AllNotes = (props: any) => {

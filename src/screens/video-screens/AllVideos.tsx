@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { NewVideo } from "../../components/NewVideo";
 import { Modal, VideoCard } from "../../components/";
-import { createResource, updateTopic, getResources } from "../../client-lib";
+import {
+  createResource,
+  updateTopic,
+  getResources
+} from "../../client-lib/api";
 import { getEmbedFromUrl } from "../../util/resource_to_html";
 import { VIDEO_SCREENS } from "../../routers/VideoRouter";
 import { number } from "prop-types";

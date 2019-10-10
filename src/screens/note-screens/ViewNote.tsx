@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NOTE_SCREENS } from "../../routers/NoteRouter";
-import { deleteNote } from "../../client-lib";
+import { deleteNote } from "../../client-lib/api";
+import { getBuckets } from "../../client-lib/S3";
 import TextEditor from "../../components/Editor/TextEditor";
 
 export const ViewNote = (props: any) => {
+  useEffect(() => {
+    getBuckets();
+  }, []);
+
   const onClickNote = (note: any) => {
     props.navigate(NOTE_SCREENS.ALL_NOTES, {});
   };

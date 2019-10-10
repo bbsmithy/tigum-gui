@@ -1,7 +1,7 @@
 import React from "react";
 import { truncated } from "../util/strings";
 import { OptionsButton } from "./OptionsButton";
-import { deleteResource } from "../client-lib";
+import { deleteResource } from "../client-lib/api";
 
 type VideoCardProps = {
   html: string;

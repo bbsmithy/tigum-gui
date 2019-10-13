@@ -1,6 +1,8 @@
 "use strict";
 
 import React from "react";
+import { uploadToBucket } from "../../client-lib/S3";
+import { stateToHTML } from "draft-js-export-html";
 import "./styles.css";
 
 import { Editor, EditorState, RichUtils } from "draft-js";
@@ -12,7 +14,7 @@ class RichEditorExample extends React.Component {
 
     this.focus = () => this.refs.editor.focus();
     this.onChange = editorState => this.setState({ editorState });
-
+    this.onSave = () => this._onSave();
     this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.onTab = e => this._onTab(e);
     this.toggleBlockType = type => this._toggleBlockType(type);
@@ -42,6 +44,11 @@ class RichEditorExample extends React.Component {
     this.onChange(
       RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
     );
+  }
+
+  _onSave() {
+    const content = stateToHTML(this.state.editorState.getCurrentContent());
+    uploadToBucket(content);
   }
 
   render() {
@@ -84,6 +91,9 @@ class RichEditorExample extends React.Component {
             ref="editor"
             spellCheck={true}
           />
+        </div>
+        <div class="f6 link dim ba ph3 pv2 mb2 dib black" onClick={this.onSave}>
+          Save
         </div>
       </div>
     );

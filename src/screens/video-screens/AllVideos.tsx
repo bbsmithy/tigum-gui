@@ -8,7 +8,6 @@ import {
 } from "../../client-lib/api";
 import { getEmbedFromUrl } from "../../util/resource_to_html";
 import { VIDEO_SCREENS } from "../../routers/VideoRouter";
-import { number } from "prop-types";
 
 export const AllVideos = (props: any) => {
   const [displayVideoModal, setVideoModal] = useState(false);

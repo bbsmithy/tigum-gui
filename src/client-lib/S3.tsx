@@ -17,18 +17,24 @@ export const getBuckets = () => {
 };
 
 export const uploadToBucket = (data: any, fileKey: string) => {
-  const base64data = new Buffer(data, "binary");
-  s3.putObject(
-    {
-      Bucket: "notes",
-      Key: fileKey,
-      Body: base64data,
-      ContentType: "text/html;charset=utf-8"
-    },
-    function(resp: any) {
-      console.log(resp);
-    }
-  );
+  return new Promise((resolve, reject) => {
+    const base64data = new Buffer(data, "binary");
+    s3.putObject(
+      {
+        Bucket: "notes",
+        Key: fileKey,
+        Body: base64data,
+        ContentType: "text/html;charset=utf-8"
+      },
+      (err: any, data: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      }
+    );
+  });
 };
 
 export const getFile = (file: string) => {

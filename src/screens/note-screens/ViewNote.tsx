@@ -49,6 +49,7 @@ export const ViewNote = (props: any) => {
         <span className="back-btn-note fr mt3" onClick={onClickDelete}>
           <i className="fa fa-trash" />
         </span>
+        {console.log("HTML CONTENT", html)}
         <TextEditor onSave={onSave} htmlContent={html} />
       </div>
     </div>

@@ -13,9 +13,7 @@ import {
 
 const fromHTMLToEditorState = html => {
   try {
-    console.log("CONTENT", html);
     const content = convertFromHTML(html);
-    console.log(content);
     const state = ContentState.createFromBlockArray(content);
     return EditorState.createWithContent(state);
   } catch (e) {
@@ -27,12 +25,8 @@ class RichEditorExample extends React.Component {
   constructor(props) {
     super(props);
 
-    const initialContent = fromHTMLToEditorState(props.html);
-
-    console.log("INIT_CONTENT", initialContent);
-
     this.state = {
-      editorState: initialContent || EditorState.createEmpty()
+      editorState: EditorState.createEmpty()
     };
 
     this.focus = () => this.refs.editor.focus();
@@ -83,23 +77,13 @@ class RichEditorExample extends React.Component {
     this.props.onSave(content);
   }
 
+  editorIsEmpty() {
+    const content = stateToHTML(this.state.editorState.getCurrentContent());
+    return content === "<p><br></p>";
+  }
+
   render() {
     const { editorState } = this.state;
-
-    // If the user changes block type before entering any text, we can
-    // either style the placeholder or hide it. Let's just hide it now.
-    let className = "RichEditor-editor";
-    var contentState = editorState.getCurrentContent();
-    if (!contentState.hasText()) {
-      if (
-        contentState
-          .getBlockMap()
-          .first()
-          .getType() !== "unstyled"
-      ) {
-        className += " RichEditor-hidePlaceholder";
-      }
-    }
 
     return (
       <div className="RichEditor-root">
@@ -111,7 +95,7 @@ class RichEditorExample extends React.Component {
           editorState={editorState}
           onToggle={this.toggleInlineStyle}
         />
-        <div className={className} onClick={this.focus}>
+        <div className={`RichEditor-editor h-100`} onClick={this.focus}>
           <Editor
             blockStyleFn={getBlockStyle}
             customStyleMap={styleMap}
@@ -124,9 +108,17 @@ class RichEditorExample extends React.Component {
             spellCheck={true}
           />
         </div>
-        <div class="f6 link dim ba ph3 pv2 mb2 dib black" onClick={this.onSave}>
-          Save
-        </div>
+
+        {!this.editorIsEmpty() && (
+          <div className="bt mt2 mb3 absolute bottom-0 w-70">
+            <div
+              className="f6 link ba ph3 pv2 mb2 dib black pointer mt2"
+              onClick={this.onSave}
+            >
+              Save
+            </div>
+          </div>
+        )}
       </div>
     );
   }

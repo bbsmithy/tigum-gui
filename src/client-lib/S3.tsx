@@ -34,9 +34,12 @@ export const uploadToBucket = (data: any, fileKey: string) => {
 export const getFile = (file: string) => {
   return new Promise((resolve, reject) => {
     s3.getObject({ Bucket: "notes", Key: file }, (err: any, data: any) => {
-      if (err) reject(err);
-      const file = new TextDecoder("utf-8").decode(data.Body);
-      resolve(file);
+      if (err) {
+        reject(err);
+      } else {
+        const file = new TextDecoder("utf-8").decode(data.Body);
+        resolve(file);
+      }
     });
   });
 };

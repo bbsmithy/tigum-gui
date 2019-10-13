@@ -16,18 +16,29 @@ export const getBuckets = () => {
   });
 };
 
-export const uploadToBucket = (data: any) => {
+export const uploadToBucket = (data: any, fileKey: string) => {
   const base64data = new Buffer(data, "binary");
   s3.putObject(
     {
       Bucket: "notes",
-      Key: "MI4KC197Y2IGVDWCY4ZR",
-      Body: base64data
+      Key: fileKey,
+      Body: base64data,
+      ContentType: "text/html;charset=utf-8"
     },
     function(resp: any) {
       console.log(resp);
     }
   );
+};
+
+export const getFile = (file: string) => {
+  return new Promise((resolve, reject) => {
+    s3.getObject({ Bucket: "notes", Key: file }, (err: any, data: any) => {
+      if (err) reject(err);
+      const file = new TextDecoder("utf-8").decode(data.Body);
+      resolve(file);
+    });
+  });
 };
 
 /* In order to share access to access non-public files via HTTP, you need to get a presigned url for a specific key

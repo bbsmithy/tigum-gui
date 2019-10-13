@@ -1,12 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NOTE_SCREENS } from "../../routers/NoteRouter";
 import { deleteNote } from "../../client-lib/api";
-import { getBuckets } from "../../client-lib/S3";
+import { getFile, uploadToBucket } from "../../client-lib/S3";
 import TextEditor from "../../components/Editor/TextEditor";
 
 export const ViewNote = (props: any) => {
+  const [html, setNoteHTML] = useState();
+
+  const getNoteData = async () => {
+    try {
+      const noteHTML = await getFile(`${props.note.note_id}.html`);
+      console.log(noteHTML);
+      setNoteHTML(noteHTML);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
-    getBuckets();
+    getNoteData();
   }, []);
 
   const onClickNote = (note: any) => {
@@ -22,6 +34,11 @@ export const ViewNote = (props: any) => {
     }
   };
 
+  const onSave = (content: string) => {
+    uploadToBucket(content, `${props.note.note_id}.html`);
+    console.log(content, props);
+  };
+
   return (
     <div className="view-note-container">
       <div>
@@ -32,7 +49,7 @@ export const ViewNote = (props: any) => {
         <span className="back-btn-note fr mt3" onClick={onClickDelete}>
           <i className="fa fa-trash" />
         </span>
-        <TextEditor />
+        <TextEditor onSave={onSave} htmlContent={html} />
       </div>
     </div>
   );

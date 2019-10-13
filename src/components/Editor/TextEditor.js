@@ -1,16 +1,39 @@
 "use strict";
 
 import React from "react";
-import { uploadToBucket } from "../../client-lib/S3";
 import { stateToHTML } from "draft-js-export-html";
 import "./styles.css";
+import {
+  Editor,
+  EditorState,
+  RichUtils,
+  convertFromHTML,
+  ContentState
+} from "draft-js";
 
-import { Editor, EditorState, RichUtils } from "draft-js";
+const fromHTMLToEditorState = html => {
+  try {
+    console.log("CONTENT", html);
+    const content = convertFromHTML(html);
+    console.log(content);
+    const state = ContentState.createFromBlockArray(content);
+    return EditorState.createWithContent(state);
+  } catch (e) {
+    return false;
+  }
+};
 
 class RichEditorExample extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() };
+
+    const initialContent = fromHTMLToEditorState(props.html);
+
+    console.log("INIT_CONTENT", initialContent);
+
+    this.state = {
+      editorState: initialContent || EditorState.createEmpty()
+    };
 
     this.focus = () => this.refs.editor.focus();
     this.onChange = editorState => this.setState({ editorState });
@@ -19,6 +42,15 @@ class RichEditorExample extends React.Component {
     this.onTab = e => this._onTab(e);
     this.toggleBlockType = type => this._toggleBlockType(type);
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
+  }
+
+  componentWillReceiveProps(nextProps, prevProps) {
+    if (nextProps.htmlContent !== prevProps.htmlContent) {
+      const content = fromHTMLToEditorState(nextProps.htmlContent);
+      this.setState({
+        editorState: content
+      });
+    }
   }
 
   _handleKeyCommand(command) {
@@ -48,7 +80,7 @@ class RichEditorExample extends React.Component {
 
   _onSave() {
     const content = stateToHTML(this.state.editorState.getCurrentContent());
-    uploadToBucket(content);
+    this.props.onSave(content);
   }
 
   render() {

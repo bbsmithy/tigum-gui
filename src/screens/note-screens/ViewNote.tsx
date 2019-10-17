@@ -21,6 +21,11 @@ export const ViewNote = (props: any) => {
     getNoteData();
   }, []);
 
+  const onSave = (content: string) => {
+    uploadToBucket(content, `${props.note.note_id}.html`);
+    console.log(content, props);
+  };
+
   const onClickNote = (note: any) => {
     props.navigate(NOTE_SCREENS.ALL_NOTES, {});
   };
@@ -34,24 +39,15 @@ export const ViewNote = (props: any) => {
     }
   };
 
-  const onSave = (content: string) => {
-    uploadToBucket(content, `${props.note.note_id}.html`);
-    console.log(content, props);
-  };
-
   return (
     <div className="view-note-container z-1">
-      <div className="fixed center bg-white title-controls-container">
-        <span className="back-btn-note" onClick={onClickNote}>
-          <i className="fa fa-arrow-left" />
-        </span>
-        <h2 className="note-title">{props.note.title}</h2>
-        <span className="back-btn-note fr mt3" onClick={onClickDelete}>
-          <i className="fa fa-trash" />
-        </span>
-      </div>
-
-      <TextEditor onSave={onSave} htmlContent={html} />
+      <TextEditor
+        onSave={onSave}
+        htmlContent={html}
+        title={props.note.title}
+        onClickBack={onClickNote}
+        onClickDelete={onClickDelete}
+      />
     </div>
   );
 };

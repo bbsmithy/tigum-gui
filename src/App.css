@@ -302,6 +302,12 @@ button:focus {
   padding: 10px;
 }
 
+.save-btn-note {
+  border: 1px solid rgb(235, 236, 237);
+  padding: 10px;
+  margin-right: 5px;
+}
+
 .back-btn-note:active {
   border: 1px solid black;
 }

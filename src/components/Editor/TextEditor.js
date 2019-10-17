@@ -81,30 +81,48 @@ class RichEditorExample extends React.Component {
     const { editorState } = this.state;
 
     return (
-      <div className="RichEditor-root">
-        <div className="bg-white editor-controls fixed">
-          <BlockStyleControls
-            editorState={editorState}
-            onToggle={this.toggleBlockType}
-          />
-          <InlineStyleControls
-            editorState={editorState}
-            onToggle={this.toggleInlineStyle}
-          />
-        </div>
+      <div>
+        <div className="fixed center bg-white title-controls-container">
+          <span className="back-btn-note" onClick={this.props.onClickBack}>
+            <i className="fa fa-arrow-left" />
+          </span>
+          <h3 className="note-title">{this.props.title}</h3>
 
-        <div className={`RichEditor-editor`} onClick={this.focus}>
-          <Editor
-            blockStyleFn={getBlockStyle}
-            customStyleMap={styleMap}
-            editorState={editorState}
-            handleKeyCommand={this.handleKeyCommand}
-            onChange={this.onChange}
-            onTab={this.onTab}
-            placeholder="Take some notes..."
-            ref="editor"
-            spellCheck={true}
-          />
+          <span
+            className="back-btn-note fr mt3"
+            onClick={this.props.onClickDelete}
+          >
+            <i className="fa fa-trash" />
+          </span>
+          <span className="save-btn-note fr mt3" onClick={this.onSave}>
+            <i className="fa fa-save" />
+          </span>
+        </div>
+        <div className="RichEditor-root">
+          <div className="bg-white editor-controls fixed">
+            <BlockStyleControls
+              editorState={editorState}
+              onToggle={this.toggleBlockType}
+            />
+            <InlineStyleControls
+              editorState={editorState}
+              onToggle={this.toggleInlineStyle}
+            />
+          </div>
+
+          <div className={`RichEditor-editor`} onClick={this.focus}>
+            <Editor
+              blockStyleFn={getBlockStyle}
+              customStyleMap={styleMap}
+              editorState={editorState}
+              handleKeyCommand={this.handleKeyCommand}
+              onChange={this.onChange}
+              onTab={this.onTab}
+              placeholder="Take some notes..."
+              ref="editor"
+              spellCheck={true}
+            />
+          </div>
         </div>
       </div>
     );

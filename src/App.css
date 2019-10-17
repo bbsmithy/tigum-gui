@@ -308,8 +308,22 @@ button:focus {
 
 .view-note-container {
   padding: 10px;
-  margin: auto;
+  margin-right: auto;
+  margin-left: auto;
   width: 70%;
+}
+
+.title-controls-container {
+  padding-top: 50px;
+  padding-bottom: 10px;
+  width: 55%;
+}
+
+.editor-controls {
+  width: 55%;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  margin-top: 120px;
 }
 
 .video-page-container {

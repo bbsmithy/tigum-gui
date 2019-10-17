@@ -40,8 +40,8 @@ export const ViewNote = (props: any) => {
   };
 
   return (
-    <div className="view-note-container">
-      <div>
+    <div className="view-note-container z-1">
+      <div className="fixed center bg-white title-controls-container">
         <span className="back-btn-note" onClick={onClickNote}>
           <i className="fa fa-arrow-left" />
         </span>
@@ -49,9 +49,9 @@ export const ViewNote = (props: any) => {
         <span className="back-btn-note fr mt3" onClick={onClickDelete}>
           <i className="fa fa-trash" />
         </span>
-        {console.log("HTML CONTENT", html)}
-        <TextEditor onSave={onSave} htmlContent={html} />
       </div>
+
+      <TextEditor onSave={onSave} htmlContent={html} />
     </div>
   );
 };

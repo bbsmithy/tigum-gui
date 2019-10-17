@@ -23,7 +23,7 @@ export const SideBar: React.FC<SideBarProps> = ({
   };
 
   return (
-    <div id="sidebar">
+    <div id="sidebar" className="z-2">
       <div id="sidebar-header">
         <div id="logo-container">
           <img src={logo} id="logo" />

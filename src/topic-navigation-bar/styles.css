@@ -17,6 +17,6 @@
   margin-left: 3px;
 }
 
-.topic-nav-btn:focus {
+.selected {
   border: 1px solid black !important;
 }

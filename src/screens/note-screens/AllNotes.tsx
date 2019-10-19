@@ -62,7 +62,9 @@ export const AllNotes = (props: any) => {
 
   const renderNotes = () => {
     if (notes.length) {
-      return notes.map(note => <Note note={note} onClick={onClickNote} />);
+      return notes.map(note => (
+        <Note note={note} key={note.note_id} onClick={onClickNote} />
+      ));
     } else {
       return (
         <div className="no-resources-message">

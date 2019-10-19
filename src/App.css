@@ -319,9 +319,13 @@ button:focus {
   width: 70%;
 }
 
+.topic-section-container {
+  margin-top: 70px;
+}
+
 .title-controls-container {
   padding-top: 50px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   width: 55%;
 }
 

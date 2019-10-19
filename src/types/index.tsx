@@ -7,3 +7,8 @@ export type Video = {
   html: string;
   title: string;
 };
+
+export type ArticleCardProps = {
+  origin: string;
+  content: string;
+};

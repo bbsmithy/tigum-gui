@@ -9,7 +9,7 @@ body {
 }
 
 #logo {
-  height: 30px;
+  height: 20px;
 }
 
 #logo-container {
@@ -18,15 +18,14 @@ body {
 
 #new-btn {
   float: right;
-  margin-top: 2px;
   border-width: 0;
   outline: none;
   border-radius: 2px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-  padding: 6px;
+  padding: 3px;
   background-color: white;
   color: black;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 300;
   flex: 50%;
 }
@@ -71,7 +70,7 @@ body {
 
 #sidebar-header {
   border-bottom: 1px solid rgb(235, 236, 237);
-  padding: 11px;
+  padding: 9px;
 }
 
 #sidebar-search-mentors-container {
@@ -297,9 +296,14 @@ button:focus {
   margin-left: 15px;
 }
 
-.back-btn-note {
+.back-btn-note:hover {
   border: 1px solid rgb(235, 236, 237);
+}
+
+.back-btn-note {
   padding: 10px;
+  border: 1px solid white;
+  cursor: pointer;
 }
 
 .save-btn-note {
@@ -324,7 +328,7 @@ button:focus {
 }
 
 .title-controls-container {
-  padding-top: 50px;
+  padding-top: 35px;
   padding-bottom: 20px;
   width: 55%;
 }
@@ -333,7 +337,7 @@ button:focus {
   width: 55%;
   border-bottom: 1px solid rgb(235, 236, 237);
   padding-bottom: 10px;
-  margin-top: 120px;
+  margin-top: 95px;
 }
 
 .video-page-container {

@@ -75,7 +75,7 @@ export const AllNotes = (props: any) => {
   };
 
   return (
-    <div className="ph1 mt5">
+    <div className="ph2 mt4 pt3">
       <NewNote onClick={toggleModal} />
       {renderNotes()}
       <Modal

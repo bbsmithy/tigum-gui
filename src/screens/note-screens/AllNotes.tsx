@@ -1,13 +1,34 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { createUseStyles } from "react-jss";
 import { NewNote, Note } from "../../components";
 import { Modal } from "../../components/Modal";
 import { createNote, getNotes, updateTopic } from "../../client-lib/api";
 import { NOTE_SCREENS } from "../../routers/NoteRouter";
 
+const useStyles = createUseStyles({
+  headerLoadingNote: {
+    width: "70%",
+    padding: 6,
+    marginTop: 10,
+    background: "#efefef",
+    height: 6
+  },
+  dateLoadingNote: {
+    width: "50%",
+    padding: 3,
+    marginTop: 10,
+    background: "#efefef",
+    height: 6
+  }
+});
+
 export const AllNotes = (props: any) => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
   const [noteTitle, setNoteTitle] = useState("");
   const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const classes = useStyles();
 
   const toggleModal = () => {
     setNewNoteModalOpen(!newNoteModalIsOpen);
@@ -19,15 +40,18 @@ export const AllNotes = (props: any) => {
       if (res.status === 200) {
         const body = await res.json();
         setNotes(body.reverse());
+        setLoading(false);
       }
     } catch (e) {}
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchNotes(props.topic.notes);
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     fetchNotes(props.topic.notes);
   }, [props.topic.notes]);
 
@@ -60,24 +84,42 @@ export const AllNotes = (props: any) => {
     props.navigate(NOTE_SCREENS.VIEW_NOTE, note);
   };
 
-  const renderNotes = () => {
-    if (notes.length) {
-      return notes.map(note => (
-        <Note note={note} key={note.note_id} onClick={onClickNote} />
-      ));
-    } else {
-      return (
-        <div className="no-resources-message">
-          <i className="fas fa-pen-square" /> <span>No notes yet</span>
+  const renderLoading = () => {
+    return (
+      <div className="card w-25">
+        <div className="mw9 center">
+          <div className="cf ph2-ns pb4">
+            <div className="fl ph2 w-90 pv1">
+              <div className="bg-white">
+                <div className={classes.headerLoadingNote}></div>
+                <div className={classes.dateLoadingNote}></div>
+              </div>
+            </div>
+          </div>
         </div>
-      );
-    }
+      </div>
+    );
+  };
+
+  const renderNotes = () => {
+    return notes.map(note => (
+      <Note note={note} key={note.note_id} onClick={onClickNote} />
+    ));
+  };
+
+  const renderNoNotes = () => {
+    return (
+      <div className="no-resources-message">
+        <i className="fas fa-pen-square" /> <span>No notes yet</span>
+      </div>
+    );
   };
 
   return (
     <div className="ph2 mt4 pt3">
       <NewNote onClick={toggleModal} />
-      {renderNotes()}
+      {loading ? renderLoading() : renderNotes()}
+      {!notes.length && !loading && renderNoNotes()}
       <Modal
         title="New Note"
         display={newNoteModalIsOpen}

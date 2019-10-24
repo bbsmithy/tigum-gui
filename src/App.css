@@ -294,6 +294,11 @@ button:focus {
   transition: 0.3s;
 }
 
+.shadow-card {
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 3px 1px -2px rgba(0, 0, 0, 0.12),
+    0 2px 2px 0 rgba(0, 0, 0, 0.14);
+}
+
 .new-text {
   margin-left: 7px;
   display: inline-block;
@@ -355,9 +360,8 @@ button:focus {
 
 .video-card {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-  padding: 10px 10px 5px 10px;
   margin: 10px;
-  width: 100%;
+  cursor: pointer;
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -396,10 +400,6 @@ button:focus {
 
 .new-note-card-container {
   padding: 10px 20px 10px 20px;
-}
-
-.note-card-container {
-  width: 25%;
 }
 
 .no-resources-message {

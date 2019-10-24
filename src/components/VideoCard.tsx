@@ -39,11 +39,11 @@ export const VideoCard = (props: VideoCardProps) => {
 
   return (
     <article
-      className="br2 ba dark-gray b--black-10 mv3 w-100 w-50-m w-20-l mw dib ma3"
+      className="br2 mv3 w-100 w-50-m w-25-l mw dib video-card ma3"
       onClick={onSelect}
     >
       <img src={props.thumbnail_img} className="db w-100 br2 br--top" />
-      <div className="ph3-ns pv3-ns h-30 ba b--black-10">
+      <div className="ph3-ns pv3-ns h-30">
         <div className="dib w-90">
           <h2 className="f3 f5-ns mv0">{title}</h2>
         </div>

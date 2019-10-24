@@ -12,7 +12,7 @@ export const Note = (props: any) => {
   };
 
   return (
-    <div className="note-card-container card" onClick={navigateToNote}>
+    <div className="card w-25" onClick={navigateToNote}>
       <div className="mw9 center">
         <div className="cf ph2-ns">
           <div className="fl ph2 w-90 pv1">

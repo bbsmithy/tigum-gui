@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArticleCard } from "../../components/ArticleCard";
-import { ArticleCardProps } from "../../types";
+import { createUseStyles } from "react-jss";
 
 const dummySnippets = [
   {
@@ -45,31 +45,71 @@ rebum.`
   }
 ];
 
+const useStyles = createUseStyles({
+  paragraphLoading: {
+    width: "100%",
+    marginTop: 10,
+    padding: 7,
+    height: 6,
+    backgroundColor: "#efefef"
+  },
+  linkLoading: {
+    width: "60%",
+    marginTop: 10,
+    padding: 7,
+    height: 6,
+    backgroundColor: "#efefef"
+  }
+});
+
 export const ArticleSnippets = (props: any) => {
   const [snippets, setSnippets] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const classes = useStyles();
 
   useEffect(() => {
+    setLoading(true);
     setTimeout(() => {
       setSnippets(dummySnippets);
+      setLoading(false);
     }, 500);
   }, []);
 
-  if (snippets.length) {
+  const renderSnippets = () => {
+    return snippets.map(snippet => {
+      return <ArticleCard content={snippet.content} origin={snippet.origin} />;
+    });
+  };
+
+  const renderLoading = () => {
+    return (
+      <article className="center shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3">
+        <div className="pa3">
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.linkLoading}></div>
+        </div>
+      </article>
+    );
+  };
+
+  const renderNoSnippets = () => {
     return (
       <div className="topic-section-container">
-        {snippets.map(snippet => {
-          return (
-            <ArticleCard content={snippet.content} origin={snippet.origin} />
-          );
-        })}
+        <div className="no-resources-message">
+          <i className="fas fa-newspaper" /> <span>No snippets yet</span>
+        </div>
       </div>
     );
-  }
+  };
+
   return (
     <div className="topic-section-container">
-      <div className="no-resources-message">
-        <i className="fas fa-newspaper" /> <span>No snippets yet</span>
-      </div>
+      {loading ? renderLoading() : renderSnippets()}
+      {!loading && !snippets.length && renderNoSnippets()}
     </div>
   );
 };

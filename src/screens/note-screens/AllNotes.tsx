@@ -26,7 +26,7 @@ export const AllNotes = (props: any) => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
   const [noteTitle, setNoteTitle] = useState("");
   const [notes, setNotes] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const classes = useStyles();
 
@@ -46,12 +46,6 @@ export const AllNotes = (props: any) => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetchNotes(props.topic.notes);
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
     fetchNotes(props.topic.notes);
   }, [props.topic.notes]);
 

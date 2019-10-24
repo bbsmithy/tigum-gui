@@ -49,16 +49,17 @@ const useStyles = createUseStyles({
   paragraphLoading: {
     width: "100%",
     marginTop: 10,
-    padding: 7,
-    height: 6,
+    padding: 6,
+    height: 5,
     backgroundColor: "#efefef"
   },
   linkLoading: {
     width: "60%",
-    marginTop: 10,
-    padding: 7,
+    marginTop: 30,
+    padding: 5,
     height: 6,
-    backgroundColor: "#efefef"
+    backgroundColor: "#efefef",
+    marginBottom: 10
   }
 });
 
@@ -85,7 +86,7 @@ export const ArticleSnippets = (props: any) => {
   const renderLoading = () => {
     return (
       <article className="center shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3">
-        <div className="pa3">
+        <div className="ph3 pv2">
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>

@@ -9,7 +9,7 @@ export const ViewNote = (props: any) => {
 
   const getNoteData = async () => {
     try {
-      const noteHTML = await getFile(`${props.note.note_id}.html`);
+      const noteHTML = await getFile(`${props.note.id}.html`);
       console.log(noteHTML);
       setNoteHTML(noteHTML);
     } catch (e) {
@@ -22,7 +22,7 @@ export const ViewNote = (props: any) => {
   }, []);
 
   const onSave = (content: string) => {
-    uploadToBucket(content, `${props.note.note_id}.html`);
+    uploadToBucket(content, `${props.note.id}.html`);
     console.log(content, props);
   };
 
@@ -32,7 +32,7 @@ export const ViewNote = (props: any) => {
 
   const onClickDelete = async () => {
     try {
-      await deleteNote(props.note.note_id);
+      await deleteNote(props.note.id);
       props.navigate(NOTE_SCREENS.ALL_NOTES);
     } catch (e) {
       console.log(e);

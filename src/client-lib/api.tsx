@@ -1,3 +1,5 @@
+import { NewVideo } from "./models";
+
 const BASE_API_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:8000"
@@ -19,11 +21,7 @@ export const getTopics = async (topicIds: Array<number>) => {
   }
 };
 
-export const createTopic = async (
-  title: String,
-  notes: Array<number>,
-  resources: Array<number>
-) => {
+export const createTopic = async (title: String, user_id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/topics/create-topic`, {
       method: "POST",
@@ -31,7 +29,7 @@ export const createTopic = async (
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
-      body: JSON.stringify({ title, notes, resources })
+      body: JSON.stringify({ title, user_id })
     });
     return await res;
   } catch (e) {
@@ -41,9 +39,8 @@ export const createTopic = async (
 
 export const updateTopic = async (topic: any) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/topics/${topic.topic_id}`, {
+    const res = await fetch(`${BASE_API_URL}/topics/${topic.id}`, {
       method: "PUT",
-      mode: "cors",
       headers: {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
@@ -111,7 +108,7 @@ export const createResource = async (
   thumbnail_img: String
 ) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/resources/create-resource`, {
+    const res = await fetch(`${BASE_API_URL}/videos/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -158,6 +155,53 @@ export const getResources = async (ids: Array<number>) => {
       body: JSON.stringify({ ids })
     });
     return await res;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const getVideos = async (ids: Array<number>) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/videos/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ids })
+    });
+    return await res;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const createVideo = async (newVideo: NewVideo) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/videos/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ...newVideo })
+    });
+    return await res;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const deleteVideo = async (id: number) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/videos/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      }
+    });
+    return res;
   } catch (e) {
     throw e;
   }

@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NewVideo } from "../../components/NewVideo";
 import { Modal, VideoCard } from "../../components/";
-import {
-  createResource,
-  updateTopic,
-  getResources
-} from "../../client-lib/api";
+import { createVideo, updateTopic, getVideos } from "../../client-lib/api";
 import { getEmbedFromUrl } from "../../util/resource_to_html";
 import { VIDEO_SCREENS } from "../../routers/VideoRouter";
 
@@ -14,45 +10,46 @@ export const AllVideos = (props: any) => {
   const [videoTitle, setVideoTitle] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [videoResources, setVideoResources] = useState({
-    resources: [],
+    videos: [],
     loading: true
   });
 
-  const fetchResources = async (ids: Array<number>) => {
-    const res = await getResources(ids);
+  const fetchVideos = async (ids: Array<number>) => {
+    const res = await getVideos(ids);
     if (res.status === 200) {
       const body = await res.json();
-      setVideoResources({ resources: body.reverse(), loading: false });
+      setVideoResources({ videos: body.reverse(), loading: false });
     }
   };
 
   useEffect(() => {
-    fetchResources(props.topic.resources);
-  }, [props.topic.resources]);
+    fetchVideos(props.topic.videos);
+  }, [props.topic.videos]);
 
   const toggleModal = () => {
     setVideoModal(!displayVideoModal);
   };
 
-  const updateTopicContent = async (newResourceId: number) => {
-    const res = await updateTopic({
+  const updateTopicContent = async (newVideoId: number) => {
+    return await updateTopic({
       ...props.topic,
-      resources: [...props.topic.resources, newResourceId]
+      videos: [...props.topic.videos, newVideoId]
     });
-    return await res;
   };
   const createVideoResource = async () => {
     const { embedUrl, thumbnailUrl } = getEmbedFromUrl(videoUrl);
     if (embedUrl && thumbnailUrl) {
-      const res = await createResource(
-        "VIDEO",
-        embedUrl,
-        "USER",
-        videoTitle,
-        thumbnailUrl
-      );
+      const res = await createVideo({
+        thumbnail_img: thumbnailUrl,
+        topic_id: props.topic.id,
+        user_id: 123,
+        title: videoTitle,
+        iframe: embedUrl,
+        origin: videoUrl
+      });
       if (res.status === 200) {
         const body = await res.json();
+        console.log("TOPIC ID", body.id);
         const update = await updateTopicContent(body.id);
         if (update.status === 200) {
           const topicJson = await update.json();
@@ -76,20 +73,20 @@ export const AllVideos = (props: any) => {
   };
 
   const onDeleteVideoCard = (index: number) => {
-    let refreshedVideoResources = [...videoResources.resources];
+    let refreshedVideoResources = [...videoResources.videos];
     delete refreshedVideoResources[index];
-    setVideoResources({ resources: refreshedVideoResources, loading: false });
+    setVideoResources({ videos: refreshedVideoResources, loading: false });
   };
 
   const renderVideoResources = () => {
-    if (videoResources.resources.length) {
-      return videoResources.resources.map((video, index) => {
+    if (videoResources.videos.length) {
+      return videoResources.videos.map((video, index) => {
         return (
           <VideoCard
             html={video.content}
             title={video.title}
             thumbnail_img={video.thumbnail_img}
-            resource_id={video.resource_id}
+            id={video.id}
             index={index}
             onClick={onClickVideoCard}
             onDelete={onDeleteVideoCard}

@@ -1,6 +1,8 @@
 import React from "react";
 
 export const Code = (props: any) => {
+  const renderCodeSnippets = () => {};
+
   return (
     <div className="topic-section-container">
       <div className="no-resources-message">

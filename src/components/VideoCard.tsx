@@ -1,13 +1,13 @@
 import React from "react";
 import { truncated } from "../util/strings";
 import { OptionsButton } from "./OptionsButton";
-import { deleteResource } from "../client-lib/api";
+import { deleteVideo } from "../client-lib/api";
 
 type VideoCardProps = {
   html: string;
   title: string;
   thumbnail_img: string;
-  resource_id: number;
+  id: number;
   index: number;
   onClick: (video: any) => void;
   onDelete: (index: number) => void;
@@ -18,9 +18,9 @@ export const VideoCard = (props: VideoCardProps) => {
     props.onClick({ title: props.title, html: props.html });
   };
 
-  const deleteVideo = async () => {
+  const onClickDelete = async () => {
     try {
-      await deleteResource(props.resource_id);
+      await deleteVideo(props.id);
       props.onDelete(props.index);
     } catch (e) {
       console.log(e);
@@ -31,7 +31,7 @@ export const VideoCard = (props: VideoCardProps) => {
     {
       title: "Delete",
       icon: "fas fa-trash",
-      onClick: deleteVideo
+      onClick: onClickDelete
     }
   ];
 

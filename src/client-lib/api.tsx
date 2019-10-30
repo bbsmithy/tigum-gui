@@ -53,7 +53,11 @@ export const updateTopic = async (topic: any) => {
   }
 };
 
-export const createNote = async (title: String) => {
+export const createNote = async (
+  title: String,
+  topic_id: number,
+  user_id: number
+) => {
   try {
     const res = await fetch(`${BASE_API_URL}/notes/create-note`, {
       method: "POST",
@@ -61,7 +65,7 @@ export const createNote = async (title: String) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
-      body: JSON.stringify({ title, note_content: [] })
+      body: JSON.stringify({ title, topic_id, user_id })
     });
     return await res;
   } catch (e) {

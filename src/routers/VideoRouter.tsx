@@ -1,6 +1,6 @@
 import React from "react";
 import { AllVideos, VideoPlayer } from "../screens/video-screens";
-import { Video } from "../types";
+import { VideoPlayerProps } from "../types";
 import { Topic } from "../sidebar-navigator/TopicItem";
 
 export enum VIDEO_SCREENS {
@@ -10,8 +10,8 @@ export enum VIDEO_SCREENS {
 
 type VideoRouterType = {
   screen: VIDEO_SCREENS;
-  video: Video;
-  navigate: (screen: VIDEO_SCREENS, video: Video) => void;
+  video: VideoPlayerProps;
+  navigate: (screen: VIDEO_SCREENS, video: VideoPlayerProps) => void;
   setTopic: (topic: Topic) => void;
   topic: Topic;
 };
@@ -29,7 +29,7 @@ export const VideoRouter = ({
         <AllVideos navigate={navigate} setTopic={setTopic} topic={topic} />
       );
     case VIDEO_SCREENS.VIDEO_PLAYER:
-      return <VideoPlayer html={video.html} title={video.title} />;
+      return <VideoPlayer iframe={video.iframe} title={video.title} />;
     default:
       break;
   }

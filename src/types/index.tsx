@@ -3,8 +3,8 @@ export interface TopicsState {
   data: any[];
 }
 
-export type Video = {
-  html: string;
+export type VideoPlayerProps = {
+  iframe: string;
   title: string;
 };
 

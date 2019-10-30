@@ -4,7 +4,7 @@ import { OptionsButton } from "./OptionsButton";
 import { deleteVideo } from "../client-lib/api";
 
 type VideoCardProps = {
-  html: string;
+  iframe: string;
   title: string;
   thumbnail_img: string;
   id: number;
@@ -15,7 +15,7 @@ type VideoCardProps = {
 
 export const VideoCard = (props: VideoCardProps) => {
   const onSelect = () => {
-    props.onClick({ title: props.title, html: props.html });
+    props.onClick({ title: props.title, iframe: props.iframe });
   };
 
   const onClickDelete = async () => {

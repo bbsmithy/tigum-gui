@@ -83,7 +83,7 @@ export const AllVideos = (props: any) => {
       return videoResources.videos.map((video, index) => {
         return (
           <VideoCard
-            html={video.content}
+            iframe={video.iframe}
             title={video.title}
             thumbnail_img={video.thumbnail_img}
             id={video.id}

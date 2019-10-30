@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { VideoRouter, VIDEO_SCREENS } from "../../routers/VideoRouter";
-import { Video } from "../../types";
+import { VideoPlayerProps } from "../../types";
 
 export const Videos = (props: any) => {
   const [screen, setScreen] = useState(VIDEO_SCREENS.ALL_VIDEOS);
   const [video, setVideo] = useState();
 
-  const navigate = (screen: VIDEO_SCREENS, video: Video) => {
+  const navigate = (screen: VIDEO_SCREENS, video: VideoPlayerProps) => {
     setScreen(screen);
     setVideo(video);
   };

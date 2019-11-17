@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { ArticleCard } from "../../components/ArticleCard";
+import { ArticleCard, NewButton, Modal } from "../../components/";
 import { createUseStyles } from "react-jss";
+import { getArticleSnippets } from "../../client-lib/api";
+import { rejects } from "assert";
 
 const dummySnippets = [
   {
@@ -60,26 +62,41 @@ const useStyles = createUseStyles({
     height: 6,
     backgroundColor: "#efefef",
     marginBottom: 10
+  },
+  snippetBox: {
+    height: 250
   }
 });
 
 export const ArticleSnippets = (props: any) => {
   const [snippets, setSnippets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [createSnippetModalOpen, setCreateSnippetModalOpen] = useState(false);
 
   const classes = useStyles();
 
-  useEffect(() => {
+  const fetchArticleSnippets = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setSnippets(dummySnippets);
-      setLoading(false);
-    }, 500);
+    const res = await getArticleSnippets([4, 3]);
+    const snippets = await res.json();
+    setSnippets(snippets);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchArticleSnippets();
   }, []);
 
   const renderSnippets = () => {
     return snippets.map(snippet => {
-      return <ArticleCard content={snippet.content} origin={snippet.origin} />;
+      console.log(snippet);
+      return (
+        <ArticleCard
+          content={snippet.content}
+          origin={snippet.origin}
+          key={snippet.id}
+        />
+      );
     });
   };
 
@@ -107,8 +124,39 @@ export const ArticleSnippets = (props: any) => {
     );
   };
 
+  const toggleModal = () => {
+    setCreateSnippetModalOpen(!createSnippetModalOpen);
+  };
+
+  const createSnippet = () => {};
+
+  const onChangeSnippetContent = (e: any) => {
+    console.log(e.target.value);
+  };
+
+  const renderAddSnippetModal = () => {
+    return (
+      <Modal
+        title="Create snippet"
+        buttonText="Create"
+        display={createSnippetModalOpen}
+        onClickAction={createSnippet}
+        toggleModal={toggleModal}
+      >
+        <form className="w-100 black-80">
+          <textarea
+            className={`${classes.snippetBox} db border-box hover-black w-100 ba b--black-20 pa2 br2 mb2`}
+            onChange={onChangeSnippetContent}
+          ></textarea>
+        </form>
+      </Modal>
+    );
+  };
+
   return (
     <div className="topic-section-container">
+      {renderAddSnippetModal()}
+      <NewButton onClick={toggleModal} text="New Snippet" />
       {loading ? renderLoading() : renderSnippets()}
       {!loading && !snippets.length && renderNoSnippets()}
     </div>

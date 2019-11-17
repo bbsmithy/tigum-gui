@@ -1,4 +1,5 @@
 export { Note } from "./Note";
-export { NewNote } from "./NewNote";
+export { NewButton } from "./NewButton";
 export { VideoCard } from "./VideoCard";
 export { Modal } from "./Modal";
+export { ArticleCard } from "./ArticleCard";

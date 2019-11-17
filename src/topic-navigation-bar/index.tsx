@@ -50,11 +50,6 @@ export const TopicNavigationBar = ({
       title: "Documents",
       icon: "fas fa-file-alt",
       screen: TOPIC_SCREENS.DOCUMENTS
-    },
-    {
-      title: "Excercises",
-      icon: "fas fa-bullseye",
-      screen: TOPIC_SCREENS.EXCERCISES
     }
   ];
 

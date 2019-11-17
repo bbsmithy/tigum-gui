@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NewVideo } from "../../components/NewVideo";
+import { NewButton } from "../../components/";
 import { Modal, VideoCard } from "../../components/";
 import { createVideo, updateTopic, getVideos } from "../../client-lib/api";
 import { getEmbedFromUrl } from "../../util/resource_to_html";
@@ -49,7 +49,6 @@ export const AllVideos = (props: any) => {
       });
       if (res.status === 200) {
         const body = await res.json();
-        console.log("TOPIC ID", body.id);
         const update = await updateTopicContent(body.id);
         if (update.status === 200) {
           const topicJson = await update.json();
@@ -78,6 +77,22 @@ export const AllVideos = (props: any) => {
     setVideoResources({ videos: refreshedVideoResources, loading: false });
   };
 
+  const renderVideosLoading = () => {
+    return (
+      <article className="br2 mv3 mw dib video-card ma3">
+        <img className="db w-100 br2 br--top" />
+        <div className="ph3-ns pv3-ns h-30">
+          <div className="dib w-90">
+            <h2 className="f3 f5-ns mv0">Loading</h2>
+          </div>
+          <div className="dib w-10">
+            <span></span>
+          </div>
+        </div>
+      </article>
+    );
+  };
+
   const renderVideoResources = () => {
     if (videoResources.videos.length) {
       return videoResources.videos.map((video, index) => {
@@ -103,8 +118,9 @@ export const AllVideos = (props: any) => {
 
   return (
     <div className="video-page-container">
-      <NewVideo onClick={toggleModal} />
+      <NewButton onClick={toggleModal} text="New Video" />
       <div className="center w-100 ph3">
+        {videoResources.loading && renderVideosLoading()}
         {!videoResources.loading && renderVideoResources()}
       </div>
       <Modal

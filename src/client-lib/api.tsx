@@ -210,3 +210,19 @@ export const deleteVideo = async (id: number) => {
     throw e;
   }
 };
+
+export const getArticleSnippets = async (ids: number[]) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/article_snippets/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ids })
+    });
+    return res;
+  } catch (e) {
+    throw e;
+  }
+};

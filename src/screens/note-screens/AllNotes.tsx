@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createUseStyles } from "react-jss";
-import { NewNote, Note } from "../../components";
+import { NewButton, Note } from "../../components";
 import { Modal } from "../../components/Modal";
 import { createNote, getNotes, updateTopic } from "../../client-lib/api";
 import { NOTE_SCREENS } from "../../routers/NoteRouter";
@@ -111,7 +111,7 @@ export const AllNotes = (props: any) => {
 
   return (
     <div className="ph2 mt4 pt3">
-      <NewNote onClick={toggleModal} />
+      <NewButton onClick={toggleModal} text="New Note" />
       {loading ? renderLoading() : renderNotes()}
       {!notes.length && !loading && renderNoNotes()}
       <Modal

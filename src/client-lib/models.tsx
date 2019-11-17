@@ -15,3 +15,10 @@ export type ArticleSnippet = {
   topic_id: number;
   user_id: number;
 };
+
+export type NewArticleSnippet = {
+  content: string;
+  origin: string;
+  topic_id: number;
+  user_id: number;
+};

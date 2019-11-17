@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ArticleCard, NewButton, Modal } from "../../components/";
 import { createUseStyles } from "react-jss";
-import { getArticleSnippets } from "../../client-lib/api";
-import { rejects } from "assert";
+import { getArticleSnippets, createArticleSnippet } from "../../client-lib/api";
+import { ArticleSnippet, NewArticleSnippet } from "../../client-lib/models";
 
 const dummySnippets = [
   {
@@ -72,24 +72,24 @@ export const ArticleSnippets = (props: any) => {
   const [snippets, setSnippets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [createSnippetModalOpen, setCreateSnippetModalOpen] = useState(false);
+  const [snippetContent, setSnippetContent] = useState("");
 
   const classes = useStyles();
 
-  const fetchArticleSnippets = async () => {
+  const fetchArticleSnippets = async (ids: number[]) => {
     setLoading(true);
-    const res = await getArticleSnippets([4, 3]);
+    const res = await getArticleSnippets(ids);
     const snippets = await res.json();
     setSnippets(snippets);
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchArticleSnippets();
+    fetchArticleSnippets([3, 4, 5, 6, 7]);
   }, []);
 
   const renderSnippets = () => {
     return snippets.map(snippet => {
-      console.log(snippet);
       return (
         <ArticleCard
           content={snippet.content}
@@ -128,10 +128,22 @@ export const ArticleSnippets = (props: any) => {
     setCreateSnippetModalOpen(!createSnippetModalOpen);
   };
 
-  const createSnippet = () => {};
+  const createSnippet = async () => {
+    if (snippetContent) {
+      const newSnippet: NewArticleSnippet = {
+        content: snippetContent,
+        origin: "TIGUM",
+        topic_id: 123,
+        user_id: 123
+      };
+      await createArticleSnippet(newSnippet);
+      toggleModal();
+      fetchArticleSnippets([4, 3, 5, 6, 7]);
+    }
+  };
 
   const onChangeSnippetContent = (e: any) => {
-    console.log(e.target.value);
+    setSnippetContent(e.target.value);
   };
 
   const renderAddSnippetModal = () => {

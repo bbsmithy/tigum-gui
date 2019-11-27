@@ -27,7 +27,6 @@ export const AllNotes = (props: any) => {
   const [noteTitle, setNoteTitle] = useState("");
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const classes = useStyles();
 
   const toggleModal = () => {

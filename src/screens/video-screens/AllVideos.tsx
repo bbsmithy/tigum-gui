@@ -11,14 +11,21 @@ const useStyles = createUseStyles({
   videoLoadingCover: {
     backgroundColor: "#efefef",
     height: 200,
-    width: "100%"
+    width: "100%",
+    textAlign: "center"
   },
   headerLoadingNote: {
     width: "80%",
     padding: 6,
     marginTop: 10,
     background: "#efefef",
+
     height: 6
+  },
+  videoIconLoading: {
+    fontSize: 50,
+    marginTop: 90,
+    color: "gray"
   }
 });
 
@@ -37,7 +44,7 @@ export const AllVideos = (props: any) => {
     const res = await getVideos(ids);
     if (res.status === 200) {
       const body = await res.json();
-      setVideoResources({ videos: body.reverse(), loading: false });
+      setVideoResources({ videos: body.reverse(), loading: true });
     }
   };
 
@@ -99,7 +106,9 @@ export const AllVideos = (props: any) => {
   const renderVideosLoading = () => {
     return (
       <article className="br2 mv3 mw dib video-card ma3">
-        <div className={classes.videoLoadingCover} />
+        <div className={classes.videoLoadingCover}>
+          <i className={`fab fa-youtube ${classes.videoIconLoading}`}></i>
+        </div>
         <div className="ph3-ns pv3-ns h-30">
           <div className="dib w-90">
             <div className={classes.headerLoadingNote} />

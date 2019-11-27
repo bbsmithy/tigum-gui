@@ -5,6 +5,23 @@ import { createVideo, updateTopic, getVideos } from "../../client-lib/api";
 import { getEmbedFromUrl } from "../../util/resource_to_html";
 import { VIDEO_SCREENS } from "../../routers/VideoRouter";
 
+import { createUseStyles } from "react-jss";
+
+const useStyles = createUseStyles({
+  videoLoadingCover: {
+    backgroundColor: "#efefef",
+    height: 200,
+    width: "100%"
+  },
+  headerLoadingNote: {
+    width: "80%",
+    padding: 6,
+    marginTop: 10,
+    background: "#efefef",
+    height: 6
+  }
+});
+
 export const AllVideos = (props: any) => {
   const [displayVideoModal, setVideoModal] = useState(false);
   const [videoTitle, setVideoTitle] = useState("");
@@ -13,6 +30,8 @@ export const AllVideos = (props: any) => {
     videos: [],
     loading: true
   });
+
+  const classes = useStyles();
 
   const fetchVideos = async (ids: Array<number>) => {
     const res = await getVideos(ids);
@@ -80,10 +99,10 @@ export const AllVideos = (props: any) => {
   const renderVideosLoading = () => {
     return (
       <article className="br2 mv3 mw dib video-card ma3">
-        <img className="db w-100 br2 br--top" />
+        <div className={classes.videoLoadingCover} />
         <div className="ph3-ns pv3-ns h-30">
           <div className="dib w-90">
-            <h2 className="f3 f5-ns mv0">Loading</h2>
+            <div className={classes.headerLoadingNote} />
           </div>
           <div className="dib w-10">
             <span></span>

@@ -309,23 +309,17 @@ button:focus {
   margin-left: 15px;
 }
 
-.back-btn-note:hover {
+.btn-note:hover {
   border: 1px solid rgb(235, 236, 237);
 }
 
-.back-btn-note {
+.btn-note {
   padding: 10px;
   border: 1px solid white;
   cursor: pointer;
 }
 
-.save-btn-note {
-  border: 1px solid rgb(235, 236, 237);
-  padding: 10px;
-  margin-right: 5px;
-}
-
-.back-btn-note:active {
+.btn-note:active {
   border: 1px solid black;
 }
 

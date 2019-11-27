@@ -85,7 +85,8 @@ export const ArticleSnippets = (props: any) => {
   };
 
   useEffect(() => {
-    fetchArticleSnippets([3, 4, 5, 6, 7]);
+    console.log(props);
+    fetchArticleSnippets(props.topic.article_snippets);
   }, []);
 
   const renderSnippets = () => {
@@ -133,12 +134,12 @@ export const ArticleSnippets = (props: any) => {
       const newSnippet: NewArticleSnippet = {
         content: snippetContent,
         origin: "TIGUM",
-        topic_id: 123,
+        topic_id: props.topic.id,
         user_id: 123
       };
-      await createArticleSnippet(newSnippet);
+      const res = await createArticleSnippet(newSnippet);
       toggleModal();
-      fetchArticleSnippets([4, 3, 5, 6, 7]);
+      fetchArticleSnippets([...props.topic.article_snippets, res.id]);
     }
   };
 

@@ -83,19 +83,20 @@ class RichEditorExample extends React.Component {
     return (
       <div>
         <div className="fixed center bg-white title-controls-container">
-          <span className="back-btn-note" onClick={this.props.onClickBack}>
+          <span className="btn-note" onClick={this.props.onClickBack}>
             <i className="fa fa-arrow-left" />
           </span>
           <h3 className="note-title">{this.props.title}</h3>
 
-          <span
-            className="back-btn-note fr mt3"
-            onClick={this.props.onClickDelete}
-          >
+          <span className="btn-note fr mt3" onClick={this.props.onClickDelete}>
             <i className="fa fa-trash" />
           </span>
-          <span className="save-btn-note fr mt3" onClick={this.onSave}>
-            <i className="fa fa-save" />
+          <span className="btn-note fr mt3" onClick={this.onSave}>
+            {this.props.saving ? (
+              <i class="fas fa-circle-notch fa-spin"></i>
+            ) : (
+              <i className="fa fa-save" />
+            )}
           </span>
         </div>
         <div className="RichEditor-root">

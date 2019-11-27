@@ -6,6 +6,7 @@ import TextEditor from "../../components/Editor/TextEditor";
 
 export const ViewNote = (props: any) => {
   const [html, setNoteHTML] = useState();
+  const [saving, setSaving] = useState(false);
 
   const getNoteData = async () => {
     try {
@@ -21,9 +22,14 @@ export const ViewNote = (props: any) => {
     getNoteData();
   }, []);
 
-  const onSave = (content: string) => {
-    uploadToBucket(content, `${props.note.id}.html`);
-    console.log(content, props);
+  const onSave = async (content: string) => {
+    try {
+      setSaving(true);
+      await uploadToBucket(content, `${props.note.id}.html`);
+      setSaving(false);
+    } catch (e) {
+      setSaving(false);
+    }
   };
 
   const onClickNote = (note: any) => {
@@ -43,6 +49,7 @@ export const ViewNote = (props: any) => {
     <div className="view-note-container z-1">
       <TextEditor
         onSave={onSave}
+        saving={saving}
         htmlContent={html}
         title={props.note.title}
         onClickBack={onClickNote}

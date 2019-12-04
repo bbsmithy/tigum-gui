@@ -9,7 +9,7 @@ import {
   Loading,
   Excercises
 } from "../screens/topic-screens/";
-import { Topic } from "../sidebar-navigator/TopicItem";
+import { Topic } from "../client-lib/models";
 
 export enum TOPIC_SCREENS {
   MY_NOTES,
@@ -42,17 +42,17 @@ export const TopicRouter = ({
     case TOPIC_SCREENS.VIDEOS:
       return <Videos topic={topic} setTopic={setTopic} />;
     case TOPIC_SCREENS.ARTICLE_SNIPPETS:
-      return <ArticleSnippets topic={topic} />;
+      return <ArticleSnippets topic={topic} setTopic={setTopic} />;
     case TOPIC_SCREENS.CODE:
       return <Code topic={topic} />;
     case TOPIC_SCREENS.IMAGES:
-      return <Images topic={topic} />;
+      return <Images topic={topic} setTopic={setTopic} />;
     case TOPIC_SCREENS.DOCUMENTS:
-      return <Documents topic={topic} />;
+      return <Documents topic={topic} setTopic={setTopic} />;
     case TOPIC_SCREENS.EXCERCISES:
       return <Excercises />;
     case TOPIC_SCREENS.LOADING:
-      return <Loading topic={topic} />;
+      return <Loading topic={topic} setTopic={setTopic} />;
     default:
       return <div>Howya</div>;
   }

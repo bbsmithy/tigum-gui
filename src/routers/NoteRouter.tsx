@@ -1,6 +1,6 @@
 import React from "react";
 import { AllNotes, ViewNote } from "../screens/note-screens";
-import { Topic } from "../sidebar-navigator/TopicItem";
+import { Topic } from "../client-lib/models";
 
 export enum NOTE_SCREENS {
   ALL_NOTES,

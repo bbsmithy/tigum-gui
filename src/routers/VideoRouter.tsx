@@ -1,7 +1,7 @@
 import React from "react";
 import { AllVideos, VideoPlayer } from "../screens/video-screens";
 import { VideoPlayerProps } from "../types";
-import { Topic } from "../sidebar-navigator/TopicItem";
+import { Topic } from "../client-lib/models";
 
 export enum VIDEO_SCREENS {
   ALL_VIDEOS,

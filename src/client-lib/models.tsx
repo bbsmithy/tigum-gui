@@ -1,3 +1,16 @@
+export type Topic = {
+  id: number;
+  title: string;
+  date_created: string;
+  notes: number[];
+  videos: number[];
+  code: number[];
+  article_snippets: number[];
+  documents: number[];
+  excercises: number[];
+  user_id: number;
+};
+
 export type NewVideo = {
   topic_id: number;
   user_id: number;
@@ -18,6 +31,14 @@ export type ArticleSnippet = {
 
 export type NewArticleSnippet = {
   content: string;
+  origin: string;
+  topic_id: number;
+  user_id: number;
+};
+
+export type NewCode = {
+  content: string;
+  language: string;
   origin: string;
   topic_id: number;
   user_id: number;

@@ -1,4 +1,4 @@
-import { NewVideo, NewArticleSnippet } from "./models";
+import { NewVideo, NewArticleSnippet, NewCode } from "./models";
 
 const BASE_API_URL =
   process.env.NODE_ENV === "development"
@@ -241,6 +241,38 @@ export const createArticleSnippet = async (
     });
     const data = await res.json();
     return data;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const getCodes = async (ids: number[]) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/code/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ids })
+    });
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const createCode = async (newCode: NewCode) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/code/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ...newCode })
+    });
+    return await res.json();
   } catch (e) {
     throw e;
   }

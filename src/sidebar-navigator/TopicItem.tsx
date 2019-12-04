@@ -1,13 +1,7 @@
 import React from "react";
 import { getDate } from "../util/date";
 import { goto } from "../navigation";
-
-export type Topic = {
-  title: string;
-  date_created: string;
-  topic_id: number;
-  content: string;
-};
+import { Topic } from "../client-lib/models";
 
 interface TopicItemProps {
   topic: Topic;

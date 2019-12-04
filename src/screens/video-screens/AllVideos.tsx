@@ -44,7 +44,7 @@ export const AllVideos = (props: any) => {
     const res = await getVideos(ids);
     if (res.status === 200) {
       const body = await res.json();
-      setVideoResources({ videos: body.reverse(), loading: true });
+      setVideoResources({ videos: body.reverse(), loading: false });
     }
   };
 
@@ -128,6 +128,7 @@ export const AllVideos = (props: any) => {
           <VideoCard
             iframe={video.iframe}
             title={video.title}
+            key={video.id}
             thumbnail_img={video.thumbnail_img}
             id={video.id}
             index={index}

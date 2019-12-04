@@ -4,49 +4,6 @@ import { createUseStyles } from "react-jss";
 import { getArticleSnippets, createArticleSnippet } from "../../client-lib/api";
 import { ArticleSnippet, NewArticleSnippet } from "../../client-lib/models";
 
-const dummySnippets = [
-  {
-    origin:
-      "https://techcrunch.com/2019/10/16/evervault-raises-3-2m-from-sequoia-kleiner-for-an-api-to-build-apps-with-privacy-baked-in/",
-    content: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-rebum.`
-  },
-  {
-    origin:
-      "https://techcrunch.com/2019/10/16/evervault-raises-3-2m-from-sequoia-kleiner-for-an-api-to-build-apps-with-privacy-baked-in/",
-    content: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-rebum.`
-  },
-  {
-    origin:
-      "https://techcrunch.com/2019/10/16/evervault-raises-3-2m-from-sequoia-kleiner-for-an-api-to-build-apps-with-privacy-baked-in/",
-    content: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-rebum.`
-  },
-  {
-    origin:
-      "https://techcrunch.com/2019/10/16/evervault-raises-3-2m-from-sequoia-kleiner-for-an-api-to-build-apps-with-privacy-baked-in/",
-    content: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-rebum.`
-  },
-  {
-    origin:
-      "https://techcrunch.com/2019/10/16/evervault-raises-3-2m-from-sequoia-kleiner-for-an-api-to-build-apps-with-privacy-baked-in/",
-    content: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-rebum.`
-  }
-];
-
 const useStyles = createUseStyles({
   paragraphLoading: {
     width: "100%",
@@ -85,7 +42,6 @@ export const ArticleSnippets = (props: any) => {
   };
 
   useEffect(() => {
-    console.log(props);
     fetchArticleSnippets(props.topic.article_snippets);
   }, []);
 

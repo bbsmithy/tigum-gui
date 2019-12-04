@@ -96,7 +96,7 @@ export const AllNotes = (props: any) => {
 
   const renderNotes = () => {
     return notes.map(note => (
-      <Note note={note} key={note.note_id} onClick={onClickNote} />
+      <Note note={note} key={note.id} onClick={onClickNote} />
     ));
   };
 

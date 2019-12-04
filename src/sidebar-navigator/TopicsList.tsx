@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { TopicItem, Topic } from "./TopicItem";
+import { TopicItem } from "./TopicItem";
+import { Topic } from "../client-lib/models";
 import { TOPIC_SCREENS } from "../routers/TopicRouter";
 
 interface TopicsListProps {
@@ -33,7 +34,7 @@ export const TopicsList = ({
         topics.map((topic, index) => (
           <TopicItem
             topic={topic}
-            key={topic.topic_id}
+            key={topic.id}
             selected={selectedId === index}
             id={index}
             onSelectItem={selectTopicItem}

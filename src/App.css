@@ -36,6 +36,10 @@ body {
   margin-right: 10px;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 1200px) {
   #logo {
     display: block;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getCodes, createCode } from "../../client-lib/api";
 import { Topic, NewCode } from "../../client-lib/models";
-import { NewButton, Modal } from "../../components/";
+import { NewButton, Modal, CodeCard } from "../../components/";
 import { createUseStyles } from "react-jss";
 
 type CodeScreenProps = {
@@ -12,21 +12,68 @@ const useStyles = createUseStyles({
   codeBox: {
     height: 250,
     marginTop: 10
+  },
+  codeLineLoading20: {
+    width: "20%",
+    marginTop: 10,
+    padding: 6,
+    height: 5,
+    backgroundColor: "#efefef"
+  },
+  codeLineLoading30: {
+    width: "30%",
+    marginTop: 10,
+    padding: 6,
+    height: 5,
+    backgroundColor: "#efefef"
+  },
+  codeLineLoading40: {
+    width: "40%",
+    marginTop: 10,
+    padding: 6,
+    height: 5,
+    backgroundColor: "#efefef"
+  },
+  codeLineLoading80: {
+    width: "80%",
+    marginTop: 10,
+    padding: 6,
+    height: 5,
+    backgroundColor: "#efefef"
+  },
+  codeLineLoading70: {
+    width: "70%",
+    marginTop: 10,
+    padding: 6,
+    height: 5,
+    backgroundColor: "#efefef"
+  },
+  codeLineLoading10: {
+    width: "10%",
+    marginTop: 10,
+    padding: 6,
+    height: 5,
+    backgroundColor: "#efefef"
   }
 });
 
 export const Code = (props: CodeScreenProps) => {
   const [codeModalOpen, setCodeModalOpen] = useState(false);
   const [codeContent, setCodeContent] = useState();
-  const [selectedLang, setSelectedLang] = useState();
+  const [selectedLang, setSelectedLang] = useState("any");
+  const [codes, setCodes] = useState([]);
+  const [loadingCodes, setLoadingCodes] = useState(true);
 
   const classes = useStyles();
 
   const fetchCodes = async () => {
-    console.log(props.topic);
     if (props.topic.code) {
+      setLoadingCodes(true);
       const res = await getCodes(props.topic.code);
-      console.log(res);
+      setCodes(res);
+      setLoadingCodes(false);
+    } else {
+      setLoadingCodes(false);
     }
   };
 
@@ -43,7 +90,7 @@ export const Code = (props: CodeScreenProps) => {
   };
 
   const onClickCreateCodeSnippet = async () => {
-    const newCode: NewCode = {
+    let newCode: NewCode = {
       content: codeContent,
       language: selectedLang,
       origin: "TIGUM",
@@ -51,7 +98,9 @@ export const Code = (props: CodeScreenProps) => {
       user_id: 123
     };
     const res = await createCode(newCode);
-    console.log("NEW CODE", res);
+    setCodeModalOpen(false);
+    let result = { ...newCode, id: res.id };
+    setCodes([...codes, result]);
   };
 
   const onSelectLanguage = (e: any) => {
@@ -85,11 +134,40 @@ export const Code = (props: CodeScreenProps) => {
     );
   };
 
+  const renderLoading = () => {
+    return (
+      <article className="center shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3">
+        <div className="ph3 pv2">
+          <div className={classes.codeLineLoading10}></div>
+          <div className={classes.codeLineLoading70}></div>
+          <div className={classes.codeLineLoading30}></div>
+          <div className={classes.codeLineLoading80}></div>
+          <div className={classes.codeLineLoading20}></div>
+        </div>
+      </article>
+    );
+  };
+
+  const renderCodes = () => {
+    if (!loadingCodes) {
+      if (codes.length) {
+        return codes.map(code => {
+          return <CodeCard content={code.content} origin={code.origin} />;
+        });
+      } else {
+        return (
+          <div className="no-resources-message">
+            <i className="fas fa-code" /> <span>No code yet</span>
+          </div>
+        );
+      }
+    }
+    return renderLoading();
+  };
+
   return (
     <div className="topic-section-container">
-      <div className="no-resources-message">
-        <i className="fas fa-code" /> <span>No code yet</span>
-      </div>
+      {renderCodes()}
       {renderAddSnippetModal()}
       <NewButton onClick={toggleModal} text="New Code" />
     </div>

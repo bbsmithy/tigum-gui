@@ -38,7 +38,10 @@ export const VideoCard = (props: VideoCardProps) => {
   const title = truncated(props.title, 50);
 
   return (
-    <article className="br2 mv3 mw dib video-card ma3" onClick={onSelect}>
+    <article
+      className="br2 mv3 mw dib video-card ma3 pointer"
+      onClick={onSelect}
+    >
       <img src={props.thumbnail_img} className="db w-100 br2 br--top" />
       <div className="ph3-ns pv3-ns h-30">
         <div className="dib w-90">

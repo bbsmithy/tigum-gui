@@ -14,10 +14,10 @@ export type Topic = {
 export type NewVideo = {
   topic_id: number;
   user_id: number;
-  title: String;
-  iframe: String;
-  origin: String;
-  thumbnail_img: String;
+  title: string;
+  iframe: string;
+  origin: string;
+  thumbnail_img: string;
 };
 
 export type ArticleSnippet = {
@@ -38,6 +38,16 @@ export type NewArticleSnippet = {
 
 export type NewCode = {
   content: string;
+  language: string;
+  origin: string;
+  topic_id: number;
+  user_id: number;
+};
+
+export type Code = {
+  id: number;
+  content: string;
+  date_created: string;
   language: string;
   origin: string;
   topic_id: number;

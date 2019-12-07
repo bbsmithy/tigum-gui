@@ -1,4 +1,4 @@
-import { NewVideo, NewArticleSnippet, NewCode } from "./models";
+import { NewVideo, NewArticleSnippet, NewCode, Code } from "./models";
 
 const BASE_API_URL =
   process.env.NODE_ENV === "development"
@@ -246,7 +246,7 @@ export const createArticleSnippet = async (
   }
 };
 
-export const getCodes = async (ids: number[]) => {
+export const getCodes = async (ids: number[]): Promise<Code[]> => {
   try {
     const res = await fetch(`${BASE_API_URL}/code/`, {
       method: "POST",
@@ -264,6 +264,7 @@ export const getCodes = async (ids: number[]) => {
 
 export const createCode = async (newCode: NewCode) => {
   try {
+    console.log(newCode);
     const res = await fetch(`${BASE_API_URL}/code/create`, {
       method: "POST",
       headers: {

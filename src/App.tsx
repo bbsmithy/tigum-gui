@@ -6,7 +6,7 @@ import { Modal } from "./components/Modal";
 import { TOPIC_SCREENS } from "./routers/TopicRouter";
 import { getTopics } from "./client-lib/api";
 import { TopicsState } from "./types/";
-import AppContextProvider from "./contexts/AppContext";
+import { StateProvider } from "./state/StateProvider";
 import { createTopic } from "./client-lib/api";
 
 const App: React.FC = () => {
@@ -55,9 +55,23 @@ const App: React.FC = () => {
     setTopicTitle(e.currentTarget.value);
   };
 
+  const initialState = {
+    hello: "World"
+  };
+
+  const reducer = (state: any, action: any) => {
+    switch (action.type) {
+      case "change_hello":
+        console.log("CHANGE HELLO RUNNING");
+        return { ...state, hello: action.payload };
+      default:
+        return state;
+    }
+  };
+
   return (
     <div className="App">
-      <AppContextProvider>
+      <StateProvider initialState={initialState} reducer={reducer}>
         <SideBar
           navigate={navigate}
           screen={screen}
@@ -86,7 +100,7 @@ const App: React.FC = () => {
             onChange={onChangeTitle}
           />
         </Modal>
-      </AppContextProvider>
+      </StateProvider>
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { ArticleCard, NewButton, Modal } from "../../components/";
 import { createUseStyles } from "react-jss";
 import { getArticleSnippets, createArticleSnippet } from "../../client-lib/api";
 import { ArticleSnippet, NewArticleSnippet } from "../../client-lib/models";
+import { TOPIC_SCREENS } from "../../routers/TopicRouter";
+import { useStateValue } from "../../state/StateProvider";
 
 const useStyles = createUseStyles({
   paragraphLoading: {
@@ -32,6 +34,12 @@ export const ArticleSnippets = (props: any) => {
   const [snippetContent, setSnippetContent] = useState("");
 
   const classes = useStyles();
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+
+  // useEffect(() => {
+  //   props.navigate(TOPIC_SCREENS.ARTICLE_SNIPPETS, {});
+  // }, [props.topic]);
 
   const fetchArticleSnippets = async (ids: number[]) => {
     setLoading(true);
@@ -100,7 +108,9 @@ export const ArticleSnippets = (props: any) => {
   };
 
   const onChangeSnippetContent = (e: any) => {
+    dispatch({ type: "change_hello", payload: "fuck you" });
     setSnippetContent(e.target.value);
+    console.log(state);
   };
 
   const renderAddSnippetModal = () => {

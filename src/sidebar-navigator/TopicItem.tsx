@@ -28,7 +28,7 @@ export const TopicItem = ({
 
   return (
     <div
-      className={`topic-item-container ${
+      className={`topic-item-container pointer ${
         selected ? "topic-item-container-selected" : ""
       }`}
       onClick={onSelect}

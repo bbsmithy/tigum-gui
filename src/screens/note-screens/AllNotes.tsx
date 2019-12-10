@@ -4,6 +4,7 @@ import { NewButton, Note } from "../../components";
 import { Modal } from "../../components/Modal";
 import { createNote, getNotes, updateTopic } from "../../client-lib/api";
 import { NOTE_SCREENS } from "../../routers/NoteRouter";
+import { useStateValue } from "../../state/StateProvider";
 
 const useStyles = createUseStyles({
   headerLoadingNote: {
@@ -25,9 +26,12 @@ const useStyles = createUseStyles({
 export const AllNotes = (props: any) => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
   const [noteTitle, setNoteTitle] = useState("");
-  const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const classes = useStyles();
+
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+  const { notes, selectedTopic } = state;
 
   const toggleModal = () => {
     setNewNoteModalOpen(!newNoteModalIsOpen);
@@ -38,34 +42,24 @@ export const AllNotes = (props: any) => {
       const res = await getNotes(topic_content);
       if (res.status === 200) {
         const body = await res.json();
-        setNotes(body.reverse());
+        dispatch({ type: "SET_NOTES", payload: body.reverse() });
         setLoading(false);
       }
     } catch (e) {}
   };
 
   useEffect(() => {
-    fetchNotes(props.topic.notes);
-  }, [props.topic.notes]);
-
-  const updateTopicContent = async (newNoteId: number) => {
-    return await updateTopic({
-      ...props.topic,
-      notes: [...props.topic.notes, newNoteId]
-    });
-  };
+    fetchNotes(selectedTopic.notes);
+  }, [selectedTopic.notes]);
 
   const createNewNote = async () => {
-    const res = await createNote(noteTitle, props.topic.id, 123);
+    const res = await createNote(noteTitle, selectedTopic.id, 123);
     if (res.status === 200) {
-      const body = await res.json();
-      const topicUpdate = await updateTopicContent(body.id);
-      const topicJson = await topicUpdate.json();
-      if (topicUpdate.status === 200) {
-        props.setTopic(topicJson);
-        toggleModal();
-        setNoteTitle("");
-      }
+      const newNote = await res.json();
+      debugger;
+      dispatch({ type: "ADD_NOTE", payload: newNote });
+      toggleModal();
+      setNoteTitle("");
     }
   };
 
@@ -95,7 +89,7 @@ export const AllNotes = (props: any) => {
   };
 
   const renderNotes = () => {
-    return notes.map(note => (
+    return notes.map((note: any) => (
       <Note note={note} key={note.id} onClick={onClickNote} />
     ));
   };

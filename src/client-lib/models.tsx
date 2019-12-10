@@ -53,3 +53,11 @@ export type Code = {
   topic_id: number;
   user_id: number;
 };
+
+export type Note = {
+  id: number;
+  title: string;
+  date_created: string;
+  topic_id: number;
+  user_id: number;
+};

@@ -1,9 +1,9 @@
-import { Topic, Code } from "../client-lib/models";
+import { Topic, Code, Note } from "../client-lib/models";
 
 export type InitialState = {
   topics: { data: Array<Topic>; loading: boolean };
   selectedTopic: Topic | null;
-  notes: Array<any>;
+  notes: Array<Note>;
   videos: Array<any>;
   article_snippets: Array<any>;
   code: Array<Code>;
@@ -32,6 +32,11 @@ export const reducer = (state: any, action: any) => {
       return { ...state, topics: { data: action.payload, loading: false } };
     case "SET_SELECTED_TOPIC":
       return { ...state, selectedTopic: action.payload };
+    case "SET_NOTES":
+      return { ...state, notes: action.payload };
+    case "ADD_NOTE":
+      cons;
+      return { ...state, notes: [...state.notes, action.payload] };
     default:
       return state;
   }

@@ -35,7 +35,6 @@ export const reducer = (state: any, action: any) => {
     case "SET_NOTES":
       return { ...state, notes: action.payload };
     case "ADD_NOTE":
-      cons;
       return { ...state, notes: [...state.notes, action.payload] };
     default:
       return state;

@@ -40,6 +40,10 @@ const contentReducer = (state: any, action: any) => {
       return { ...state, notes: action.payload };
     case "ADD_NOTE":
       return { ...state, notes: [...state.notes, action.payload] };
+    case "SET_VIDEOS":
+      return { ...state, videos: action.payload };
+    case "ADD_VIDEO":
+      return { ...state, videos: [...state.videos, action.payload] };
     default:
       return state;
   }

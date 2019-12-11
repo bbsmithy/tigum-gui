@@ -3,24 +3,28 @@ import React from "react";
 import { NoTopicsMessage } from "./NoTopicsMessage";
 import { TOPIC_SCREENS } from "../routers/TopicRouter";
 import { TopicsList } from "./TopicsList";
-import { TopicsState } from "../types";
+import { useStateValue } from "../state/StateProvider";
 
 interface SideBarProps {
   navigate: (screen: TOPIC_SCREENS, data: any) => void;
   screen: TOPIC_SCREENS;
   toggleModal: () => void;
-  topics: TopicsState;
 }
 
 export const SideBar: React.FC<SideBarProps> = ({
   navigate,
   screen,
-  toggleModal,
-  topics
+  toggleModal
 }: SideBarProps) => {
   const onClickNewTopic = () => {
     toggleModal();
   };
+
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+  const {
+    content: { topics }
+  } = state;
 
   return (
     <div id="sidebar" className="z-2">

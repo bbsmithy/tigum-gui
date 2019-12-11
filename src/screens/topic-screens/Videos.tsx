@@ -17,7 +17,6 @@ export const Videos = (props: any) => {
       navigate={navigate}
       video={video}
       topic={props.topic}
-      setTopic={props.setTopic}
     />
   );
 };

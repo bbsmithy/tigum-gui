@@ -48,7 +48,6 @@ export const AllVideos = (props: any) => {
     const res = await getVideos(ids);
     if (res.status === 200) {
       const body = await res.json();
-      console.log("VIDEOS", body);
       dispatch({ type: "SET_VIDEOS", payload: body });
       setLoadingVideos(false);
     }
@@ -75,7 +74,7 @@ export const AllVideos = (props: any) => {
       });
       if (res.status === 200) {
         const body = await res.json();
-        console.log(body);
+        dispatch({ type: "ADD_VIDEO", payload: body });
         toggleModal();
       }
     }

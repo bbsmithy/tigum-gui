@@ -16,7 +16,7 @@ export const MainContent = (props: any) => {
   // @ts-ignore
   const [
     {
-      content: { topics, selectedTopic }
+      content: { selectedTopic }
     },
     dispatch
   ] = useStateValue();
@@ -88,13 +88,7 @@ export const MainContent = (props: any) => {
 
   return (
     <div id="main-content">
-      <SideBar
-        navigate={navigate}
-        screen={screen}
-        topics={topics}
-        toggleModal={toggleModal}
-      />
-      {console.log(props.loading)}
+      <SideBar navigate={navigate} screen={screen} toggleModal={toggleModal} />
       {props.loading ? renderLoading() : renderTopicViewer()}
       <Modal
         display={modalOpen}

@@ -6,6 +6,7 @@ import { getEmbedFromUrl } from "../../util/resource_to_html";
 import { VIDEO_SCREENS } from "../../routers/VideoRouter";
 
 import { createUseStyles } from "react-jss";
+import { useStateValue } from "../../state/StateProvider";
 
 const useStyles = createUseStyles({
   videoLoadingCover: {
@@ -33,10 +34,13 @@ export const AllVideos = (props: any) => {
   const [displayVideoModal, setVideoModal] = useState(false);
   const [videoTitle, setVideoTitle] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
-  const [videoResources, setVideoResources] = useState({
-    videos: [],
-    loading: true
-  });
+  const [loadingVideos, setLoadingVideos] = useState(true);
+
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+  const {
+    content: { videos }
+  } = state;
 
   const classes = useStyles();
 
@@ -44,7 +48,9 @@ export const AllVideos = (props: any) => {
     const res = await getVideos(ids);
     if (res.status === 200) {
       const body = await res.json();
-      setVideoResources({ videos: body.reverse(), loading: false });
+      console.log("VIDEOS", body);
+      dispatch({ type: "SET_VIDEOS", payload: body });
+      setLoadingVideos(false);
     }
   };
 
@@ -56,12 +62,6 @@ export const AllVideos = (props: any) => {
     setVideoModal(!displayVideoModal);
   };
 
-  const updateTopicContent = async (newVideoId: number) => {
-    return await updateTopic({
-      ...props.topic,
-      videos: [...props.topic.videos, newVideoId]
-    });
-  };
   const createVideoResource = async () => {
     const { embedUrl, thumbnailUrl } = getEmbedFromUrl(videoUrl);
     if (embedUrl && thumbnailUrl) {
@@ -75,12 +75,8 @@ export const AllVideos = (props: any) => {
       });
       if (res.status === 200) {
         const body = await res.json();
-        const update = await updateTopicContent(body.id);
-        if (update.status === 200) {
-          const topicJson = await update.json();
-          props.setTopic(topicJson);
-          toggleModal();
-        }
+        console.log(body);
+        toggleModal();
       }
     }
   };
@@ -98,9 +94,9 @@ export const AllVideos = (props: any) => {
   };
 
   const onDeleteVideoCard = (index: number) => {
-    let refreshedVideoResources = [...videoResources.videos];
+    let refreshedVideoResources = [...videos];
     delete refreshedVideoResources[index];
-    setVideoResources({ videos: refreshedVideoResources, loading: false });
+    dispatch({ type: "SET_VIDEOS", payload: refreshedVideoResources });
   };
 
   const renderVideosLoading = () => {
@@ -122,8 +118,8 @@ export const AllVideos = (props: any) => {
   };
 
   const renderVideoResources = () => {
-    if (videoResources.videos.length) {
-      return videoResources.videos.map((video, index) => {
+    if (videos.length) {
+      return videos.map((video, index) => {
         return (
           <VideoCard
             iframe={video.iframe}
@@ -149,8 +145,8 @@ export const AllVideos = (props: any) => {
     <div className="video-page-container">
       <NewButton onClick={toggleModal} text="New Video" />
       <div className="center w-100 ph3">
-        {videoResources.loading && renderVideosLoading()}
-        {!videoResources.loading && renderVideoResources()}
+        {loadingVideos && renderVideosLoading()}
+        {!loadingVideos && renderVideoResources()}
       </div>
       <Modal
         title="New Video"

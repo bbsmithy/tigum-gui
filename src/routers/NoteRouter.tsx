@@ -11,19 +11,13 @@ type NoteRouterType = {
   screen: NOTE_SCREENS;
   topic: Topic;
   note: any;
-  setTopic: (topic: any) => void;
   navigate: (screen: NOTE_SCREENS, note: {}) => void;
 };
 
-export const NoteRouter = ({
-  screen,
-  setTopic,
-  navigate,
-  note
-}: NoteRouterType) => {
+export const NoteRouter = ({ screen, navigate, note }: NoteRouterType) => {
   switch (screen) {
     case NOTE_SCREENS.ALL_NOTES:
-      return <AllNotes setTopic={setTopic} navigate={navigate} />;
+      return <AllNotes navigate={navigate} />;
     case NOTE_SCREENS.VIEW_NOTE:
       return <ViewNote navigate={navigate} note={note} />;
     default:

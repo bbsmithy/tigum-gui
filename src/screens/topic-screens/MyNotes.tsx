@@ -19,7 +19,6 @@ export const MyNotes = (props: any) => {
       topic={props.topic}
       note={note}
       screen={screen}
-      setTopic={props.setTopic}
       navigate={navigate}
     />
   );

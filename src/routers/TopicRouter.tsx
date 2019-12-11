@@ -38,21 +38,21 @@ export const TopicRouter = ({
 }: TopicRouterType) => {
   switch (screen) {
     case TOPIC_SCREENS.MY_NOTES:
-      return <MyNotes topic={topic} setTopic={setTopic} />;
+      return <MyNotes topic={topic} />;
     case TOPIC_SCREENS.VIDEOS:
-      return <Videos topic={topic} setTopic={setTopic} />;
+      return <Videos topic={topic} />;
     case TOPIC_SCREENS.ARTICLE_SNIPPETS:
-      return <ArticleSnippets topic={topic} setTopic={setTopic} />;
+      return <ArticleSnippets topic={topic} />;
     case TOPIC_SCREENS.CODE:
       return <Code topic={topic} />;
     case TOPIC_SCREENS.IMAGES:
-      return <Images topic={topic} setTopic={setTopic} />;
+      return <Images topic={topic} />;
     case TOPIC_SCREENS.DOCUMENTS:
-      return <Documents topic={topic} setTopic={setTopic} />;
+      return <Documents topic={topic} />;
     case TOPIC_SCREENS.EXCERCISES:
       return <Excercises />;
     case TOPIC_SCREENS.LOADING:
-      return <Loading topic={topic} setTopic={setTopic} />;
+      return <Loading topic={topic} />;
     default:
       return <div>Howya</div>;
   }

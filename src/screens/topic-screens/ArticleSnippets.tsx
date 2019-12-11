@@ -47,7 +47,7 @@ export const ArticleSnippets = (props: any) => {
 
   useEffect(() => {
     fetchArticleSnippets(props.topic.article_snippets);
-  }, []);
+  }, [props.topic]);
 
   const renderSnippets = () => {
     return snippets.map(snippet => {

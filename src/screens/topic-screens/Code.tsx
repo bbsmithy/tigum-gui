@@ -79,7 +79,7 @@ export const Code = (props: CodeScreenProps) => {
 
   useEffect(() => {
     fetchCodes();
-  }, []);
+  }, [props.topic]);
 
   const toggleModal = () => {
     setCodeModalOpen(!codeModalOpen);

@@ -1,30 +1,34 @@
 import { Topic, Code, Note } from "../client-lib/models";
 
 export type InitialState = {
-  topics: { data: Array<Topic>; loading: boolean };
-  selectedTopic: Topic | null;
-  notes: Array<Note>;
-  videos: Array<any>;
-  article_snippets: Array<any>;
-  code: Array<Code>;
-  images: Array<any>;
-  documents: Array<any>;
+  content: {
+    topics: { data: Array<Topic>; loading: boolean };
+    selectedTopic: Topic | null;
+    notes: Array<Note>;
+    videos: Array<any>;
+    article_snippets: Array<any>;
+    code: Array<Code>;
+    images: Array<any>;
+    documents: Array<any>;
+  };
   user: any;
 };
 
 export const initialState: InitialState = {
-  topics: { data: [], loading: true },
-  selectedTopic: null,
-  notes: [],
-  videos: [],
-  code: [],
-  article_snippets: [],
-  images: [],
-  documents: [],
+  content: {
+    topics: { data: [], loading: true },
+    selectedTopic: null,
+    notes: [],
+    videos: [],
+    code: [],
+    article_snippets: [],
+    images: [],
+    documents: []
+  },
   user: {}
 };
 
-export const reducer = (state: any, action: any) => {
+const contentReducer = (state: any, action: any) => {
   switch (action.type) {
     case "FETCHING_TOPICS":
       return { ...state, topics: { ...state.topics, loading: true } };
@@ -40,3 +44,15 @@ export const reducer = (state: any, action: any) => {
       return state;
   }
 };
+
+export const navigationReducer = (state: any, action: any) => {
+  switch (action.type) {
+    case "NAVIGATE":
+      return { ...state };
+  }
+};
+
+export const reducer = ({ content, navigation }, action: any) => ({
+  content: contentReducer(content, action),
+  navigation: navigationReducer(navigation, action)
+});

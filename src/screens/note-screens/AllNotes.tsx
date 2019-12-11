@@ -31,7 +31,9 @@ export const AllNotes = (props: any) => {
 
   // @ts-ignore
   const [state, dispatch] = useStateValue();
-  const { notes, selectedTopic } = state;
+  const {
+    content: { notes, selectedTopic }
+  } = state;
 
   const toggleModal = () => {
     setNewNoteModalOpen(!newNoteModalIsOpen);
@@ -56,7 +58,6 @@ export const AllNotes = (props: any) => {
     const res = await createNote(noteTitle, selectedTopic.id, 123);
     if (res.status === 200) {
       const newNote = await res.json();
-      debugger;
       dispatch({ type: "ADD_NOTE", payload: newNote });
       toggleModal();
       setNoteTitle("");

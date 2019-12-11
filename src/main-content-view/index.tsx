@@ -14,7 +14,12 @@ export const MainContent = (props: any) => {
   const [topicTitle, setTopicTitle] = useState("");
 
   // @ts-ignore
-  const [{ topics, selectedTopic }, dispatch] = useStateValue();
+  const [
+    {
+      content: { topics, selectedTopic }
+    },
+    dispatch
+  ] = useStateValue();
 
   const navigate = (screen: TOPIC_SCREENS, topic: any) => {
     setScreen(screen);

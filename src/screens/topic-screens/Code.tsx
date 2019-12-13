@@ -3,6 +3,7 @@ import { getCodes, createCode } from "../../client-lib/api";
 import { Topic, NewCode } from "../../client-lib/models";
 import { NewButton, Modal, CodeCard } from "../../components/";
 import { createUseStyles } from "react-jss";
+import { useStateValue } from "../../state/StateProvider";
 
 type CodeScreenProps = {
   topic: Topic;
@@ -61,8 +62,16 @@ export const Code = (props: CodeScreenProps) => {
   const [codeModalOpen, setCodeModalOpen] = useState(false);
   const [codeContent, setCodeContent] = useState();
   const [selectedLang, setSelectedLang] = useState("any");
-  const [codes, setCodes] = useState([]);
   const [loadingCodes, setLoadingCodes] = useState(true);
+  const [creatingCode, setCreatingCode] = useState(false);
+
+  // @ts-ignore
+  const [
+    {
+      content: { codes }
+    },
+    dispatch
+  ] = useStateValue();
 
   const classes = useStyles();
 
@@ -70,7 +79,7 @@ export const Code = (props: CodeScreenProps) => {
     if (props.topic.code) {
       setLoadingCodes(true);
       const res = await getCodes(props.topic.code);
-      setCodes(res);
+      dispatch({ type: "SET_CODES", payload: res });
       setLoadingCodes(false);
     } else {
       setLoadingCodes(false);
@@ -97,10 +106,16 @@ export const Code = (props: CodeScreenProps) => {
       topic_id: props.topic.id,
       user_id: 123
     };
-    const res = await createCode(newCode);
-    setCodeModalOpen(false);
-    let result = { ...newCode, id: res.id };
-    setCodes([...codes, result]);
+    try {
+      setCreatingCode(true);
+      const res = await createCode(newCode);
+      setCreatingCode(false);
+      setCodeModalOpen(false);
+      let result = { ...newCode, id: res.id };
+      dispatch({ type: "ADD_CODE", payload: result });
+    } catch (e) {
+      setCodeModalOpen(false);
+    }
   };
 
   const onSelectLanguage = (e: any) => {
@@ -113,6 +128,7 @@ export const Code = (props: CodeScreenProps) => {
         title="Create Code Snippet"
         buttonText="Create"
         display={codeModalOpen}
+        loadingAction={creatingCode}
         onClickAction={onClickCreateCodeSnippet}
         toggleModal={toggleModal}
       >
@@ -123,6 +139,7 @@ export const Code = (props: CodeScreenProps) => {
           ></textarea>
         </form>
         <select onChange={onSelectLanguage}>
+          <option value="any">Any</option>
           <option value="javascript">Javascript</option>
           <option value="java">Java</option>
           <option value="c">C</option>

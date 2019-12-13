@@ -7,7 +7,7 @@ export type InitialState = {
     notes: Array<Note>;
     videos: Array<any>;
     article_snippets: Array<any>;
-    code: Array<Code>;
+    codes: Array<Code>;
     images: Array<any>;
     documents: Array<any>;
   };
@@ -20,7 +20,7 @@ export const initialState: InitialState = {
     selectedTopic: null,
     notes: [],
     videos: [],
-    code: [],
+    codes: [],
     article_snippets: [],
     images: [],
     documents: []
@@ -44,6 +44,13 @@ const contentReducer = (state: any, action: any) => {
       return { ...state, videos: action.payload };
     case "ADD_VIDEO":
       return { ...state, videos: [...state.videos, action.payload] };
+    case "SET_CODES":
+      return { ...state, codes: action.payload };
+    case "ADD_CODE":
+      return {
+        ...state,
+        codes: [...state.codes, action.payload]
+      };
     default:
       return state;
   }

@@ -24,6 +24,7 @@ export const ViewNote = (props: any) => {
 
   const onSave = async (content: string) => {
     try {
+      setNoteHTML(content);
       setSaving(true);
       await uploadToBucket(content, `${props.note.id}.html`);
       setSaving(false);

@@ -74,7 +74,7 @@ export const AllNotes = (props: any) => {
 
   const renderLoading = () => {
     return (
-      <div className="card w-25">
+      <div className="card note-card">
         <div className="mw9 center">
           <div className="cf ph2-ns pb4">
             <div className="fl ph2 w-90 pv1">

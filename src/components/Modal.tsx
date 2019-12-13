@@ -7,9 +7,18 @@ interface ModalProps {
   title: string;
   buttonText: string;
   children: ReactNode;
+  loadingAction?: boolean;
 }
 
 export const Modal = (props: ModalProps) => {
+  const renderButtonContent = () => {
+    return props.loadingAction ? (
+      <i className="fas fa-circle-notch fa-spin"></i>
+    ) : (
+      props.buttonText
+    );
+  };
+
   return (
     <div
       id="app-modal"
@@ -29,7 +38,7 @@ export const Modal = (props: ModalProps) => {
             id="create-topic-btn"
             onClick={props.onClickAction}
           >
-            {props.buttonText}
+            {renderButtonContent()}
           </button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { NewVideo, NewArticleSnippet, NewCode, Code } from "./models";
+import { NewVideo, NewArticleSnippet, NewCode, Code, NewImage } from "./models";
 
 const BASE_API_URL =
   process.env.NODE_ENV === "development"
@@ -264,7 +264,6 @@ export const getCodes = async (ids: number[]): Promise<Code[]> => {
 
 export const createCode = async (newCode: NewCode) => {
   try {
-    console.log(newCode);
     const res = await fetch(`${BASE_API_URL}/code/create`, {
       method: "POST",
       headers: {
@@ -272,6 +271,38 @@ export const createCode = async (newCode: NewCode) => {
         "X-User-ID": "test-user-id"
       },
       body: JSON.stringify({ ...newCode })
+    });
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const getImages = async (ids: number[]) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/images`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ids })
+    });
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const createImage = async (newImage: NewImage) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/images/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ...newImage })
     });
     return await res.json();
   } catch (e) {

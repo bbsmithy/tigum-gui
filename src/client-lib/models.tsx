@@ -6,6 +6,7 @@ export type Topic = {
   videos: number[];
   code: number[];
   article_snippets: number[];
+  images: [];
   documents: number[];
   excercises: number[];
   user_id: number;
@@ -58,6 +59,22 @@ export type Note = {
   id: number;
   title: string;
   date_created: string;
+  topic_id: number;
+  user_id: number;
+};
+
+export type Image = {
+  id: number;
+  src: string;
+  origin: string;
+  date_created: string;
+  topic_id: number;
+  user_id: number;
+};
+
+export type NewImage = {
+  src: string;
+  origin: string;
   topic_id: number;
   user_id: number;
 };

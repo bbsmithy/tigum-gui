@@ -51,6 +51,16 @@ const contentReducer = (state: any, action: any) => {
         ...state,
         codes: [...state.codes, action.payload]
       };
+    case "SET_IMAGES":
+      return {
+        ...state,
+        images: action.payload
+      };
+    case "ADD_IMAGE":
+      return {
+        ...state,
+        images: [...state.images, action.payload]
+      };
     default:
       return state;
   }

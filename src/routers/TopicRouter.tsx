@@ -26,16 +26,9 @@ export enum TOPIC_SCREENS {
 type TopicRouterType = {
   screen: TOPIC_SCREENS;
   topic: Topic;
-  navigate: (screen: TOPIC_SCREENS, topic: any) => void;
-  setTopic: (topic: any) => void;
 };
 
-export const TopicRouter = ({
-  screen,
-  topic,
-  navigate,
-  setTopic
-}: TopicRouterType) => {
+export const TopicRouter = ({ screen, topic }: TopicRouterType) => {
   switch (screen) {
     case TOPIC_SCREENS.MY_NOTES:
       return <MyNotes topic={topic} />;

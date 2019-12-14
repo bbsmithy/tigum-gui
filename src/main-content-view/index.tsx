@@ -9,7 +9,6 @@ import { useStateValue } from "../state/StateProvider";
 
 export const MainContent = (props: any) => {
   const [screen, setScreen] = useState(TOPIC_SCREENS.LOADING);
-  const [topic, setTopic] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [topicTitle, setTopicTitle] = useState("");
 
@@ -68,12 +67,7 @@ export const MainContent = (props: any) => {
             topic={selectedTopic}
           />
           <div className="topic-route-container">
-            <TopicRouter
-              screen={screen}
-              topic={selectedTopic}
-              setTopic={setTopic}
-              navigate={navigate}
-            />
+            <TopicRouter screen={screen} topic={selectedTopic} />
           </div>
         </>
       );

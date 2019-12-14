@@ -32,6 +32,7 @@ class RichEditorExample extends React.Component {
     this.focus = () => this.refs.editor.focus();
     this.onChange = editorState => this.setState({ editorState });
     this.onSave = () => this._onSave();
+    this.onDelete = () => this._onDelete();
     this.handleKeyCommand = command => this._handleKeyCommand(command);
     this.onTab = e => this._onTab(e);
     this.toggleBlockType = type => this._toggleBlockType(type);
@@ -77,6 +78,13 @@ class RichEditorExample extends React.Component {
     this.props.onSave(content);
   }
 
+  _onDelete() {
+    const ans = window.confirm("Are you sure you want to delete this note?");
+    if(ans){
+      this.props.onClickDelete();
+    }
+  }
+
   render() {
     const { editorState } = this.state;
 
@@ -88,7 +96,7 @@ class RichEditorExample extends React.Component {
           </span>
           <h3 className="note-title">{this.props.title}</h3>
 
-          <span className="btn-note fr mt3" onClick={this.props.onClickDelete}>
+          <span className="btn-note fr mt3" onClick={this.onDelete}>
             <i className="fa fa-trash" />
           </span>
           <span className="btn-note fr mt3" onClick={this.onSave}>

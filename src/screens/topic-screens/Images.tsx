@@ -33,11 +33,9 @@ export const Images = (props: ImagescreenProps) => {
   const classes = useStyles();
 
   const fetchImages = async () => {
-    console.log(props.topic);
     if (props.topic.images) {
       setLoadingImages(true);
       const res = await getImages(props.topic.images);
-      console.log(props.topic);
       dispatch({ type: "SET_IMAGES", payload: res });
       setLoadingImages(false);
     } else {

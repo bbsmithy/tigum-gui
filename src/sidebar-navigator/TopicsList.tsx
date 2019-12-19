@@ -6,7 +6,7 @@ import { useStateValue } from "../state/StateProvider";
 
 interface TopicsListProps {
   screen: TOPIC_SCREENS;
-  navigate: (screen: TOPIC_SCREENS, data: object) => void;
+  navigate: (screen: TOPIC_SCREENS, topicId: number) => void;
 }
 
 export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
@@ -20,7 +20,7 @@ export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
 
   const selectTopicItem = (id: number, topic: Topic) => {
     setSelected(id);
-    navigate(screen, topic);
+    navigate(screen, topic.id);
   };
 
   const renderLoading = () => {

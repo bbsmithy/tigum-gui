@@ -15,10 +15,19 @@ export const MainContent = (props: any) => {
   // @ts-ignore
   const [
     {
-      content: { selectedTopic }
+      content: {
+        selectedTopic,
+        topics: { data }
+      }
     },
     dispatch
   ] = useStateValue();
+
+  console.log(data, selectedTopic);
+
+  const topic = data[selectedTopic];
+
+  console.log(topic);
 
   const navigate = (screen: TOPIC_SCREENS, topic_id: number) => {
     setScreen(screen);
@@ -34,7 +43,8 @@ export const MainContent = (props: any) => {
     const newTopics = await getTopics([]);
     const orderedTopics = newTopics.reverse();
     dispatch({ type: "SET_TOPICS", payload: orderedTopics });
-    navigate(TOPIC_SCREENS.MY_NOTES, orderedTopics[0]);
+
+    navigate(TOPIC_SCREENS.MY_NOTES, orderedTopics[0].id);
   };
 
   useEffect(() => {
@@ -58,16 +68,16 @@ export const MainContent = (props: any) => {
   };
 
   const renderTopicViewer = () => {
-    if (selectedTopic) {
+    if (topic) {
       return (
         <>
           <TopicNavigationBar
-            title={selectedTopic.title}
+            title={topic.title}
             navigate={navigate}
-            topic={selectedTopic}
+            topic={topic}
           />
           <div className="topic-route-container">
-            <TopicRouter screen={screen} topic={selectedTopic} />
+            <TopicRouter screen={screen} topic={topic} />
           </div>
         </>
       );

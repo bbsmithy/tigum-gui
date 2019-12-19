@@ -4,7 +4,7 @@ import { topicsToKeys } from "./StateHelpers";
 export type InitialState = {
   content: {
     topics: { data: any; keys: number[]; loading: boolean };
-    selectedTopic: Topic | null;
+    selectedTopic: number;
     notes: Array<Note>;
     videos: Array<any>;
     article_snippets: Array<any>;
@@ -33,11 +33,20 @@ const contentReducer = (state: any, action: any) => {
   console.log("CONTENT ACTION", action);
   switch (action.type) {
     case "FETCHING_TOPICS":
-      return { ...state, topics: { ...state.topics, loading: true } };
+      return {
+        ...state,
+        topics: {
+          data: { ...state.topics.data },
+          keys: [...state.topics.keys],
+          loading: true
+        }
+      };
     case "SET_TOPICS":
       const { data, keys } = topicsToKeys(action.payload);
+      console.log(data, keys);
       return { ...state, topics: { data, keys, loading: false } };
     case "SET_SELECTED_TOPIC":
+      console.log(action.payload);
       return { ...state, selectedTopic: action.payload };
     case "SET_SNIPPETS":
       return { ...state, article_snippets: action.payload };

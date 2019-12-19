@@ -32,12 +32,18 @@ export const AllNotes = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { notes, selectedTopic }
+    content: {
+      notes,
+      selectedTopic,
+      topics: { data }
+    }
   } = state;
 
   const toggleModal = () => {
     setNewNoteModalOpen(!newNoteModalIsOpen);
   };
+
+  const topic = data[selectedTopic];
 
   const fetchNotes = async (topic_content: Array<number>) => {
     try {
@@ -51,11 +57,11 @@ export const AllNotes = (props: any) => {
   };
 
   useEffect(() => {
-    fetchNotes(selectedTopic.notes);
-  }, [selectedTopic.notes]);
+    fetchNotes(topic.notes);
+  }, [topic.notes]);
 
   const createNewNote = async () => {
-    const res = await createNote(noteTitle, selectedTopic.id, 123);
+    const res = await createNote(noteTitle, topic.id, 123);
     if (res.status === 200) {
       const newNote = await res.json();
       dispatch({ type: "ADD_NOTE", payload: newNote });

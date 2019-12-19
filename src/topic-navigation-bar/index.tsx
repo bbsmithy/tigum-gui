@@ -54,7 +54,7 @@ export const TopicNavigationBar = ({
   ];
 
   const onSelectNavItem = (e: any) => {
-    navigate(navItems[e.currentTarget.value].screen, topic);
+    navigate(navItems[e.currentTarget.value].screen, topic.id);
     setSelectedNavItem(parseInt(e.currentTarget.value));
   };
 

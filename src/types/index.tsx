@@ -7,8 +7,3 @@ export type VideoPlayerProps = {
   iframe: string;
   title: string;
 };
-
-export type ArticleCardProps = {
-  origin: string;
-  content: string;
-};

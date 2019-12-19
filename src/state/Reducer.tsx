@@ -1,8 +1,9 @@
 import { Topic, Code, Note } from "../client-lib/models";
+import { topicsToKeys } from "./StateHelpers";
 
 export type InitialState = {
   content: {
-    topics: { data: Array<Topic>; loading: boolean };
+    topics: { data: any; keys: number[]; loading: boolean };
     selectedTopic: Topic | null;
     notes: Array<Note>;
     videos: Array<any>;
@@ -16,7 +17,7 @@ export type InitialState = {
 
 export const initialState: InitialState = {
   content: {
-    topics: { data: [], loading: true },
+    topics: { data: {}, keys: [], loading: true },
     selectedTopic: null,
     notes: [],
     videos: [],
@@ -29,13 +30,22 @@ export const initialState: InitialState = {
 };
 
 const contentReducer = (state: any, action: any) => {
+  console.log("CONTENT ACTION", action);
   switch (action.type) {
     case "FETCHING_TOPICS":
       return { ...state, topics: { ...state.topics, loading: true } };
     case "SET_TOPICS":
-      return { ...state, topics: { data: action.payload, loading: false } };
+      const { data, keys } = topicsToKeys(action.payload);
+      return { ...state, topics: { data, keys, loading: false } };
     case "SET_SELECTED_TOPIC":
       return { ...state, selectedTopic: action.payload };
+    case "SET_SNIPPETS":
+      return { ...state, article_snippets: action.payload };
+    case "ADD_SNIPPET":
+      return {
+        ...state,
+        article_snippets: [action.payload, ...state.article_snippets]
+      };
     case "SET_NOTES":
       return { ...state, notes: action.payload };
     case "ADD_NOTE":

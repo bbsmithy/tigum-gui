@@ -21,7 +21,7 @@ export const SideBar: React.FC<SideBarProps> = ({
   };
 
   // @ts-ignore
-  const [state, dispatch] = useStateValue();
+  const [state] = useStateValue();
   const {
     content: { topics }
   } = state;
@@ -38,13 +38,8 @@ export const SideBar: React.FC<SideBarProps> = ({
         </button>
       </div>
       <div id="sidebar-list">
-        <TopicsList
-          topics={topics.data}
-          loading={topics.loading}
-          screen={screen}
-          navigate={navigate}
-        />
-        {topics.data.length === 0 && !topics.loading && <NoTopicsMessage />}
+        <TopicsList screen={screen} navigate={navigate} />
+        {topics.keys.length === 0 && !topics.loading && <NoTopicsMessage />}
       </div>
     </div>
   );

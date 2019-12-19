@@ -20,9 +20,9 @@ export const MainContent = (props: any) => {
     dispatch
   ] = useStateValue();
 
-  const navigate = (screen: TOPIC_SCREENS, topic: any) => {
+  const navigate = (screen: TOPIC_SCREENS, topic_id: number) => {
     setScreen(screen);
-    dispatch({ type: "SET_SELECTED_TOPIC", payload: topic });
+    dispatch({ type: "SET_SELECTED_TOPIC", payload: topic_id });
   };
 
   const toggleModal = () => {

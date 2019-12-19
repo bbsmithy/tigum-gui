@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ArticleCard, NewButton, Modal } from "../../components/";
 import { createUseStyles } from "react-jss";
 import { getArticleSnippets, createArticleSnippet } from "../../client-lib/api";
-import { ArticleSnippet, NewArticleSnippet } from "../../client-lib/models";
+import { NewArticleSnippet } from "../../client-lib/models";
 
 import { useStateValue } from "../../state/StateProvider";
 
@@ -28,7 +28,6 @@ const useStyles = createUseStyles({
 });
 
 export const ArticleSnippets = (props: any) => {
-  const [snippets, setSnippets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [createSnippetModalOpen, setCreateSnippetModalOpen] = useState(false);
   const [snippetContent, setSnippetContent] = useState("");
@@ -36,12 +35,14 @@ export const ArticleSnippets = (props: any) => {
   const classes = useStyles();
   // @ts-ignore
   const [state, dispatch] = useStateValue();
+  const {
+    content: { article_snippets }
+  } = state;
 
   const fetchArticleSnippets = async (ids: number[]) => {
     setLoading(true);
     const res = await getArticleSnippets(ids);
-    const snippets = await res.json();
-    setSnippets(snippets);
+    dispatch({ type: "SET_SNIPPETS", payload: res });
     setLoading(false);
   };
 
@@ -50,11 +51,13 @@ export const ArticleSnippets = (props: any) => {
   }, [props.topic]);
 
   const renderSnippets = () => {
-    return snippets.map(snippet => {
+    return article_snippets.map((snippet, idx) => {
       return (
         <ArticleCard
           content={snippet.content}
           origin={snippet.origin}
+          index={idx}
+          id={snippet.id}
           key={snippet.id}
         />
       );
@@ -98,8 +101,8 @@ export const ArticleSnippets = (props: any) => {
         user_id: 123
       };
       const res = await createArticleSnippet(newSnippet);
+      dispatch({ type: "ADD_SNIPPET", payload: res });
       toggleModal();
-      fetchArticleSnippets([...props.topic.article_snippets, res.id]);
     }
   };
 
@@ -131,7 +134,7 @@ export const ArticleSnippets = (props: any) => {
       {renderAddSnippetModal()}
       <NewButton onClick={toggleModal} text="New Snippet" />
       {loading ? renderLoading() : renderSnippets()}
-      {!loading && !snippets.length && renderNoSnippets()}
+      {!loading && !article_snippets.length && renderNoSnippets()}
     </div>
   );
 };

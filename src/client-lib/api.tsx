@@ -1,4 +1,5 @@
 import { NewVideo, NewArticleSnippet, NewCode, Code, NewImage } from "./models";
+import { async } from "q";
 
 const BASE_API_URL =
   process.env.NODE_ENV === "development"
@@ -221,7 +222,8 @@ export const getArticleSnippets = async (ids: number[]) => {
       },
       body: JSON.stringify({ ids })
     });
-    return res;
+    const article_snippets_list = await res.json();
+    return article_snippets_list.reverse();
   } catch (e) {
     throw e;
   }
@@ -241,6 +243,21 @@ export const createArticleSnippet = async (
     });
     const data = await res.json();
     return data;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const deleteArticleSnippet = async (id: number) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/article_snippets/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      }
+    });
+    return res;
   } catch (e) {
     throw e;
   }

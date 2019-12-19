@@ -9,15 +9,8 @@ type ImagescreenProps = {
   topic: Topic;
 };
 
-const useStyles = createUseStyles({
-  codeBox: {
-    height: 250,
-    marginTop: 10
-  }
-});
-
 export const Images = (props: ImagescreenProps) => {
-  const [codeModalOpen, setImageModalOpen] = useState(false);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
   const [imageSrc, setImageSource] = useState();
   const [loadingImages, setLoadingImages] = useState(true);
   const [creatingImage, setCreatingImage] = useState(false);
@@ -29,8 +22,6 @@ export const Images = (props: ImagescreenProps) => {
     },
     dispatch
   ] = useStateValue();
-
-  const classes = useStyles();
 
   const fetchImages = async () => {
     if (props.topic.images) {
@@ -48,7 +39,7 @@ export const Images = (props: ImagescreenProps) => {
   }, [props.topic]);
 
   const toggleModal = () => {
-    setImageModalOpen(!codeModalOpen);
+    setImageModalOpen(!imageModalOpen);
   };
 
   const onChangeSrcUrl = (e: any) => {
@@ -82,7 +73,7 @@ export const Images = (props: ImagescreenProps) => {
       <Modal
         title="Create Image"
         buttonText="Create"
-        display={codeModalOpen}
+        display={imageModalOpen}
         loadingAction={creatingImage}
         onClickAction={onClickCreateImagesnippet}
         toggleModal={toggleModal}

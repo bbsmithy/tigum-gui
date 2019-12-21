@@ -67,6 +67,11 @@ export const Links = (props: any) => {
     }
   }, [topic.links]);
 
+  const resetAddLink = () => {
+    setLinkTitle("");
+    setLinkSrc("");
+  };
+
   const createNewLink = async () => {
     const newLink: NewLink = {
       topic_id: selectedTopic,
@@ -75,12 +80,9 @@ export const Links = (props: any) => {
       title: linkTitle
     };
     const res = await createLink(newLink);
-    if (res.status === 200) {
-      const newLink = await res.json();
-      dispatch({ type: "ADD_LINK", payload: newLink });
-      toggleModal();
-      setLinkTitle("");
-    }
+    dispatch({ type: "ADD_LINK", payload: res });
+    toggleModal();
+    resetAddLink();
   };
 
   const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
@@ -123,7 +125,6 @@ export const Links = (props: any) => {
   return (
     <div className="ph2 mt4 pt3">
       <NewButton onClick={toggleModal} text="New Link" />
-      {console.log(loading, links)}
       {loading ? renderLoading() : renderLinks()}
       {!links.length && !loading && renderNoLinks()}
       <Modal

@@ -1,5 +1,4 @@
 import React from "react";
-import { getDate } from "../util/date";
 import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles({
@@ -19,23 +18,18 @@ const useStyles = createUseStyles({
 export const LinkCard = (props: any) => {
   const classes = useStyles();
 
-  const navigateToNote = () => {
-    props.onClick(props.link);
-  };
-
-  const renderDate = () => {
-    const dateText = new Date(props.link.date_created);
-    return getDate(dateText);
-  };
-
   return (
-    <div className="card note-card pointer" onClick={navigateToNote}>
+    <a
+      href={props.link.source}
+      target="blank"
+      className="card note-card pointer"
+    >
       <div className="mw9 center">
         <div className="cf ph2-ns">
           <div className="fl ph2 w-90 pv1">
             <div className="bg-white">
               <h4 className={classes.documentTitle}>{props.link.title}</h4>
-              <b className={classes.documentSubTitle}>{renderDate()}</b>
+              <b className={classes.documentSubTitle}>{props.link.source}</b>
             </div>
           </div>
           <div className="fl w-10 pv4">
@@ -45,6 +39,6 @@ export const LinkCard = (props: any) => {
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 };

@@ -2,18 +2,19 @@ import React, { useState, useEffect } from "react";
 import { createUseStyles } from "react-jss";
 import { NewButton, LinkCard } from "../../components";
 import { Modal } from "../../components/Modal";
-import { createNote, getNotes } from "../../client-lib/api";
+import { getLinks, createLink } from "../../client-lib/api";
 import { useStateValue } from "../../state/StateProvider";
+import { NewLink } from "../../client-lib/models";
 
 const useStyles = createUseStyles({
-  headerLoadingNote: {
+  headerLoadingLink: {
     width: "70%",
     padding: 6,
     marginTop: 10,
     background: "#efefef",
     height: 6
   },
-  dateLoadingNote: {
+  dateLoadingLink: {
     width: "50%",
     padding: 3,
     marginTop: 10,
@@ -23,8 +24,9 @@ const useStyles = createUseStyles({
 });
 
 export const Links = (props: any) => {
-  const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
-  const [noteTitle, setNoteTitle] = useState("");
+  const [newLinkModalIsOpen, setNewLinkModalOpen] = useState(false);
+  const [linkTitle, setLinkTitle] = useState("");
+  const [linkSrc, setLinkSrc] = useState("");
   const [loading, setLoading] = useState(true);
   const classes = useStyles();
 
@@ -32,47 +34,61 @@ export const Links = (props: any) => {
   const [state, dispatch] = useStateValue();
   const {
     content: {
-      notes,
+      links,
       selectedTopic,
       topics: { data }
     }
   } = state;
 
   const toggleModal = () => {
-    setNewNoteModalOpen(!newNoteModalIsOpen);
+    setNewLinkModalOpen(!newLinkModalIsOpen);
   };
 
   const topic = data[selectedTopic];
 
-  const fetchNotes = async (topic_content: Array<number>) => {
+  const fetchLinks = async (topic_content: Array<number>) => {
     try {
-      const res = await getNotes(topic_content);
-      if (res.status === 200) {
-        const body = await res.json();
-        dispatch({ type: "SET_NOTES", payload: body.reverse() });
-        setLoading(false);
-      }
+      const res = await getLinks(topic_content);
+      dispatch({ type: "SET_LINKS", payload: res.reverse() });
+      setLoading(false);
     } catch (e) {
       console.log(e);
+      dispatch({ type: "SET_LINKS", payload: [] });
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchNotes(topic.notes);
-  }, [topic.notes]);
+    if (topic.links.length) {
+      fetchLinks(topic.links);
+    } else {
+      dispatch({ type: "SET_LINKS", payload: [] });
+      setLoading(false);
+    }
+  }, [topic.links]);
 
-  const createNewNote = async () => {
-    const res = await createNote(noteTitle, topic.id, 123);
+  const createNewLink = async () => {
+    const newLink: NewLink = {
+      topic_id: selectedTopic,
+      user_id: 123,
+      source: linkSrc,
+      title: linkTitle
+    };
+    const res = await createLink(newLink);
     if (res.status === 200) {
-      const newNote = await res.json();
-      dispatch({ type: "ADD_NOTE", payload: newNote });
+      const newLink = await res.json();
+      dispatch({ type: "ADD_LINK", payload: newLink });
       toggleModal();
-      setNoteTitle("");
+      setLinkTitle("");
     }
   };
 
   const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
-    setNoteTitle(e.currentTarget.value);
+    setLinkTitle(e.currentTarget.value);
+  };
+
+  const onChangeSrc = (e: React.FormEvent<HTMLInputElement>) => {
+    setLinkSrc(e.currentTarget.value);
   };
 
   const renderLoading = () => {
@@ -82,8 +98,8 @@ export const Links = (props: any) => {
           <div className="cf ph2-ns pb4">
             <div className="fl ph2 w-90 pv1">
               <div className="bg-white">
-                <div className={classes.headerLoadingNote}></div>
-                <div className={classes.dateLoadingNote}></div>
+                <div className={classes.headerLoadingLink}></div>
+                <div className={classes.dateLoadingLink}></div>
               </div>
             </div>
           </div>
@@ -92,14 +108,14 @@ export const Links = (props: any) => {
     );
   };
 
-  const renderNotes = () => {
-    return notes.map((note: any) => <LinkCard note={note} key={note.id} />);
+  const renderLinks = () => {
+    return links.map((link: any) => <LinkCard link={link} key={link.id} />);
   };
 
-  const renderNoNotes = () => {
+  const renderNoLinks = () => {
     return (
       <div className="no-resources-message">
-        <i className="fas fa-pen-square" /> <span>No notes yet</span>
+        <i className="fas fa-link" /> <span>No links yet</span>
       </div>
     );
   };
@@ -107,21 +123,29 @@ export const Links = (props: any) => {
   return (
     <div className="ph2 mt4 pt3">
       <NewButton onClick={toggleModal} text="New Link" />
-      {loading ? renderLoading() : renderNotes()}
-      {!notes.length && !loading && renderNoNotes()}
+      {console.log(loading, links)}
+      {loading ? renderLoading() : renderLinks()}
+      {!links.length && !loading && renderNoLinks()}
       <Modal
         title="New Link"
-        display={newNoteModalIsOpen}
+        display={newLinkModalIsOpen}
         toggleModal={toggleModal}
         buttonText="Add Link"
-        onClickAction={createNewNote}
+        onClickAction={createNewLink}
       >
         <input
           type="text"
-          placeholder="Link Title"
+          placeholder="Title"
           id="topic-title-input"
-          value={noteTitle}
+          value={linkTitle}
           onChange={onChangeTitle}
+        />
+        <input
+          type="text"
+          placeholder="URL"
+          id="topic-title-input"
+          value={linkSrc}
+          onChange={onChangeSrc}
         />
       </Modal>
     </div>

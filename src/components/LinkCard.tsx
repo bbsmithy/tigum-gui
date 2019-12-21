@@ -20,11 +20,11 @@ export const LinkCard = (props: any) => {
   const classes = useStyles();
 
   const navigateToNote = () => {
-    props.onClick(props.note);
+    props.onClick(props.link);
   };
 
   const renderDate = () => {
-    const dateText = new Date(props.note.date_created);
+    const dateText = new Date(props.link.date_created);
     return getDate(dateText);
   };
 
@@ -34,7 +34,7 @@ export const LinkCard = (props: any) => {
         <div className="cf ph2-ns">
           <div className="fl ph2 w-90 pv1">
             <div className="bg-white">
-              <h4 className={classes.documentTitle}>{props.note.title}</h4>
+              <h4 className={classes.documentTitle}>{props.link.title}</h4>
               <b className={classes.documentSubTitle}>{renderDate()}</b>
             </div>
           </div>

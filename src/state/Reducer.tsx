@@ -1,4 +1,4 @@
-import { Topic, Code, Note } from "../client-lib/models";
+import { Topic, Code, Note, Link, Image } from "../client-lib/models";
 import { topicsToKeys } from "./StateHelpers";
 
 export type InitialState = {
@@ -9,8 +9,8 @@ export type InitialState = {
     videos: Array<any>;
     article_snippets: Array<any>;
     codes: Array<Code>;
-    images: Array<any>;
-    documents: Array<any>;
+    images: Array<Image>;
+    links: Array<Link>;
   };
   user: any;
 };
@@ -24,13 +24,13 @@ export const initialState: InitialState = {
     codes: [],
     article_snippets: [],
     images: [],
-    documents: []
+    links: []
   },
   user: {}
 };
 
 const contentReducer = (state: any, action: any) => {
-  console.log("CONTENT ACTION", action);
+  console.log(action.type, action.payload);
   switch (action.type) {
     case "FETCHING_TOPICS":
       return {
@@ -43,10 +43,8 @@ const contentReducer = (state: any, action: any) => {
       };
     case "SET_TOPICS":
       const { data, keys } = topicsToKeys(action.payload);
-      console.log(data, keys);
       return { ...state, topics: { data, keys, loading: false } };
     case "SET_SELECTED_TOPIC":
-      console.log(action.payload);
       return { ...state, selectedTopic: action.payload };
     case "SET_SNIPPETS":
       return { ...state, article_snippets: action.payload };
@@ -79,6 +77,16 @@ const contentReducer = (state: any, action: any) => {
       return {
         ...state,
         images: [...state.images, action.payload]
+      };
+    case "SET_LINKS":
+      return {
+        ...state,
+        links: action.payload
+      };
+    case "ADD_LINK":
+      return {
+        ...state,
+        links: [action.payload, ...state.links]
       };
     default:
       return state;

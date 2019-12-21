@@ -82,6 +82,7 @@ export const Code = (props: CodeScreenProps) => {
       dispatch({ type: "SET_CODES", payload: res });
       setLoadingCodes(false);
     } else {
+      dispatch({ type: "SET_CODES", payload: [] });
       setLoadingCodes(false);
     }
   };

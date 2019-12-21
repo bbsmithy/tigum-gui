@@ -344,6 +344,7 @@ export const getLinks = async (ids: number[]) => {
       },
       body: JSON.stringify({ ids })
     });
+    console.log("RESPONSE GET_LINKS", res);
     return await res.json();
   } catch (e) {
     throw e;
@@ -352,7 +353,7 @@ export const getLinks = async (ids: number[]) => {
 
 export const createLink = async (newLink: NewLink) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/images/create`, {
+    const res = await fetch(`${BASE_API_URL}/links/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

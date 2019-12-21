@@ -28,6 +28,7 @@ export const Links = (props: any) => {
   const [linkTitle, setLinkTitle] = useState("");
   const [linkSrc, setLinkSrc] = useState("");
   const [loading, setLoading] = useState(true);
+  const [creatingLink, setCreatingLink] = useState(false);
   const classes = useStyles();
 
   // @ts-ignore
@@ -73,16 +74,22 @@ export const Links = (props: any) => {
   };
 
   const createNewLink = async () => {
-    const newLink: NewLink = {
-      topic_id: selectedTopic,
-      user_id: 123,
-      source: linkSrc,
-      title: linkTitle
-    };
-    const res = await createLink(newLink);
-    dispatch({ type: "ADD_LINK", payload: res });
-    toggleModal();
-    resetAddLink();
+    try {
+      setCreatingLink(true);
+      const newLink: NewLink = {
+        topic_id: selectedTopic,
+        user_id: 123,
+        source: linkSrc,
+        title: linkTitle
+      };
+      const res = await createLink(newLink);
+      dispatch({ type: "ADD_LINK", payload: res });
+      setCreatingLink(false);
+      toggleModal();
+      resetAddLink();
+    } catch (e) {
+      setCreatingLink(false);
+    }
   };
 
   const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
@@ -132,6 +139,7 @@ export const Links = (props: any) => {
         display={newLinkModalIsOpen}
         toggleModal={toggleModal}
         buttonText="Add Link"
+        loadingAction={creatingLink}
         onClickAction={createNewLink}
       >
         <input

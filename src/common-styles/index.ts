@@ -27,3 +27,7 @@ export const simmer = createUseStyles({
     }
   }
 });
+
+export const divider = {
+  border: "0.5px solid #efefef"
+};

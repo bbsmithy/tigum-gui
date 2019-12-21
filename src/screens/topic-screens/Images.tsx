@@ -100,8 +100,15 @@ export const Images = (props: ImagescreenProps) => {
   const renderImages = () => {
     if (!loadingImages) {
       if (images.length) {
-        return images.map(image => {
-          return <ImageCard src={image.src} origin={image.origin} />;
+        return images.map((image, idx) => {
+          return (
+            <ImageCard
+              src={image.src}
+              origin={image.origin}
+              id={image.id}
+              index={idx}
+            />
+          );
         });
       } else {
         return (

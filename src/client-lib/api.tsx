@@ -6,7 +6,6 @@ import {
   NewImage,
   NewLink
 } from "./models";
-import { async } from "q";
 
 const BASE_API_URL =
   process.env.NODE_ENV === "development"
@@ -302,6 +301,21 @@ export const createCode = async (newCode: NewCode) => {
   }
 };
 
+export const deleteCode = async (id: number) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/code/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      }
+    });
+    return res;
+  } catch (e) {
+    throw e;
+  }
+};
+
 export const getImages = async (ids: number[]) => {
   try {
     const res = await fetch(`${BASE_API_URL}/images`, {
@@ -329,6 +343,21 @@ export const createImage = async (newImage: NewImage) => {
       body: JSON.stringify({ ...newImage })
     });
     return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const deleteImage = async (id: number) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/images/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      }
+    });
+    return res;
   } catch (e) {
     throw e;
   }

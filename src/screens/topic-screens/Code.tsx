@@ -169,8 +169,15 @@ export const Code = (props: CodeScreenProps) => {
   const renderCodes = () => {
     if (!loadingCodes) {
       if (codes.length) {
-        return codes.map(code => {
-          return <CodeCard content={code.content} origin={code.origin} />;
+        return codes.map((code, idx) => {
+          return (
+            <CodeCard
+              content={code.content}
+              origin={code.origin}
+              id={code.id}
+              index={idx}
+            />
+          );
         });
       } else {
         return (

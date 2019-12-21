@@ -5,7 +5,7 @@ import {
   ArticleSnippets,
   Code,
   Images,
-  Documents,
+  Links,
   Loading,
   Excercises
 } from "../screens/topic-screens/";
@@ -17,7 +17,7 @@ export enum TOPIC_SCREENS {
   ARTICLE_SNIPPETS,
   CODE,
   IMAGES,
-  DOCUMENTS,
+  LINKS,
   EXCERCISES,
   LOADING,
   NONE
@@ -40,8 +40,8 @@ export const TopicRouter = ({ screen, topic }: TopicRouterType) => {
       return <Code topic={topic} />;
     case TOPIC_SCREENS.IMAGES:
       return <Images topic={topic} />;
-    case TOPIC_SCREENS.DOCUMENTS:
-      return <Documents topic={topic} />;
+    case TOPIC_SCREENS.LINKS:
+      return <Links topic={topic} />;
     case TOPIC_SCREENS.EXCERCISES:
       return <Excercises />;
     case TOPIC_SCREENS.LOADING:

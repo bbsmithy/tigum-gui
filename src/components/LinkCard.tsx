@@ -1,7 +1,24 @@
 import React from "react";
 import { getDate } from "../util/date";
+import { createUseStyles } from "react-jss";
 
-export const Note = (props: any) => {
+const useStyles = createUseStyles({
+  documentTitle: {
+    display: "inline-block",
+    fontSize: 18
+  },
+  documentSubTitle: {
+    color: "gray",
+    fontSize: 12,
+    fontStyle: "italic",
+    display: "block",
+    marginBottom: 10
+  }
+});
+
+export const LinkCard = (props: any) => {
+  const classes = useStyles();
+
   const navigateToNote = () => {
     props.onClick(props.note);
   };
@@ -17,8 +34,8 @@ export const Note = (props: any) => {
         <div className="cf ph2-ns">
           <div className="fl ph2 w-90 pv1">
             <div className="bg-white">
-              <h4 className="note-card-title">{props.note.title}</h4>
-              <p className="note-sub-title">{renderDate()}</p>
+              <h4 className={classes.documentTitle}>{props.note.title}</h4>
+              <b className={classes.documentSubTitle}>{renderDate()}</b>
             </div>
           </div>
           <div className="fl w-10 pv4">

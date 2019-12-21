@@ -1,1 +1,0 @@
-export { AllDocuments } from "./AllDocuments";

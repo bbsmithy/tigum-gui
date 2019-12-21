@@ -1,4 +1,11 @@
-import { NewVideo, NewArticleSnippet, NewCode, Code, NewImage } from "./models";
+import {
+  NewVideo,
+  NewArticleSnippet,
+  NewCode,
+  Code,
+  NewImage,
+  NewLink
+} from "./models";
 import { async } from "q";
 
 const BASE_API_URL =
@@ -320,6 +327,38 @@ export const createImage = async (newImage: NewImage) => {
         "X-User-ID": "test-user-id"
       },
       body: JSON.stringify({ ...newImage })
+    });
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const getLinks = async (ids: number[]) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/links`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ids })
+    });
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const createLink = async (newLink: NewLink) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/images/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      body: JSON.stringify({ ...newLink })
     });
     return await res.json();
   } catch (e) {

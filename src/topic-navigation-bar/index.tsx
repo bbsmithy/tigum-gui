@@ -47,9 +47,9 @@ export const TopicNavigationBar = ({
       screen: TOPIC_SCREENS.IMAGES
     },
     {
-      title: "Documents",
-      icon: "fas fa-file-alt",
-      screen: TOPIC_SCREENS.DOCUMENTS
+      title: "Links",
+      icon: "fas fa-link",
+      screen: TOPIC_SCREENS.LINKS
     }
   ];
 

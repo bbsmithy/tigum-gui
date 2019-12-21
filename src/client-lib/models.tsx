@@ -7,7 +7,7 @@ export type Topic = {
   code: number[];
   article_snippets: number[];
   images: [];
-  documents: number[];
+  links: number[];
   excercises: number[];
   user_id: number;
 };
@@ -77,4 +77,20 @@ export type NewImage = {
   origin: string;
   topic_id: number;
   user_id: number;
+};
+
+export type Link = {
+  id: number;
+  title: string;
+  topic_id: number;
+  user_id: number;
+  source: string;
+  date_created: string;
+};
+
+export type NewLink = {
+  title: string;
+  topic_id: number;
+  user_id: number;
+  source: string;
 };

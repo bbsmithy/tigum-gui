@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { createUseStyles } from "react-jss";
-import { NewButton, Note } from "../../components";
+import { NewButton, LinkCard } from "../../components";
 import { Modal } from "../../components/Modal";
-import { createNote, getNotes, updateTopic } from "../../client-lib/api";
-import { NOTE_SCREENS } from "../../routers/NoteRouter";
+import { createNote, getNotes } from "../../client-lib/api";
 import { useStateValue } from "../../state/StateProvider";
 
 const useStyles = createUseStyles({
@@ -23,7 +22,7 @@ const useStyles = createUseStyles({
   }
 });
 
-export const AllDocuments = (props: any) => {
+export const Links = (props: any) => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
   const [noteTitle, setNoteTitle] = useState("");
   const [loading, setLoading] = useState(true);
@@ -53,7 +52,9 @@ export const AllDocuments = (props: any) => {
         dispatch({ type: "SET_NOTES", payload: body.reverse() });
         setLoading(false);
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -74,10 +75,6 @@ export const AllDocuments = (props: any) => {
     setNoteTitle(e.currentTarget.value);
   };
 
-  const onClickNote = (note: any) => {
-    props.navigate(NOTE_SCREENS.VIEW_NOTE, note);
-  };
-
   const renderLoading = () => {
     return (
       <div className="card note-card">
@@ -96,9 +93,7 @@ export const AllDocuments = (props: any) => {
   };
 
   const renderNotes = () => {
-    return notes.map((note: any) => (
-      <Note note={note} key={note.id} onClick={onClickNote} />
-    ));
+    return notes.map((note: any) => <LinkCard note={note} key={note.id} />);
   };
 
   const renderNoNotes = () => {
@@ -111,19 +106,19 @@ export const AllDocuments = (props: any) => {
 
   return (
     <div className="ph2 mt4 pt3">
-      <NewButton onClick={toggleModal} text="New Note" />
+      <NewButton onClick={toggleModal} text="New Link" />
       {loading ? renderLoading() : renderNotes()}
       {!notes.length && !loading && renderNoNotes()}
       <Modal
-        title="New Note"
+        title="New Link"
         display={newNoteModalIsOpen}
         toggleModal={toggleModal}
-        buttonText="Add Note"
+        buttonText="Add Link"
         onClickAction={createNewNote}
       >
         <input
           type="text"
-          placeholder="Note Title"
+          placeholder="Link Title"
           id="topic-title-input"
           value={noteTitle}
           onChange={onChangeTitle}

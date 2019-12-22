@@ -11,7 +11,7 @@ export enum VIDEO_SCREENS {
 type VideoRouterType = {
   screen: VIDEO_SCREENS;
   video: VideoPlayerProps;
-  navigate: (screen: VIDEO_SCREENS, video: VideoPlayerProps) => void;
+  navigate: (screen: VIDEO_SCREENS, video?: VideoPlayerProps) => void;
   topic: Topic;
 };
 
@@ -25,7 +25,13 @@ export const VideoRouter = ({
     case VIDEO_SCREENS.ALL_VIDEOS:
       return <AllVideos navigate={navigate} topic={topic} />;
     case VIDEO_SCREENS.VIDEO_PLAYER:
-      return <VideoPlayer iframe={video.iframe} title={video.title} />;
+      return (
+        <VideoPlayer
+          iframe={video.iframe}
+          title={video.title}
+          navigate={navigate}
+        />
+      );
     default:
       break;
   }

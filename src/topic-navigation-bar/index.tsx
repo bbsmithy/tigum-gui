@@ -60,11 +60,11 @@ export const TopicNavigationBar = ({
 
   return (
     <nav className="dt fixed bg-white w-80 border-box ph3-ns bb b--light-gray z-2">
-      <div className="dtc w-25">
+      <div className="dtc">
         <h2 id="topic-header">{title}</h2>
         <OptionsButton options={topicMenuOptions} />
       </div>
-      <div className="dtc v-mid w-75 tr">
+      <div className="dtc v-mid tr">
         {navItems.map((navItem, idx) => {
           console.log(idx, selectedNavItem);
           return (

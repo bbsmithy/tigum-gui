@@ -75,12 +75,13 @@ class RichEditorExample extends React.Component {
 
   _onSave() {
     const content = stateToHTML(this.state.editorState.getCurrentContent());
+    console.log(content);
     this.props.onSave(content);
   }
 
   _onDelete() {
     const ans = window.confirm("Are you sure you want to delete this note?");
-    if(ans){
+    if (ans) {
       this.props.onClickDelete();
     }
   }
@@ -122,7 +123,6 @@ class RichEditorExample extends React.Component {
           <div className={`RichEditor-editor`} onClick={this.focus}>
             <Editor
               blockStyleFn={getBlockStyle}
-              customStyleMap={styleMap}
               editorState={editorState}
               handleKeyCommand={this.handleKeyCommand}
               onChange={this.onChange}
@@ -137,16 +137,6 @@ class RichEditorExample extends React.Component {
     );
   }
 }
-
-// Custom overrides for "code" style.
-const styleMap = {
-  CODE: {
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
-    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-    fontSize: 16,
-    padding: 2
-  }
-};
 
 function getBlockStyle(block) {
   switch (block.getType()) {
@@ -219,8 +209,7 @@ const BlockStyleControls = props => {
 var INLINE_STYLES = [
   { label: "Bold", style: "BOLD" },
   { label: "Italic", style: "ITALIC" },
-  { label: "Underline", style: "UNDERLINE" },
-  { label: "Monospace", style: "CODE" }
+  { label: "Underline", style: "UNDERLINE" }
 ];
 
 const InlineStyleControls = props => {

@@ -17,17 +17,13 @@ export const MainContent = (props: any) => {
     {
       content: {
         selectedTopic,
-        topics: { data }
+        topics: { data, loading }
       }
     },
     dispatch
   ] = useStateValue();
 
-  console.log(data, selectedTopic);
-
   const topic = data[selectedTopic];
-
-  console.log(topic);
 
   const navigate = (screen: TOPIC_SCREENS, topic_id: number) => {
     setScreen(screen);
@@ -40,11 +36,15 @@ export const MainContent = (props: any) => {
 
   const fetchTopics = async () => {
     dispatch({ type: "FETCHING_TOPICS" });
-    const newTopics = await getTopics([]);
-    const orderedTopics = newTopics.reverse();
-    dispatch({ type: "SET_TOPICS", payload: orderedTopics });
-
-    navigate(TOPIC_SCREENS.MY_NOTES, orderedTopics[0].id);
+    try {
+      const newTopics = await getTopics([]);
+      const orderedTopics = newTopics.reverse();
+      dispatch({ type: "SET_TOPICS", payload: orderedTopics });
+      navigate(TOPIC_SCREENS.MY_NOTES, orderedTopics[0].id);
+    } catch (e) {
+      console.log("Could not fetch topics");
+      dispatch({ type: "SET_TOPICS_FAILURE" });
+    }
   };
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export const MainContent = (props: any) => {
         </>
       );
     } else {
-      return <h3>No topics</h3>;
+      return <h3>No topic</h3>;
     }
   };
 
@@ -93,7 +93,7 @@ export const MainContent = (props: any) => {
   return (
     <div id="main-content">
       <SideBar navigate={navigate} screen={screen} toggleModal={toggleModal} />
-      {props.loading ? renderLoading() : renderTopicViewer()}
+      {loading ? renderLoading() : renderTopicViewer()}
       <Modal
         display={modalOpen}
         toggleModal={toggleModal}

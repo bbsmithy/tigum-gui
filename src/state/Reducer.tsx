@@ -30,7 +30,6 @@ export const initialState: InitialState = {
 };
 
 const contentReducer = (state: any, action: any) => {
-  console.log(action.type, action.payload);
   switch (action.type) {
     case "FETCHING_TOPICS":
       return {
@@ -44,6 +43,8 @@ const contentReducer = (state: any, action: any) => {
     case "SET_TOPICS":
       const { data, keys } = topicsToKeys(action.payload);
       return { ...state, topics: { data, keys, loading: false } };
+    case "SET_TOPICS_FAILURE":
+      return { ...state, topics: { ...state.topics, loading: false } };
     case "SET_SELECTED_TOPIC":
       return { ...state, selectedTopic: action.payload };
     case "SET_SNIPPETS":

@@ -1,5 +1,6 @@
 import { Topic, Code, Note, Link, Image } from "../client-lib/models";
 import { topicsToKeys } from "./StateHelpers";
+import { string } from "prop-types";
 
 export type InitialState = {
   content: {
@@ -12,7 +13,12 @@ export type InitialState = {
     images: Array<Image>;
     links: Array<Link>;
   };
-  user: any;
+  user: {
+    name: string;
+    id: number;
+    email: string;
+    loggedIn: boolean;
+  };
 };
 
 export const initialState: InitialState = {
@@ -26,17 +32,22 @@ export const initialState: InitialState = {
     images: [],
     links: []
   },
-  user: {}
+  user: {
+    name: "",
+    id: null,
+    email: "",
+    loggedIn: false
+  }
 };
 
 const contentReducer = (state: any, action: any) => {
+  console.log(state);
   switch (action.type) {
     case "FETCHING_TOPICS":
       return {
         ...state,
         topics: {
-          data: { ...state.topics.data },
-          keys: [...state.topics.keys],
+          ...state.topics,
           loading: true
         }
       };
@@ -98,10 +109,32 @@ export const navigationReducer = (state: any, action: any) => {
   switch (action.type) {
     case "NAVIGATE":
       return { ...state };
+    default:
+      return state;
   }
 };
 
-export const reducer = ({ content, navigation }, action: any) => ({
-  content: contentReducer(content, action),
-  navigation: navigationReducer(navigation, action)
-});
+export const userReducer = (state: any, action: any) => {
+  console.log(state);
+  switch (action.type) {
+    case "LOGIN_SUCCESS":
+      return {
+        ...state,
+        name: action.payload.name,
+        id: action.payload.id,
+        email: action.payload.email,
+        loggedIn: true
+      };
+    default:
+      return state;
+  }
+};
+
+export const reducer = ({ content, navigation, user }, action: any) => {
+  console.log(action.type, action.payload);
+  return {
+    content: contentReducer(content, action),
+    navigation: navigationReducer(navigation, action),
+    user: userReducer(user, action)
+  };
+};

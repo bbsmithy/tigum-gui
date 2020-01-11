@@ -1,14 +1,19 @@
-import React, { useState, useEffect, ChangeEventHandler } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import { MainContent } from "./main-content-view";
-import { StateProvider } from "./state/StateProvider";
+import { Login } from "./Login";
+import { Auth } from "./Auth";
+import { StateProvider, useStateValue } from "./state/StateProvider";
 import { reducer, initialState } from "./state/Reducer";
 
 const App: React.FC = () => {
+  const renderSplashScreen = () => {
+    return <p>Splash screen</p>;
+  };
+
   return (
     <div className="App">
       <StateProvider initialState={initialState} reducer={reducer}>
-        <MainContent />
+        <Auth />
       </StateProvider>
     </div>
   );

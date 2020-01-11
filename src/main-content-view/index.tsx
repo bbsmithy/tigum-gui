@@ -42,6 +42,7 @@ export const MainContent = (props: any) => {
       dispatch({ type: "SET_TOPICS", payload: orderedTopics });
       navigate(TOPIC_SCREENS.MY_NOTES, orderedTopics[0].id);
     } catch (e) {
+      console.log(e.status);
       console.log("Could not fetch topics");
       dispatch({ type: "SET_TOPICS_FAILURE" });
     }
@@ -90,25 +91,37 @@ export const MainContent = (props: any) => {
     return <h3>Loading</h3>;
   };
 
-  return (
-    <div id="main-content">
-      <SideBar navigate={navigate} screen={screen} toggleModal={toggleModal} />
-      {loading ? renderLoading() : renderTopicViewer()}
-      <Modal
-        display={modalOpen}
-        toggleModal={toggleModal}
-        onClickAction={onClickCreateTopic}
-        buttonText="Create"
-        title="Create Topic"
-      >
-        <input
-          type="text"
-          placeholder="Title"
-          id="topic-title-input"
-          value={topicTitle}
-          onChange={onChangeTitle}
+  const renderApp = () => {
+    return (
+      <>
+        <SideBar
+          navigate={navigate}
+          screen={screen}
+          toggleModal={toggleModal}
         />
-      </Modal>
-    </div>
-  );
+        {loading ? renderLoading() : renderTopicViewer()}
+        <Modal
+          display={modalOpen}
+          toggleModal={toggleModal}
+          onClickAction={onClickCreateTopic}
+          buttonText="Create"
+          title="Create Topic"
+        >
+          <input
+            type="text"
+            placeholder="Title"
+            id="topic-title-input"
+            value={topicTitle}
+            onChange={onChangeTitle}
+          />
+        </Modal>
+      </>
+    );
+  };
+
+  const renderLoginSignUp = () => {
+    return <p>Hello</p>;
+  };
+
+  return <div id="main-content">{renderApp()}</div>;
 };

@@ -20,10 +20,14 @@ export const getTopics = async (topicIds: Array<number>) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ids: topicIds })
     });
-    return await res.json();
+    if (res.status === 200) {
+      return await res.json();
+    }
   } catch (e) {
+    console.log(e);
     throw e;
   }
 };
@@ -36,6 +40,7 @@ export const createTopic = async (title: String, user_id: number) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ title, user_id })
     });
     return await res;
@@ -52,6 +57,7 @@ export const updateTopic = async (topic: any) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ...topic })
     });
     return await res;
@@ -72,6 +78,7 @@ export const createNote = async (
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ title, topic_id, user_id })
     });
     return await res;
@@ -103,6 +110,7 @@ export const getNotes = async (note_ids: Array<number>) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ids: note_ids })
     });
     return await res;
@@ -125,6 +133,7 @@ export const createResource = async (
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({
         content_type,
         content,
@@ -163,6 +172,7 @@ export const getResources = async (ids: Array<number>) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ids })
     });
     return await res;
@@ -179,6 +189,7 @@ export const getVideos = async (ids: Array<number>) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ids })
     });
     return await res;
@@ -195,6 +206,7 @@ export const createVideo = async (newVideo: NewVideo) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ...newVideo })
     });
     return await res;
@@ -226,6 +238,7 @@ export const getArticleSnippets = async (ids: number[]) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ids })
     });
     const article_snippets_list = await res.json();
@@ -245,6 +258,7 @@ export const createArticleSnippet = async (
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ...newArticleSnippet })
     });
     const data = await res.json();
@@ -277,6 +291,7 @@ export const getCodes = async (ids: number[]): Promise<Code[]> => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ids })
     });
     return await res.json();
@@ -293,6 +308,7 @@ export const createCode = async (newCode: NewCode) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ...newCode })
     });
     return await res.json();
@@ -324,6 +340,7 @@ export const getImages = async (ids: number[]) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ids })
     });
     return await res.json();
@@ -340,6 +357,7 @@ export const createImage = async (newImage: NewImage) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ...newImage })
     });
     return await res.json();
@@ -371,9 +389,9 @@ export const getLinks = async (ids: number[]) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ids })
     });
-    console.log("RESPONSE GET_LINKS", res);
     return await res.json();
   } catch (e) {
     throw e;
@@ -388,7 +406,41 @@ export const createLink = async (newLink: NewLink) => {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
       },
+      credentials: "include",
       body: JSON.stringify({ ...newLink })
+    });
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/user/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      credentials: "include",
+      body: JSON.stringify({ email, password })
+    });
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const checkLogin = async () => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/user/checklogin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      credentials: "include"
     });
     return await res.json();
   } catch (e) {

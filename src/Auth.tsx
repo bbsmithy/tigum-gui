@@ -15,7 +15,9 @@ export const Auth = () => {
       const user = await checkLogin();
       dispatch({ type: "LOGIN_SUCCESS", payload: user });
       setShowSplash(false);
-    } catch (e) {}
+    } catch (e) {
+      setShowSplash(false);
+    }
   };
 
   useEffect(() => {

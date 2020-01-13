@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Login } from "./Login";
+import { Login } from "./screens/auth-screens/Login";
 import { useEffect } from "react";
 import { checkLogin } from "./client-lib/api";
 import { useStateValue } from "./state/StateProvider";
@@ -26,7 +26,16 @@ export const Auth = () => {
 
   if (showSplash && !state.user.loggedIn) {
     return (
-      <div style={{ margin: "auto", textAlign: "center", marginTop: "22%" }}>
+      <div
+        style={{
+          margin: "auto",
+          textAlign: "center",
+          marginTop: "22%",
+          backgroundColor: "#1f1f1f",
+          height: "100%",
+          width: "100%"
+        }}
+      >
         <img src={require("./logo.png")} height={45} />
       </div>
     );

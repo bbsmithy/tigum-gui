@@ -43,7 +43,7 @@ export const OptionsButton = (props: OptionsButtonProps) => {
   return (
     <div onClick={onClickMenu} className="dib ph3">
       <div className="pa1 tc br-100 options-btn">
-        <i className="fas fa-ellipsis-v" />
+        <i className="fas fa-ellipsis-v white" />
       </div>
       {showOptions && <OptionsList options={props.options} />}
     </div>

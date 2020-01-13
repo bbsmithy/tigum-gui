@@ -22,7 +22,7 @@ export const TopicNavigationBar = ({
 
   const navItems = [
     {
-      title: "My Notes",
+      title: "Notes",
       icon: "fas fa-pen-square",
       screen: TOPIC_SCREENS.MY_NOTES
     },
@@ -59,14 +59,13 @@ export const TopicNavigationBar = ({
   };
 
   return (
-    <nav className="dt fixed bg-white w-80 border-box ph3-ns bb b--light-gray z-2">
+    <nav className="dt fixed topic-navigation-bar w-80 border-box ph3-ns z-2">
       <div className="dtc">
         <h2 id="topic-header">{title}</h2>
         <OptionsButton options={topicMenuOptions} />
       </div>
       <div className="dtc v-mid tr">
         {navItems.map((navItem, idx) => {
-          console.log(idx, selectedNavItem);
           return (
             <button
               className={`btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns ${idx ===

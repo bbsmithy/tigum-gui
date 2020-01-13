@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { loginUser } from "./client-lib/api";
-import { useStateValue } from "./state/StateProvider";
+import { loginUser } from "../../client-lib/api";
+import { useStateValue } from "../../state/StateProvider";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -37,7 +37,7 @@ export const Login = () => {
   return (
     <main className="pa4 black-80">
       <div className="measure center">
-        <img src={require("./logo.png")} className="w-33" />
+        <img src={require("../../logo.png")} className="w-33" />
         <p>A personal knowledge base built for developers</p>
         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
           <div className="mt3">

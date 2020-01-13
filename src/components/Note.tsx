@@ -16,13 +16,13 @@ export const Note = (props: any) => {
       <div className="mw9 center">
         <div className="cf ph2-ns">
           <div className="fl ph2 w-90 pv1">
-            <div className="bg-white">
+            <div>
               <h4 className="note-card-title">{props.note.title}</h4>
               <p className="note-sub-title">{renderDate()}</p>
             </div>
           </div>
           <div className="fl w-10 pv4">
-            <div className="bg-white">
+            <div>
               <i className="fas fa-chevron-right"></i>
             </div>
           </div>

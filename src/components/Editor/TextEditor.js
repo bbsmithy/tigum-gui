@@ -91,7 +91,7 @@ class RichEditorExample extends React.Component {
 
     return (
       <div>
-        <div className="fixed center bg-white title-controls-container">
+        <div className="fixed center title-controls-container">
           <span className="btn-note" onClick={this.props.onClickBack}>
             <i className="fa fa-arrow-left" />
           </span>
@@ -109,7 +109,7 @@ class RichEditorExample extends React.Component {
           </span>
         </div>
         <div className="RichEditor-root">
-          <div className="bg-white editor-controls fixed">
+          <div className="editor-controls fixed">
             <BlockStyleControls
               editorState={editorState}
               onToggle={this.toggleBlockType}

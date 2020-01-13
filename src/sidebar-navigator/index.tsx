@@ -4,6 +4,14 @@ import { NoTopicsMessage } from "./NoTopicsMessage";
 import { TOPIC_SCREENS } from "../routers/TopicRouter";
 import { TopicsList } from "./TopicsList";
 import { useStateValue } from "../state/StateProvider";
+import { createUseStyles } from "react-jss";
+
+const useStyles = createUseStyles({
+  sidebarContainer: {
+    backgroundColor: "#333",
+    color: "white"
+  }
+});
 
 interface SideBarProps {
   navigate: (screen: TOPIC_SCREENS, data: any) => void;
@@ -26,8 +34,10 @@ export const SideBar: React.FC<SideBarProps> = ({
     content: { topics }
   } = state;
 
+  const classes = useStyles();
+
   return (
-    <div id="sidebar" className="z-2">
+    <div id="sidebar" className={classes.sidebarContainer}>
       <div id="sidebar-header">
         <div id="logo-container">
           <img src={logo} id="logo" />

@@ -1,12 +1,14 @@
 #topic-navigation-bar {
   position: fixed;
-  background-color: white;
+  background-color: #333;
+  border-bottom: 1px solid black;
 }
 
 #topic-header {
   font-weight: 800;
   font-size: 17px;
   padding: 1px;
+  color: white;
   display: inline-block;
 }
 

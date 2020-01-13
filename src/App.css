@@ -2,6 +2,7 @@ body {
   padding: 0px;
   margin: 0px;
   font-family: "Montserrat", sans-serif;
+  background-color: #1f1f1f;
 }
 
 .display-inline {
@@ -61,7 +62,6 @@ body {
   left: 0;
   z-index: 1000;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-  border-right: 1px solid rgb(235, 236, 237);
   width: 20%;
   height: 100%;
   flex-direction: row;
@@ -80,7 +80,7 @@ body {
 }
 
 #sidebar-header {
-  border-bottom: 1px solid rgb(235, 236, 237);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
   padding: 9px;
 }
 
@@ -132,6 +132,7 @@ body {
   height: 100%;
   overflow-y: scroll;
   font-family: "Montserrat", sans-serif;
+  background-color: #1f1f1f;
 }
 
 .btn {
@@ -149,7 +150,7 @@ body {
 .topic-item-date {
   font-weight: 100;
   font-size: 12px;
-  color: grey;
+  color: white;
 }
 
 .topic-item-name-container {
@@ -158,15 +159,15 @@ body {
 
 .topic-item-container {
   padding: 10px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   margin-left: 8px;
-  border-bottom: 1px solid rgb(235, 236, 237);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.6);
   direction: ltr;
 }
 
 .topic-item-container-selected {
-  border-right: 4px solid black;
+  border-right: 4px solid white;
 }
 
 .modal {
@@ -300,6 +301,8 @@ button:focus {
 
 .note-card {
   width: 31%;
+  background-color: #333333;
+  color: white;
 }
 
 .shadow-card {
@@ -315,6 +318,7 @@ button:focus {
 .note-title {
   display: inline-block;
   margin-left: 15px;
+  color: white;
 }
 
 .btn-note:hover {
@@ -340,6 +344,10 @@ button:focus {
 
 .topic-section-container {
   margin-top: 70px;
+}
+
+.topic-route-container {
+  background-color: #1f1f1f;
 }
 
 .title-controls-container {
@@ -424,7 +432,7 @@ button:focus {
 
 .options-list-item {
   padding: 5px 10px 5px 10px;
-  border-bottom: 1px gray;
+  border-bottom: 1px white;
 }
 
 .options-list-item:hover {

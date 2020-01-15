@@ -53,11 +53,6 @@ export const TopicNavigationBar = ({
     }
   ];
 
-  const onSelectNavItem = (e: any) => {
-    navigate(navItems[e.currentTarget.value].screen, topic.id);
-    setSelectedNavItem(parseInt(e.currentTarget.value));
-  };
-
   return (
     <nav className="dt fixed topic-navigation-bar w-80 border-box ph3-ns z-2">
       <div className="dtc">
@@ -67,15 +62,17 @@ export const TopicNavigationBar = ({
       <div className="dtc v-mid tr">
         {navItems.map((navItem, idx) => {
           return (
-            <button
+            <div
               className={`btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns ${idx ===
                 selectedNavItem && "selected"}`}
               key={navItem.title}
-              value={idx}
-              onClick={onSelectNavItem}
+              onClick={() => {
+                navigate(navItem.screen, topic.id);
+                setSelectedNavItem(idx);
+              }}
             >
               <i className={navItem.icon} /> {navItem.title}
-            </button>
+            </div>
           );
         })}
       </div>

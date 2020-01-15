@@ -27,13 +27,13 @@ export const LinkCard = (props: any) => {
       <div className="mw9 center">
         <div className="cf ph2-ns">
           <div className="fl ph2 w-90 pv1">
-            <div className="bg-white">
+            <div>
               <h4 className={classes.documentTitle}>{props.link.title}</h4>
               <b className={classes.documentSubTitle}>{props.link.source}</b>
             </div>
           </div>
           <div className="fl w-10 pv4">
-            <div className="bg-white">
+            <div>
               <i className="fas fa-chevron-right"></i>
             </div>
           </div>

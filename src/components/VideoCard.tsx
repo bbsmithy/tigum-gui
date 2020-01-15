@@ -45,7 +45,7 @@ export const VideoCard = (props: VideoCardProps) => {
       <img src={props.thumbnail_img} className="db w-100 br2 br--top" />
       <div className="ph3-ns pv3-ns h-30">
         <div className="dib w-90">
-          <h2 className="f3 f5-ns mv0">{title}</h2>
+          <h2 className="f3 f5-ns mv0 text">{title}</h2>
         </div>
         <div className="dib w-10">
           <OptionsButton options={videoCardOptions} />

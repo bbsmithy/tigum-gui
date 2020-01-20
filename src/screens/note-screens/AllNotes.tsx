@@ -112,7 +112,7 @@ export const AllNotes = (props: any) => {
   return (
     <div className="ph2 mt4 pt3">
       <NewButton onClick={toggleModal} text="New Note" />
-      {loading ? renderLoading() : renderNotes()}
+      {notes.length && !loading && renderNotes()}
       {!notes.length && !loading && renderNoNotes()}
       <Modal
         title="New Note"

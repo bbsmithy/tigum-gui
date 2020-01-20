@@ -143,10 +143,7 @@ export const AllVideos = (props: any) => {
   return (
     <div className="video-page-container">
       <NewButton onClick={toggleModal} text="New Video" />
-      <div className="center w-100 ph3">
-        {loadingVideos && renderVideosLoading()}
-        {!loadingVideos && renderVideoResources()}
-      </div>
+      <div className="center w-100 ph3">{renderVideoResources()}</div>
       <Modal
         title="New Video"
         display={displayVideoModal}

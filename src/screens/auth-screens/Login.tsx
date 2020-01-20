@@ -35,7 +35,7 @@ export const Login = () => {
   };
 
   return (
-    <main className="pa4 black-80">
+    <main className="pa4 white">
       <div className="measure center">
         <img src={require("../../logo.png")} className="w-33" />
         <p>A personal knowledge base built for developers</p>
@@ -43,7 +43,7 @@ export const Login = () => {
           <div className="mt3">
             <label className="db fw6 lh-copy f6">Email</label>
             <input
-              className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+              className="pa2 input-reset ba bg-transparent b--white hover-bg-black hover-white w-100"
               type="email"
               onChange={onChangeEmail}
               value={email}
@@ -54,7 +54,7 @@ export const Login = () => {
           <div className="mv3">
             <label className="db fw6 lh-copy f6">Password</label>
             <input
-              className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+              className="b pa2 bc-white input-reset b--white ba bg-transparent hover-bg-black hover-white w-100"
               type="password"
               onChange={onChangePassword}
               value={password}
@@ -62,16 +62,16 @@ export const Login = () => {
               id="password"
             />
           </div>
-          <label className="pa0 ma0 lh-copy f6 pointer">
+          <label className="pa0 ma0 lh-copy f6 pointer b--white">
             <input type="checkbox" /> Remember me
           </label>
         </fieldset>
         <div>
           <p>{loginError}</p>
         </div>
-        <div className="">
+        <div className="white">
           <button
-            className="b ph3 pv2 input-reset ba b--black bg-transparent pointer f6 dib"
+            className="b ph3 pv2 input-reset ba b--white bg-transparent white pointer f6 dib"
             type="submit"
             disabled={authing}
             onClick={login}
@@ -82,14 +82,6 @@ export const Login = () => {
               "Login"
             )}
           </button>
-        </div>
-        <div className="lh-copy mt3">
-          <a href="#0" className="f6 link dim black db">
-            Sign up
-          </a>
-          <a href="#0" className="f6 link dim black db">
-            Forgot your password?
-          </a>
         </div>
       </div>
     </main>

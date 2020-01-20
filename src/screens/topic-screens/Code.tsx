@@ -187,7 +187,7 @@ export const Code = (props: CodeScreenProps) => {
         );
       }
     }
-    return renderLoading();
+    return null;
   };
 
   return (

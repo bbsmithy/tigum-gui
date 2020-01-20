@@ -133,7 +133,7 @@ export const ArticleSnippets = (props: any) => {
     <div className="topic-section-container">
       {renderAddSnippetModal()}
       <NewButton onClick={toggleModal} text="New Snippet" />
-      {loading ? renderLoading() : renderSnippets()}
+      {!loading && !article_snippets.length && renderSnippets()}
       {!loading && !article_snippets.length && renderNoSnippets()}
     </div>
   );

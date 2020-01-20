@@ -43,7 +43,7 @@ export const SideBar: React.FC<SideBarProps> = ({
           <img src={logo} id="logo" />
         </div>
         <button id="new-btn" onClick={onClickNewTopic}>
-          <span>New Topic</span>
+          <span>New Project</span>
           <i className="fas fa-plus-circle" />
         </button>
       </div>

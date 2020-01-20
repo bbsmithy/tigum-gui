@@ -118,7 +118,7 @@ export const Images = (props: ImagescreenProps) => {
         );
       }
     }
-    return renderLoading();
+    return null;
   };
 
   return (

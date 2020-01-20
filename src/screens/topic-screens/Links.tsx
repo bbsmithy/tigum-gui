@@ -132,7 +132,7 @@ export const Links = (props: any) => {
   return (
     <div className="ph2 mt4 pt3">
       <NewButton onClick={toggleModal} text="New Link" />
-      {loading ? renderLoading() : renderLinks()}
+      {links.length && loading && renderLinks()}
       {!links.length && !loading && renderNoLinks()}
       <Modal
         title="New Link"

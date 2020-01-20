@@ -122,7 +122,7 @@ export const Images = (props: ImagescreenProps) => {
   };
 
   return (
-    <div className="topic-section-container">
+    <div className="ph2 mt4 pt3">
       {renderImages()}
       {renderAddSnippetModal()}
       <NewButton onClick={toggleModal} text="New Image" />

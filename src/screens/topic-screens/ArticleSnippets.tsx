@@ -51,17 +51,23 @@ export const ArticleSnippets = (props: any) => {
   }, [props.topic]);
 
   const renderSnippets = () => {
-    return article_snippets.map((snippet, idx) => {
-      return (
-        <ArticleCard
-          content={snippet.content}
-          origin={snippet.origin}
-          index={idx}
-          id={snippet.id}
-          key={snippet.id}
-        />
-      );
-    });
+    if (!article_snippets.loading) {
+      if (article_snippets.length) {
+        return article_snippets.map((snippet, idx) => {
+          return (
+            <ArticleCard
+              content={snippet.content}
+              origin={snippet.origin}
+              index={idx}
+              id={snippet.id}
+              key={snippet.id}
+            />
+          );
+        });
+      } else {
+        return renderNoSnippets();
+      }
+    }
   };
 
   const renderLoading = () => {
@@ -80,10 +86,8 @@ export const ArticleSnippets = (props: any) => {
 
   const renderNoSnippets = () => {
     return (
-      <div className="topic-section-container">
-        <div className="no-resources-message">
-          <i className="fas fa-newspaper" /> <span>No snippets yet</span>
-        </div>
+      <div className="no-resources-message">
+        <i className="fas fa-newspaper" /> <span>No snippets yet</span>
       </div>
     );
   };
@@ -130,11 +134,10 @@ export const ArticleSnippets = (props: any) => {
   };
 
   return (
-    <div className="topic-section-container">
+    <div className="ph2 mt4 pt3">
       {renderAddSnippetModal()}
       <NewButton onClick={toggleModal} text="New Snippet" />
-      {!loading && !article_snippets.length && renderSnippets()}
-      {!loading && !article_snippets.length && renderNoSnippets()}
+      {renderSnippets()}
     </div>
   );
 };

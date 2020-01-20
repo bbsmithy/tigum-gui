@@ -118,7 +118,13 @@ export const Links = (props: any) => {
   };
 
   const renderLinks = () => {
-    return links.map((link: any) => <LinkCard link={link} key={link.id} />);
+    if (!loading) {
+      if (links.length) {
+        return links.map((link: any) => <LinkCard link={link} key={link.id} />);
+      } else {
+        return renderNoLinks();
+      }
+    }
   };
 
   const renderNoLinks = () => {
@@ -132,8 +138,7 @@ export const Links = (props: any) => {
   return (
     <div className="ph2 mt4 pt3">
       <NewButton onClick={toggleModal} text="New Link" />
-      {links.length && loading && renderLinks()}
-      {!links.length && !loading && renderNoLinks()}
+      {renderLinks()}
       <Modal
         title="New Link"
         display={newLinkModalIsOpen}

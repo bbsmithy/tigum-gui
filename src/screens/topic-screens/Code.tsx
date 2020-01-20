@@ -191,7 +191,7 @@ export const Code = (props: CodeScreenProps) => {
   };
 
   return (
-    <div className="topic-section-container">
+    <div className="ph2 mt4 pt3">
       {renderCodes()}
       {renderAddSnippetModal()}
       <NewButton onClick={toggleModal} text="New Code" />

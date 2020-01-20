@@ -94,9 +94,10 @@ export const deleteNote = async (note_id: number) => {
       headers: {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
-      }
+      },
+      credentials: "include"
     });
-    return await res;
+    return res;
   } catch (e) {
     throw e;
   }
@@ -155,9 +156,9 @@ export const deleteResource = async (resource_id: number) => {
       headers: {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
-      }
+      },
+      credentials: "include"
     });
-    console.log(res);
     return res;
   } catch (e) {
     throw e;
@@ -222,9 +223,10 @@ export const deleteVideo = async (id: number) => {
       headers: {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
-      }
+      },
+      credentials: "include"
     });
-    return res;
+    return res.json();
   } catch (e) {
     throw e;
   }
@@ -275,7 +277,8 @@ export const deleteArticleSnippet = async (id: number) => {
       headers: {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
-      }
+      },
+      credentials: "include"
     });
     return res;
   } catch (e) {
@@ -324,7 +327,8 @@ export const deleteCode = async (id: number) => {
       headers: {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
-      }
+      },
+      credentials: "include"
     });
     return res;
   } catch (e) {
@@ -373,7 +377,8 @@ export const deleteImage = async (id: number) => {
       headers: {
         "Content-Type": "application/json",
         "X-User-ID": "test-user-id"
-      }
+      },
+      credentials: "include"
     });
     return res;
   } catch (e) {

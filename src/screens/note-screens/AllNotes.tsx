@@ -96,9 +96,15 @@ export const AllNotes = (props: any) => {
   };
 
   const renderNotes = () => {
-    return notes.map((note: any) => (
-      <Note note={note} key={note.id} onClick={onClickNote} />
-    ));
+    if (!loading) {
+      if (notes.length) {
+        return notes.map((note: any) => (
+          <Note note={note} key={note.id} onClick={onClickNote} />
+        ));
+      } else {
+        return renderNoNotes();
+      }
+    }
   };
 
   const renderNoNotes = () => {
@@ -112,8 +118,7 @@ export const AllNotes = (props: any) => {
   return (
     <div className="ph2 mt4 pt3">
       <NewButton onClick={toggleModal} text="New Note" />
-      {notes.length && !loading && renderNotes()}
-      {!notes.length && !loading && renderNoNotes()}
+      {renderNotes()}
       <Modal
         title="New Note"
         display={newNoteModalIsOpen}

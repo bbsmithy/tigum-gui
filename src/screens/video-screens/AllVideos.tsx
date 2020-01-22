@@ -67,7 +67,6 @@ export const AllVideos = (props: any) => {
       const res = await createVideo({
         thumbnail_img: thumbnailUrl,
         topic_id: props.topic.id,
-        user_id: 123,
         title: videoTitle,
         iframe: embedUrl,
         origin: videoUrl

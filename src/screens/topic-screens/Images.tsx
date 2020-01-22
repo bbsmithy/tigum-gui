@@ -51,8 +51,7 @@ export const Images = (props: ImagescreenProps) => {
       let newImage: NewImage = {
         src: imageSrc,
         origin: "TIGUM",
-        topic_id: props.topic.id,
-        user_id: 123
+        topic_id: props.topic.id
       };
       try {
         setCreatingImage(true);

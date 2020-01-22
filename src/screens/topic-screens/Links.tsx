@@ -78,7 +78,6 @@ export const Links = (props: any) => {
       setCreatingLink(true);
       const newLink: NewLink = {
         topic_id: selectedTopic,
-        user_id: 123,
         source: linkSrc,
         title: linkTitle
       };

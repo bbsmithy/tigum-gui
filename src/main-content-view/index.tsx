@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { TopicNavigationBar } from "../topic-navigation-bar";
 import { TopicRouter, TOPIC_SCREENS } from "../routers/TopicRouter";
 import { getTopics, createTopic } from "../client-lib/api";
-import { TopicsState } from "../types/";
 import { SideBar } from "../sidebar-navigator";
 import { Modal } from "../components/";
 import { useStateValue } from "../state/StateProvider";
@@ -54,7 +53,7 @@ export const MainContent = (props: any) => {
 
   const onClickCreateTopic = async () => {
     try {
-      const res = await createTopic(topicTitle, 1);
+      const res = await createTopic(topicTitle);
       if (res.status === 200) {
         fetchTopics();
         toggleModal();

@@ -61,7 +61,7 @@ export const AllNotes = (props: any) => {
   }, [topic.notes]);
 
   const createNewNote = async () => {
-    const res = await createNote(noteTitle, topic.id, 123);
+    const res = await createNote(noteTitle, topic.id);
     if (res.status === 200) {
       const newNote = await res.json();
       dispatch({ type: "ADD_NOTE", payload: newNote });

@@ -32,7 +32,7 @@ export const getTopics = async (topicIds: Array<number>) => {
   }
 };
 
-export const createTopic = async (title: String, user_id: number) => {
+export const createTopic = async (title: String) => {
   try {
     const res = await fetch(`${BASE_API_URL}/topics/create-topic`, {
       method: "POST",
@@ -41,7 +41,7 @@ export const createTopic = async (title: String, user_id: number) => {
         "X-User-ID": "test-user-id"
       },
       credentials: "include",
-      body: JSON.stringify({ title, user_id })
+      body: JSON.stringify({ title })
     });
     return await res;
   } catch (e) {
@@ -66,11 +66,7 @@ export const updateTopic = async (topic: any) => {
   }
 };
 
-export const createNote = async (
-  title: String,
-  topic_id: number,
-  user_id: number
-) => {
+export const createNote = async (title: String, topic_id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/notes/create-note`, {
       method: "POST",
@@ -79,7 +75,7 @@ export const createNote = async (
         "X-User-ID": "test-user-id"
       },
       credentials: "include",
-      body: JSON.stringify({ title, topic_id, user_id })
+      body: JSON.stringify({ title, topic_id })
     });
     return await res;
   } catch (e) {

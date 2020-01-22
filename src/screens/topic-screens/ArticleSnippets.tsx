@@ -101,8 +101,7 @@ export const ArticleSnippets = (props: any) => {
       const newSnippet: NewArticleSnippet = {
         content: snippetContent,
         origin: "TIGUM",
-        topic_id: props.topic.id,
-        user_id: 123
+        topic_id: props.topic.id
       };
       const res = await createArticleSnippet(newSnippet);
       dispatch({ type: "ADD_SNIPPET", payload: res });

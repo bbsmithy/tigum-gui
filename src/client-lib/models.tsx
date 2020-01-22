@@ -9,12 +9,10 @@ export type Topic = {
   images: [];
   links: number[];
   excercises: number[];
-  user_id: number;
 };
 
 export type NewVideo = {
   topic_id: number;
-  user_id: number;
   title: string;
   iframe: string;
   origin: string;
@@ -27,14 +25,12 @@ export type ArticleSnippet = {
   origin: string;
   date_created: string;
   topic_id: number;
-  user_id: number;
 };
 
 export type NewArticleSnippet = {
   content: string;
   origin: string;
   topic_id: number;
-  user_id: number;
 };
 
 export type NewCode = {
@@ -42,7 +38,6 @@ export type NewCode = {
   language: string;
   origin: string;
   topic_id: number;
-  user_id: number;
 };
 
 export type Code = {
@@ -52,7 +47,6 @@ export type Code = {
   language: string;
   origin: string;
   topic_id: number;
-  user_id: number;
 };
 
 export type Note = {
@@ -60,7 +54,6 @@ export type Note = {
   title: string;
   date_created: string;
   topic_id: number;
-  user_id: number;
 };
 
 export type Image = {
@@ -69,21 +62,18 @@ export type Image = {
   origin: string;
   date_created: string;
   topic_id: number;
-  user_id: number;
 };
 
 export type NewImage = {
   src: string;
   origin: string;
   topic_id: number;
-  user_id: number;
 };
 
 export type Link = {
   id: number;
   title: string;
   topic_id: number;
-  user_id: number;
   source: string;
   date_created: string;
 };
@@ -91,6 +81,5 @@ export type Link = {
 export type NewLink = {
   title: string;
   topic_id: number;
-  user_id: number;
   source: string;
 };

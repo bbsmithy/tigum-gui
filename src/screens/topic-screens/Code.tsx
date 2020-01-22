@@ -104,8 +104,7 @@ export const Code = (props: CodeScreenProps) => {
       content: codeContent,
       language: selectedLang,
       origin: "TIGUM",
-      topic_id: props.topic.id,
-      user_id: 123
+      topic_id: props.topic.id
     };
     try {
       setCreatingCode(true);

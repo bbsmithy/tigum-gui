@@ -88,6 +88,20 @@ body {
   padding: 9px;
 }
 
+#sidebar-footer {
+  position: absolute;
+  background-color: #333;
+  border-top: 1px solid black;
+  text-align: center;
+  width: 100%;
+  bottom: 0px;
+  padding: 15px;
+}
+
+.sidebar-footer-option {
+  text-align: center;
+}
+
 #sidebar-search-mentors-container {
   position: absolute;
   background-color: white;

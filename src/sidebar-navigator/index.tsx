@@ -51,6 +51,9 @@ export const SideBar: React.FC<SideBarProps> = ({
         <TopicsList screen={screen} navigate={navigate} />
         {topics.keys.length === 0 && !topics.loading && <NoTopicsMessage />}
       </div>
+      <div id="sidebar-footer" className="pointer">
+        <span className="sidebar-footer-option">Logout</span>
+      </div>
     </div>
   );
 };

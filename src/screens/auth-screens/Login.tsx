@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { loginUser } from "../../client-lib/api";
 import { useStateValue } from "../../state/StateProvider";
+import { AUTH_SCREENS } from "../../routers/AuthRouter";
 
-export const Login = () => {
+export const Login = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
@@ -20,10 +21,13 @@ export const Login = () => {
         setAuthing(false);
       }
     } catch (e) {
-      console.log(e);
       setAuthing(false);
       setLoginError("Incorrect email or password");
     }
+  };
+
+  const navigateToSignup = () => {
+    props.navigate(AUTH_SCREENS.SIGNUP);
   };
 
   const onChangeEmail = e => {
@@ -68,7 +72,7 @@ export const Login = () => {
             <p>{loginError}</p>
           </div>
         )}
-        <div className="white mb3">
+        <div className="white">
           <button
             className="b ph3 pv2 input-reset ba b--white bg-transparent white pointer f6 dib"
             type="submit"
@@ -84,9 +88,12 @@ export const Login = () => {
               "Login"
             )}
           </button>
-          <a href="#" className="link underline white fr">
+          <span
+            onClick={navigateToSignup}
+            className="link underline white fr pointer"
+          >
             Sign up
-          </a>
+          </span>
         </div>
       </div>
     </main>

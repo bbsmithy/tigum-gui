@@ -1,5 +1,3 @@
-import { any } from "prop-types";
-
 const AWS = require("aws-sdk");
 
 AWS.config.update({

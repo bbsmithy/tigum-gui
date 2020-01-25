@@ -10,6 +10,7 @@ export const Auth = () => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const [showSplash, setShowSplash] = useState(true);
+  const [authScreen, setAuthScreen] = useState(AUTH_SCREENS.LOGIN);
 
   const isUserLoggedIn = async () => {
     try {
@@ -19,6 +20,10 @@ export const Auth = () => {
     } catch (e) {
       setShowSplash(false);
     }
+  };
+
+  const navigate = (screen: AUTH_SCREENS) => {
+    setAuthScreen(screen);
   };
 
   useEffect(() => {
@@ -47,7 +52,7 @@ export const Auth = () => {
       {state.user && state.user.loggedIn ? (
         <MainContent />
       ) : (
-        <AuthRouter screen={AUTH_SCREENS.SIGNUP} />
+        <AuthRouter screen={authScreen} navigate={navigate} />
       )}
     </>
   );

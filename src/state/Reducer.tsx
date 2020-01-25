@@ -108,7 +108,7 @@ const contentReducer = (state: any, action: any) => {
 export const navigationReducer = (state: any, action: any) => {
   switch (action.type) {
     case "NAVIGATE":
-      return { ...state };
+      return { ...state, screenTree: action.payload };
     default:
       return state;
   }
@@ -139,7 +139,7 @@ export const userReducer = (state: any, action: any) => {
 };
 
 export const reducer = ({ content, navigation, user }, action: any) => {
-  console.log(action.type, action.payload);
+  console.log(`Action: ${action.type}`, `Payload ${action.payload}`);
   return {
     content: contentReducer(content, action),
     navigation: navigationReducer(navigation, action),

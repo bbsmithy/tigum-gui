@@ -448,3 +448,20 @@ export const checkLogin = async () => {
     throw e;
   }
 };
+
+export const signupUser = async (email: string, password: string) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/user/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      credentials: "include",
+      body: JSON.stringify({ email, password, name: email })
+    });
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};

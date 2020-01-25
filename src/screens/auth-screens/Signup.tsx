@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { loginUser } from "../../client-lib/api";
+import { signupUser } from "../../client-lib/api";
 import { useStateValue } from "../../state/StateProvider";
 
 export const SignUp = () => {
@@ -11,12 +11,12 @@ export const SignUp = () => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
 
-  const login = async () => {
+  const signUp = async () => {
     setAuthing(true);
     try {
-      const res = await loginUser(email, password);
+      const res = await signupUser(email, password);
       if (res) {
-        dispatch({ type: "LOGIN_SUCCESS", payload: res });
+        dispatch({ type: "SIGNUP_SUCCESS", payload: res });
         setAuthing(false);
       }
     } catch (e) {
@@ -71,7 +71,7 @@ export const SignUp = () => {
             className="b ph3 pv2 white input-reset ba b--white bg-transparent pointer f6 dib"
             type="submit"
             disabled={authing}
-            onClick={login}
+            onClick={signUp}
           >
             {authing ? (
               <i className="fas fa-circle-notch fa-spin"></i>

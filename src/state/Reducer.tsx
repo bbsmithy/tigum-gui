@@ -125,6 +125,14 @@ export const userReducer = (state: any, action: any) => {
         email: action.payload.email,
         loggedIn: true
       };
+    case "SIGNUP_SUCCESS":
+      return {
+        ...state,
+        name: action.payload.name,
+        id: action.payload.id,
+        email: action.payload.email,
+        loggedIn: true
+      };
     default:
       return state;
   }

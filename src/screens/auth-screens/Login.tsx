@@ -40,10 +40,10 @@ export const Login = () => {
         <img src={require("../../logo.png")} className="w-33" />
         <p>A personal knowledge base built for developers</p>
         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-          <div className="mt3">
+          <div className="mt3 white">
             <label className="db fw6 lh-copy f6">Email</label>
             <input
-              className="pa2 input-reset ba bg-transparent b--white hover-bg-black hover-white w-100"
+              className="pa2 white input-reset ba bg-transparent b--white hover-bg-black hover-white w-100"
               type="email"
               onChange={onChangeEmail}
               value={email}
@@ -51,10 +51,10 @@ export const Login = () => {
               id="email-address"
             />
           </div>
-          <div className="mv3">
+          <div className="mv3 white">
             <label className="db fw6 lh-copy f6">Password</label>
             <input
-              className="b pa2 bc-white input-reset b--white ba bg-transparent hover-bg-black hover-white w-100"
+              className="b white pa2 bc-white input-reset b--white ba bg-transparent hover-bg-black hover-white w-100"
               type="password"
               onChange={onChangePassword}
               value={password}
@@ -62,14 +62,13 @@ export const Login = () => {
               id="password"
             />
           </div>
-          <label className="pa0 ma0 lh-copy f6 pointer b--white">
-            <input type="checkbox" /> Remember me
-          </label>
         </fieldset>
-        <div>
-          <p>{loginError}</p>
-        </div>
-        <div className="white">
+        {loginError && (
+          <div>
+            <p>{loginError}</p>
+          </div>
+        )}
+        <div className="white mb3">
           <button
             className="b ph3 pv2 input-reset ba b--white bg-transparent white pointer f6 dib"
             type="submit"
@@ -77,11 +76,17 @@ export const Login = () => {
             onClick={login}
           >
             {authing ? (
-              <i className="fas fa-circle-notch fa-spin"></i>
+              <div>
+                <i className="fas fa-circle-notch fa-spin"></i> Searching the
+                cosmos
+              </div>
             ) : (
               "Login"
             )}
           </button>
+          <a href="#" className="link underline white fr">
+            Sign up
+          </a>
         </div>
       </div>
     </main>

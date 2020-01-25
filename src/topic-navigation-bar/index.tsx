@@ -22,7 +22,7 @@ export const TopicNavigationBar = ({
 
   const navItems = [
     {
-      title: "Notes",
+      title: "Docs",
       icon: "fas fa-pen-square",
       screen: TOPIC_SCREENS.MY_NOTES
     },

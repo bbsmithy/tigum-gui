@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { checkLogin } from "./client-lib/api";
 import { useStateValue } from "./state/StateProvider";
 import { MainContent } from "./main-content-view";
+import { AuthRouter, AUTH_SCREENS } from "./routers/AuthRouter";
 
 export const Auth = () => {
   // @ts-ignore
@@ -41,5 +42,13 @@ export const Auth = () => {
     );
   }
 
-  return <>{state.user && state.user.loggedIn ? <MainContent /> : <Login />}</>;
+  return (
+    <>
+      {state.user && state.user.loggedIn ? (
+        <MainContent />
+      ) : (
+        <AuthRouter screen={AUTH_SCREENS.SIGNUP} />
+      )}
+    </>
+  );
 };

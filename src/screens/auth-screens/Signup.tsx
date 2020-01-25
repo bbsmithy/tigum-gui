@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { loginUser } from "../../client-lib/api";
 import { useStateValue } from "../../state/StateProvider";
 
-export const Login = () => {
+export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
@@ -35,15 +35,15 @@ export const Login = () => {
   };
 
   return (
-    <main className="pa4 black-80">
+    <main className="pa4 white">
       <div className="measure center">
-        <img src={require("./logo.png")} className="w-33" />
+        <img src={require("../../logo.png")} className="w-33" />
         <p>A personal knowledge base built for developers</p>
-        <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
+        <fieldset id="sign_up" className="ba b--transparent white ph0 mh0">
           <div className="mt3">
             <label className="db fw6 lh-copy f6">Email</label>
             <input
-              className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+              className="pa2 input-reset b--white ba bg-transparent hover-bg-black hover-white w-100"
               type="email"
               onChange={onChangeEmail}
               value={email}
@@ -54,7 +54,7 @@ export const Login = () => {
           <div className="mv3">
             <label className="db fw6 lh-copy f6">Password</label>
             <input
-              className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+              className="b pa2 input-reset ba b--white bg-transparent hover-bg-black hover-white w-100"
               type="password"
               onChange={onChangePassword}
               value={password}
@@ -68,7 +68,7 @@ export const Login = () => {
         </div>
         <div className="">
           <button
-            className="b ph3 pv2 input-reset ba b--black bg-transparent pointer f6 dib"
+            className="b ph3 pv2 white input-reset ba b--white bg-transparent pointer f6 dib"
             type="submit"
             disabled={authing}
             onClick={login}
@@ -79,9 +79,7 @@ export const Login = () => {
               "Sign up"
             )}
           </button>
-        </div>
-        <div className="lh-copy mt3">
-          <a href="#0" className="f6 link dim black db">
+          <a href="#" className="link underline white fr">
             Login
           </a>
         </div>

@@ -97,24 +97,6 @@ export const AllVideos = (props: any) => {
     dispatch({ type: "SET_VIDEOS", payload: refreshedVideoResources });
   };
 
-  const renderVideosLoading = () => {
-    return (
-      <article className="br2 mv3 mw dib video-card ma3">
-        <div className={classes.videoLoadingCover}>
-          <i className={`fab fa-youtube ${classes.videoIconLoading}`}></i>
-        </div>
-        <div className="ph3-ns pv3-ns h-30">
-          <div className="dib w-90">
-            <div className={classes.headerLoadingNote} />
-          </div>
-          <div className="dib w-10">
-            <span></span>
-          </div>
-        </div>
-      </article>
-    );
-  };
-
   const renderVideoResources = () => {
     if (videos.length) {
       return videos.map((video, index) => {

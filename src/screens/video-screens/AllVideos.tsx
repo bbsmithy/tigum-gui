@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NewButton } from "../../components/";
 import { Modal, VideoCard } from "../../components/";
 import { createVideo, updateTopic, getVideos } from "../../client-lib/api";
-import { getEmbedFromUrl } from "../../util/resource_to_html";
+import { getEmbedFromUrl } from "../../util";
 import { VIDEO_SCREENS } from "../../routers/VideoRouter";
 
 import { createUseStyles } from "react-jss";

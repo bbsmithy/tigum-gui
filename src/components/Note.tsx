@@ -1,5 +1,5 @@
 import React from "react";
-import { getDate } from "../util/date";
+import { getDate } from "../util";
 
 export const Note = (props: any) => {
   const navigateToNote = () => {

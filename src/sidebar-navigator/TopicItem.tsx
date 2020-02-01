@@ -1,5 +1,5 @@
 import React from "react";
-import { getDate } from "../util/date";
+import { getDate } from "../util";
 import { goto } from "../navigation";
 import { Topic } from "../client-lib/models";
 

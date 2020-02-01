@@ -1,5 +1,5 @@
 import React from "react";
-import { truncated } from "../util/strings";
+import { truncated } from "../util";
 import { OptionsButton } from "./OptionsButton";
 import { deleteVideo } from "../client-lib/api";
 

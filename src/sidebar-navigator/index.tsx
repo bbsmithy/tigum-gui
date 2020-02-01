@@ -5,11 +5,16 @@ import { TOPIC_SCREENS } from "../routers/TopicRouter";
 import { TopicsList } from "./TopicsList";
 import { useStateValue } from "../state/StateProvider";
 import { createUseStyles } from "react-jss";
+import { logoutUser } from "../client-lib/api";
+import { deleteJWT } from "../util";
 
 const useStyles = createUseStyles({
   sidebarContainer: {
     backgroundColor: "#333",
     color: "white"
+  },
+  logoutText: {
+    marginRight: 8
   }
 });
 
@@ -29,12 +34,16 @@ export const SideBar: React.FC<SideBarProps> = ({
   };
 
   // @ts-ignore
-  const [state] = useStateValue();
+  const [state, dispatch] = useStateValue();
   const {
     content: { topics }
   } = state;
 
   const classes = useStyles();
+  const onLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    deleteJWT();
+  };
 
   return (
     <div id="sidebar" className={classes.sidebarContainer}>
@@ -51,8 +60,11 @@ export const SideBar: React.FC<SideBarProps> = ({
         <TopicsList screen={screen} navigate={navigate} />
         {topics.keys.length === 0 && !topics.loading && <NoTopicsMessage />}
       </div>
-      <div id="sidebar-footer" className="pointer">
-        <span className="sidebar-footer-option">Logout</span>
+      <div id="sidebar-footer" className="pointer" onClick={onLogout}>
+        <span className="sidebar-footer-option">
+          <span className={classes.logoutText}>Logout</span>
+          <i className="fas fa-sign-out-alt"></i>
+        </span>
       </div>
     </div>
   );

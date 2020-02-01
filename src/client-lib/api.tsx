@@ -7,10 +7,11 @@ import {
   NewLink
 } from "./models";
 
-const BASE_API_URL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8000"
-    : "https://app-e3018b9e-b898-41f7-888f-bc656e5af4e1.cleverapps.io";
+const DEV = process.env.NODE_ENV === "development";
+
+const BASE_API_URL = DEV
+  ? "http://localhost:8000"
+  : "https://app-e3018b9e-b898-41f7-888f-bc656e5af4e1.cleverapps.io";
 
 export const getTopics = async (topicIds: Array<number>) => {
   try {
@@ -463,5 +464,21 @@ export const signupUser = async (email: string, password: string) => {
     return await res.json();
   } catch (e) {
     throw e;
+  }
+};
+
+export const logoutUser = async () => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/user/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-User-ID": "test-user-id"
+      },
+      credentials: "include"
+    });
+    console.log(res);
+  } catch (e) {
+    console.log(e);
   }
 };

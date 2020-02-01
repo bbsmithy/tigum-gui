@@ -133,6 +133,11 @@ export const userReducer = (state: any, action: any) => {
         email: action.payload.email,
         loggedIn: true
       };
+    case "LOGOUT":
+      return {
+        ...state,
+        loggedIn: false
+      };
     default:
       return state;
   }

@@ -8,6 +8,7 @@ import {
 } from "./models";
 
 const DEV = process.env.NODE_ENV === "development";
+// const DEV = false;
 
 const BASE_API_URL = DEV
   ? "http://localhost:8000"

@@ -68,5 +68,6 @@ export const truncated = (title, cutAt) => {
 };
 
 export const deleteJWT = () => {
+  console.log(document.cookie);
   document.cookie = "jwt= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 };

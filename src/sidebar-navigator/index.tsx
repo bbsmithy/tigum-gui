@@ -42,7 +42,7 @@ export const SideBar: React.FC<SideBarProps> = ({
   const classes = useStyles();
   const onLogout = () => {
     dispatch({ type: "LOGOUT" });
-    deleteJWT();
+    logoutUser();
   };
 
   return (

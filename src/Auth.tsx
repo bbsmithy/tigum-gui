@@ -14,6 +14,11 @@ export const Auth = () => {
 
   const isUserLoggedIn = async () => {
     try {
+      /**
+       * DK {
+       *  desc: ""
+       * }
+       */
       const user = await checkLogin();
       dispatch({ type: "LOGIN_SUCCESS", payload: user });
       setShowSplash(false);

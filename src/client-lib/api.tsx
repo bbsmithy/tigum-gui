@@ -407,7 +407,6 @@ export const createLink = async (newLink: NewLink) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
       },
       credentials: "include",
       body: JSON.stringify({ ...newLink })
@@ -424,7 +423,6 @@ export const loginUser = async (email: string, password: string) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
       },
       credentials: "include",
       body: JSON.stringify({ email, password })
@@ -441,7 +439,6 @@ export const checkLogin = async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
       },
       credentials: "include"
     });
@@ -457,7 +454,6 @@ export const signupUser = async (email: string, password: string) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
       },
       credentials: "include",
       body: JSON.stringify({ email, password, name: email })

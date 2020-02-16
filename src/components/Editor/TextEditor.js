@@ -10,23 +10,35 @@ import {
   convertFromHTML,
   ContentState
 } from "draft-js";
+import Prism from 'prismjs';
+import PrismDecorator from 'draft-js-prism';
+import CodeUtils from "draft-js-code";
+
+const decorator = new PrismDecorator({
+  prism: Prism,
+  defaultSyntax: "javascript"
+})
 
 const fromHTMLToEditorState = html => {
   try {
     const content = convertFromHTML(html);
     const state = ContentState.createFromBlockArray(content);
-    return EditorState.createWithContent(state);
+    return EditorState.createWithContent(state, decorator);
   } catch (e) {
     return false;
   }
 };
+
+
+
+
 
 class RichEditorExample extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(), 
     };
 
     this.focus = () => this.refs.editor.focus();
@@ -48,19 +60,48 @@ class RichEditorExample extends React.Component {
     }
   }
 
-  _handleKeyCommand(command) {
+  keyBindingFn = (evt) => {
     const { editorState } = this.state;
-    const newState = RichUtils.handleKeyCommand(editorState, command);
-    if (newState) {
-      this.onChange(newState);
-      return true;
-    }
-    return false;
+    if (!CodeUtils.hasSelectionInBlock(editorState)) return Editor.getDefaultKeyBinding(evt);
+
+    const command = CodeUtils.getKeyBinding(evt);
+
+    return command || Editor.getDefaultKeyBinding(evt);
   }
 
-  _onTab(e) {
-    const maxDepth = 4;
-    this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
+  handleReturn = (evt) => {
+    const { editorState } = this.state;
+    if (!CodeUtils.hasSelectionInBlock(editorState)) return 'not-handled';
+
+    this.onChange(CodeUtils.handleReturn(evt, editorState));
+    return 'handled';
+  }
+
+  _handleKeyCommand(command) {
+    const { editorState } = this.state;
+    let newState;
+
+    if (CodeUtils.hasSelectionInBlock(editorState)) {
+      newState = CodeUtils.handleKeyCommand(editorState, command);
+    }
+
+    if (!newState) {
+      newState = RichUtils.handleKeyCommand(editorState, command);
+    }
+
+    if (newState) {
+      this.onChange(newState);
+      return 'handled';
+    }
+    return 'not-handled';
+  }
+
+  _onTab(evt) {
+    const { editorState } = this.state;
+    if (!CodeUtils.hasSelectionInBlock(editorState)) return 'not-handled';
+
+    this.onChange(CodeUtils.onTab(evt, editorState));
+    return 'handled';
   }
 
   _toggleBlockType(blockType) {
@@ -128,8 +169,8 @@ class RichEditorExample extends React.Component {
               onChange={this.onChange}
               onTab={this.onTab}
               placeholder="Take some notes..."
+              plugins={this.state.plugins}
               ref="editor"
-              spellCheck={true}
             />
           </div>
         </div>
@@ -209,7 +250,8 @@ const BlockStyleControls = props => {
 var INLINE_STYLES = [
   { label: "Bold", style: "BOLD" },
   { label: "Italic", style: "ITALIC" },
-  { label: "Underline", style: "UNDERLINE" }
+  { label: "Underline", style: "UNDERLINE" },
+  { label: "Monospace", style: "CODE" },
 ];
 
 const InlineStyleControls = props => {

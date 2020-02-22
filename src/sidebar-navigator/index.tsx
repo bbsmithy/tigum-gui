@@ -6,15 +6,41 @@ import { TopicsList } from "./TopicsList";
 import { useStateValue } from "../state/StateProvider";
 import { createUseStyles } from "react-jss";
 import { logoutUser } from "../client-lib/api";
-import { deleteJWT } from "../util";
 
 const useStyles = createUseStyles({
   sidebarContainer: {
     backgroundColor: "#333",
-    color: "white"
+    color: "white",
+    position: "fixed",
+    left: 0,
+    zIndex: 1000,
+    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.6)",
+    width: "20%",
+    height: "100%",
+    flexDirection: "row",
+    fontFamily: "Montserrat, sans-serif"
+  },
+  sidebarHeader: {
+    display: "block",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.6)"
   },
   logoutText: {
     marginRight: 8
+  },
+  sidebarButton: {
+    borderWidth: 0,
+    outline: "none",
+    borderRadius: 2,
+    padding: 15,
+    cursor: "pointer",
+    backgroundColor: "#333",
+    color: "white",
+    fontSize: 15,
+    fontWeight: 300,
+    width: "50%"
+  },
+  btnIcon: {
+    marginRight: "10px"
   }
 });
 
@@ -46,11 +72,18 @@ export const SideBar: React.FC<SideBarProps> = ({
   };
 
   return (
-    <div id="sidebar" className={classes.sidebarContainer}>
-      <div id="sidebar-header">
-        <button id="new-btn" onClick={onClickNewTopic}>
-          <span>New Project</span>
-          <i className="fas fa-plus-circle" />
+    <div className={classes.sidebarContainer}>
+      <div className={classes.sidebarHeader}>
+        <button
+          className={classes.sidebarButton}
+          style={{ borderRight: "1px solid black" }}
+        >
+          <i className={`fa fa-project-diagram ${classes.btnIcon}`} />
+          <span>System Flow</span>
+        </button>
+        <button className={classes.sidebarButton}>
+          <i className={`far fa-file-alt ${classes.btnIcon}`} />
+          <span>Team Docs</span>
         </button>
       </div>
       <div id="sidebar-list">

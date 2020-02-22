@@ -1,4 +1,3 @@
-import logo from "../logo.png";
 import React from "react";
 import { NoTopicsMessage } from "./NoTopicsMessage";
 import { TOPIC_SCREENS } from "../routers/TopicRouter";
@@ -55,12 +54,13 @@ export const SideBar: React.FC<SideBarProps> = ({
   screen,
   toggleModal
 }: SideBarProps) => {
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+
   const onClickNewTopic = () => {
     toggleModal();
   };
 
-  // @ts-ignore
-  const [state, dispatch] = useStateValue();
   const {
     content: { topics }
   } = state;
@@ -79,11 +79,11 @@ export const SideBar: React.FC<SideBarProps> = ({
           style={{ borderRight: "1px solid black" }}
         >
           <i className={`fa fa-project-diagram ${classes.btnIcon}`} />
-          <span>System Flow</span>
+          <span>Flow</span>
         </button>
         <button className={classes.sidebarButton}>
           <i className={`far fa-file-alt ${classes.btnIcon}`} />
-          <span>Team Docs</span>
+          <span>Docs</span>
         </button>
       </div>
       <div id="sidebar-list">

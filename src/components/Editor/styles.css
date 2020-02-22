@@ -9,7 +9,7 @@
 .RichEditor-editor {
   cursor: text;
   font-size: 16px;
-  padding-top: 130px;
+  padding-top: 80px;
 }
 
 .RichEditor-editor .public-DraftEditorPlaceholder-root,
@@ -44,8 +44,16 @@
   overflow: scroll;
 }
 
+.DraftEditor-editorContainer{
+  padding-top: 8px;
+}
+
+
+
 .RichEditor-controls {
   font-family: "Helvetica", sans-serif;
+  background-color: #1f1f1f;
+  padding-bottom: 10px;
   font-size: 14px;
   margin-bottom: 5px;
   user-select: none;

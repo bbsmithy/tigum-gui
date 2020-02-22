@@ -71,11 +71,11 @@ export const MainContent = (props: any) => {
     if (topic) {
       return (
         <>
-          <TopicNavigationBar
+          {/* <TopicNavigationBar
             title={topic.title}
             navigate={navigate}
             topic={topic}
-          />
+          /> */}
           <div className="topic-route-container">
             <TopicRouter screen={screen} topic={topic} />
           </div>

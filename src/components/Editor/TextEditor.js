@@ -54,6 +54,7 @@ class RichEditorExample extends React.Component {
   componentWillReceiveProps(nextProps, prevProps) {
     if (nextProps.htmlContent !== prevProps.htmlContent) {
       const content = fromHTMLToEditorState(nextProps.htmlContent);
+
       this.setState({
         editorState: content
       });
@@ -132,8 +133,10 @@ class RichEditorExample extends React.Component {
 
     return (
       <div>
-        <div className="fixed center title-controls-container">
-          <span className="btn-note" onClick={this.props.onClickBack}>
+        <div className="RichEditor-root">
+          <div className="editor-controls fixed">
+            <div>
+            <span className="btn-note" onClick={this.props.onClickBack}>
             <i className="fa fa-arrow-left" />
           </span>
           <h3 className="note-title">{this.props.title}</h3>
@@ -148,10 +151,9 @@ class RichEditorExample extends React.Component {
               <i className="fa fa-save" />
             )}
           </span>
-        </div>
-        <div className="RichEditor-root">
-          <div className="editor-controls fixed">
-            <BlockStyleControls
+            </div>
+          <div>
+          <BlockStyleControls
               editorState={editorState}
               onToggle={this.toggleBlockType}
             />
@@ -159,6 +161,8 @@ class RichEditorExample extends React.Component {
               editorState={editorState}
               onToggle={this.toggleInlineStyle}
             />
+          </div>
+            
           </div>
 
           <div className={`RichEditor-editor`} onClick={this.focus}>

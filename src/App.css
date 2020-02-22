@@ -22,7 +22,6 @@ body {
 }
 
 #new-btn {
-  float: right;
   border-width: 0;
   outline: none;
   border-radius: 2px;
@@ -84,6 +83,7 @@ body {
 }
 
 #sidebar-header {
+  display: block;
   border-bottom: 1px solid rgba(0, 0, 0, 0.6);
   padding: 9px;
 }
@@ -338,6 +338,8 @@ button:focus {
 .note-title {
   display: inline-block;
   margin-left: 15px;
+  font-family:  Montserrat, sans-serif;
+  font-size: 18px;
   color: white;
 }
 
@@ -357,14 +359,10 @@ button:focus {
 }
 
 .view-note-container {
-  padding: 10px;
+  padding: 0px 10px 0px 10px;
   margin-right: auto;
   margin-left: auto;
   width: 800px;
-}
-
-.topic-section-container {
-  margin-top: 70px;
 }
 
 .topic-route-container {
@@ -381,9 +379,10 @@ button:focus {
 
 .editor-controls {
   width: 800px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
+  padding-top: 8px;
+  background-color: #1f1f1f;
   z-index: 2;
-  margin-top: 100px;
 }
 
 .video-page-container {

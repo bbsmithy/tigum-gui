@@ -48,9 +48,6 @@ export const SideBar: React.FC<SideBarProps> = ({
   return (
     <div id="sidebar" className={classes.sidebarContainer}>
       <div id="sidebar-header">
-        <div id="logo-container">
-          <img src={logo} id="logo" />
-        </div>
         <button id="new-btn" onClick={onClickNewTopic}>
           <span>New Project</span>
           <i className="fas fa-plus-circle" />

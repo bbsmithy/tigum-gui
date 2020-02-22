@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Login } from "./screens/auth-screens/Login";
 import { useEffect } from "react";
 import { checkLogin } from "./client-lib/api";
 import { useStateValue } from "./state/StateProvider";
@@ -12,13 +11,16 @@ export const Auth = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [authScreen, setAuthScreen] = useState(AUTH_SCREENS.LOGIN);
 
+  /**
+   * DK {
+   *  id: "isUserLoggedIn"
+   *  desc: "The isUserLoggedIn function checks wheather 
+   *  the user is already logged in by sending the LINK[checkLogin] 
+   *  request which will send on jwt token stored in the private cookie __silly_devkeep"
+   * }
+   */
   const isUserLoggedIn = async () => {
     try {
-      /**
-       * DK {
-       *  desc: ""
-       * }
-       */
       const user = await checkLogin();
       dispatch({ type: "LOGIN_SUCCESS", payload: user });
       setShowSplash(false);

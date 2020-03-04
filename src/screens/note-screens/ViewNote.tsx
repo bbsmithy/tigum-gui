@@ -47,7 +47,7 @@ export const ViewNote = (props: any) => {
   };
 
   return (
-    <div className="view-note-container z-1">
+    <div className="view-note-container z-1 mt4">
       <TextEditor
         onSave={onSave}
         saving={saving}

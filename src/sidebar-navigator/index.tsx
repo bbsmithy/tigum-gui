@@ -30,16 +30,21 @@ const useStyles = createUseStyles({
     borderWidth: 0,
     outline: "none",
     borderRadius: 2,
-    padding: 15,
+    margin: 2,
+    padding: 5,
     cursor: "pointer",
-    backgroundColor: "#333",
+    backgroundColor: "#1f1f1f",
+    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.6)",
     color: "white",
-    fontSize: 15,
-    fontWeight: 300,
-    width: "50%"
+    marginRight: 10,
+    marginTop: 10
+  },
+  logo: {
+    padding: 10
   },
   btnIcon: {
-    marginRight: "10px"
+    marginRight: "10px",
+    fontSize: 10
   }
 });
 
@@ -74,16 +79,19 @@ export const SideBar: React.FC<SideBarProps> = ({
   return (
     <div className={classes.sidebarContainer}>
       <div className={classes.sidebarHeader}>
+        <span>
+          <img
+            src={require("../logo.png")}
+            className={classes.logo}
+            height={22}
+          />
+        </span>
         <button
-          className={classes.sidebarButton}
-          style={{ borderRight: "1px solid black" }}
+          className={`${classes.sidebarButton} btn topic-nav-btn fr`}
+          onClick={onClickNewTopic}
         >
-          <i className={`fa fa-project-diagram ${classes.btnIcon}`} />
-          <span>Flow</span>
-        </button>
-        <button className={classes.sidebarButton}>
-          <i className={`far fa-file-alt ${classes.btnIcon}`} />
-          <span>Docs</span>
+          <i className={`fa fa-plus ${classes.btnIcon}`} />
+          <span>New Project</span>
         </button>
       </div>
       <div id="sidebar-list">

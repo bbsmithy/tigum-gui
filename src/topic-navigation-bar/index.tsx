@@ -32,24 +32,19 @@ export const TopicNavigationBar = ({
       screen: TOPIC_SCREENS.VIDEOS
     },
     {
-      title: "Article Snippets",
+      title: "Snippets",
       icon: "fas fa-newspaper",
       screen: TOPIC_SCREENS.ARTICLE_SNIPPETS
-    },
-    {
-      title: "Code",
-      icon: "fas fa-code",
-      screen: TOPIC_SCREENS.CODE
-    },
-    {
-      title: "Images",
-      icon: "fas fa-images",
-      screen: TOPIC_SCREENS.IMAGES
     },
     {
       title: "Links",
       icon: "fas fa-link",
       screen: TOPIC_SCREENS.LINKS
+    },
+    {
+      title: "Test",
+      icon: "fas fa-graduation-cap",
+      screen: TOPIC_SCREENS.IMAGES
     }
   ];
 

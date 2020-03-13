@@ -1,23 +1,23 @@
-"use strict";
+'use strict';
 
-import React from "react";
-import { stateToHTML } from "draft-js-export-html";
-import "./styles.css";
+import React from 'react';
+import { stateToHTML } from 'draft-js-export-html';
+import './styles.css';
 import {
   Editor,
   EditorState,
   RichUtils,
   convertFromHTML,
   ContentState
-} from "draft-js";
+} from 'draft-js';
 import Prism from 'prismjs';
 import PrismDecorator from 'draft-js-prism';
-import CodeUtils from "draft-js-code";
+import CodeUtils from 'draft-js-code';
 
 const decorator = new PrismDecorator({
   prism: Prism,
-  defaultSyntax: "javascript"
-})
+  defaultSyntax: 'javascript'
+});
 
 const fromHTMLToEditorState = html => {
   try {
@@ -29,16 +29,12 @@ const fromHTMLToEditorState = html => {
   }
 };
 
-
-
-
-
 class RichEditorExample extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      editorState: EditorState.createEmpty(), 
+      editorState: EditorState.createEmpty()
     };
 
     this.focus = () => this.refs.editor.focus();
@@ -61,22 +57,23 @@ class RichEditorExample extends React.Component {
     }
   }
 
-  keyBindingFn = (evt) => {
+  keyBindingFn = evt => {
     const { editorState } = this.state;
-    if (!CodeUtils.hasSelectionInBlock(editorState)) return Editor.getDefaultKeyBinding(evt);
+    if (!CodeUtils.hasSelectionInBlock(editorState))
+      return Editor.getDefaultKeyBinding(evt);
 
     const command = CodeUtils.getKeyBinding(evt);
 
     return command || Editor.getDefaultKeyBinding(evt);
-  }
+  };
 
-  handleReturn = (evt) => {
+  handleReturn = evt => {
     const { editorState } = this.state;
     if (!CodeUtils.hasSelectionInBlock(editorState)) return 'not-handled';
 
     this.onChange(CodeUtils.handleReturn(evt, editorState));
     return 'handled';
-  }
+  };
 
   _handleKeyCommand(command) {
     const { editorState } = this.state;
@@ -122,7 +119,7 @@ class RichEditorExample extends React.Component {
   }
 
   _onDelete() {
-    const ans = window.confirm("Are you sure you want to delete this note?");
+    const ans = window.confirm('Are you sure you want to delete this note?');
     if (ans) {
       this.props.onClickDelete();
     }
@@ -133,36 +130,35 @@ class RichEditorExample extends React.Component {
 
     return (
       <div>
-        <div className="RichEditor-root">
-          <div className="editor-controls fixed">
+        <div className='RichEditor-root'>
+          <div className='editor-controls fixed'>
             <div>
-            <span className="btn-note" onClick={this.props.onClickBack}>
-            <i className="fa fa-arrow-left" />
-          </span>
-          <h3 className="note-title">{this.props.title}</h3>
+              <span className='btn-note' onClick={this.props.onClickBack}>
+                <i className='fa fa-arrow-left' />
+              </span>
+              <h3 className='note-title'>{this.props.title}</h3>
 
-          <span className="btn-note fr mt3" onClick={this.onDelete}>
-            <i className="fa fa-trash" />
-          </span>
-          <span className="btn-note fr mt3" onClick={this.onSave}>
-            {this.props.saving ? (
-              <i class="fas fa-circle-notch fa-spin"></i>
-            ) : (
-              <i className="fa fa-save" />
-            )}
-          </span>
+              <span className='btn-note fr mt3' onClick={this.onDelete}>
+                <i className='fa fa-trash' />
+              </span>
+              <span className='btn-note fr mt3' onClick={this.onSave}>
+                {this.props.saving ? (
+                  <i class='fas fa-circle-notch fa-spin'></i>
+                ) : (
+                  <i className='fa fa-save' />
+                )}
+              </span>
             </div>
-          <div>
-          <BlockStyleControls
-              editorState={editorState}
-              onToggle={this.toggleBlockType}
-            />
-            <InlineStyleControls
-              editorState={editorState}
-              onToggle={this.toggleInlineStyle}
-            />
-          </div>
-            
+            <div>
+              <BlockStyleControls
+                editorState={editorState}
+                onToggle={this.toggleBlockType}
+              />
+              <InlineStyleControls
+                editorState={editorState}
+                onToggle={this.toggleInlineStyle}
+              />
+            </div>
           </div>
 
           <div className={`RichEditor-editor`} onClick={this.focus}>
@@ -172,9 +168,9 @@ class RichEditorExample extends React.Component {
               handleKeyCommand={this.handleKeyCommand}
               onChange={this.onChange}
               onTab={this.onTab}
-              placeholder="Take some notes..."
+              placeholder='Take some notes...'
               plugins={this.state.plugins}
-              ref="editor"
+              ref='editor'
             />
           </div>
         </div>
@@ -185,8 +181,8 @@ class RichEditorExample extends React.Component {
 
 function getBlockStyle(block) {
   switch (block.getType()) {
-    case "blockquote":
-      return "RichEditor-blockquote";
+    case 'blockquote':
+      return 'RichEditor-blockquote';
     default:
       return null;
   }
@@ -202,30 +198,28 @@ class StyleButton extends React.Component {
   }
 
   render() {
-    let className = "RichEditor-styleButton";
+    let className = 'RichEditor-styleButton';
     if (this.props.active) {
-      className += " RichEditor-activeButton";
+      className += ' RichEditor-activeButton';
     }
 
     return (
       <span className={className} onMouseDown={this.onToggle}>
-        {this.props.label}
+        {this.props.icon ? <i class={this.props.icon}></i> : this.props.label}
       </span>
     );
   }
 }
 
 const BLOCK_TYPES = [
-  { label: "H1", style: "header-one" },
-  { label: "H2", style: "header-two" },
-  { label: "H3", style: "header-three" },
-  { label: "H4", style: "header-four" },
-  { label: "H5", style: "header-five" },
-  { label: "H6", style: "header-six" },
-  { label: "Blockquote", style: "blockquote" },
-  { label: "UL", style: "unordered-list-item" },
-  { label: "OL", style: "ordered-list-item" },
-  { label: "Code Block", style: "code-block" }
+  { label: 'H1', style: 'header-one' },
+  { label: 'H2', style: 'header-two' },
+  { label: 'H3', style: 'header-three' },
+  { label: 'H4', style: 'header-four' },
+  { label: 'Code Block', style: 'code-block', icon: 'fas fa-code' },
+  { label: 'Blockquote', style: 'blockquote', icon: 'fas fa-quote-right' },
+  { label: 'UL', style: 'unordered-list-item', icon: 'fas fa-list-ul' },
+  { label: 'OL', style: 'ordered-list-item', icon: 'fas fa-list-ol' }
 ];
 
 const BlockStyleControls = props => {
@@ -237,7 +231,7 @@ const BlockStyleControls = props => {
     .getType();
 
   return (
-    <div className="RichEditor-controls">
+    <div className='RichEditor-controls'>
       {BLOCK_TYPES.map(type => (
         <StyleButton
           key={type.label}
@@ -245,6 +239,7 @@ const BlockStyleControls = props => {
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
+          icon={type.icon}
         />
       ))}
     </div>
@@ -252,16 +247,16 @@ const BlockStyleControls = props => {
 };
 
 var INLINE_STYLES = [
-  { label: "Bold", style: "BOLD" },
-  { label: "Italic", style: "ITALIC" },
-  { label: "Underline", style: "UNDERLINE" },
-  { label: "Monospace", style: "CODE" },
+  { label: 'Bold', style: 'BOLD', icon: 'fas fa-bold' },
+  { label: 'Italic', style: 'ITALIC', icon: 'fas fa-italic' },
+  { label: 'Underline', style: 'UNDERLINE', icon: 'fas fa-underline' },
+  { label: 'Monospace', style: 'CODE' }
 ];
 
 const InlineStyleControls = props => {
   var currentStyle = props.editorState.getCurrentInlineStyle();
   return (
-    <div className="RichEditor-controls">
+    <div className='RichEditor-controls'>
       {INLINE_STYLES.map(type => (
         <StyleButton
           key={type.label}
@@ -269,6 +264,7 @@ const InlineStyleControls = props => {
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
+          icon={type.icon}
         />
       ))}
     </div>

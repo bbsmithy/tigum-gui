@@ -1,4 +1,5 @@
 import { Topic } from '../client-lib/models';
+import { stateToHTML } from 'draft-js-export-html';
 
 export const topicsToKeys = (topics: Array<Topic>) => {
   const keys = [];
@@ -29,5 +30,22 @@ export const addSnippet = (
   ];
   const updatedTopic = state.topics.data[topic_id];
   updatedTopic.article_snippets = updatedTopicNoteIds;
+  return updatedTopic;
+};
+
+export const addVideo = (video_id: number, topic_id: number, state: any) => {
+  const updatedTopicVideoIds = [
+    video_id,
+    ...state.topics.data[topic_id].videos
+  ];
+  const updatedTopic = state.topics.data[topic_id];
+  updatedTopic.videos = updatedTopicVideoIds;
+  return updatedTopic;
+};
+
+export const addLink = (link_id: number, topic_id: number, state: any) => {
+  const updatedTopicLinkIds = [link_id, ...state.topics.data[topic_id].links];
+  const updatedTopic = state.topics.data[topic_id];
+  updatedTopic.links = updatedTopicLinkIds;
   return updatedTopic;
 };

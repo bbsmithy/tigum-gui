@@ -1,5 +1,5 @@
 import { Topic, Code, Note, Link, Image } from '../client-lib/models';
-import { topicsToKeys, addNote, addSnippet } from './StateHelpers';
+import { contentReducer } from './reducers/contentReducer';
 
 export type InitialState = {
   content: {
@@ -36,96 +36,6 @@ export const initialState: InitialState = {
     id: null,
     email: '',
     loggedIn: false
-  }
-};
-
-const contentReducer = (state: any, action: any) => {
-  console.log(state);
-  switch (action.type) {
-    case 'FETCHING_TOPICS':
-      return {
-        ...state,
-        topics: {
-          ...state.topics,
-          loading: true
-        }
-      };
-    case 'SET_TOPICS':
-      const { data, keys } = topicsToKeys(action.payload);
-      return { ...state, topics: { data, keys, loading: false } };
-    case 'SET_TOPICS_FAILURE':
-      return { ...state, topics: { ...state.topics, loading: false } };
-    case 'SET_SELECTED_TOPIC':
-      return { ...state, selectedTopic: action.payload };
-    case 'SET_SNIPPETS':
-      return { ...state, article_snippets: action.payload };
-    case 'ADD_SNIPPET':
-      const { id, topic_id } = action.payload;
-      const updatedTopicWithSnippet = addSnippet(id, topic_id, state);
-      debugger;
-      return {
-        ...state,
-        article_snippets: [action.payload, ...state.article_snippets],
-        topics: {
-          ...state.topics,
-          data: {
-            [action.payload.topic_id]: updatedTopicWithSnippet,
-            ...state.topics.data
-          }
-        }
-      };
-    case 'SET_NOTES':
-      return { ...state, notes: action.payload };
-    case 'ADD_NOTE': {
-      const { id, topic_id } = action.payload;
-      const updatedTopic = addNote(id, topic_id, state);
-      debugger;
-      return {
-        ...state,
-        notes: [action.payload, ...state.notes],
-        topics: {
-          ...state.topics,
-          data: {
-            [action.payload.topic_id]: updatedTopic,
-            ...state.topics.data
-          }
-        }
-      };
-    }
-
-    case 'SET_VIDEOS':
-      return { ...state, videos: action.payload };
-    case 'ADD_VIDEO':
-      return { ...state, videos: [action.payload, ...state.videos] };
-    case 'SET_CODES':
-      return { ...state, codes: action.payload };
-    case 'ADD_CODE':
-      return {
-        ...state,
-        codes: [action.payload, ...state.codes]
-      };
-    case 'SET_IMAGES':
-      return {
-        ...state,
-        images: action.payload
-      };
-    case 'ADD_IMAGE':
-      return {
-        ...state,
-        images: [action.payload, ...state.images]
-      };
-    case 'SET_LINKS':
-      return {
-        ...state,
-        links: action.payload
-      };
-    case 'ADD_LINK':
-      return {
-        ...state,
-        links: [action.payload, ...state.links]
-      };
-    default:
-      return state;
   }
 };
 

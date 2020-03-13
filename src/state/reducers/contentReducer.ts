@@ -22,7 +22,14 @@ export const contentReducer = (state: any, action: any) => {
     case 'SET_TOPICS_FAILURE':
       return { ...state, topics: { ...state.topics, loading: false } };
     case 'SET_SELECTED_TOPIC':
-      return { ...state, selectedTopic: action.payload };
+      return {
+        ...state,
+        selectedTopic: action.payload,
+        notes: [],
+        links: [],
+        videos: [],
+        article_snippets: []
+      };
     case 'SET_SNIPPETS':
       return { ...state, article_snippets: action.payload };
     case 'ADD_SNIPPET': {

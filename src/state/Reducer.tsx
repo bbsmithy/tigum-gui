@@ -1,6 +1,5 @@
-import { Topic, Code, Note, Link, Image } from "../client-lib/models";
-import { topicsToKeys } from "./StateHelpers";
-import { string } from "prop-types";
+import { Topic, Code, Note, Link, Image } from '../client-lib/models';
+import { topicsToKeys, addNote, addSnippet } from './StateHelpers';
 
 export type InitialState = {
   content: {
@@ -33,9 +32,9 @@ export const initialState: InitialState = {
     links: []
   },
   user: {
-    name: "",
+    name: '',
     id: null,
-    email: "",
+    email: '',
     loggedIn: false
   }
 };
@@ -43,7 +42,7 @@ export const initialState: InitialState = {
 const contentReducer = (state: any, action: any) => {
   console.log(state);
   switch (action.type) {
-    case "FETCHING_TOPICS":
+    case 'FETCHING_TOPICS':
       return {
         ...state,
         topics: {
@@ -51,51 +50,76 @@ const contentReducer = (state: any, action: any) => {
           loading: true
         }
       };
-    case "SET_TOPICS":
+    case 'SET_TOPICS':
       const { data, keys } = topicsToKeys(action.payload);
       return { ...state, topics: { data, keys, loading: false } };
-    case "SET_TOPICS_FAILURE":
+    case 'SET_TOPICS_FAILURE':
       return { ...state, topics: { ...state.topics, loading: false } };
-    case "SET_SELECTED_TOPIC":
+    case 'SET_SELECTED_TOPIC':
       return { ...state, selectedTopic: action.payload };
-    case "SET_SNIPPETS":
+    case 'SET_SNIPPETS':
       return { ...state, article_snippets: action.payload };
-    case "ADD_SNIPPET":
+    case 'ADD_SNIPPET':
+      const { id, topic_id } = action.payload;
+      const updatedTopicWithSnippet = addSnippet(id, topic_id, state);
+      debugger;
       return {
         ...state,
-        article_snippets: [action.payload, ...state.article_snippets]
+        article_snippets: [action.payload, ...state.article_snippets],
+        topics: {
+          ...state.topics,
+          data: {
+            [action.payload.topic_id]: updatedTopicWithSnippet,
+            ...state.topics.data
+          }
+        }
       };
-    case "SET_NOTES":
+    case 'SET_NOTES':
       return { ...state, notes: action.payload };
-    case "ADD_NOTE":
-      return { ...state, notes: [...state.notes, action.payload] };
-    case "SET_VIDEOS":
-      return { ...state, videos: action.payload };
-    case "ADD_VIDEO":
-      return { ...state, videos: [...state.videos, action.payload] };
-    case "SET_CODES":
-      return { ...state, codes: action.payload };
-    case "ADD_CODE":
+    case 'ADD_NOTE': {
+      const { id, topic_id } = action.payload;
+      const updatedTopic = addNote(id, topic_id, state);
+      debugger;
       return {
         ...state,
-        codes: [...state.codes, action.payload]
+        notes: [action.payload, ...state.notes],
+        topics: {
+          ...state.topics,
+          data: {
+            [action.payload.topic_id]: updatedTopic,
+            ...state.topics.data
+          }
+        }
       };
-    case "SET_IMAGES":
+    }
+
+    case 'SET_VIDEOS':
+      return { ...state, videos: action.payload };
+    case 'ADD_VIDEO':
+      return { ...state, videos: [action.payload, ...state.videos] };
+    case 'SET_CODES':
+      return { ...state, codes: action.payload };
+    case 'ADD_CODE':
+      return {
+        ...state,
+        codes: [action.payload, ...state.codes]
+      };
+    case 'SET_IMAGES':
       return {
         ...state,
         images: action.payload
       };
-    case "ADD_IMAGE":
+    case 'ADD_IMAGE':
       return {
         ...state,
-        images: [...state.images, action.payload]
+        images: [action.payload, ...state.images]
       };
-    case "SET_LINKS":
+    case 'SET_LINKS':
       return {
         ...state,
         links: action.payload
       };
-    case "ADD_LINK":
+    case 'ADD_LINK':
       return {
         ...state,
         links: [action.payload, ...state.links]
@@ -107,7 +131,7 @@ const contentReducer = (state: any, action: any) => {
 
 export const navigationReducer = (state: any, action: any) => {
   switch (action.type) {
-    case "NAVIGATE":
+    case 'NAVIGATE':
       return { ...state, screenTree: action.payload };
     default:
       return state;
@@ -117,7 +141,7 @@ export const navigationReducer = (state: any, action: any) => {
 export const userReducer = (state: any, action: any) => {
   console.log(state);
   switch (action.type) {
-    case "LOGIN_SUCCESS":
+    case 'LOGIN_SUCCESS':
       return {
         ...state,
         name: action.payload.name,
@@ -125,7 +149,7 @@ export const userReducer = (state: any, action: any) => {
         email: action.payload.email,
         loggedIn: true
       };
-    case "SIGNUP_SUCCESS":
+    case 'SIGNUP_SUCCESS':
       return {
         ...state,
         name: action.payload.name,
@@ -133,7 +157,7 @@ export const userReducer = (state: any, action: any) => {
         email: action.payload.email,
         loggedIn: true
       };
-    case "LOGOUT":
+    case 'LOGOUT':
       return {
         ...state,
         loggedIn: false

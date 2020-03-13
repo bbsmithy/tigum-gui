@@ -1,39 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { NewButton } from "../../components/";
-import { Modal, VideoCard } from "../../components/";
-import { createVideo, updateTopic, getVideos } from "../../client-lib/api";
-import { getEmbedFromUrl } from "../../util";
-import { VIDEO_SCREENS } from "../../routers/VideoRouter";
+import React, { useState, useEffect } from 'react';
+import { NewButton } from '../../components/';
+import { Modal, VideoCard } from '../../components/';
+import { createVideo, updateTopic, getVideos } from '../../client-lib/api';
+import { getEmbedFromUrl } from '../../util';
+import { VIDEO_SCREENS } from '../../routers/VideoRouter';
 
-import { createUseStyles } from "react-jss";
-import { useStateValue } from "../../state/StateProvider";
+import { createUseStyles } from 'react-jss';
+import { useStateValue } from '../../state/StateProvider';
 
 const useStyles = createUseStyles({
   videoLoadingCover: {
-    backgroundColor: "#efefef",
+    backgroundColor: '#efefef',
     height: 200,
-    width: "100%",
-    textAlign: "center"
+    width: '100%',
+    textAlign: 'center'
   },
   headerLoadingNote: {
-    width: "80%",
+    width: '80%',
     padding: 6,
     marginTop: 10,
-    background: "#efefef",
+    background: '#efefef',
 
     height: 6
   },
   videoIconLoading: {
     fontSize: 50,
     marginTop: 90,
-    color: "gray"
+    color: 'gray'
   }
 });
 
 export const AllVideos = (props: any) => {
   const [displayVideoModal, setVideoModal] = useState(false);
-  const [videoTitle, setVideoTitle] = useState("");
-  const [videoUrl, setVideoUrl] = useState("");
+  const [videoTitle, setVideoTitle] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
   const [loadingVideos, setLoadingVideos] = useState(true);
 
   // @ts-ignore
@@ -42,13 +42,11 @@ export const AllVideos = (props: any) => {
     content: { videos }
   } = state;
 
-  const classes = useStyles();
-
   const fetchVideos = async (ids: Array<number>) => {
     const res = await getVideos(ids);
     if (res.status === 200) {
       const body = await res.json();
-      dispatch({ type: "SET_VIDEOS", payload: body });
+      dispatch({ type: 'SET_VIDEOS', payload: body });
       setLoadingVideos(false);
     }
   };
@@ -73,7 +71,7 @@ export const AllVideos = (props: any) => {
       });
       if (res.status === 200) {
         const body = await res.json();
-        dispatch({ type: "ADD_VIDEO", payload: body });
+        dispatch({ type: 'ADD_VIDEO', payload: body });
         toggleModal();
       }
     }
@@ -89,12 +87,13 @@ export const AllVideos = (props: any) => {
 
   const onClickVideoCard = (video: any) => {
     props.navigate(VIDEO_SCREENS.VIDEO_PLAYER, video);
+    dispatch({ type: 'HIDE_TOPIC_NAVBAR' });
   };
 
   const onDeleteVideoCard = (index: number) => {
     let refreshedVideoResources = [...videos];
     delete refreshedVideoResources[index];
-    dispatch({ type: "SET_VIDEOS", payload: refreshedVideoResources });
+    dispatch({ type: 'SET_VIDEOS', payload: refreshedVideoResources });
   };
 
   const renderVideoResources = () => {
@@ -115,34 +114,34 @@ export const AllVideos = (props: any) => {
       });
     }
     return (
-      <div className="no-resources-message">
-        <i className="fab fa-youtube" /> <span>No videos yet</span>
+      <div className='no-resources-message'>
+        <i className='fab fa-youtube' /> <span>No videos yet</span>
       </div>
     );
   };
 
   return (
-    <div className="ph2 mt4 pt3">
-      <NewButton onClick={toggleModal} text="New Video" />
-      <div className="center w-100 ph3">{renderVideoResources()}</div>
+    <div className='ph2 mt4 pt3'>
+      <NewButton onClick={toggleModal} text='New Video' />
+      <div className='center w-100 ph3'>{renderVideoResources()}</div>
       <Modal
-        title="New Video"
+        title='New Video'
         display={displayVideoModal}
         toggleModal={toggleModal}
         onClickAction={createVideoResource}
-        buttonText="Create Video"
+        buttonText='Create Video'
       >
         <input
-          type="text"
-          placeholder="Video Title"
-          id="topic-title-input"
+          type='text'
+          placeholder='Video Title'
+          id='topic-title-input'
           value={videoTitle}
           onChange={onChangeTitle}
         />
         <input
-          type="text"
-          placeholder="URL (Youtube)"
-          id="topic-title-input"
+          type='text'
+          placeholder='URL (Youtube)'
+          id='topic-title-input'
           value={videoUrl}
           onChange={onChangeUrl}
         />

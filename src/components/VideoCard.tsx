@@ -1,7 +1,7 @@
-import React from "react";
-import { truncated } from "../util";
-import { OptionsButton } from "./OptionsButton";
-import { deleteVideo } from "../client-lib/api";
+import React from 'react';
+import { truncated } from '../util';
+import { OptionsButton } from './OptionsButton';
+import { deleteVideo } from '../client-lib/api';
 
 type VideoCardProps = {
   iframe: string;
@@ -29,8 +29,8 @@ export const VideoCard = (props: VideoCardProps) => {
 
   const videoCardOptions = [
     {
-      title: "Delete",
-      icon: "fas fa-trash",
+      title: 'Delete',
+      icon: 'fas fa-trash',
       onClick: onClickDelete
     }
   ];
@@ -39,15 +39,15 @@ export const VideoCard = (props: VideoCardProps) => {
 
   return (
     <article
-      className="br2 mv3 mw dib video-card ma3 pointer"
+      className='br2 mv3 mw dib video-card ma3 pointer'
       onClick={onSelect}
     >
-      <img src={props.thumbnail_img} className="db w-100 br2 br--top" />
-      <div className="ph3-ns pv3-ns h-30">
-        <div className="dib w-90">
-          <h2 className="f3 f5-ns mv0 text">{title}</h2>
+      <img src={props.thumbnail_img} className='db w-100 br2 br--top' />
+      <div className='ph3-ns pv3-ns h-30'>
+        <div className='dib w-90'>
+          <h2 className='f3 f5-ns mv0 white'>{title}</h2>
         </div>
-        <div className="dib w-10">
+        <div className='dib w-10'>
           <OptionsButton options={videoCardOptions} />
         </div>
       </div>

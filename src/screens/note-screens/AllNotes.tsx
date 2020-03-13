@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { createUseStyles } from "react-jss";
-import { NewButton, Note } from "../../components";
-import { Modal } from "../../components/Modal";
-import { createNote, getNotes, updateTopic } from "../../client-lib/api";
-import { NOTE_SCREENS } from "../../routers/NoteRouter";
-import { useStateValue } from "../../state/StateProvider";
+import React, { useState, useEffect } from 'react';
+import { createUseStyles } from 'react-jss';
+import { NewButton, Note } from '../../components';
+import { Modal } from '../../components/Modal';
+import { createNote, getNotes, updateTopic } from '../../client-lib/api';
+import { NOTE_SCREENS } from '../../routers/NoteRouter';
+import { useStateValue } from '../../state/StateProvider';
 
 const useStyles = createUseStyles({
   headerLoadingNote: {
-    width: "70%",
+    width: '70%',
     padding: 6,
     marginTop: 10,
-    background: "#efefef",
+    background: '#efefef',
     height: 6
   },
   dateLoadingNote: {
-    width: "50%",
+    width: '50%',
     padding: 3,
     marginTop: 10,
-    background: "#efefef",
+    background: '#efefef',
     height: 6
   }
 });
 
 export const AllNotes = (props: any) => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
-  const [noteTitle, setNoteTitle] = useState("");
+  const [noteTitle, setNoteTitle] = useState('');
   const [loading, setLoading] = useState(true);
   const classes = useStyles();
 
@@ -50,7 +50,7 @@ export const AllNotes = (props: any) => {
       const res = await getNotes(topic_content);
       if (res.status === 200) {
         const body = await res.json();
-        dispatch({ type: "SET_NOTES", payload: body.reverse() });
+        dispatch({ type: 'SET_NOTES', payload: body.reverse() });
         setLoading(false);
       }
     } catch (e) {}
@@ -64,9 +64,9 @@ export const AllNotes = (props: any) => {
     const res = await createNote(noteTitle, topic.id);
     if (res.status === 200) {
       const newNote = await res.json();
-      dispatch({ type: "ADD_NOTE", payload: newNote });
+      dispatch({ type: 'ADD_NOTE', payload: newNote });
       toggleModal();
-      setNoteTitle("");
+      setNoteTitle('');
     }
   };
 
@@ -75,16 +75,17 @@ export const AllNotes = (props: any) => {
   };
 
   const onClickNote = (note: any) => {
+    dispatch({ type: 'HIDE_TOPIC_NAVBAR' });
     props.navigate(NOTE_SCREENS.VIEW_NOTE, note);
   };
 
   const renderLoading = () => {
     return (
-      <div className="card note-card">
-        <div className="mw9 center">
-          <div className="cf ph2-ns pb4">
-            <div className="fl ph2 w-90 pv1">
-              <div className="bg-white">
+      <div className='card note-card'>
+        <div className='mw9 center'>
+          <div className='cf ph2-ns pb4'>
+            <div className='fl ph2 w-90 pv1'>
+              <div className='bg-white'>
                 <div className={classes.headerLoadingNote}></div>
                 <div className={classes.dateLoadingNote}></div>
               </div>
@@ -109,27 +110,27 @@ export const AllNotes = (props: any) => {
 
   const renderNoNotes = () => {
     return (
-      <div className="no-resources-message">
-        <i className="fas fa-pen-square" /> <span>No notes yet</span>
+      <div className='no-resources-message'>
+        <i className='fas fa-pen-square' /> <span>No notes yet</span>
       </div>
     );
   };
 
   return (
-    <div className="ph2 mt4 pt3">
-      <NewButton onClick={toggleModal} text="New Doc" />
+    <div className='ph2 mt4 pt3'>
+      <NewButton onClick={toggleModal} text='New Doc' />
       {renderNotes()}
       <Modal
-        title="New Note"
+        title='New Note'
         display={newNoteModalIsOpen}
         toggleModal={toggleModal}
-        buttonText="Add Note"
+        buttonText='Add Note'
         onClickAction={createNewNote}
       >
         <input
-          type="text"
-          placeholder="Note Title"
-          id="topic-title-input"
+          type='text'
+          placeholder='Note Title'
+          id='topic-title-input'
           value={noteTitle}
           onChange={onChangeTitle}
         />

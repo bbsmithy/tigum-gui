@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { TopicNavigationBar } from "../topic-navigation-bar";
-import { TopicRouter, TOPIC_SCREENS } from "../routers/TopicRouter";
-import { getTopics, createTopic } from "../client-lib/api";
-import { SideBar } from "../sidebar-navigator";
-import { Modal } from "../components/";
-import { useStateValue } from "../state/StateProvider";
+import React, { useState, useEffect } from 'react';
+import { TopicNavigationBar } from '../topic-navigation-bar';
+import { TopicRouter, TOPIC_SCREENS } from '../routers/TopicRouter';
+import { getTopics, createTopic } from '../client-lib/api';
+import { SideBar } from '../sidebar-navigator';
+import { Modal } from '../components/';
+import { useStateValue } from '../state/StateProvider';
 
 export const MainContent = (props: any) => {
   const [screen, setScreen] = useState(TOPIC_SCREENS.LOADING);
   const [modalOpen, setModalOpen] = useState(false);
-  const [topicTitle, setTopicTitle] = useState("");
+  const [topicTitle, setTopicTitle] = useState('');
 
   // @ts-ignore
   const [
@@ -17,7 +17,8 @@ export const MainContent = (props: any) => {
       content: {
         selectedTopic,
         topics: { data, loading }
-      }
+      },
+      navigation: { showTopicNavbar }
     },
     dispatch
   ] = useStateValue();
@@ -26,7 +27,7 @@ export const MainContent = (props: any) => {
 
   const navigate = (screen: TOPIC_SCREENS, topic_id: number) => {
     setScreen(screen);
-    dispatch({ type: "SET_SELECTED_TOPIC", payload: topic_id });
+    dispatch({ type: 'SET_SELECTED_TOPIC', payload: topic_id });
   };
 
   const toggleModal = () => {
@@ -34,16 +35,16 @@ export const MainContent = (props: any) => {
   };
 
   const fetchTopics = async () => {
-    dispatch({ type: "FETCHING_TOPICS" });
+    dispatch({ type: 'FETCHING_TOPICS' });
     try {
       const newTopics = await getTopics([]);
       const orderedTopics = newTopics.reverse();
-      dispatch({ type: "SET_TOPICS", payload: orderedTopics });
+      dispatch({ type: 'SET_TOPICS', payload: orderedTopics });
       navigate(TOPIC_SCREENS.MY_NOTES, orderedTopics[0].id);
     } catch (e) {
       console.log(e.status);
-      console.log("Could not fetch topics");
-      dispatch({ type: "SET_TOPICS_FAILURE" });
+      console.log('Could not fetch topics');
+      dispatch({ type: 'SET_TOPICS_FAILURE' });
     }
   };
 
@@ -71,12 +72,14 @@ export const MainContent = (props: any) => {
     if (topic) {
       return (
         <>
-          <TopicNavigationBar
-            title={topic.title}
-            navigate={navigate}
-            topic={topic}
-          />
-          <div className="topic-route-container">
+          {showTopicNavbar && (
+            <TopicNavigationBar
+              title={topic.title}
+              navigate={navigate}
+              topic={topic}
+            />
+          )}
+          <div className='topic-route-container'>
             <TopicRouter screen={screen} topic={topic} />
           </div>
         </>
@@ -103,13 +106,13 @@ export const MainContent = (props: any) => {
           display={modalOpen}
           toggleModal={toggleModal}
           onClickAction={onClickCreateTopic}
-          buttonText="Create"
-          title="Create Topic"
+          buttonText='Create'
+          title='Create Topic'
         >
           <input
-            type="text"
-            placeholder="Title"
-            id="topic-title-input"
+            type='text'
+            placeholder='Title'
+            id='topic-title-input'
             value={topicTitle}
             onChange={onChangeTitle}
           />
@@ -122,5 +125,5 @@ export const MainContent = (props: any) => {
     return <p>Hello</p>;
   };
 
-  return <div id="main-content">{renderApp()}</div>;
+  return <div id='main-content'>{renderApp()}</div>;
 };

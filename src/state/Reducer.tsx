@@ -1,26 +1,9 @@
 import { Topic, Code, Note, Link, Image } from '../client-lib/models';
 import { contentReducer } from './reducers/contentReducer';
 
-export type InitialState = {
-  content: {
-    topics: { data: any; keys: number[]; loading: boolean };
-    selectedTopic: number;
-    notes: Array<Note>;
-    videos: Array<any>;
-    article_snippets: Array<any>;
-    codes: Array<Code>;
-    images: Array<Image>;
-    links: Array<Link>;
-  };
-  user: {
-    name: string;
-    id: number;
-    email: string;
-    loggedIn: boolean;
-  };
-};
+export type InitialState = typeof initialState;
 
-export const initialState: InitialState = {
+export const initialState = {
   content: {
     topics: { data: {}, keys: [], loading: true },
     selectedTopic: null,
@@ -36,6 +19,9 @@ export const initialState: InitialState = {
     id: null,
     email: '',
     loggedIn: false
+  },
+  navigation: {
+    showTopicNavbar: true
   }
 };
 
@@ -43,6 +29,11 @@ export const navigationReducer = (state: any, action: any) => {
   switch (action.type) {
     case 'NAVIGATE':
       return { ...state, screenTree: action.payload };
+    case 'HIDE_TOPIC_NAVBAR':
+      debugger;
+      return { ...state, showTopicNavbar: false };
+    case 'SHOW_TOPIC_NAVBAR':
+      return { ...state, showTopicNavbar: true };
     default:
       return state;
   }

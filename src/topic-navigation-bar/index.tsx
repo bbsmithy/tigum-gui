@@ -40,12 +40,12 @@ export const TopicNavigationBar = ({
       title: 'Links',
       icon: 'fas fa-link',
       screen: TOPIC_SCREENS.LINKS
-    },
-    {
-      title: 'Test',
-      icon: 'fas fa-graduation-cap',
-      screen: TOPIC_SCREENS.IMAGES
     }
+    // {
+    //   title: 'Test',
+    //   icon: 'fas fa-graduation-cap',
+    //   screen: TOPIC_SCREENS.IMAGES
+    // }
   ];
 
   return (

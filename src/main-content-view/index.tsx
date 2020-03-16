@@ -5,11 +5,19 @@ import { getTopics, createTopic } from '../client-lib/api';
 import { SideBar } from '../sidebar-navigator';
 import { Modal } from '../components/';
 import { useStateValue } from '../state/StateProvider';
+import { createUseStyles } from 'react-jss';
+
+const useStyles = createUseStyles({
+  topicContainer: {
+    height: '100%'
+  }
+});
 
 export const MainContent = (props: any) => {
   const [screen, setScreen] = useState(TOPIC_SCREENS.LOADING);
   const [modalOpen, setModalOpen] = useState(false);
   const [topicTitle, setTopicTitle] = useState('');
+  const classes = useStyles();
 
   // @ts-ignore
   const [
@@ -79,7 +87,7 @@ export const MainContent = (props: any) => {
               topic={topic}
             />
           )}
-          <div className='topic-route-container'>
+          <div className={classes.topicContainer}>
             <TopicRouter screen={screen} topic={topic} />
           </div>
         </>

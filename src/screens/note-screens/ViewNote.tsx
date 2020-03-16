@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NOTE_SCREENS } from '../../routers/NoteRouter';
 import { deleteNote } from '../../client-lib/api';
 import { getFile, uploadToBucket } from '../../client-lib/S3';
+import { debounce } from '../../util';
 import TextEditor from '../../components/Editor/TextEditor';
 import { useStateValue } from '../../state/StateProvider';
 
@@ -11,6 +12,17 @@ export const ViewNote = (props: any) => {
 
   // @ts-ignore
   const [state, dispatch] = useStateValue();
+  const [editorWidth, setEditorWidth] = useState();
+
+  const onLayoutEditorWidth = () => {
+    const editorContainerWidth = document.getElementById('view-note-container')
+      .offsetWidth;
+    setEditorWidth(editorContainerWidth);
+  };
+
+  const debouncedEditorLayout = () => {
+    debounce(onLayoutEditorWidth(), 300);
+  };
 
   const getNoteData = async () => {
     try {
@@ -24,6 +36,11 @@ export const ViewNote = (props: any) => {
 
   useEffect(() => {
     getNoteData();
+    onLayoutEditorWidth();
+    window.addEventListener('resize', debouncedEditorLayout);
+    return () => {
+      window.removeEventListener('resize', debouncedEditorLayout);
+    };
   }, []);
 
   const onSave = async (content: string) => {
@@ -52,10 +69,11 @@ export const ViewNote = (props: any) => {
   };
 
   return (
-    <div className='view-note-container z-1 mt4'>
+    <div className='z-1 center w-60' id='view-note-container'>
       <TextEditor
         onSave={onSave}
         saving={saving}
+        width={editorWidth}
         htmlContent={html}
         title={props.note.title}
         onClickBack={onClickNote}

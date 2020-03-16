@@ -1,16 +1,16 @@
 const months_arr = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec"
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
 ];
 
 export const getDate = date => {
@@ -26,23 +26,23 @@ export const getDate = date => {
   const hours = date.getHours();
 
   // Minutes
-  const minutes = "0" + date.getMinutes();
+  const minutes = '0' + date.getMinutes();
 
   // Seconds
-  const seconds = "0" + date.getSeconds();
+  const seconds = '0' + date.getSeconds();
 
   // Display date time in MM-dd-yyyy h:m:s format
   const convdataTime =
     month +
-    "-" +
+    '-' +
     day +
-    "-" +
+    '-' +
     year +
-    " " +
+    ' ' +
     hours +
-    ":" +
+    ':' +
     minutes.substr(-2) +
-    ":" +
+    ':' +
     seconds.substr(-2);
 
   return convdataTime;
@@ -69,5 +69,27 @@ export const truncated = (title, cutAt) => {
 
 export const deleteJWT = () => {
   console.log(document.cookie);
-  document.cookie = "jwt= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+  document.cookie = 'jwt= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+};
+
+export const debounce = (func, wait, immediate) => {
+  var timeout;
+
+  return function() {
+    var context = this;
+    var args = arguments;
+
+    var later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+
+    var callNow = immediate && !timeout;
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(later, wait);
+
+    if (callNow) func.apply(context, args);
+  };
 };

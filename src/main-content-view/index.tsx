@@ -92,8 +92,6 @@ export const MainContent = (props: any) => {
           </div>
         </>
       );
-    } else {
-      return <h3>No topic</h3>;
     }
   };
 

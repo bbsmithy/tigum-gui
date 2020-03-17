@@ -27,7 +27,9 @@ const useStyles = createUseStyles({
     height: 6
   },
   container: {
-    overflow: 'scroll'
+    overflow: 'scroll',
+    height: '100%',
+    paddingBottom: 200
   }
 });
 

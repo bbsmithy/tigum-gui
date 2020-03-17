@@ -145,9 +145,6 @@ body {
 }
 
 #main-content {
-  position: absolute;
-  left: 20%;
-  width: 80%;
   height: 100%;
   overflow-y: scroll;
   font-family: 'Montserrat', sans-serif;

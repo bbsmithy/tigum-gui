@@ -3,7 +3,6 @@ export const navigationReducer = (state: any, action: any) => {
     case 'NAVIGATE':
       return { ...state, screenTree: action.payload };
     case 'HIDE_TOPIC_NAVBAR':
-      debugger;
       return { ...state, showTopicNavbar: false };
     case 'SHOW_TOPIC_NAVBAR':
       return { ...state, showTopicNavbar: true };

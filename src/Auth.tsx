@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { checkLogin } from "./client-lib/api";
-import { useStateValue } from "./state/StateProvider";
-import { MainContent } from "./main-content-view";
-import { AuthRouter, AUTH_SCREENS } from "./routers/AuthRouter";
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { checkLogin } from './client-lib/api';
+import { useStateValue } from './state/StateProvider';
+import { MainContent } from './main-content';
+import { AuthRouter, AUTH_SCREENS } from './routers/AuthRouter';
 
 export const Auth = () => {
   // @ts-ignore
@@ -14,15 +14,15 @@ export const Auth = () => {
   /**
    * DK {
    *  id: "isUserLoggedIn"
-   *  desc: "The isUserLoggedIn function checks wheather 
-   *  the user is already logged in by sending the LINK[checkLogin] 
+   *  desc: "The isUserLoggedIn function checks wheather
+   *  the user is already logged in by sending the LINK[checkLogin]
    *  request which will send on jwt token stored in the private cookie __silly_devkeep"
    * }
    */
   const isUserLoggedIn = async () => {
     try {
       const user = await checkLogin();
-      dispatch({ type: "LOGIN_SUCCESS", payload: user });
+      dispatch({ type: 'LOGIN_SUCCESS', payload: user });
       setShowSplash(false);
     } catch (e) {
       setShowSplash(false);
@@ -41,15 +41,15 @@ export const Auth = () => {
     return (
       <div
         style={{
-          margin: "auto",
-          textAlign: "center",
-          marginTop: "22%",
-          backgroundColor: "#1f1f1f",
-          height: "100%",
-          width: "100%"
+          margin: 'auto',
+          textAlign: 'center',
+          marginTop: '22%',
+          backgroundColor: '#1f1f1f',
+          height: '100%',
+          width: '100%'
         }}
       >
-        <img src={require("./logo.png")} height={45} />
+        <img src={require('./logo.png')} height={45} />
       </div>
     );
   }

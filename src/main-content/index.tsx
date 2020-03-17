@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TopicNavigationBar } from '../topic-navigation-bar';
 import { TopicRouter, TOPIC_SCREENS } from '../routers/TopicRouter';
 import { getTopics, createTopic } from '../client-lib/api';
-import { SideBar } from '../sidebar-navigator';
+import { SideBar } from '../sidebar';
 import { Modal } from '../components/';
 import { useStateValue } from '../state/StateProvider';
 import { createUseStyles } from 'react-jss';
@@ -26,7 +26,7 @@ export const MainContent = (props: any) => {
         selectedTopic,
         topics: { data, loading }
       },
-      navigation: { showTopicNavbar }
+      navigation: { showTopicNavbar, showSidebar }
     },
     dispatch
   ] = useStateValue();
@@ -76,29 +76,6 @@ export const MainContent = (props: any) => {
     setTopicTitle(e.currentTarget.value);
   };
 
-  const renderTopicViewer = () => {
-    if (topic) {
-      return (
-        <>
-          {showTopicNavbar && (
-            <TopicNavigationBar
-              title={topic.title}
-              navigate={navigate}
-              topic={topic}
-            />
-          )}
-          <div className={classes.topicContainer}>
-            <TopicRouter screen={screen} topic={topic} />
-          </div>
-        </>
-      );
-    }
-  };
-
-  const renderLoading = () => {
-    return <h3>Loading</h3>;
-  };
-
   const renderApp = () => {
     return (
       <>
@@ -107,7 +84,26 @@ export const MainContent = (props: any) => {
           screen={screen}
           toggleModal={toggleModal}
         />
-        {loading ? renderLoading() : renderTopicViewer()}
+        {topic && (
+          <div
+            style={{
+              width: showSidebar ? '80%' : '100%',
+              position: 'absolute',
+              left: showSidebar ? '20%' : '0%'
+            }}
+          >
+            {showTopicNavbar && (
+              <TopicNavigationBar
+                title={topic.title}
+                navigate={navigate}
+                topic={topic}
+              />
+            )}
+            <div className={classes.topicContainer}>
+              <TopicRouter screen={screen} topic={topic} />
+            </div>
+          </div>
+        )}
         <Modal
           display={modalOpen}
           toggleModal={toggleModal}

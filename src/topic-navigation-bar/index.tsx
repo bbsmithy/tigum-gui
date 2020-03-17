@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TOPIC_SCREENS } from '../routers/TopicRouter';
 import { OptionsButton, Option } from '../components/OptionsButton';
 import './styles.css';
+import { useStateValue } from '../state/StateProvider';
 
 interface TopicNavigationBarProps {
   title: string;
@@ -19,6 +20,18 @@ export const TopicNavigationBar = ({
   navigate
 }: TopicNavigationBarProps) => {
   const [selectedNavItem, setSelectedNavItem] = useState(0);
+
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+  const {
+    navigation: { showSidebar }
+  } = state;
+
+  const toggleSidebar = () => {
+    showSidebar
+      ? dispatch({ type: 'HIDE_SIDEBAR' })
+      : dispatch({ type: 'SHOW_SIDEBAR' });
+  };
 
   const navItems = [
     {
@@ -49,9 +62,16 @@ export const TopicNavigationBar = ({
   ];
 
   return (
-    <nav className='dt fixed topic-navigation-bar w-80 border-box ph3-ns z-2'>
+    <nav
+      className={`dt fixed topic-navigation-bar ${
+        showSidebar ? 'w-80' : 'w-100'
+      } border-box ph3-ns z-2`}
+    >
       <div className='dtc'>
-        <i className='fas fa-bars white pointer pr3'></i>
+        <i
+          className='fas fa-bars white pointer pr3'
+          onClick={toggleSidebar}
+        ></i>
         <h2 id='topic-header'>{title}</h2>
         <OptionsButton options={topicMenuOptions} />
       </div>

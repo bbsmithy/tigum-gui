@@ -23,7 +23,7 @@ export const initialState = {
   },
   navigation: {
     showTopicNavbar: true,
-    showSideBar: true
+    showSidebar: true
   }
 };
 

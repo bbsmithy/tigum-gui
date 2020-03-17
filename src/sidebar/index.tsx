@@ -11,10 +11,10 @@ const useStyles = createUseStyles({
     backgroundColor: '#333',
     color: 'white',
     position: 'fixed',
+    width: '20%',
     left: 0,
     zIndex: 1000,
     boxShadow: '0 1px 4px rgba(0, 0, 0, 0.6)',
-    width: '20%',
     height: '100%',
     fontFamily: 'Montserrat, sans-serif'
   },
@@ -65,7 +65,8 @@ export const SideBar: React.FC<SideBarProps> = ({
   };
 
   const {
-    content: { topics }
+    content: { topics },
+    navigation: { showSidebar }
   } = state;
 
   const classes = useStyles();
@@ -73,37 +74,39 @@ export const SideBar: React.FC<SideBarProps> = ({
     dispatch({ type: 'LOGOUT' });
     logoutUser();
   };
-
-  return (
-    <div className={classes.sidebarContainer}>
-      <div className={classes.sidebarHeader}>
-        <div>
-          <div className='fl w-40'>
-            <img
-              src={require('../logo.png')}
-              className={classes.logo}
-              height={22}
-            />
-          </div>
-          <div className='fl w-60'>
-            <button
-              className={`${classes.sidebarButton} btn topic-nav-btn fr`}
-              onClick={onClickNewTopic}
-            >
-              <i className={`fa fa-plus ${classes.btnIcon}`} />
-              <span>New Project</span>
-            </button>
+  if (showSidebar) {
+    return (
+      <div className={`${classes.sidebarContainer}`}>
+        <div className={classes.sidebarHeader}>
+          <div>
+            <div className='fl w-40'>
+              <img
+                src={require('../logo.png')}
+                className={classes.logo}
+                height={22}
+              />
+            </div>
+            <div className='fl w-60'>
+              <button
+                className={`${classes.sidebarButton} btn topic-nav-btn fr`}
+                onClick={onClickNewTopic}
+              >
+                <i className={`fa fa-plus ${classes.btnIcon}`} />
+                <span>New Project</span>
+              </button>
+            </div>
           </div>
         </div>
+        <TopicsList screen={screen} navigate={navigate} />
+        {topics.keys.length === 0 && !topics.loading && <NoTopicsMessage />}
+        <div id='sidebar-footer' className='pointer' onClick={onLogout}>
+          <span className='sidebar-footer-option'>
+            <span className={classes.logoutText}>Logout</span>
+            <i className='fas fa-sign-out-alt'></i>
+          </span>
+        </div>
       </div>
-      <TopicsList screen={screen} navigate={navigate} />
-      {topics.keys.length === 0 && !topics.loading && <NoTopicsMessage />}
-      <div id='sidebar-footer' className='pointer' onClick={onLogout}>
-        <span className='sidebar-footer-option'>
-          <span className={classes.logoutText}>Logout</span>
-          <i className='fas fa-sign-out-alt'></i>
-        </span>
-      </div>
-    </div>
-  );
+    );
+  }
+  return null;
 };

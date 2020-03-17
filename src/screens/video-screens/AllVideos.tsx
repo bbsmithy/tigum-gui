@@ -88,6 +88,7 @@ export const AllVideos = (props: any) => {
   const onClickVideoCard = (video: any) => {
     props.navigate(VIDEO_SCREENS.VIDEO_PLAYER, video);
     dispatch({ type: 'HIDE_TOPIC_NAVBAR' });
+    dispatch({ type: 'HIDE_SIDEBAR' });
   };
 
   const onDeleteVideoCard = (index: number) => {

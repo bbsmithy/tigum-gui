@@ -137,18 +137,18 @@ const DevKeepEditor = (props: DevKeepEditorProps) => {
   return (
     <div className='RichEditor-root' id='editor-root'>
       <div className='editor-controls fixed' style={{ width: props.width }}>
-        <div>
-          <div>
+        <div className='pv3'>
+          <div className='fl w-90'>
             <span className='btn-note' onClick={props.onBack}>
               <i className='fa fa-arrow-left' />
             </span>
             <span className='note-title'>{props.title}</span>
           </div>
-          <div>
-            <span className='btn-note fr mt3' onClick={onDelete}>
+          <div className='fl w-10'>
+            <span className='btn-note mt3' onClick={onDelete}>
               <i className='fa fa-trash' />
             </span>
-            <span className='btn-note fr mt3' onClick={onSave}>
+            <span className='btn-note mt3' onClick={onSave}>
               {props.saving ? (
                 <i className='fas fa-circle-notch fa-spin'></i>
               ) : (
@@ -157,7 +157,7 @@ const DevKeepEditor = (props: DevKeepEditorProps) => {
             </span>
           </div>
         </div>
-        <div>
+        <div className='mt3'>
           <BlockStyleControls
             editorState={editorState}
             onToggle={toggleBlockType}
@@ -172,6 +172,7 @@ const DevKeepEditor = (props: DevKeepEditorProps) => {
       <div className={`RichEditor-editor`} onClick={onFocus}>
         <Editor
           blockStyleFn={getBlockStyle}
+          // blockRenderMap={}
           editorState={editorState}
           handleKeyCommand={handleKeyCommand}
           onChange={onChangeEditorState}

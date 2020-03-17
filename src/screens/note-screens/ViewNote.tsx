@@ -54,7 +54,7 @@ export const ViewNote = (props: any) => {
     }
   };
 
-  const onClickNote = (note: any) => {
+  const onClickNote = () => {
     dispatch({ type: 'SHOW_TOPIC_NAVBAR' });
     props.navigate(NOTE_SCREENS.ALL_NOTES, {});
   };
@@ -76,8 +76,8 @@ export const ViewNote = (props: any) => {
         width={editorWidth}
         htmlContent={html}
         title={props.note.title}
-        onClickBack={onClickNote}
-        onClickDelete={onClickDelete}
+        onBack={onClickNote}
+        onDelete={onClickDelete}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import { Topic, Code, Note, Link, Image } from '../client-lib/models';
 import { contentReducer } from './reducers/contentReducer';
+import { navigationReducer } from './reducers/navigationReducer';
 
 export type InitialState = typeof initialState;
 
@@ -21,25 +22,8 @@ export const initialState = {
     loggedIn: false
   },
   navigation: {
-    showTopicNavbar: true
-  }
-};
-
-export const navigationReducer = (state: any, action: any) => {
-  switch (action.type) {
-    case 'NAVIGATE':
-      return { ...state, screenTree: action.payload };
-    case 'HIDE_TOPIC_NAVBAR':
-      debugger;
-      return { ...state, showTopicNavbar: false };
-    case 'SHOW_TOPIC_NAVBAR':
-      return { ...state, showTopicNavbar: true };
-    case 'HIDE_SIDEBAR':
-      return { ...state, showSidebar: false };
-    case 'SHOW_SIDEBAR':
-      return { ...state, showSidebar: true };
-    default:
-      return state;
+    showTopicNavbar: true,
+    showSideBar: true
   }
 };
 

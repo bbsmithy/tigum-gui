@@ -10,14 +10,14 @@ const useStyles = createUseStyles({
     textAlign: 'center'
   },
   videoNotesContainer: {
-    position: 'absolute',
+    position: 'fixed',
     top: 0,
     left: 0,
     width: '50%',
     height: '100%'
   },
   iframeContainer: {
-    position: 'absolute',
+    position: 'fixed',
     top: 0,
     right: 0,
     width: '50%',
@@ -62,7 +62,15 @@ export const VideoPlayer = (props: any) => {
           <TextEditor
             title={props.title}
             width={editorWidth}
-            onClickBack={goBack}
+            htmlContent={'<h1>Saved video notes</h1>'}
+            saving={false}
+            onSave={html => {
+              console.log(html);
+            }}
+            onDelete={() => {
+              console.log('delete thing');
+            }}
+            onBack={goBack}
           />
         )}
       </div>

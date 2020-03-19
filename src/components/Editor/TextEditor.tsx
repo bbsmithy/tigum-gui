@@ -138,13 +138,13 @@ const DevKeepEditor = (props: DevKeepEditorProps) => {
     <div className='RichEditor-root' id='editor-root'>
       <div className='editor-controls fixed' style={{ width: props.width }}>
         <div className='pv3'>
-          <div className='fl w-90'>
+          <div className='fl w-80-m w-80-l w-70'>
             <span className='btn-note' onClick={props.onBack}>
               <i className='fa fa-arrow-left' />
             </span>
             <span className='note-title'>{props.title}</span>
           </div>
-          <div className='fl w-10'>
+          <div className='fl w-20-m w-20-l w-30'>
             <span className='btn-note mt3' onClick={onDelete}>
               <i className='fa fa-trash' />
             </span>

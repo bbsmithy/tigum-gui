@@ -69,7 +69,7 @@ export const ViewNote = (props: any) => {
   };
 
   return (
-    <div className='z-1 center w-60' id='view-note-container'>
+    <div className='z-1 center w-100-m w-60-l w-100' id='view-note-container'>
       <TextEditor
         onSave={onSave}
         saving={saving}

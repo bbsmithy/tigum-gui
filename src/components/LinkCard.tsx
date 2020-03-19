@@ -3,8 +3,12 @@ import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
   documentTitle: {
-    display: 'inline-block',
-    fontSize: 18
+    display: 'block',
+    fontSize: 16,
+    textOverflow: 'ellipsis',
+    /* Required for text-overflow to do anything */
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
   },
   documentSubTitle: {
     color: 'gray',

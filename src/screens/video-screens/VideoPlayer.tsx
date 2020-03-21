@@ -13,14 +13,14 @@ const useStyles = createUseStyles({
     position: 'fixed',
     top: 0,
     left: 0,
-    width: '50%',
+    width: '40%',
     height: '100%'
   },
   iframeContainer: {
     position: 'fixed',
     top: 0,
     right: 0,
-    width: '50%',
+    width: '60%',
     height: '100%'
   }
 });

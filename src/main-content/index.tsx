@@ -26,7 +26,7 @@ export const MainContent = (props: any) => {
         selectedTopic,
         topics: { data, loading }
       },
-      navigation: { showTopicNavbar, showSidebar }
+      navigation: { showTopicNavbar, showSidebar, useFullWidth }
     },
     dispatch
   ] = useStateValue();
@@ -56,8 +56,18 @@ export const MainContent = (props: any) => {
     }
   };
 
+  const handleWindowResize = evt => {
+    if (evt.target.innerWidth < 960) {
+      dispatch({ type: 'HIDE_SIDEBAR', payload: { useFullWidth: true } });
+    } else if (evt.target.innerWidth > 960) {
+      dispatch({ type: 'SHOW_SIDEBAR', payload: { useFullWidth: false } });
+    }
+  };
+
   useEffect(() => {
     fetchTopics();
+    window.addEventListener('resize', handleWindowResize);
+    return () => window.removeEventListener('resize', handleWindowResize);
   }, []);
 
   const onClickCreateTopic = async () => {
@@ -87,9 +97,9 @@ export const MainContent = (props: any) => {
         {topic && (
           <div
             style={{
-              width: showSidebar ? '80%' : '100%',
+              width: showSidebar && !useFullWidth ? '80%' : '100%',
               position: 'absolute',
-              left: showSidebar ? '20%' : '0%'
+              left: showSidebar && !useFullWidth ? '20%' : '0%'
             }}
           >
             {showTopicNavbar && (

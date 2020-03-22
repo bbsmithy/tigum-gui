@@ -89,7 +89,7 @@ const SideBarHeader = props => {
   const classes = useStyles();
 
   const closeSidebar = () => {
-    dispatch({ type: 'HIDE_SIDEBAR' });
+    dispatch({ type: 'HIDE_SIDEBAR', payload: { useFullWidth: true } });
   };
 
   return (

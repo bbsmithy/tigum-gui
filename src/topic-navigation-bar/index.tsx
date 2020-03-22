@@ -41,7 +41,7 @@ export const TopicNavigationBar = ({
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    navigation: { showSidebar }
+    navigation: { showSidebar, useFullWidth }
   } = state;
 
   const handleWindowResize = evt => {
@@ -58,9 +58,17 @@ export const TopicNavigationBar = ({
   }, []);
 
   const toggleSidebar = () => {
+    const shouldUseFullWidth = window.innerWidth < 960;
+
     showSidebar
-      ? dispatch({ type: 'HIDE_SIDEBAR' })
-      : dispatch({ type: 'SHOW_SIDEBAR' });
+      ? dispatch({
+          type: 'HIDE_SIDEBAR',
+          payload: { useFullWidth: shouldUseFullWidth }
+        })
+      : dispatch({
+          type: 'SHOW_SIDEBAR',
+          payload: { useFullWidth: shouldUseFullWidth }
+        });
   };
 
   const navItems = [
@@ -121,7 +129,7 @@ export const TopicNavigationBar = ({
   return (
     <nav
       className={`dt fixed topic-navigation-bar ${
-        showSidebar ? 'w-80' : 'w-100'
+        showSidebar && !useFullWidth ? 'w-80' : 'w-100'
       } border-box ph3-ns z-2`}
     >
       <div className='dtc'>

@@ -8,7 +8,10 @@ const useStyles = createUseStyles({
     textOverflow: 'ellipsis',
     /* Required for text-overflow to do anything */
     whiteSpace: 'nowrap',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    '@media (max-width: 1196px)': {
+      fontSize: 14
+    }
   },
   documentSubTitle: {
     color: 'gray',

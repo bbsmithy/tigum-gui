@@ -47,13 +47,16 @@ export const AllNotes = (props: any) => {
 
   const fetchNotes = async (topic_content: Array<number>) => {
     try {
+      setLoading(true);
       const res = await getNotes(topic_content);
       if (res.status === 200) {
         const body = await res.json();
         dispatch({ type: 'SET_NOTES', payload: body.reverse() });
         setLoading(false);
       }
-    } catch (e) {}
+    } catch (e) {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -81,13 +84,15 @@ export const AllNotes = (props: any) => {
 
   const renderLoading = () => {
     return (
-      <div className='card note-card'>
-        <div className='mw9 center'>
-          <div className='cf ph2-ns pb4'>
-            <div className='fl ph2 w-90 pv1'>
-              <div className='bg-white'>
-                <div className={classes.headerLoadingNote}></div>
-                <div className={classes.dateLoadingNote}></div>
+      <div className='w-100 w-50-m w-33-l'>
+        <div className='card note-card w-100'>
+          <div className='mw9 center'>
+            <div className='cf ph2-ns pb4'>
+              <div className='fl ph2 w-90 pv1'>
+                <div className='bg-white'>
+                  <div className={classes.headerLoadingNote}></div>
+                  <div className={classes.dateLoadingNote}></div>
+                </div>
               </div>
             </div>
           </div>
@@ -105,6 +110,8 @@ export const AllNotes = (props: any) => {
       } else {
         return renderNoNotes();
       }
+    } else {
+      return renderLoading();
     }
   };
 

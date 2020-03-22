@@ -54,8 +54,20 @@ const useStyles = createUseStyles({
   logo: {
     padding: 10,
     '@media (max-width: 1195px)': {
+      padding: 0
+    }
+  },
+  closeIcon: {
+    padding: 2.5,
+    '@media (min-width: 1195px)': {
       padding: 0,
       display: 'none'
+    }
+  },
+  logoContainer: {
+    '@media (max-width: 1195px)': {
+      width: '100%',
+      marginBottom: 12
     }
   },
   btnIcon: {
@@ -71,24 +83,35 @@ interface SideBarProps {
 }
 
 const SideBarHeader = props => {
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+
   const classes = useStyles();
+
+  const closeSidebar = () => {
+    dispatch({ type: 'HIDE_SIDEBAR' });
+  };
 
   return (
     <div className={classes.sidebarHeader}>
-      <div>
+      <div className={`dib ${classes.logoContainer}`}>
         <img
           src={require('../logo.png')}
           className={classes.logo}
           height={22}
         />
-        <button
-          className={`${classes.sidebarButton} btn`}
-          onClick={props.onClickNewTopic}
-        >
-          <i className={`fa fa-plus ${classes.btnIcon}`} />
-          <span>New Project</span>
-        </button>
+        <i
+          className={`fas fa-bars white pointer fr ${classes.closeIcon}`}
+          onClick={closeSidebar}
+        ></i>
       </div>
+      <button
+        className={`${classes.sidebarButton} btn`}
+        onClick={props.onClickNewTopic}
+      >
+        <i className={`fa fa-plus ${classes.btnIcon}`} />
+        <span>New Project</span>
+      </button>
     </div>
   );
 };

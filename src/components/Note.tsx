@@ -5,11 +5,14 @@ import { createUseStyles } from 'react-jss';
 const useStyles = createUseStyles({
   noteTitle: {
     display: 'block',
-    fontSize: 16,
+    fontSize: 15,
     textOverflow: 'ellipsis',
     /* Required for text-overflow to do anything */
     whiteSpace: 'nowrap',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    '@media (max-width: 1196px)': {
+      fontSize: 14
+    }
   },
   noteSubTitle: {
     color: 'gray',

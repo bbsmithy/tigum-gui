@@ -1,7 +1,8 @@
-import React from "react";
-import { getDate } from "../util";
-import { goto } from "../navigation";
-import { Topic } from "../client-lib/models";
+import React from 'react';
+import { getDate } from '../util';
+import { goto } from '../navigation';
+import { Topic } from '../client-lib/models';
+import { createUseStyles } from 'react-jss';
 
 interface TopicItemProps {
   topic: Topic;
@@ -10,12 +11,23 @@ interface TopicItemProps {
   onSelectItem: (id: number, topic: Topic) => void;
 }
 
+const useStyles = createUseStyles({
+  topicTitle: {
+    fontSize: 15,
+    '@media (max-width: 1196px)': {
+      fontSize: 13
+    }
+  }
+});
+
 export const TopicItem = ({
   topic,
   selected,
   id,
   onSelectItem
 }: TopicItemProps) => {
+  const classes = useStyles();
+
   const onSelect = () => {
     goto(`topic/${id}`);
     onSelectItem(id, topic);
@@ -29,14 +41,14 @@ export const TopicItem = ({
   return (
     <div
       className={`topic-item-container pointer ${
-        selected ? "topic-item-container-selected" : ""
+        selected ? 'topic-item-container-selected' : ''
       }`}
       onClick={onSelect}
     >
-      <div className="topic-item-name-container">
-        <span className="topic-item-name">{topic.title}</span>
+      <div className='topic-item-name-container'>
+        <span className={classes.topicTitle}>{topic.title}</span>
       </div>
-      <i className="topic-item-date">{renderDate()}</i>
+      <i className='topic-item-date'>{renderDate()}</i>
     </div>
   );
 };

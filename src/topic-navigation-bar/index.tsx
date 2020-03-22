@@ -191,7 +191,7 @@ export const TopicNavigationBar = ({
     <nav
       className={`dt fixed topic-navigation-bar ${
         showSidebar && !useFullWidth ? 'w-80' : 'w-100'
-      } border-box ph3-ns z-2`}
+      } border-box ph3 z-2`}
     >
       <div className='dtc'>
         <i

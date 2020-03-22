@@ -16,16 +16,39 @@ const topicMenuOptions: Array<Option> = [
 ];
 
 const useStyles = createUseStyles({
+  mobileNavItemsContainer: {
+    float: 'right'
+  },
   mobileNavItemsButton: {
-    width: 70,
     color: 'white',
     fontSize: 12,
     backgroundColor: '#333',
     textAlign: 'center',
-    float: 'right',
     padding: 5,
     borderRadius: 3,
     cursor: 'pointer'
+  },
+  mobileNavDropdown: {
+    backgroundColor: '#333',
+    borderRadius: 5,
+    boxShadow: '2px 2px 1px 0px rgba(0, 0, 0, 0.75)',
+    position: 'absolute',
+    right: 15,
+    marginTop: 3,
+    color: 'white',
+    fontSize: 12,
+    padding: 5
+  },
+  mobileNavItem: {
+    padding: 7,
+    textAlign: 'center',
+    cursor: 'pointer'
+  },
+  selectedNavItem: {
+    marginRight: 5
+  },
+  selectedNavIcon: {
+    marginRight: 5
   }
 });
 
@@ -36,6 +59,7 @@ export const TopicNavigationBar = ({
 }: TopicNavigationBarProps) => {
   const [selectedNavItem, setSelectedNavItem] = useState(0);
   const [useMobileNavItems, setMobileNavItems] = useState(false);
+  const [displayMobileNavOptions, setDisplayMobileNavOptions] = useState(false);
   const classes = useStyles();
 
   // @ts-ignore
@@ -45,9 +69,9 @@ export const TopicNavigationBar = ({
   } = state;
 
   const handleWindowResize = evt => {
-    if (evt.target.innerWidth < 650) {
+    if (evt.target.innerWidth < 570) {
       setMobileNavItems(true);
-    } else if (evt.target.innerWidth > 650) {
+    } else if (evt.target.innerWidth > 570) {
       setMobileNavItems(false);
     }
   };
@@ -71,6 +95,10 @@ export const TopicNavigationBar = ({
         });
   };
 
+  const toggleMobileNavMenu = () => {
+    setDisplayMobileNavOptions(!displayMobileNavOptions);
+  };
+
   const navItems = [
     {
       title: 'Docs',
@@ -92,11 +120,6 @@ export const TopicNavigationBar = ({
       icon: 'fas fa-link',
       screen: TOPIC_SCREENS.LINKS
     }
-    // {
-    //   title: 'Test',
-    //   icon: 'fas fa-graduation-cap',
-    //   screen: TOPIC_SCREENS.IMAGES
-    // }
   ];
 
   const renderNavItemsDesktop = () => {
@@ -119,9 +142,43 @@ export const TopicNavigationBar = ({
 
   const renderNavItemsMobile = () => {
     return (
-      <div className={classes.mobileNavItemsButton}>
-        <span>Nav</span>
-        <i className={`fas fa-chevron-down`}></i>
+      <div className={classes.mobileNavItemsContainer}>
+        <div
+          className={classes.mobileNavItemsButton}
+          onClick={toggleMobileNavMenu}
+        >
+          <i
+            className={`${navItems[selectedNavItem].icon} ${classes.selectedNavIcon}`}
+          />
+          <span className={classes.selectedNavItem}>
+            {navItems[selectedNavItem].title}
+          </span>
+          <i
+            className={`fas ${
+              displayMobileNavOptions ? 'fa-chevron-up' : 'fa-chevron-down'
+            }`}
+          ></i>
+        </div>
+        {displayMobileNavOptions && (
+          <div className={classes.mobileNavDropdown}>
+            {navItems.map((item, idx) => {
+              if (idx === selectedNavItem) return;
+              return (
+                <div
+                  className={classes.mobileNavItem}
+                  onClick={() => {
+                    navigate(item.screen, topic.id);
+                    setSelectedNavItem(idx);
+                    setDisplayMobileNavOptions(false);
+                  }}
+                >
+                  <i className={`${item.icon} ${classes.selectedNavIcon}`} />
+                  <span className={classes.selectedNavItem}>{item.title}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   };

@@ -52,7 +52,13 @@ export const VideoPlayer = (props: any) => {
 
   const goBack = () => {
     dispatch({ type: 'SHOW_TOPIC_NAVBAR' });
-    dispatch({ type: 'SHOW_SIDEBAR' });
+    if (window.innerWidth > 960) {
+      dispatch({
+        type: 'SHOW_SIDEBAR',
+        payload: { useFullWidth: false }
+      });
+    }
+
     props.navigate(VIDEO_SCREENS.ALL_VIDEOS, {});
   };
 

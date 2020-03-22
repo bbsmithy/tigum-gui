@@ -68,37 +68,6 @@ export const TopicNavigationBar = ({
     navigation: { showSidebar, useFullWidth }
   } = state;
 
-  const handleWindowResize = evt => {
-    if (evt.target.innerWidth < 570) {
-      setMobileNavItems(true);
-    } else if (evt.target.innerWidth > 570) {
-      setMobileNavItems(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleWindowResize);
-    return () => window.removeEventListener('resize', handleWindowResize);
-  }, []);
-
-  const toggleSidebar = () => {
-    const shouldUseFullWidth = window.innerWidth < 960;
-
-    showSidebar
-      ? dispatch({
-          type: 'HIDE_SIDEBAR',
-          payload: { useFullWidth: shouldUseFullWidth }
-        })
-      : dispatch({
-          type: 'SHOW_SIDEBAR',
-          payload: { useFullWidth: shouldUseFullWidth }
-        });
-  };
-
-  const toggleMobileNavMenu = () => {
-    setDisplayMobileNavOptions(!displayMobileNavOptions);
-  };
-
   const navItems = [
     {
       title: 'Docs',
@@ -121,6 +90,41 @@ export const TopicNavigationBar = ({
       screen: TOPIC_SCREENS.LINKS
     }
   ];
+
+  useEffect(() => {
+    setNavOptionsType(window.innerWidth);
+    window.addEventListener('resize', handleWindowResize);
+    return () => window.removeEventListener('resize', handleWindowResize);
+  }, []);
+
+  const setNavOptionsType = (width: number) => {
+    if (width < 580) {
+      setMobileNavItems(true);
+    } else if (width > 580) {
+      setMobileNavItems(false);
+    }
+  };
+
+  const handleWindowResize = evt => {
+    setNavOptionsType(evt.target.innerWidth);
+  };
+
+  const toggleSidebar = () => {
+    const shouldUseFullWidth = window.innerWidth < 960;
+    showSidebar
+      ? dispatch({
+          type: 'HIDE_SIDEBAR',
+          payload: { useFullWidth: shouldUseFullWidth }
+        })
+      : dispatch({
+          type: 'SHOW_SIDEBAR',
+          payload: { useFullWidth: shouldUseFullWidth }
+        });
+  };
+
+  const toggleMobileNavMenu = () => {
+    setDisplayMobileNavOptions(!displayMobileNavOptions);
+  };
 
   const renderNavItemsDesktop = () => {
     return navItems.map((navItem, idx) => {

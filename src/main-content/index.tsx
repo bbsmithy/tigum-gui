@@ -57,14 +57,19 @@ export const MainContent = (props: any) => {
   };
 
   const handleWindowResize = evt => {
-    if (evt.target.innerWidth < 960) {
+    setSidebarDisplay(evt.target.innerWidth);
+  };
+
+  const setSidebarDisplay = (width: number) => {
+    if (width < 960) {
       dispatch({ type: 'HIDE_SIDEBAR', payload: { useFullWidth: true } });
-    } else if (evt.target.innerWidth > 960) {
+    } else if (width > 960) {
       dispatch({ type: 'SHOW_SIDEBAR', payload: { useFullWidth: false } });
     }
   };
 
   useEffect(() => {
+    setSidebarDisplay(window.innerWidth);
     fetchTopics();
     window.addEventListener('resize', handleWindowResize);
     return () => window.removeEventListener('resize', handleWindowResize);

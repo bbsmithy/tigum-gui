@@ -29,7 +29,6 @@ export const TopicItem = ({
   const classes = useStyles();
 
   const onSelect = () => {
-    goto(`topic/${id}`);
     onSelectItem(id, topic);
   };
 

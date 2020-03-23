@@ -109,7 +109,7 @@ const SideBarHeader = props => {
         className={`${classes.sidebarButton} btn`}
         onClick={props.onClickNewTopic}
       >
-        <i className={`fa fa-plus ${classes.btnIcon}`} />
+        <i className={`fa fa-plus-circle ${classes.btnIcon}`} />
         <span>New Project</span>
       </button>
     </div>

@@ -14,16 +14,18 @@ const useStyles = createUseStyles({
   headerLoadingNote: {
     width: '100%',
     padding: 6,
+    borderRadius: 5,
     marginTop: 10,
-    background: '#efefef',
+    background: 'gray',
     height: 6
   },
   dateLoadingNote: {
     width: '70%',
+    borderRadius: 5,
     padding: 3,
     float: 'left',
     marginTop: 10,
-    background: '#efefef',
+    background: 'gray',
     height: 6
   },
   container: {
@@ -56,30 +58,24 @@ export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
         <div className='mw9 bb1'>
           <div className='cf ph2-ns pb4'>
             <div className='fr w-100 ph2 pv1'>
-              <div className='bg-white'>
-                <div className={classes.headerLoadingNote}></div>
-                <div className={classes.dateLoadingNote}></div>
-              </div>
+              <div className={classes.headerLoadingNote}></div>
+              <div className={classes.dateLoadingNote}></div>
             </div>
           </div>
         </div>
         <div className='mw9'>
           <div className='cf ph2-ns pb4'>
             <div className='fl ph2 w-90 pv1'>
-              <div className='bg-white'>
-                <div className={classes.headerLoadingNote}></div>
-                <div className={classes.dateLoadingNote}></div>
-              </div>
+              <div className={classes.headerLoadingNote}></div>
+              <div className={classes.dateLoadingNote}></div>
             </div>
           </div>
         </div>
         <div className='mw9'>
           <div className='cf ph2-ns pb4'>
             <div className='fl ph2 w-90 pv1'>
-              <div className='bg-white'>
-                <div className={classes.headerLoadingNote}></div>
-                <div className={classes.dateLoadingNote}></div>
-              </div>
+              <div className={classes.headerLoadingNote}></div>
+              <div className={classes.dateLoadingNote}></div>
             </div>
           </div>
         </div>

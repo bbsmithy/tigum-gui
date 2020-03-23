@@ -72,6 +72,7 @@ const getBlockStyle = block => {
 const DevKeepEditor = (props: DevKeepEditorProps) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const softNewLinePlugin = createSoftNewLinePlugin();
+
   const prismPlugin = createPrismPlugin({
     prism: Prism,
     defaultSyntax: 'javascript'
@@ -157,7 +158,7 @@ const DevKeepEditor = (props: DevKeepEditorProps) => {
             </span>
           </div>
         </div>
-        <div className='mt3'>
+        <div className='mt3 nowrap overflow-x-auto'>
           <BlockStyleControls
             editorState={editorState}
             onToggle={toggleBlockType}

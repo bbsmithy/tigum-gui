@@ -9,16 +9,18 @@ import { useStateValue } from '../../state/StateProvider';
 const useStyles = createUseStyles({
   headerLoadingNote: {
     width: '70%',
-    padding: 6,
+    padding: 5,
     marginTop: 10,
-    background: '#efefef',
+    background: 'gray',
+    borderRadius: 5,
     height: 6
   },
   dateLoadingNote: {
     width: '50%',
     padding: 3,
     marginTop: 10,
-    background: '#efefef',
+    background: 'gray',
+    borderRadius: 5,
     height: 6
   }
 });
@@ -89,10 +91,8 @@ export const AllNotes = (props: any) => {
           <div className='mw9 center'>
             <div className='cf ph2-ns pb4'>
               <div className='fl ph2 w-90 pv1'>
-                <div className='bg-white'>
-                  <div className={classes.headerLoadingNote}></div>
-                  <div className={classes.dateLoadingNote}></div>
-                </div>
+                <div className={classes.headerLoadingNote}></div>
+                <div className={classes.dateLoadingNote}></div>
               </div>
             </div>
           </div>

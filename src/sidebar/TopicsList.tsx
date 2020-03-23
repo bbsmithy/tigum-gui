@@ -50,6 +50,9 @@ export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
     setSelected(id);
     navigate(screen, topic.id);
     dispatch({ type: 'SHOW_TOPIC_NAVBAR' });
+    if (window.innerWidth < 960) {
+      dispatch({ type: 'HIDE_SIDEBAR', payload: { useFullWidth: true } });
+    }
   };
 
   const renderLoading = () => {

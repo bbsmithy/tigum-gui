@@ -57,7 +57,10 @@ export const userReducer = (state: any, action: any) => {
 };
 
 export const reducer = ({ content, navigation, user }, action: any) => {
-  console.log(`Action: ${action.type}`, `Payload ${action.payload}`);
+  console.log(
+    `Action: ${action.type}`,
+    `Payload ${JSON.stringify(action.payload)}`
+  );
   return {
     content: contentReducer(content, action),
     navigation: navigationReducer(navigation, action),

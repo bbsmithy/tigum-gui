@@ -19,7 +19,7 @@ const useStyles = createUseStyles({
     },
   },
   topicItemSelected: {
-    borderRight: '4px solid #5890ff',
+    borderRight: '6px solid #246bf8',
   },
 });
 

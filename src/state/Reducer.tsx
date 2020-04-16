@@ -1,6 +1,7 @@
-import { Topic, Code, Note, Link, Image } from '../clib/models';
-import { contentReducer } from './reducers/contentReducer';
-import { navigationReducer } from './reducers/navigationReducer';
+import contentReducer from './reducers/contentReducer';
+import navigationReducer from './reducers/navigationReducer';
+import userReducer from './reducers//userReducer';
+import { TOPIC_SCREENS } from '../routers/TopicRouter';
 
 export type InitialState = typeof initialState;
 
@@ -24,43 +25,14 @@ export const initialState = {
   navigation: {
     showTopicNavbar: true,
     showSidebar: true,
+    topicScreen: 0,
   },
 };
 
-export const userReducer = (state: any, action: any) => {
-  console.log(state);
-  switch (action.type) {
-    case 'LOGIN_SUCCESS':
-      return {
-        ...state,
-        name: action.payload.name,
-        id: action.payload.id,
-        email: action.payload.email,
-        loggedIn: true,
-      };
-    case 'SIGNUP_SUCCESS':
-      return {
-        ...state,
-        name: action.payload.name,
-        id: action.payload.id,
-        email: action.payload.email,
-        loggedIn: true,
-      };
-    case 'LOGOUT':
-      return {
-        ...state,
-        loggedIn: false,
-      };
-    default:
-      return state;
-  }
-};
-
 export const reducer = ({ content, navigation, user }, action: any) => {
-  console.log(
-    `Action: ${action.type}`,
-    `Payload ${JSON.stringify(action.payload)}`
-  );
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`Action: ${action.type}`, 'Payload: ', action.payload);
+  }
   return {
     content: contentReducer(content, action),
     navigation: navigationReducer(navigation, action),

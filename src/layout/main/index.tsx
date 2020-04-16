@@ -14,7 +14,6 @@ const useStyles = createUseStyles({
 });
 
 export const MainContent = (props: any) => {
-  const [screen, setScreen] = useState(TOPIC_SCREENS.LOADING);
   const [modalOpen, setModalOpen] = useState(false);
   const [topicTitle, setTopicTitle] = useState('');
   const classes = useStyles();
@@ -24,9 +23,9 @@ export const MainContent = (props: any) => {
     {
       content: {
         selectedTopic,
-        topics: { data, loading },
+        topics: { data },
       },
-      navigation: { showTopicNavbar, showSidebar, useFullWidth },
+      navigation: { showTopicNavbar, showSidebar, useFullWidth, topicScreen },
     },
     dispatch,
   ] = useStateValue();
@@ -34,7 +33,6 @@ export const MainContent = (props: any) => {
   const topic = data[selectedTopic];
 
   const navigate = (screen: TOPIC_SCREENS, topic_id: number) => {
-    setScreen(screen);
     dispatch({ type: 'SET_SELECTED_TOPIC', payload: topic_id });
   };
 
@@ -91,7 +89,11 @@ export const MainContent = (props: any) => {
 
   return (
     <div id='main-content'>
-      <SideBar navigate={navigate} screen={screen} toggleModal={toggleModal} />
+      <SideBar
+        navigate={navigate}
+        screen={topicScreen}
+        toggleModal={toggleModal}
+      />
       {topic && (
         <div
           style={{
@@ -108,7 +110,7 @@ export const MainContent = (props: any) => {
             />
           )}
           <div className={classes.topicContainer}>
-            <TopicRouter screen={screen} topic={topic} />
+            <TopicRouter screen={topicScreen} topic={topic} />
           </div>
         </div>
       )}

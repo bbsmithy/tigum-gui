@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TopicItem } from './TopicItem';
 import { Topic } from '../../clib/models';
 import { TOPIC_SCREENS } from '../../routers/TopicRouter';
@@ -36,16 +36,14 @@ const useStyles = createUseStyles({
 });
 
 export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
-  const [selectedId, setSelected] = useState(0);
   const classes = useStyles();
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { topics },
+    content: { topics, selectedTopic },
   } = state;
 
   const selectTopicItem = (id: number, topic: Topic) => {
-    setSelected(id);
     navigate(screen, topic.id);
     dispatch({ type: 'SHOW_TOPIC_NAVBAR' });
     if (window.innerWidth < 960) {
@@ -96,15 +94,18 @@ export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
     <div className={classes.container}>
       {topics.loading && renderLoading()}
       {!topics.loading &&
-        topics.keys.map((topicId, index) => (
-          <TopicItem
-            topic={topics.data[topicId]}
-            key={topics.data[topicId].id}
-            selected={selectedId === index}
-            id={index}
-            onSelectItem={selectTopicItem}
-          />
-        ))}
+        topics.keys.map((topicId, index) => {
+          const selected = selectedTopic ? selectedTopic === topicId : false;
+          return (
+            <TopicItem
+              topic={topics.data[topicId]}
+              key={topicId}
+              selected={selected}
+              id={index}
+              onSelectItem={selectTopicItem}
+            />
+          );
+        })}
     </div>
   );
 };

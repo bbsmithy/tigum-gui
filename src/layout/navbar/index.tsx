@@ -65,7 +65,7 @@ export const TopicNavigationBar = ({
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    navigation: { showSidebar, useFullWidth },
+    navigation: { showSidebar, useFullWidth, topicScreen },
   } = state;
 
   const navItems = [
@@ -131,12 +131,11 @@ export const TopicNavigationBar = ({
       return (
         <div
           className={`btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns ${
-            idx === selectedNavItem && 'selected'
+            navItem.screen === topicScreen && 'selected'
           }`}
           key={navItem.title}
           onClick={() => {
-            navigate(navItem.screen, topic.id);
-            setSelectedNavItem(idx);
+            dispatch({ type: 'SET_TOPIC_SCREEN', payload: navItem.screen });
           }}
         >
           <i className={navItem.icon} /> {navItem.title}

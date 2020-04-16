@@ -3,18 +3,18 @@ import {
   addNote,
   addSnippet,
   addVideo,
-  addLink
+  addLink,
 } from '../StateHelpers';
 
-export const contentReducer = (state: any, action: any) => {
+const contentReducer = (state: any, action: any) => {
   switch (action.type) {
     case 'FETCHING_TOPICS':
       return {
         ...state,
         topics: {
           ...state.topics,
-          loading: true
-        }
+          loading: true,
+        },
       };
     case 'SET_TOPICS':
       const { data, keys } = topicsToKeys(action.payload);
@@ -28,7 +28,7 @@ export const contentReducer = (state: any, action: any) => {
         notes: [],
         links: [],
         videos: [],
-        article_snippets: []
+        article_snippets: [],
       };
     case 'SET_SNIPPETS':
       return { ...state, article_snippets: action.payload };
@@ -42,9 +42,9 @@ export const contentReducer = (state: any, action: any) => {
           ...state.topics,
           data: {
             [action.payload.topic_id]: updatedTopicWithSnippet,
-            ...state.topics.data
-          }
-        }
+            ...state.topics.data,
+          },
+        },
       };
     }
     case 'SET_NOTES':
@@ -59,9 +59,9 @@ export const contentReducer = (state: any, action: any) => {
           ...state.topics,
           data: {
             [action.payload.topic_id]: updatedTopicWithNote,
-            ...state.topics.data
-          }
-        }
+            ...state.topics.data,
+          },
+        },
       };
     }
 
@@ -77,9 +77,9 @@ export const contentReducer = (state: any, action: any) => {
           ...state.topics,
           data: {
             [action.payload.topic_id]: updatedTopicWithVideo,
-            ...state.topics.data
-          }
-        }
+            ...state.topics.data,
+          },
+        },
       };
     }
 
@@ -95,24 +95,24 @@ export const contentReducer = (state: any, action: any) => {
           ...state.topics,
           data: {
             [action.payload.topic_id]: updatedTopicWithLink,
-            ...state.topics.data
-          }
-        }
+            ...state.topics.data,
+          },
+        },
       };
     case 'SET_IMAGES':
       return {
         ...state,
-        images: action.payload
+        images: action.payload,
       };
     case 'ADD_IMAGE':
       return {
         ...state,
-        images: [action.payload, ...state.images]
+        images: [action.payload, ...state.images],
       };
     case 'SET_LINKS':
       return {
         ...state,
-        links: action.payload
+        links: action.payload,
       };
     case 'ADD_LINK': {
       const { id, topic_id } = action.payload;
@@ -125,9 +125,9 @@ export const contentReducer = (state: any, action: any) => {
           ...state.topics,
           data: {
             [action.payload.topic_id]: updatedTopicWithLink,
-            ...state.topics.data
-          }
-        }
+            ...state.topics.data,
+          },
+        },
       };
     }
 
@@ -135,3 +135,5 @@ export const contentReducer = (state: any, action: any) => {
       return state;
   }
 };
+
+export default contentReducer;

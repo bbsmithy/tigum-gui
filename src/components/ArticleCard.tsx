@@ -17,8 +17,6 @@ export type ArticleCardProps = {
 };
 
 export const ArticleCard = (props: ArticleCardProps) => {
-  const classes = useStyles();
-
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {

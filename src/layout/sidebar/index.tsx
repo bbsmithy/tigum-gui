@@ -20,7 +20,7 @@ const useStyles = createUseStyles({
     fontFamily: 'Montserrat, sans-serif',
   },
   sidebarHeader: {
-    borderBottom: '1px solid rgba(0, 0, 0, 0.6)',
+    borderBottom: '1px solid rgba(0, 0, 0, 0.3)',
     '@media (max-width: 1195px)': {
       width: '100%',
       padding: 10,

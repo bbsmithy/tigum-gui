@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from 'react';
 
 export type Option = {
   title: string;
@@ -16,10 +16,10 @@ type OptionsButtonProps = {
 
 const OptionsList = (props: OptionsListProps) => {
   return (
-    <div className="options-list-container">
-      {props.options.map(option => {
+    <div className='options-list-container'>
+      {props.options.map((option) => {
         return (
-          <div className="options-list-item" onClick={option.onClick}>
+          <div className='options-list-item' onClick={option.onClick}>
             <i className={`${option.icon} option-list-icon`} />
             <span>{option.title}</span>
           </div>
@@ -34,16 +34,16 @@ export const OptionsButton = (props: OptionsButtonProps) => {
 
   const onClickMenu = (e: any) => {
     e.stopPropagation();
-    window.addEventListener("click", () => {
+    window.addEventListener('click', () => {
       setShowOptions(false);
     });
     setShowOptions(true);
   };
 
   return (
-    <div onClick={onClickMenu} className="dib ph3">
-      <div className="pa1 tc br-100 options-btn">
-        <i className="fas fa-ellipsis-v white" />
+    <div onClick={onClickMenu} className='dib ph3'>
+      <div className='pa1 tc br-100 options-btn'>
+        <i className='fas fa-ellipsis-v white' />
       </div>
       {showOptions && <OptionsList options={props.options} />}
     </div>

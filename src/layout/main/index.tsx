@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TopicNavigationBar } from '../topic-navigation-bar';
+import { TopicNavigationBar } from '../navbar';
 import { TopicRouter, TOPIC_SCREENS } from '../../routers/TopicRouter';
 import { getTopics, createTopic } from '../../clib/api';
 import { SideBar } from '../sidebar';

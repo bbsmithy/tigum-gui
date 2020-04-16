@@ -92,3 +92,7 @@ export const debounce = (func, wait, immediate) => {
     if (callNow) func.apply(context, args);
   };
 };
+
+export const goto = (url) => {
+  window.history.replaceState({}, url, `/${url}`);
+};

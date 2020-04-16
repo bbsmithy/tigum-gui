@@ -1,6 +1,6 @@
 import React from 'react';
 import { getDate } from '../../util';
-import { goto } from '../../navigation';
+import { goto } from '../../util';
 import { Topic } from '../../clib/models';
 import { createUseStyles } from 'react-jss';
 
@@ -17,6 +17,9 @@ const useStyles = createUseStyles({
     '@media (max-width: 1196px)': {
       fontSize: 13,
     },
+  },
+  topicItemSelected: {
+    borderRight: '4px solid #5890ff',
   },
 });
 
@@ -40,7 +43,7 @@ export const TopicItem = ({
   return (
     <div
       className={`topic-item-container pointer ${
-        selected ? 'topic-item-container-selected' : ''
+        selected ? classes.topicItemSelected : ''
       }`}
       onClick={onSelect}
     >

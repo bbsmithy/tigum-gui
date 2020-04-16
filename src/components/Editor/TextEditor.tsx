@@ -8,7 +8,7 @@ import {
   convertFromHTML,
   ContentState,
   CompositeDecorator,
-  convertFromRaw
+  convertFromRaw,
 } from 'draft-js';
 import Prism from 'prismjs';
 import PrismDecorator from 'draft-js-prism';
@@ -42,7 +42,7 @@ const fromHTMLToEditorState = (html: string) => {
   }
 };
 
-const getBlockStyle = block => {
+const getBlockStyle = (block) => {
   switch (block.getType()) {
     case 'blockquote':
       return 'RichEditor-blockquote';
@@ -75,7 +75,7 @@ const DevKeepEditor = (props: DevKeepEditorProps) => {
 
   const prismPlugin = createPrismPlugin({
     prism: Prism,
-    defaultSyntax: 'javascript'
+    defaultSyntax: 'javascript',
   });
 
   useEffect(() => {
@@ -85,9 +85,9 @@ const DevKeepEditor = (props: DevKeepEditorProps) => {
     }
   }, [props.htmlContent]);
 
-  const onChangeEditorState = editorState => setEditorState(editorState);
+  const onChangeEditorState = (editorState) => setEditorState(editorState);
 
-  const handleKeyCommand = command => {
+  const handleKeyCommand = (command) => {
     let newState;
     if (CodeUtils.hasSelectionInBlock(editorState)) {
       newState = CodeUtils.handleKeyCommand(editorState, command);
@@ -104,15 +104,15 @@ const DevKeepEditor = (props: DevKeepEditorProps) => {
     return 'not-handled';
   };
 
-  const toggleBlockType = blockType => {
+  const toggleBlockType = (blockType) => {
     onChangeEditorState(RichUtils.toggleBlockType(editorState, blockType));
   };
 
-  const toggleInlineStyle = inlineStyle => {
+  const toggleInlineStyle = (inlineStyle) => {
     onChangeEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
   };
 
-  const onTab = evt => {
+  const onTab = (evt) => {
     if (!CodeUtils.hasSelectionInBlock(editorState)) return 'not-handled';
     onChangeEditorState(CodeUtils.onTab(evt, editorState));
     return 'handled';

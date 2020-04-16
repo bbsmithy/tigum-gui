@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { checkLogin } from '../clib/api';
 import { useStateValue } from '../state/StateProvider';
-import { MainContent } from './main-content';
+import { MainContent } from './main';
 import { AuthRouter, AUTH_SCREENS } from '../routers/AuthRouter';
 
 export const Auth = () => {

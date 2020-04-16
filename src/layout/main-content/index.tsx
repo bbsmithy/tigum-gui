@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { TopicNavigationBar } from '../topic-navigation-bar';
-import { TopicRouter, TOPIC_SCREENS } from '../routers/TopicRouter';
-import { getTopics, createTopic } from '../client-lib/api';
+import { TopicRouter, TOPIC_SCREENS } from '../../routers/TopicRouter';
+import { getTopics, createTopic } from '../../clib/api';
 import { SideBar } from '../sidebar';
-import { Modal } from '../components/';
-import { useStateValue } from '../state/StateProvider';
+import { Modal } from '../../components';
+import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
   topicContainer: {
-    height: '100%'
-  }
+    height: '100%',
+  },
 });
 
 export const MainContent = (props: any) => {
@@ -24,11 +24,11 @@ export const MainContent = (props: any) => {
     {
       content: {
         selectedTopic,
-        topics: { data, loading }
+        topics: { data, loading },
       },
-      navigation: { showTopicNavbar, showSidebar, useFullWidth }
+      navigation: { showTopicNavbar, showSidebar, useFullWidth },
     },
-    dispatch
+    dispatch,
   ] = useStateValue();
 
   const topic = data[selectedTopic];
@@ -50,13 +50,11 @@ export const MainContent = (props: any) => {
       dispatch({ type: 'SET_TOPICS', payload: orderedTopics });
       navigate(TOPIC_SCREENS.MY_NOTES, orderedTopics[0].id);
     } catch (e) {
-      console.log(e.status);
-      console.log('Could not fetch topics');
       dispatch({ type: 'SET_TOPICS_FAILURE' });
     }
   };
 
-  const handleWindowResize = evt => {
+  const handleWindowResize = (evt) => {
     setSidebarDisplay(evt.target.innerWidth);
   };
 
@@ -91,56 +89,44 @@ export const MainContent = (props: any) => {
     setTopicTitle(e.currentTarget.value);
   };
 
-  const renderApp = () => {
-    return (
-      <>
-        <SideBar
-          navigate={navigate}
-          screen={screen}
-          toggleModal={toggleModal}
-        />
-        {topic && (
-          <div
-            style={{
-              width: showSidebar && !useFullWidth ? '80%' : '100%',
-              position: 'absolute',
-              left: showSidebar && !useFullWidth ? '20%' : '0%'
-            }}
-          >
-            {showTopicNavbar && (
-              <TopicNavigationBar
-                title={topic.title}
-                navigate={navigate}
-                topic={topic}
-              />
-            )}
-            <div className={classes.topicContainer}>
-              <TopicRouter screen={screen} topic={topic} />
-            </div>
-          </div>
-        )}
-        <Modal
-          display={modalOpen}
-          toggleModal={toggleModal}
-          onClickAction={onClickCreateTopic}
-          buttonText='Create'
-          title='Create Topic'
+  return (
+    <div id='main-content'>
+      <SideBar navigate={navigate} screen={screen} toggleModal={toggleModal} />
+      {topic && (
+        <div
+          style={{
+            width: showSidebar && !useFullWidth ? '80%' : '100%',
+            position: 'absolute',
+            left: showSidebar && !useFullWidth ? '20%' : '0%',
+          }}
         >
-          <input
-            type='text'
-            placeholder='Title'
-            id='topic-title-input'
-            value={topicTitle}
-            onChange={onChangeTitle}
-          />
-        </Modal>
-      </>
-    );
-  };
-
-  const renderLoginSignUp = () => {
-    return <p>Hello</p>;
-  };
-
-  return <div id='main-content'>{renderApp()}</div>;
+          {showTopicNavbar && (
+            <TopicNavigationBar
+              title={topic.title}
+              navigate={navigate}
+              topic={topic}
+            />
+          )}
+          <div className={classes.topicContainer}>
+            <TopicRouter screen={screen} topic={topic} />
+          </div>
+        </div>
+      )}
+      <Modal
+        display={modalOpen}
+        toggleModal={toggleModal}
+        onClickAction={onClickCreateTopic}
+        buttonText='Create'
+        title='Create Topic'
+      >
+        <input
+          type='text'
+          placeholder='Title'
+          id='topic-title-input'
+          value={topicTitle}
+          onChange={onChangeTitle}
+        />
+      </Modal>
+    </div>
+  );
 };

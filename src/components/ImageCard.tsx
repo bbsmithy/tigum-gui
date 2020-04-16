@@ -1,7 +1,7 @@
-import React from "react";
-import { createUseStyles } from "react-jss";
-import { useStateValue } from "../state/StateProvider";
-import { deleteImage } from "../client-lib/api";
+import React from 'react';
+import { createUseStyles } from 'react-jss';
+import { useStateValue } from '../state/StateProvider';
+import { deleteImage } from '../clib/api';
 
 type ImageCardProps = {
   id: number;
@@ -12,23 +12,23 @@ type ImageCardProps = {
 
 const useStyles = createUseStyles({
   imageContainer: {
-    textAlign: "center"
+    textAlign: 'center',
   },
   image: {
-    width: "100%"
+    width: '100%',
   },
   imagelink: {
-    overflow: "hidden",
-    width: "90%",
-    display: "inline-block"
-  }
+    overflow: 'hidden',
+    width: '90%',
+    display: 'inline-block',
+  },
 });
 
 export const ImageCard = (props: ImageCardProps) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { images }
+    content: { images },
   } = state;
   const classes = useStyles();
 
@@ -38,7 +38,7 @@ export const ImageCard = (props: ImageCardProps) => {
       if (res.status === 200) {
         let newCodes = images;
         delete newCodes[props.index];
-        dispatch({ type: "SET_IMAGES", payload: newCodes });
+        dispatch({ type: 'SET_IMAGES', payload: newCodes });
       }
     } catch (e) {
       console.log(e);
@@ -46,11 +46,11 @@ export const ImageCard = (props: ImageCardProps) => {
   };
 
   return (
-    <article className="center shadow-card mw7 hidden br2 ba dark-gray b--black-10  mv3">
+    <article className='center shadow-card mw7 hidden br2 ba dark-gray b--black-10  mv3'>
       <div className={classes.imageContainer}>
         <img src={props.src} className={classes.image} />
       </div>
-      <div className="pa3">
+      <div className='pa3'>
         <div className={classes.imagelink}>
           <a href={props.src}>{props.src}</a>
         </div>
@@ -59,7 +59,7 @@ export const ImageCard = (props: ImageCardProps) => {
           className={`f6 fr link pointer pv1 ph1 br2 mb3 dib black bg-white`}
           onClick={deleteImageBlock}
         >
-          <i className="fa fa-trash" /> Delete
+          <i className='fa fa-trash' /> Delete
         </button>
       </div>
     </article>

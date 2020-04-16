@@ -10,10 +10,10 @@ const months_arr = [
   'Sep',
   'Oct',
   'Nov',
-  'Dec'
+  'Dec',
 ];
 
-export const getDate = date => {
+export const getDate = (date) => {
   const year = date.getFullYear();
 
   // Month
@@ -48,7 +48,7 @@ export const getDate = date => {
   return convdataTime;
 };
 
-export const getEmbedFromUrl = url => {
+export const getEmbedFromUrl = (url) => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);
 
@@ -68,18 +68,17 @@ export const truncated = (title, cutAt) => {
 };
 
 export const deleteJWT = () => {
-  console.log(document.cookie);
   document.cookie = 'jwt= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
 };
 
 export const debounce = (func, wait, immediate) => {
   var timeout;
 
-  return function() {
+  return function () {
     var context = this;
     var args = arguments;
 
-    var later = function() {
+    var later = function () {
       timeout = null;
       if (!immediate) func.apply(context, args);
     };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import { NewButton, Note } from '../../components';
 import { Modal } from '../../components/Modal';
-import { createNote, getNotes, updateTopic } from '../../client-lib/api';
+import { createNote, getNotes, updateTopic } from '../../clib/api';
 import { NOTE_SCREENS } from '../../routers/NoteRouter';
 import { useStateValue } from '../../state/StateProvider';
 
@@ -13,7 +13,7 @@ const useStyles = createUseStyles({
     marginTop: 10,
     background: 'gray',
     borderRadius: 5,
-    height: 6
+    height: 6,
   },
   dateLoadingNote: {
     width: '50%',
@@ -21,8 +21,8 @@ const useStyles = createUseStyles({
     marginTop: 10,
     background: 'gray',
     borderRadius: 5,
-    height: 6
-  }
+    height: 6,
+  },
 });
 
 export const AllNotes = (props: any) => {
@@ -37,8 +37,8 @@ export const AllNotes = (props: any) => {
     content: {
       notes,
       selectedTopic,
-      topics: { data }
-    }
+      topics: { data },
+    },
   } = state;
 
   const toggleModal = () => {

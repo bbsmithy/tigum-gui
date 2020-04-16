@@ -1,9 +1,8 @@
 import React from 'react';
 import { truncated } from '../util';
 import { OptionsButton } from './OptionsButton';
-import { deleteVideo } from '../client-lib/api';
+import { deleteVideo } from '../clib/api';
 import { createUseStyles } from 'react-jss';
-import classes from '*.module.css';
 
 type VideoCardProps = {
   iframe: string;
@@ -22,9 +21,9 @@ const useStyles = createUseStyles({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     '@media (max-width: 1196px)': {
-      fontSize: 12
-    }
-  }
+      fontSize: 12,
+    },
+  },
 });
 
 export const VideoCard = (props: VideoCardProps) => {
@@ -47,8 +46,8 @@ export const VideoCard = (props: VideoCardProps) => {
     {
       title: 'Delete',
       icon: 'fas fa-trash',
-      onClick: onClickDelete
-    }
+      onClick: onClickDelete,
+    },
   ];
 
   const title = truncated(props.title, 50);

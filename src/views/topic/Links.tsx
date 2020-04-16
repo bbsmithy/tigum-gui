@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import { NewButton, LinkCard } from '../../components';
 import { Modal } from '../../components/Modal';
-import { getLinks, createLink } from '../../client-lib/api';
+import { getLinks, createLink } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
-import { NewLink } from '../../client-lib/models';
+import { NewLink } from '../../clib/models';
 
 const useStyles = createUseStyles({
   headerLoadingLink: {
@@ -12,15 +12,15 @@ const useStyles = createUseStyles({
     padding: 6,
     marginTop: 10,
     background: '#efefef',
-    height: 6
+    height: 6,
   },
   dateLoadingLink: {
     width: '50%',
     padding: 3,
     marginTop: 10,
     background: '#efefef',
-    height: 6
-  }
+    height: 6,
+  },
 });
 
 export const Links = (props: any) => {
@@ -37,8 +37,8 @@ export const Links = (props: any) => {
     content: {
       links,
       selectedTopic,
-      topics: { data }
-    }
+      topics: { data },
+    },
   } = state;
 
   const toggleModal = () => {
@@ -79,7 +79,7 @@ export const Links = (props: any) => {
       const newLink: NewLink = {
         topic_id: selectedTopic,
         source: linkSrc,
-        title: linkTitle
+        title: linkTitle,
       };
       const res = await createLink(newLink);
       dispatch({ type: 'ADD_LINK', payload: res });

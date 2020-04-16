@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { checkLogin } from './client-lib/api';
-import { useStateValue } from './state/StateProvider';
+import { checkLogin } from '../clib/api';
+import { useStateValue } from '../state/StateProvider';
 import { MainContent } from './main-content';
-import { AuthRouter, AUTH_SCREENS } from './routers/AuthRouter';
+import { AuthRouter, AUTH_SCREENS } from '../routers/AuthRouter';
 
 export const Auth = () => {
   // @ts-ignore
@@ -11,14 +11,6 @@ export const Auth = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [authScreen, setAuthScreen] = useState(AUTH_SCREENS.LOGIN);
 
-  /**
-   * DK {
-   *  id: "isUserLoggedIn"
-   *  desc: "The isUserLoggedIn function checks wheather
-   *  the user is already logged in by sending the LINK[checkLogin]
-   *  request which will send on jwt token stored in the private cookie __silly_devkeep"
-   * }
-   */
   const isUserLoggedIn = async () => {
     try {
       const user = await checkLogin();
@@ -46,10 +38,10 @@ export const Auth = () => {
           marginTop: '22%',
           backgroundColor: '#1f1f1f',
           height: '100%',
-          width: '100%'
+          width: '100%',
         }}
       >
-        <img src={require('./logo.png')} height={45} />
+        <img src={require('../logo.png')} height={45} />
       </div>
     );
   }

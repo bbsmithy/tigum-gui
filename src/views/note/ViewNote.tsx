@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { NOTE_SCREENS } from '../../routers/NoteRouter';
-import { deleteNote } from '../../client-lib/api';
-import { getFile, uploadToBucket } from '../../client-lib/S3';
+import { deleteNote } from '../../clib/api';
+import { getFile, uploadToBucket } from '../../clib/S3';
 import { debounce } from '../../util';
 import TextEditor from '../../components/Editor/TextEditor';
 import { useStateValue } from '../../state/StateProvider';
+import { Markdown } from '../../components/MarkdownEditor';
 
 export const ViewNote = (props: any) => {
-  const [html, setNoteHTML] = useState();
+  const [html, setNoteHTML] = useState<any>();
   const [saving, setSaving] = useState(false);
 
   // @ts-ignore
   const [state, dispatch] = useStateValue();
-  const [editorWidth, setEditorWidth] = useState();
+  const [editorWidth, setEditorWidth] = useState<number>();
 
   const onLayoutEditorWidth = () => {
     const editorContainerWidth = document.getElementById('view-note-container')
@@ -70,6 +71,7 @@ export const ViewNote = (props: any) => {
 
   return (
     <div className='z-1 center w-100-m w-70-l w-100' id='view-note-container'>
+      {/* <Markdown /> */}
       <TextEditor
         onSave={onSave}
         saving={saving}

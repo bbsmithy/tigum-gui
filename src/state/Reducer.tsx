@@ -1,4 +1,4 @@
-import { Topic, Code, Note, Link, Image } from '../client-lib/models';
+import { Topic, Code, Note, Link, Image } from '../clib/models';
 import { contentReducer } from './reducers/contentReducer';
 import { navigationReducer } from './reducers/navigationReducer';
 
@@ -13,18 +13,18 @@ export const initialState = {
     codes: [],
     article_snippets: [],
     images: [],
-    links: []
+    links: [],
   },
   user: {
     name: '',
     id: null,
     email: '',
-    loggedIn: false
+    loggedIn: false,
   },
   navigation: {
     showTopicNavbar: true,
-    showSidebar: true
-  }
+    showSidebar: true,
+  },
 };
 
 export const userReducer = (state: any, action: any) => {
@@ -36,7 +36,7 @@ export const userReducer = (state: any, action: any) => {
         name: action.payload.name,
         id: action.payload.id,
         email: action.payload.email,
-        loggedIn: true
+        loggedIn: true,
       };
     case 'SIGNUP_SUCCESS':
       return {
@@ -44,12 +44,12 @@ export const userReducer = (state: any, action: any) => {
         name: action.payload.name,
         id: action.payload.id,
         email: action.payload.email,
-        loggedIn: true
+        loggedIn: true,
       };
     case 'LOGOUT':
       return {
         ...state,
-        loggedIn: false
+        loggedIn: false,
       };
     default:
       return state;
@@ -64,6 +64,6 @@ export const reducer = ({ content, navigation, user }, action: any) => {
   return {
     content: contentReducer(content, action),
     navigation: navigationReducer(navigation, action),
-    user: userReducer(user, action)
+    user: userReducer(user, action),
   };
 };

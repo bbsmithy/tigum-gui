@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { TopicItem } from './TopicItem';
-import { Topic } from '../client-lib/models';
-import { TOPIC_SCREENS } from '../routers/TopicRouter';
-import { useStateValue } from '../state/StateProvider';
+import { Topic } from '../../clib/models';
+import { TOPIC_SCREENS } from '../../routers/TopicRouter';
+import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 
 interface TopicsListProps {
@@ -17,7 +17,7 @@ const useStyles = createUseStyles({
     borderRadius: 5,
     marginTop: 10,
     background: 'gray',
-    height: 6
+    height: 6,
   },
   dateLoadingNote: {
     width: '70%',
@@ -26,24 +26,22 @@ const useStyles = createUseStyles({
     float: 'left',
     marginTop: 10,
     background: 'gray',
-    height: 6
+    height: 6,
   },
   container: {
     overflow: 'scroll',
     height: '100%',
-    paddingBottom: 200
-  }
+    paddingBottom: 200,
+  },
 });
 
 export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
   const [selectedId, setSelected] = useState(0);
-
   const classes = useStyles();
-
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { topics }
+    content: { topics },
   } = state;
 
   const selectTopicItem = (id: number, topic: Topic) => {
@@ -85,10 +83,8 @@ export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
         <div className='mw9'>
           <div className='cf ph2-ns pb4'>
             <div className='fl ph2 w-90 pv1'>
-              <div className='bg-white'>
-                <div className={classes.headerLoadingNote}></div>
-                <div className={classes.dateLoadingNote}></div>
-              </div>
+              <div className={classes.headerLoadingNote}></div>
+              <div className={classes.dateLoadingNote}></div>
             </div>
           </div>
         </div>

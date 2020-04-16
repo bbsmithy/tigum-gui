@@ -1,10 +1,10 @@
 import React from 'react';
 import { NoTopicsMessage } from './NoTopicsMessage';
-import { TOPIC_SCREENS } from '../routers/TopicRouter';
+import { TOPIC_SCREENS } from '../../routers/TopicRouter';
 import { TopicsList } from './TopicsList';
-import { useStateValue } from '../state/StateProvider';
+import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
-import { logoutUser } from '../client-lib/api';
+import { logoutUser } from '../../clib/api';
 
 const useStyles = createUseStyles({
   sidebarContainer: {
@@ -17,18 +17,18 @@ const useStyles = createUseStyles({
     zIndex: 1000,
     boxShadow: '0 1px 4px rgba(0, 0, 0, 0.6)',
     height: '100%',
-    fontFamily: 'Montserrat, sans-serif'
+    fontFamily: 'Montserrat, sans-serif',
   },
   sidebarHeader: {
     borderBottom: '1px solid rgba(0, 0, 0, 0.6)',
     '@media (max-width: 1195px)': {
       width: '100%',
-      padding: 10
+      padding: 10,
     },
-    margin: 3
+    margin: 3,
   },
   logoutText: {
-    marginRight: 8
+    marginRight: 8,
   },
   sidebarButton: {
     borderWidth: 0,
@@ -43,37 +43,37 @@ const useStyles = createUseStyles({
       margin: 2,
       padding: 5,
       marginTop: 10,
-      marginRight: 10
+      marginRight: 10,
     },
     '@media (max-width: 1195px)': {
       width: '100%',
-      padding: 7
-    }
+      padding: 7,
+    },
   },
 
   logo: {
     padding: 10,
     '@media (max-width: 1195px)': {
-      padding: 0
-    }
+      padding: 0,
+    },
   },
   closeIcon: {
     padding: 2.5,
     '@media (min-width: 1195px)': {
       padding: 0,
-      display: 'none'
-    }
+      display: 'none',
+    },
   },
   logoContainer: {
     '@media (max-width: 1195px)': {
       width: '100%',
-      marginBottom: 12
-    }
+      marginBottom: 12,
+    },
   },
   btnIcon: {
     marginRight: '10px',
-    fontSize: 10
-  }
+    fontSize: 10,
+  },
 });
 
 interface SideBarProps {
@@ -82,7 +82,7 @@ interface SideBarProps {
   toggleModal: () => void;
 }
 
-const SideBarHeader = props => {
+const SideBarHeader = (props) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
 
@@ -96,7 +96,7 @@ const SideBarHeader = props => {
     <div className={classes.sidebarHeader}>
       <div className={`dib ${classes.logoContainer}`}>
         <img
-          src={require('../logo.png')}
+          src={require('../../logo.png')}
           className={classes.logo}
           height={22}
         />
@@ -119,7 +119,7 @@ const SideBarHeader = props => {
 export const SideBar: React.FC<SideBarProps> = ({
   navigate,
   screen,
-  toggleModal
+  toggleModal,
 }: SideBarProps) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
@@ -130,7 +130,7 @@ export const SideBar: React.FC<SideBarProps> = ({
 
   const {
     content: { topics },
-    navigation: { showSidebar }
+    navigation: { showSidebar },
   } = state;
 
   const classes = useStyles();

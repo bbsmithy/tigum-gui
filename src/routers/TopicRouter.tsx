@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   MyNotes,
   Videos,
@@ -7,9 +7,9 @@ import {
   Images,
   Links,
   Loading,
-  Excercises
-} from "../screens/topic-screens/";
-import { Topic } from "../client-lib/models";
+  Excercises,
+} from '../views/topic';
+import { Topic } from '../clib/models';
 
 export enum TOPIC_SCREENS {
   MY_NOTES,
@@ -20,7 +20,7 @@ export enum TOPIC_SCREENS {
   LINKS,
   EXCERCISES,
   LOADING,
-  NONE
+  NONE,
 }
 
 type TopicRouterType = {

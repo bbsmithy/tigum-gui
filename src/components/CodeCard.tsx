@@ -1,8 +1,8 @@
-import React from "react";
-import { createUseStyles } from "react-jss";
-import { divider } from "../common-styles";
-import { deleteCode } from "../client-lib/api";
-import { useStateValue } from "../state/StateProvider";
+import React from 'react';
+import { createUseStyles } from 'react-jss';
+import { divider } from '../styles';
+import { deleteCode } from '../clib/api';
+import { useStateValue } from '../state/StateProvider';
 
 type CodeCardProps = {
   id: number;
@@ -12,7 +12,7 @@ type CodeCardProps = {
 };
 
 const useStyles = createUseStyles({
-  divider
+  divider,
 });
 
 export const CodeCard = (props: CodeCardProps) => {
@@ -21,7 +21,7 @@ export const CodeCard = (props: CodeCardProps) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { codes }
+    content: { codes },
   } = state;
 
   const deleteCodeBlock = async () => {
@@ -30,7 +30,7 @@ export const CodeCard = (props: CodeCardProps) => {
       if (res.status === 200) {
         let newCodes = codes;
         delete newCodes[props.index];
-        dispatch({ type: "SET_CODES", payload: newCodes });
+        dispatch({ type: 'SET_CODES', payload: newCodes });
       }
     } catch (e) {
       console.log(e);
@@ -38,18 +38,18 @@ export const CodeCard = (props: CodeCardProps) => {
   };
 
   return (
-    <article className="center shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3">
-      <div className="pa3">
-        <p className="f6 f5-ns lh-copy">{props.content}</p>
+    <article className='center shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3'>
+      <div className='pa3'>
+        <p className='f6 f5-ns lh-copy'>{props.content}</p>
         <hr className={classes.divider} />
-        <a href={props.origin} className="i f6">
+        <a href={props.origin} className='i f6'>
           {props.origin}
         </a>
         <button
-          className="f6 fr link pointer br2 ph1 pv1 mb2 dib black bg-white "
+          className='f6 fr link pointer br2 ph1 pv1 mb2 dib black bg-white '
           onClick={deleteCodeBlock}
         >
-          <i className="fa fa-trash" /> Delete
+          <i className='fa fa-trash' /> Delete
         </button>
       </div>
     </article>

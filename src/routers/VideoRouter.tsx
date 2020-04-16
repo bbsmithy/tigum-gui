@@ -1,11 +1,11 @@
-import React from "react";
-import { AllVideos, VideoPlayer } from "../screens/video-screens";
-import { VideoPlayerProps } from "../types";
-import { Topic } from "../client-lib/models";
+import React from 'react';
+import { AllVideos, VideoPlayer } from '../views/video';
+import { VideoPlayerProps } from '../types';
+import { Topic } from '../clib/models';
 
 export enum VIDEO_SCREENS {
   ALL_VIDEOS,
-  VIDEO_PLAYER
+  VIDEO_PLAYER,
 }
 
 type VideoRouterType = {
@@ -19,7 +19,7 @@ export const VideoRouter = ({
   screen,
   video,
   navigate,
-  topic
+  topic,
 }: VideoRouterType) => {
   switch (screen) {
     case VIDEO_SCREENS.ALL_VIDEOS:

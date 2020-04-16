@@ -1,5 +1,4 @@
-import { Topic } from '../client-lib/models';
-import { stateToHTML } from 'draft-js-export-html';
+import { Topic } from '../clib/models';
 
 export const topicsToKeys = (topics: Array<Topic>) => {
   const keys = [];
@@ -26,7 +25,7 @@ export const addSnippet = (
 ) => {
   const updatedTopicNoteIds = [
     snippet_id,
-    ...state.topics.data[topic_id].article_snippets
+    ...state.topics.data[topic_id].article_snippets,
   ];
   const updatedTopic = state.topics.data[topic_id];
   updatedTopic.article_snippets = updatedTopicNoteIds;
@@ -36,7 +35,7 @@ export const addSnippet = (
 export const addVideo = (video_id: number, topic_id: number, state: any) => {
   const updatedTopicVideoIds = [
     video_id,
-    ...state.topics.data[topic_id].videos
+    ...state.topics.data[topic_id].videos,
   ];
   const updatedTopic = state.topics.data[topic_id];
   updatedTopic.videos = updatedTopicVideoIds;

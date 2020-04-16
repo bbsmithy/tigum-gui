@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { getImages, createImage } from "../../client-lib/api";
-import { Topic, NewImage } from "../../client-lib/models";
-import { NewButton, Modal, ImageCard } from "../../components/";
-import { createUseStyles } from "react-jss";
-import { useStateValue } from "../../state/StateProvider";
+import React, { useEffect, useState } from 'react';
+import { getImages, createImage } from '../../clib/api';
+import { Topic, NewImage } from '../../clib/models';
+import { NewButton, Modal, ImageCard } from '../../components';
+import { createUseStyles } from 'react-jss';
+import { useStateValue } from '../../state/StateProvider';
 
 type ImagescreenProps = {
   topic: Topic;
@@ -18,16 +18,16 @@ export const Images = (props: ImagescreenProps) => {
   // @ts-ignore
   const [
     {
-      content: { images }
+      content: { images },
     },
-    dispatch
+    dispatch,
   ] = useStateValue();
 
   const fetchImages = async () => {
     if (props.topic.images) {
       setLoadingImages(true);
       const res = await getImages(props.topic.images);
-      dispatch({ type: "SET_IMAGES", payload: res });
+      dispatch({ type: 'SET_IMAGES', payload: res });
       setLoadingImages(false);
     } else {
       setLoadingImages(false);
@@ -50,8 +50,8 @@ export const Images = (props: ImagescreenProps) => {
     if (imageSrc) {
       let newImage: NewImage = {
         src: imageSrc,
-        origin: "TIGUM",
-        topic_id: props.topic.id
+        origin: 'TIGUM',
+        topic_id: props.topic.id,
       };
       try {
         setCreatingImage(true);
@@ -59,7 +59,7 @@ export const Images = (props: ImagescreenProps) => {
         setCreatingImage(false);
         setImageModalOpen(false);
         let result = { ...newImage, id: res.id };
-        dispatch({ type: "ADD_IMAGE", payload: result });
+        dispatch({ type: 'ADD_IMAGE', payload: result });
       } catch (e) {
         setImageModalOpen(false);
       }
@@ -70,17 +70,17 @@ export const Images = (props: ImagescreenProps) => {
   const renderAddSnippetModal = () => {
     return (
       <Modal
-        title="Create Image"
-        buttonText="Create"
+        title='Create Image'
+        buttonText='Create'
         display={imageModalOpen}
         loadingAction={creatingImage}
         onClickAction={onClickCreateImagesnippet}
         toggleModal={toggleModal}
       >
         <input
-          type="text"
-          placeholder="Image url"
-          id="topic-title-input"
+          type='text'
+          placeholder='Image url'
+          id='topic-title-input'
           value={imageSrc}
           onChange={onChangeSrcUrl}
         />
@@ -90,8 +90,8 @@ export const Images = (props: ImagescreenProps) => {
 
   const renderLoading = () => {
     return (
-      <article className="center shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3">
-        <div className="ph3 pv2">loading</div>
+      <article className='center shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3'>
+        <div className='ph3 pv2'>loading</div>
       </article>
     );
   };
@@ -111,8 +111,8 @@ export const Images = (props: ImagescreenProps) => {
         });
       } else {
         return (
-          <div className="no-resources-message">
-            <i className="fas fa-image" /> <span>No images yet</span>
+          <div className='no-resources-message'>
+            <i className='fas fa-image' /> <span>No images yet</span>
           </div>
         );
       }
@@ -121,10 +121,10 @@ export const Images = (props: ImagescreenProps) => {
   };
 
   return (
-    <div className="ph2 mt4 pt3">
+    <div className='ph2 mt4 pt3'>
       {renderImages()}
       {renderAddSnippetModal()}
-      <NewButton onClick={toggleModal} text="New Image" />
+      <NewButton onClick={toggleModal} text='New Image' />
     </div>
   );
 };

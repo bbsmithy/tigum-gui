@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { NewButton } from '../../components/';
-import { Modal, VideoCard } from '../../components/';
-import { createVideo, updateTopic, getVideos } from '../../client-lib/api';
+import { NewButton } from '../../components';
+import { Modal, VideoCard } from '../../components';
+import { createVideo, updateTopic, getVideos } from '../../clib/api';
 import { getEmbedFromUrl } from '../../util';
 import { VIDEO_SCREENS } from '../../routers/VideoRouter';
 
@@ -13,7 +13,7 @@ const useStyles = createUseStyles({
     backgroundColor: '#efefef',
     height: 200,
     width: '100%',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   headerLoadingNote: {
     width: '80%',
@@ -21,13 +21,13 @@ const useStyles = createUseStyles({
     marginTop: 10,
     background: '#efefef',
 
-    height: 6
+    height: 6,
   },
   videoIconLoading: {
     fontSize: 50,
     marginTop: 90,
-    color: 'gray'
-  }
+    color: 'gray',
+  },
 });
 
 export const AllVideos = (props: any) => {
@@ -39,7 +39,7 @@ export const AllVideos = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { videos }
+    content: { videos },
   } = state;
 
   const fetchVideos = async (ids: Array<number>) => {
@@ -67,7 +67,7 @@ export const AllVideos = (props: any) => {
         topic_id: props.topic.id,
         title: videoTitle,
         iframe: embedUrl,
-        origin: videoUrl
+        origin: videoUrl,
       });
       if (res.status === 200) {
         const body = await res.json();
@@ -90,7 +90,7 @@ export const AllVideos = (props: any) => {
     dispatch({ type: 'HIDE_TOPIC_NAVBAR' });
     dispatch({
       type: 'HIDE_SIDEBAR',
-      payload: { useFullWidth: window.innerWidth < 960 }
+      payload: { useFullWidth: window.innerWidth < 960 },
     });
   };
 

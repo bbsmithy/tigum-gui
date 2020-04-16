@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { TOPIC_SCREENS } from '../routers/TopicRouter';
-import { OptionsButton, Option } from '../components/OptionsButton';
+import { TOPIC_SCREENS } from '../../routers/TopicRouter';
+import { OptionsButton, Option } from '../../components/OptionsButton';
 import './styles.css';
-import { useStateValue } from '../state/StateProvider';
+import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 
 interface TopicNavigationBarProps {
@@ -12,12 +12,12 @@ interface TopicNavigationBarProps {
 }
 
 const topicMenuOptions: Array<Option> = [
-  { title: 'Delete', icon: 'fas fa-trash', onClick: () => {} }
+  { title: 'Delete', icon: 'fas fa-trash', onClick: () => {} },
 ];
 
 const useStyles = createUseStyles({
   mobileNavItemsContainer: {
-    float: 'right'
+    float: 'right',
   },
   mobileNavItemsButton: {
     color: 'white',
@@ -26,7 +26,7 @@ const useStyles = createUseStyles({
     textAlign: 'center',
     padding: 5,
     borderRadius: 3,
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   mobileNavDropdown: {
     backgroundColor: '#333',
@@ -37,25 +37,25 @@ const useStyles = createUseStyles({
     marginTop: 3,
     color: 'white',
     fontSize: 12,
-    padding: 5
+    padding: 5,
   },
   mobileNavItem: {
     padding: 7,
     textAlign: 'center',
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   selectedNavItem: {
-    marginRight: 5
+    marginRight: 5,
   },
   selectedNavIcon: {
-    marginRight: 5
-  }
+    marginRight: 5,
+  },
 });
 
 export const TopicNavigationBar = ({
   title,
   topic,
-  navigate
+  navigate,
 }: TopicNavigationBarProps) => {
   const [selectedNavItem, setSelectedNavItem] = useState(0);
   const [useMobileNavItems, setMobileNavItems] = useState(false);
@@ -65,30 +65,30 @@ export const TopicNavigationBar = ({
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    navigation: { showSidebar, useFullWidth }
+    navigation: { showSidebar, useFullWidth },
   } = state;
 
   const navItems = [
     {
       title: 'Docs',
       icon: 'fas fa-pen-square',
-      screen: TOPIC_SCREENS.MY_NOTES
+      screen: TOPIC_SCREENS.MY_NOTES,
     },
     {
       title: 'Videos',
       icon: 'fab fa-youtube',
-      screen: TOPIC_SCREENS.VIDEOS
+      screen: TOPIC_SCREENS.VIDEOS,
     },
     {
       title: 'Snippets',
       icon: 'fas fa-newspaper',
-      screen: TOPIC_SCREENS.ARTICLE_SNIPPETS
+      screen: TOPIC_SCREENS.ARTICLE_SNIPPETS,
     },
     {
       title: 'Links',
       icon: 'fas fa-link',
-      screen: TOPIC_SCREENS.LINKS
-    }
+      screen: TOPIC_SCREENS.LINKS,
+    },
   ];
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export const TopicNavigationBar = ({
     }
   };
 
-  const handleWindowResize = evt => {
+  const handleWindowResize = (evt) => {
     setNavOptionsType(evt.target.innerWidth);
   };
 
@@ -114,11 +114,11 @@ export const TopicNavigationBar = ({
     showSidebar
       ? dispatch({
           type: 'HIDE_SIDEBAR',
-          payload: { useFullWidth: shouldUseFullWidth }
+          payload: { useFullWidth: shouldUseFullWidth },
         })
       : dispatch({
           type: 'SHOW_SIDEBAR',
-          payload: { useFullWidth: shouldUseFullWidth }
+          payload: { useFullWidth: shouldUseFullWidth },
         });
   };
 
@@ -130,8 +130,9 @@ export const TopicNavigationBar = ({
     return navItems.map((navItem, idx) => {
       return (
         <div
-          className={`btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns ${idx ===
-            selectedNavItem && 'selected'}`}
+          className={`btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns ${
+            idx === selectedNavItem && 'selected'
+          }`}
           key={navItem.title}
           onClick={() => {
             navigate(navItem.screen, topic.id);

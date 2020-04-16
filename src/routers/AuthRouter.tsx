@@ -1,9 +1,9 @@
-import React from "react";
-import { Login, SignUp } from "../screens/auth-screens/";
+import React from 'react';
+import { Login, SignUp } from '../views/auth';
 
 export enum AUTH_SCREENS {
   SIGNUP,
-  LOGIN
+  LOGIN,
 }
 
 type NoteRouterType = {

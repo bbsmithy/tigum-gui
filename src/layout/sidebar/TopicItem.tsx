@@ -1,7 +1,7 @@
 import React from 'react';
-import { getDate } from '../util';
-import { goto } from '../navigation';
-import { Topic } from '../client-lib/models';
+import { getDate } from '../../util';
+import { goto } from '../../navigation';
+import { Topic } from '../../clib/models';
 import { createUseStyles } from 'react-jss';
 
 interface TopicItemProps {
@@ -15,16 +15,16 @@ const useStyles = createUseStyles({
   topicTitle: {
     fontSize: 15,
     '@media (max-width: 1196px)': {
-      fontSize: 13
-    }
-  }
+      fontSize: 13,
+    },
+  },
 });
 
 export const TopicItem = ({
   topic,
   selected,
   id,
-  onSelectItem
+  onSelectItem,
 }: TopicItemProps) => {
   const classes = useStyles();
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { ArticleCard, NewButton, Modal } from '../../components/';
+import { ArticleCard, NewButton, Modal } from '../../components';
 import { createUseStyles } from 'react-jss';
-import { getArticleSnippets, createArticleSnippet } from '../../client-lib/api';
-import { NewArticleSnippet } from '../../client-lib/models';
+import { getArticleSnippets, createArticleSnippet } from '../../clib/api';
+import { NewArticleSnippet } from '../../clib/models';
 
 import { useStateValue } from '../../state/StateProvider';
 
@@ -12,7 +12,7 @@ const useStyles = createUseStyles({
     marginTop: 10,
     padding: 6,
     height: 5,
-    backgroundColor: '#efefef'
+    backgroundColor: '#efefef',
   },
   linkLoading: {
     width: '60%',
@@ -20,14 +20,14 @@ const useStyles = createUseStyles({
     padding: 5,
     height: 6,
     backgroundColor: '#efefef',
-    marginBottom: 10
+    marginBottom: 10,
   },
   snippetBox: {
-    height: 250
-  }
+    height: 250,
+  },
 });
 
-const Snippets = props => {
+const Snippets = (props) => {
   const { snippets } = props;
   if (!snippets.loading) {
     if (snippets.length) {
@@ -61,7 +61,7 @@ export const ArticleSnippets = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { article_snippets }
+    content: { article_snippets },
   } = state;
 
   const fetchArticleSnippets = async (ids: number[]) => {
@@ -100,7 +100,7 @@ export const ArticleSnippets = (props: any) => {
       const newSnippet: NewArticleSnippet = {
         content: snippetContent,
         origin: 'TIGUM',
-        topic_id: props.topic.id
+        topic_id: props.topic.id,
       };
       const res = await createArticleSnippet(newSnippet);
       dispatch({ type: 'ADD_SNIPPET', payload: res });

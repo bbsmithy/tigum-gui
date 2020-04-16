@@ -14,7 +14,7 @@
     "@types/react-dom": "16.8.4",
     "aws-sdk": "^2.547.0",
     "concurrently": "^5.0.0",
-    "devkeep-md-editor": "0.1.4",
+    "devkeep-md-editor": "0.1.7",
     "draft-js": "^0.11.0",
     "draft-js-code": "^0.3.0",
     "draft-js-code-editor-plugin": "^0.2.1",
@@ -30,7 +30,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-jss": "^10.0.0",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.4.1",
     "typescript": "3.5.2",
     "wait-on": "^3.3.0"
   },

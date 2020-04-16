@@ -1,10 +1,10 @@
-import React from "react";
-import { AllNotes, ViewNote } from "../screens/note-screens";
-import { Topic } from "../client-lib/models";
+import React from 'react';
+import { AllNotes, ViewNote } from '../views/note';
+import { Topic } from '../clib/models';
 
 export enum NOTE_SCREENS {
   ALL_NOTES,
-  VIEW_NOTE
+  VIEW_NOTE,
 }
 
 type NoteRouterType = {

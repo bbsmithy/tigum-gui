@@ -117,7 +117,6 @@ const contentReducer = (state: any, action: any) => {
     case 'ADD_LINK': {
       const { id, topic_id } = action.payload;
       const updatedTopicWithLink = addLink(id, topic_id, state);
-      debugger;
       return {
         ...state,
         codes: [action.payload, ...state.links],

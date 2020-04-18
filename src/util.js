@@ -94,8 +94,7 @@ export const debounce = (func, wait, immediate) => {
 };
 
 export const goto = (url) => {
-  console.log(url);
-  window.history.replaceState({}, '', `${url}`);
+  window.history.pushState({}, '', `${url}`);
   window.dispatchEvent(new Event('locationChange'));
 };
 

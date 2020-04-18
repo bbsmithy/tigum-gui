@@ -94,5 +94,37 @@ export const debounce = (func, wait, immediate) => {
 };
 
 export const goto = (url) => {
-  window.history.pushState({}, 'Title', `${url}`);
+  console.log(url);
+  window.history.replaceState({}, '', `${url}`);
+  window.dispatchEvent(new Event('locationChange'));
+};
+
+export const resourceTypeToScreen = (type) => {
+  switch (type) {
+    case 'notes':
+      return 0;
+    case 'videos':
+      return 1;
+    case 'snippets':
+      return 2;
+    case 'links':
+      return 3;
+    default:
+      return false;
+  }
+};
+
+export const screenToResourceType = (screen) => {
+  switch (screen) {
+    case 0:
+      return 'notes';
+    case 1:
+      return 'videos';
+    case 2:
+      return 'snippets';
+    case 3:
+      return 'links';
+    default:
+      return false;
+  }
 };

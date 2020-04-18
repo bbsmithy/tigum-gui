@@ -1,6 +1,5 @@
 import React from 'react';
 import { getDate } from '../../util';
-import { goto } from '../../util';
 import { Topic } from '../../clib/models';
 import { createUseStyles } from 'react-jss';
 
@@ -8,7 +7,7 @@ interface TopicItemProps {
   topic: Topic;
   selected: boolean;
   id: number;
-  onSelectItem: (id: number, topic: Topic) => void;
+  onSelectItem: (id: number) => void;
 }
 
 const useStyles = createUseStyles({
@@ -32,7 +31,7 @@ export const TopicItem = ({
   const classes = useStyles();
 
   const onSelect = () => {
-    onSelectItem(id, topic);
+    onSelectItem(id);
   };
 
   const renderDate = () => {

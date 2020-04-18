@@ -6,6 +6,7 @@ import { SideBar } from '../sidebar';
 import { Modal } from '../../components';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
+import { resourceTypeToScreen } from '../../util';
 
 const useStyles = createUseStyles({
   topicContainer: {
@@ -51,10 +52,6 @@ export const MainContent = (props) => {
 
   const topic = data[selectedTopic];
 
-  const navigate = (screen: TOPIC_SCREENS, topic_id: number) => {
-    dispatch({ type: 'SET_SELECTED_TOPIC', payload: topic_id });
-  };
-
   const toggleModal = () => {
     setModalOpen(!modalOpen);
   };
@@ -82,19 +79,39 @@ export const MainContent = (props) => {
     }
   };
 
-  useEffect(() => {
-    const topicId = window.location.pathname.split(/\//)[2];
+  const handleLocationChange = () => {
+    const pathVars = window.location.href.split(/\//);
+    const topicId = window.location.href.split(/\//)[4];
+    if (pathVars.length > 3) {
+      const resourceType = pathVars[5];
+      const resourceId = pathVars[6];
+      const topicScreen = resourceTypeToScreen(resourceType);
+      if (topicScreen !== false) {
+        console.log(topicScreen);
+        dispatch({ type: 'SET_TOPIC_SCREEN', payload: topicScreen });
+      }
+    }
     if (topicId && selectedTopic !== topicId) {
       dispatch({ type: 'SET_SELECTED_TOPIC', payload: Number(topicId) });
     }
-  }, [window.location.pathname]);
+  };
 
   useEffect(() => {
     setSidebarDisplay(window.innerWidth);
     fetchTopics();
-    window.addEventListener('resize', handleWindowResize);
-    return () => window.removeEventListener('resize', handleWindowResize);
+    addListeners();
+    return () => removeListeners();
   }, []);
+
+  const addListeners = () => {
+    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener('locationChange', handleLocationChange);
+  };
+
+  const removeListeners = () => {
+    window.removeEventListener('resize', handleWindowResize);
+    window.removeEventListener('locationChange', handleLocationChange);
+  };
 
   const onClickCreateTopic = async () => {
     try {
@@ -114,11 +131,7 @@ export const MainContent = (props) => {
 
   return (
     <div id='main-content'>
-      <SideBar
-        navigate={navigate}
-        screen={topicScreen}
-        toggleModal={toggleModal}
-      />
+      <SideBar screen={topicScreen} toggleModal={toggleModal} />
       <div
         style={{
           width: showSidebar && !useFullWidth ? '80%' : '100%',
@@ -129,11 +142,7 @@ export const MainContent = (props) => {
         {topic && (
           <>
             {showTopicNavbar && (
-              <TopicNavigationBar
-                title={topic.title}
-                navigate={navigate}
-                topic={topic}
-              />
+              <TopicNavigationBar title={topic.title} topic={topic} />
             )}
             <div className={classes.topicContainer}>
               <TopicRouter screen={topicScreen} topic={topic} />

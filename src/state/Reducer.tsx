@@ -1,7 +1,6 @@
-import contentReducer from './reducers/contentReducer';
-import navigationReducer from './reducers/navigationReducer';
-import userReducer from './reducers//userReducer';
-import { TOPIC_SCREENS } from '../routers/TopicRouter';
+import ContentReducer from './reducers/ContentReducer';
+import NavigationReducer from './reducers/NavigationReducer';
+import UserReducer from './reducers/UserReducer';
 
 export type InitialState = typeof initialState;
 
@@ -34,8 +33,8 @@ export const reducer = ({ content, navigation, user }, action: any) => {
     console.log(`Action: ${action.type}`, 'Payload: ', action.payload);
   }
   return {
-    content: contentReducer(content, action),
-    navigation: navigationReducer(navigation, action),
-    user: userReducer(user, action),
+    content: ContentReducer(content, action),
+    navigation: NavigationReducer(navigation, action),
+    user: UserReducer(user, action),
   };
 };

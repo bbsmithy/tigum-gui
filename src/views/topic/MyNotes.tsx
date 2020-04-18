@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { NoteRouter, NOTE_SCREENS } from "../../routers/NoteRouter";
+import React, { useState, useEffect } from 'react';
+import { NoteRouter, NOTE_SCREENS } from '../../routers/NoteRouter';
 
 export const MyNotes = (props: any) => {
   const [screen, setScreen] = useState(NOTE_SCREENS.ALL_NOTES);

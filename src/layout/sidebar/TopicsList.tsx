@@ -1,15 +1,8 @@
-import React from 'react';
-import { goto } from '../../util';
+import React, { useEffect } from 'react';
+import { goto, screenToResourceType } from '../../util';
 import { TopicItem } from './TopicItem';
-import { Topic } from '../../clib/models';
-import { TOPIC_SCREENS } from '../../routers/TopicRouter';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
-
-interface TopicsListProps {
-  screen: TOPIC_SCREENS;
-  navigate: (screen: TOPIC_SCREENS, topicId: number) => void;
-}
 
 const useStyles = createUseStyles({
   headerLoadingNote: {
@@ -36,16 +29,28 @@ const useStyles = createUseStyles({
   },
 });
 
-export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
+export const TopicsList = () => {
   const classes = useStyles();
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
     content: { topics, selectedTopic },
+    navigation: { topicScreen },
   } = state;
 
-  const selectTopicItem = (id: number, topic: Topic) => {
-    goto(`/topic/${topic.id}`);
+  useEffect(() => {
+    if (!selectedTopic && topics.keys[0]) {
+      selectTopicItem(topics.keys[0]);
+    }
+  }, [topics]);
+
+  const selectTopicItem = (id: number) => {
+    const screen = screenToResourceType(topicScreen);
+    if (screen) {
+      goto(`/topic/${id}/${screen}`);
+    } else {
+      goto(`/topic/${id}`);
+    }
     dispatch({ type: 'SHOW_TOPIC_NAVBAR' });
     if (window.innerWidth < 960) {
       dispatch({ type: 'HIDE_SIDEBAR', payload: { useFullWidth: true } });
@@ -95,15 +100,14 @@ export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
     <div className={classes.container}>
       {topics.loading && renderLoading()}
       {!topics.loading &&
-        topics.keys.map((topicId, index) => {
-          console.log(selectedTopic);
+        topics.keys.map((topicId) => {
           const selected = selectedTopic ? selectedTopic === topicId : false;
           return (
             <TopicItem
               topic={topics.data[topicId]}
               key={topicId}
               selected={selected}
-              id={index}
+              id={topicId}
               onSelectItem={selectTopicItem}
             />
           );

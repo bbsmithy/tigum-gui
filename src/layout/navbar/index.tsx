@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { TOPIC_SCREENS } from '../../routers/TopicRouter';
 import { OptionsButton, Option } from '../../components/OptionsButton';
 import './styles.css';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
+import { goto } from '../../util';
 
 interface TopicNavigationBarProps {
   title: string;
   topic: any;
-  navigate: (screen: TOPIC_SCREENS, topic: any) => void;
 }
 
 const topicMenuOptions: Array<Option> = [
@@ -54,7 +53,7 @@ const useStyles = createUseStyles({
 
 const navItems = [
   {
-    title: 'Docs',
+    title: 'Notes',
     icon: 'fas fa-pen-square',
     screen: 0,
   },
@@ -76,7 +75,6 @@ const navItems = [
 ];
 
 export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
-  const [selectedNavItem, setSelectedNavItem] = useState(0);
   const [useMobileNavItems, setMobileNavItems] = useState(false);
   const [displayMobileNavOptions, setDisplayMobileNavOptions] = useState(false);
   const classes = useStyles();
@@ -84,6 +82,7 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
+    content: { selectedTopic },
     navigation: { showSidebar, useFullWidth, topicScreen },
   } = state;
 
@@ -123,7 +122,7 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
   };
 
   const renderNavItemsDesktop = () => {
-    return navItems.map((navItem, idx) => {
+    return navItems.map((navItem) => {
       return (
         <div
           className={`btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns ${
@@ -131,7 +130,7 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
           }`}
           key={navItem.title}
           onClick={() => {
-            dispatch({ type: 'SET_TOPIC_SCREEN', payload: navItem.screen });
+            goto(`/topic/${selectedTopic}/${navItem.title.toLowerCase()}`);
           }}
         >
           <i className={navItem.icon} /> {navItem.title}

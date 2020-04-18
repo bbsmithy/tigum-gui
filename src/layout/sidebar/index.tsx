@@ -77,7 +77,6 @@ const useStyles = createUseStyles({
 });
 
 interface SideBarProps {
-  navigate: (screen: TOPIC_SCREENS, data: any) => void;
   screen: TOPIC_SCREENS;
   toggleModal: () => void;
 }
@@ -117,32 +116,31 @@ const SideBarHeader = (props) => {
 };
 
 export const SideBar: React.FC<SideBarProps> = ({
-  navigate,
   screen,
   toggleModal,
 }: SideBarProps) => {
+  const classes = useStyles();
   // @ts-ignore
   const [state, dispatch] = useStateValue();
-
-  const onClickNewTopic = () => {
-    toggleModal();
-  };
-
   const {
     content: { topics },
     navigation: { showSidebar },
   } = state;
 
-  const classes = useStyles();
+  const onClickNewTopic = () => {
+    toggleModal();
+  };
+
   const onLogout = () => {
     dispatch({ type: 'LOGOUT' });
     logoutUser();
   };
+
   if (showSidebar) {
     return (
       <div className={`${classes.sidebarContainer}`}>
         <SideBarHeader onClickNewTopic={onClickNewTopic} />
-        <TopicsList screen={screen} navigate={navigate} />
+        <TopicsList />
         {topics.keys.length === 0 && !topics.loading && <NoTopicsMessage />}
         <div id='sidebar-footer' className='pointer' onClick={onLogout}>
           <span className='sidebar-footer-option'>

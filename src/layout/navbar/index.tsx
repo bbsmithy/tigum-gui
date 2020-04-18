@@ -52,11 +52,30 @@ const useStyles = createUseStyles({
   },
 });
 
-export const TopicNavigationBar = ({
-  title,
-  topic,
-  navigate,
-}: TopicNavigationBarProps) => {
+const navItems = [
+  {
+    title: 'Docs',
+    icon: 'fas fa-pen-square',
+    screen: 0,
+  },
+  {
+    title: 'Videos',
+    icon: 'fab fa-youtube',
+    screen: 1,
+  },
+  {
+    title: 'Snippets',
+    icon: 'fas fa-newspaper',
+    screen: 2,
+  },
+  {
+    title: 'Links',
+    icon: 'fas fa-link',
+    screen: 3,
+  },
+];
+
+export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
   const [selectedNavItem, setSelectedNavItem] = useState(0);
   const [useMobileNavItems, setMobileNavItems] = useState(false);
   const [displayMobileNavOptions, setDisplayMobileNavOptions] = useState(false);
@@ -67,29 +86,6 @@ export const TopicNavigationBar = ({
   const {
     navigation: { showSidebar, useFullWidth, topicScreen },
   } = state;
-
-  const navItems = [
-    {
-      title: 'Docs',
-      icon: 'fas fa-pen-square',
-      screen: TOPIC_SCREENS.MY_NOTES,
-    },
-    {
-      title: 'Videos',
-      icon: 'fab fa-youtube',
-      screen: TOPIC_SCREENS.VIDEOS,
-    },
-    {
-      title: 'Snippets',
-      icon: 'fas fa-newspaper',
-      screen: TOPIC_SCREENS.ARTICLE_SNIPPETS,
-    },
-    {
-      title: 'Links',
-      icon: 'fas fa-link',
-      screen: TOPIC_SCREENS.LINKS,
-    },
-  ];
 
   useEffect(() => {
     setNavOptionsType(window.innerWidth);
@@ -152,10 +148,10 @@ export const TopicNavigationBar = ({
           onClick={toggleMobileNavMenu}
         >
           <i
-            className={`${navItems[selectedNavItem].icon} ${classes.selectedNavIcon}`}
+            className={`${navItems[topicScreen].icon} ${classes.selectedNavIcon}`}
           />
           <span className={classes.selectedNavItem}>
-            {navItems[selectedNavItem].title}
+            {navItems[topicScreen].title}
           </span>
           <i
             className={`fas ${
@@ -165,14 +161,16 @@ export const TopicNavigationBar = ({
         </div>
         {displayMobileNavOptions && (
           <div className={classes.mobileNavDropdown}>
-            {navItems.map((item, idx) => {
-              if (idx === selectedNavItem) return;
+            {navItems.map((item) => {
+              if (item.screen === topicScreen) return;
               return (
                 <div
                   className={classes.mobileNavItem}
                   onClick={() => {
-                    navigate(item.screen, topic.id);
-                    setSelectedNavItem(idx);
+                    dispatch({
+                      type: 'SET_TOPIC_SCREEN',
+                      payload: item.screen,
+                    });
                     setDisplayMobileNavOptions(false);
                   }}
                 >

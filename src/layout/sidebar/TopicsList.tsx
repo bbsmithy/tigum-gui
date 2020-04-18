@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { goto } from '../../util';
 import { TopicItem } from './TopicItem';
 import { Topic } from '../../clib/models';
 import { TOPIC_SCREENS } from '../../routers/TopicRouter';
@@ -44,7 +45,7 @@ export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
   } = state;
 
   const selectTopicItem = (id: number, topic: Topic) => {
-    navigate(screen, topic.id);
+    goto(`/topic/${topic.id}`);
     dispatch({ type: 'SHOW_TOPIC_NAVBAR' });
     if (window.innerWidth < 960) {
       dispatch({ type: 'HIDE_SIDEBAR', payload: { useFullWidth: true } });
@@ -95,6 +96,7 @@ export const TopicsList = ({ screen, navigate }: TopicsListProps) => {
       {topics.loading && renderLoading()}
       {!topics.loading &&
         topics.keys.map((topicId, index) => {
+          console.log(selectedTopic);
           const selected = selectedTopic ? selectedTopic === topicId : false;
           return (
             <TopicItem

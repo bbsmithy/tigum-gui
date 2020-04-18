@@ -11,9 +11,28 @@ const useStyles = createUseStyles({
   topicContainer: {
     height: '100%',
   },
+  notFoundContainer: {
+    width: '100%',
+    marginTop: '20%',
+    textAlign: 'center',
+  },
+  couldNotFindTopic: {
+    color: 'white',
+  },
 });
 
-export const MainContent = (props: any) => {
+const TopicNotFound = () => {
+  const classes = useStyles();
+  return (
+    <div className={classes.notFoundContainer}>
+      <h1 className={classes.couldNotFindTopic}>
+        Could not find that topic....
+      </h1>
+    </div>
+  );
+};
+
+export const MainContent = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [topicTitle, setTopicTitle] = useState('');
   const classes = useStyles();
@@ -23,7 +42,7 @@ export const MainContent = (props: any) => {
     {
       content: {
         selectedTopic,
-        topics: { data },
+        topics: { data, loading },
       },
       navigation: { showTopicNavbar, showSidebar, useFullWidth, topicScreen },
     },
@@ -46,7 +65,6 @@ export const MainContent = (props: any) => {
       const newTopics = await getTopics([]);
       const orderedTopics = newTopics.reverse();
       dispatch({ type: 'SET_TOPICS', payload: orderedTopics });
-      navigate(TOPIC_SCREENS.MY_NOTES, orderedTopics[0].id);
     } catch (e) {
       dispatch({ type: 'SET_TOPICS_FAILURE' });
     }
@@ -63,6 +81,13 @@ export const MainContent = (props: any) => {
       dispatch({ type: 'SHOW_SIDEBAR', payload: { useFullWidth: false } });
     }
   };
+
+  useEffect(() => {
+    const topicId = window.location.pathname.split(/\//)[2];
+    if (topicId && selectedTopic !== topicId) {
+      dispatch({ type: 'SET_SELECTED_TOPIC', payload: Number(topicId) });
+    }
+  }, [window.location.pathname]);
 
   useEffect(() => {
     setSidebarDisplay(window.innerWidth);
@@ -94,26 +119,29 @@ export const MainContent = (props: any) => {
         screen={topicScreen}
         toggleModal={toggleModal}
       />
-      {topic && (
-        <div
-          style={{
-            width: showSidebar && !useFullWidth ? '80%' : '100%',
-            position: 'absolute',
-            left: showSidebar && !useFullWidth ? '20%' : '0%',
-          }}
-        >
-          {showTopicNavbar && (
-            <TopicNavigationBar
-              title={topic.title}
-              navigate={navigate}
-              topic={topic}
-            />
-          )}
-          <div className={classes.topicContainer}>
-            <TopicRouter screen={topicScreen} topic={topic} />
-          </div>
-        </div>
-      )}
+      <div
+        style={{
+          width: showSidebar && !useFullWidth ? '80%' : '100%',
+          position: 'absolute',
+          left: showSidebar && !useFullWidth ? '20%' : '0%',
+        }}
+      >
+        {topic && (
+          <>
+            {showTopicNavbar && (
+              <TopicNavigationBar
+                title={topic.title}
+                navigate={navigate}
+                topic={topic}
+              />
+            )}
+            <div className={classes.topicContainer}>
+              <TopicRouter screen={topicScreen} topic={topic} />
+            </div>
+          </>
+        )}
+        {!topic && !loading && <TopicNotFound />}
+      </div>
       <Modal
         display={modalOpen}
         toggleModal={toggleModal}

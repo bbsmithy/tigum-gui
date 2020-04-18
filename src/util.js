@@ -94,5 +94,5 @@ export const debounce = (func, wait, immediate) => {
 };
 
 export const goto = (url) => {
-  window.history.replaceState({}, url, `/${url}`);
+  window.history.pushState({}, 'Title', `${url}`);
 };

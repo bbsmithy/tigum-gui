@@ -12,14 +12,14 @@ const useStyles = createUseStyles({
     marginTop: 10,
     padding: 6,
     height: 5,
-    backgroundColor: '#efefef',
+    backgroundColor: '#333',
   },
   linkLoading: {
     width: '60%',
     marginTop: 30,
     padding: 5,
     height: 6,
-    backgroundColor: '#efefef',
+    backgroundColor: '#333',
     marginBottom: 10,
   },
   snippetBox: {
@@ -28,8 +28,9 @@ const useStyles = createUseStyles({
 });
 
 const Snippets = (props) => {
-  const { snippets } = props;
-  if (!snippets.loading) {
+  const classes = useStyles();
+  const { snippets, loading } = props;
+  if (!loading) {
     if (snippets.length) {
       return snippets.map((snippet, idx) => {
         return (
@@ -49,6 +50,18 @@ const Snippets = (props) => {
         </div>
       );
     }
+  } else {
+    return (
+      <article className='center shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3'>
+        <div className='ph3 pv2'>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.linkLoading}></div>
+        </div>
+      </article>
+    );
   }
 };
 
@@ -74,22 +87,6 @@ export const ArticleSnippets = (props: any) => {
   useEffect(() => {
     fetchArticleSnippets(props.topic.article_snippets);
   }, [props.topic]);
-
-  const renderSnippets = () => {};
-
-  const renderLoading = () => {
-    return (
-      <article className='center shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3'>
-        <div className='ph3 pv2'>
-          <div className={classes.paragraphLoading}></div>
-          <div className={classes.paragraphLoading}></div>
-          <div className={classes.paragraphLoading}></div>
-          <div className={classes.paragraphLoading}></div>
-          <div className={classes.linkLoading}></div>
-        </div>
-      </article>
-    );
-  };
 
   const toggleModal = () => {
     setCreateSnippetModalOpen(!createSnippetModalOpen);
@@ -129,7 +126,7 @@ export const ArticleSnippets = (props: any) => {
         </form>
       </Modal>
       <NewButton onClick={toggleModal} text='New Snippet' />
-      <Snippets snippets={article_snippets} />
+      <Snippets snippets={article_snippets} loading={loading} />
     </div>
   );
 };

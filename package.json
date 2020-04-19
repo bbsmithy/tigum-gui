@@ -2,7 +2,7 @@
   "name": "devkeep.io",
   "version": "0.1.0",
   "author": "Brian Smith",
-  "homepage": "./",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@octokit/rest": "^17.0.0",

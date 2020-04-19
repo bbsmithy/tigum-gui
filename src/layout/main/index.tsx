@@ -7,6 +7,7 @@ import { Modal } from '../../components';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { resourceTypeToScreen } from '../../util';
+import { useReactPath } from '../../hooks';
 
 const useStyles = createUseStyles({
   topicContainer: {
@@ -36,6 +37,7 @@ const TopicNotFound = () => {
 export const MainContent = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [topicTitle, setTopicTitle] = useState('');
+  const path = useReactPath();
   const classes = useStyles();
 
   // @ts-ignore
@@ -79,22 +81,26 @@ export const MainContent = (props) => {
     }
   };
 
-  const handleLocationChange = () => {
-    const pathVars = window.location.href.split(/\//);
-    const topicId = window.location.href.split(/\//)[4];
+  const handleLocationChange = (path) => {
+    const pathVars = path.split(/\//);
+    const topicId = Number(path.split(/\//)[2]);
     if (pathVars.length > 3) {
-      const resourceType = pathVars[5];
-      const resourceId = pathVars[6];
-      const topicScreen = resourceTypeToScreen(resourceType);
-      if (topicScreen !== false) {
-        console.log(topicScreen);
-        dispatch({ type: 'SET_TOPIC_SCREEN', payload: topicScreen });
+      const resourceType = pathVars[3];
+      const resourceId = pathVars[4];
+      const newTopicScreen = resourceTypeToScreen(resourceType);
+      if (newTopicScreen !== false && newTopicScreen !== topicScreen) {
+        console.log(resourceId);
+        dispatch({ type: 'SET_TOPIC_SCREEN', payload: newTopicScreen });
       }
     }
     if (topicId && selectedTopic !== topicId) {
-      dispatch({ type: 'SET_SELECTED_TOPIC', payload: Number(topicId) });
+      dispatch({ type: 'SET_SELECTED_TOPIC', payload: topicId });
     }
   };
+
+  useEffect(() => {
+    handleLocationChange(path);
+  }, [path]);
 
   useEffect(() => {
     setSidebarDisplay(window.innerWidth);
@@ -105,12 +111,10 @@ export const MainContent = (props) => {
 
   const addListeners = () => {
     window.addEventListener('resize', handleWindowResize);
-    window.addEventListener('locationChange', handleLocationChange);
   };
 
   const removeListeners = () => {
     window.removeEventListener('resize', handleWindowResize);
-    window.removeEventListener('locationChange', handleLocationChange);
   };
 
   const onClickCreateTopic = async () => {

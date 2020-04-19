@@ -1,6 +1,6 @@
 import { SET_TOPIC_SCREEN } from '../ActionTypes';
 
-const navigationReducer = (state: any, action: any) => {
+const NavigationReducer = (state: any, action: any) => {
   switch (action.type) {
     case 'NAVIGATE':
       return { ...state, screenTree: action.payload };
@@ -30,4 +30,4 @@ const navigationReducer = (state: any, action: any) => {
   }
 };
 
-export default navigationReducer;
+export default NavigationReducer;

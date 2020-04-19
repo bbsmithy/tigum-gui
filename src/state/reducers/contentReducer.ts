@@ -6,7 +6,7 @@ import {
   addLink,
 } from '../StateHelpers';
 
-const contentReducer = (state: any, action: any) => {
+const ContentReducer = (state: any, action: any) => {
   switch (action.type) {
     case 'FETCHING_TOPICS':
       return {
@@ -135,4 +135,4 @@ const contentReducer = (state: any, action: any) => {
   }
 };
 
-export default contentReducer;
+export default ContentReducer;

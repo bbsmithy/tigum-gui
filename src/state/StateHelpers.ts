@@ -1,4 +1,4 @@
-import { Topic } from '../clib/models';
+import { Topic, Video } from '../clib/models';
 
 export const topicsToKeys = (topics: Array<Topic>) => {
   const keys = [];
@@ -6,6 +6,17 @@ export const topicsToKeys = (topics: Array<Topic>) => {
   topics.forEach((topic: Topic) => {
     keys.push(topic.id);
     data[topic.id] = topic;
+  });
+
+  return { data, keys };
+};
+
+export const videosToKey = (videos: Array<Video>) => {
+  const keys = [];
+  const data = {};
+  videos.forEach((v: Video) => {
+    keys.push(v.id);
+    data[v.id] = v;
   });
 
   return { data, keys };

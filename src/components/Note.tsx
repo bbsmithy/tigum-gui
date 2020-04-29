@@ -1,6 +1,7 @@
 import React from 'react';
-import { getDate } from '../util';
+import { getDate, goto } from '../util';
 import { createUseStyles } from 'react-jss';
+import { useStateValue } from '../state/StateProvider';
 
 const useStyles = createUseStyles({
   noteTitle: {
@@ -11,8 +12,8 @@ const useStyles = createUseStyles({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     '@media (max-width: 1196px)': {
-      fontSize: 14
-    }
+      fontSize: 14,
+    },
   },
   noteSubTitle: {
     color: 'gray',
@@ -23,14 +24,15 @@ const useStyles = createUseStyles({
     textOverflow: 'ellipsis',
     /* Required for text-overflow to do anything */
     whiteSpace: 'nowrap',
-    overflow: 'hidden'
-  }
+    overflow: 'hidden',
+  },
 });
 
 export const Note = (props: any) => {
   const classes = useStyles();
 
   const navigateToNote = () => {
+    goto(`${window.location.pathname}/${props.note.id}`);
     props.onClick(props.note);
   };
 

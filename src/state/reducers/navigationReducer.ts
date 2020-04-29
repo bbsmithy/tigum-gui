@@ -2,8 +2,6 @@ import { SET_TOPIC_SCREEN } from '../ActionTypes';
 
 const NavigationReducer = (state: any, action: any) => {
   switch (action.type) {
-    case 'NAVIGATE':
-      return { ...state, screenTree: action.payload };
     case 'HIDE_TOPIC_NAVBAR':
       return { ...state, showTopicNavbar: false };
     case 'SHOW_TOPIC_NAVBAR':

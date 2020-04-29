@@ -8,6 +8,7 @@ import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { resourceTypeToScreen } from '../../util';
 import { useReactPath } from '../../hooks';
+import { SET_SELECTED_RESOURCE } from '../../state/ActionTypes';
 
 const useStyles = createUseStyles({
   topicContainer: {
@@ -83,18 +84,22 @@ export const MainContent = (props) => {
 
   const handleLocationChange = (path) => {
     const pathVars = path.split(/\//);
-    const topicId = Number(path.split(/\//)[2]);
-    if (pathVars.length > 3) {
-      const resourceType = pathVars[3];
-      const resourceId = pathVars[4];
-      const newTopicScreen = resourceTypeToScreen(resourceType);
-      if (newTopicScreen !== false && newTopicScreen !== topicScreen) {
-        console.log(resourceId);
-        dispatch({ type: 'SET_TOPIC_SCREEN', payload: newTopicScreen });
-      }
-    }
+    const topicId = Number(pathVars[2]);
+    const resourceType = Number(pathVars[3]);
+    const resourceId = Number(pathVars[4]);
+
+    console.log(pathVars);
+
     if (topicId && selectedTopic !== topicId) {
       dispatch({ type: 'SET_SELECTED_TOPIC', payload: topicId });
+    }
+    if (pathVars.length === 4) {
+      const newTopicScreen = resourceTypeToScreen(resourceType);
+      if (newTopicScreen !== false && newTopicScreen !== topicScreen) {
+        dispatch({ type: 'SET_TOPIC_SCREEN', payload: newTopicScreen });
+      }
+    } else if (pathVars.length === 5) {
+      dispatch({ type: SET_SELECTED_RESOURCE, payload: resourceId });
     }
   };
 

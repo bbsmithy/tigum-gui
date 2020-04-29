@@ -1,14 +1,35 @@
 import {
   topicsToKeys,
+  videosToKey,
   addNote,
   addSnippet,
   addVideo,
   addLink,
 } from '../StateHelpers';
 
+import {
+  FETCHING_TOPICS,
+  SET_SELECTED_RESOURCE,
+  SET_TOPICS,
+  SET_TOPICS_FAILURE,
+  SET_SELECTED_TOPIC,
+  SET_SNIPPETS,
+  ADD_SNIPPET,
+  SET_NOTES,
+  ADD_NOTE,
+  SET_VIDEOS,
+  ADD_VIDEO,
+  SET_CODES,
+  ADD_CODE,
+  SET_IMAGES,
+  ADD_IMAGE,
+  SET_LINKS,
+  ADD_LINK,
+} from '../ActionTypes';
+
 const ContentReducer = (state: any, action: any) => {
   switch (action.type) {
-    case 'FETCHING_TOPICS':
+    case FETCHING_TOPICS:
       return {
         ...state,
         topics: {
@@ -16,23 +37,29 @@ const ContentReducer = (state: any, action: any) => {
           loading: true,
         },
       };
-    case 'SET_TOPICS':
+    case SET_TOPICS:
       const { data, keys } = topicsToKeys(action.payload);
       return { ...state, topics: { data, keys, loading: false } };
-    case 'SET_TOPICS_FAILURE':
+    case SET_TOPICS_FAILURE:
       return { ...state, topics: { ...state.topics, loading: false } };
-    case 'SET_SELECTED_TOPIC':
+    case SET_SELECTED_TOPIC:
       return {
         ...state,
         selectedTopic: action.payload,
+        selectedResourceId: null,
         notes: [],
         links: [],
         videos: [],
         article_snippets: [],
       };
-    case 'SET_SNIPPETS':
+    case SET_SELECTED_RESOURCE:
+      return {
+        ...state,
+        selectedResourceId: action.payload,
+      };
+    case SET_SNIPPETS:
       return { ...state, article_snippets: action.payload };
-    case 'ADD_SNIPPET': {
+    case ADD_SNIPPET: {
       const { id, topic_id } = action.payload;
       const updatedTopicWithSnippet = addSnippet(id, topic_id, state);
       return {
@@ -47,9 +74,9 @@ const ContentReducer = (state: any, action: any) => {
         },
       };
     }
-    case 'SET_NOTES':
+    case SET_NOTES:
       return { ...state, notes: action.payload };
-    case 'ADD_NOTE': {
+    case ADD_NOTE: {
       const { id, topic_id } = action.payload;
       const updatedTopicWithNote = addNote(id, topic_id, state);
       return {
@@ -64,10 +91,11 @@ const ContentReducer = (state: any, action: any) => {
         },
       };
     }
-
-    case 'SET_VIDEOS':
-      return { ...state, videos: action.payload };
-    case 'ADD_VIDEO': {
+    case SET_VIDEOS: {
+      const videos = videosToKey(action.payload);
+      return { ...state, videos };
+    }
+    case ADD_VIDEO: {
       const { id, topic_id } = action.payload;
       const updatedTopicWithVideo = addVideo(id, topic_id, state);
       return {
@@ -82,10 +110,9 @@ const ContentReducer = (state: any, action: any) => {
         },
       };
     }
-
-    case 'SET_CODES':
+    case SET_CODES:
       return { ...state, codes: action.payload };
-    case 'ADD_CODE':
+    case ADD_CODE:
       const { id, topic_id } = action.payload;
       const updatedTopicWithLink = addLink(id, topic_id, state);
       return {
@@ -99,22 +126,22 @@ const ContentReducer = (state: any, action: any) => {
           },
         },
       };
-    case 'SET_IMAGES':
+    case SET_IMAGES:
       return {
         ...state,
         images: action.payload,
       };
-    case 'ADD_IMAGE':
+    case ADD_IMAGE:
       return {
         ...state,
         images: [action.payload, ...state.images],
       };
-    case 'SET_LINKS':
+    case SET_LINKS:
       return {
         ...state,
         links: action.payload,
       };
-    case 'ADD_LINK': {
+    case ADD_LINK: {
       const { id, topic_id } = action.payload;
       const updatedTopicWithLink = addLink(id, topic_id, state);
       return {

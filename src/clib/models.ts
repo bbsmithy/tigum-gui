@@ -19,6 +19,17 @@ export type NewVideo = {
   thumbnail_img: string;
 };
 
+export type Video = {
+  id: number;
+  topic_id: number;
+  user_id: number;
+  title: string;
+  iframe: string;
+  origin: string;
+  date_created: string;
+  thumbnail_img: string;
+};
+
 export type ArticleSnippet = {
   id: number;
   content: string;

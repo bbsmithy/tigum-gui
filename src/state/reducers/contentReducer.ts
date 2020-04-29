@@ -25,6 +25,7 @@ import {
   ADD_IMAGE,
   SET_LINKS,
   ADD_LINK,
+  DELETE_TOPIC,
 } from '../ActionTypes';
 
 const ContentReducer = (state: any, action: any) => {
@@ -51,6 +52,15 @@ const ContentReducer = (state: any, action: any) => {
         links: [],
         videos: [],
         article_snippets: [],
+      };
+    case DELETE_TOPIC:
+      const newTopicData = { ...state.topics.data };
+      delete newTopicData[action.payload];
+      const newKeys = state.topics.keys.filter((key) => key !== action.payload);
+      return {
+        ...state,
+        selectedResourceId: null,
+        topics: { data: newTopicData, keys: newKeys },
       };
     case SET_SELECTED_RESOURCE:
       return {

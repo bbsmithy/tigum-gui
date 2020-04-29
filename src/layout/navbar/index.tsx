@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { OptionsButton, Option } from '../../components/OptionsButton';
-import './styles.css';
+import { deleteTopic } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { goto } from '../../util';
+import './styles.css';
 
 interface TopicNavigationBarProps {
   title: string;
   topic: any;
 }
-
-const topicMenuOptions: Array<Option> = [
-  { title: 'Delete', icon: 'fas fa-trash', onClick: () => {} },
-];
 
 const useStyles = createUseStyles({
   mobileNavItemsContainer: {
@@ -82,9 +79,17 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { selectedTopic },
+    content: { selectedTopic, topics },
     navigation: { showSidebar, useFullWidth, topicScreen },
   } = state;
+
+  const topicMenuOptions: Array<Option> = [
+    {
+      title: 'Delete',
+      icon: 'fas fa-trash',
+      onClick: () => deleteTopicAndNavToNextTopic(),
+    },
+  ];
 
   useEffect(() => {
     setNavOptionsType(window.innerWidth);
@@ -97,6 +102,16 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
       setMobileNavItems(true);
     } else if (width > 580) {
       setMobileNavItems(false);
+    }
+  };
+
+  const deleteTopicAndNavToNextTopic = async () => {
+    try {
+      await deleteTopic(selectedTopic);
+      dispatch({ type: 'DELETE_TOPIC', payload: selectedTopic });
+      goto(`/topic/${topics.keys[0]}/notes/`);
+    } catch (e) {
+      console.log(e);
     }
   };
 

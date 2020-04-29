@@ -85,10 +85,8 @@ export const MainContent = (props) => {
   const handleLocationChange = (path) => {
     const pathVars = path.split(/\//);
     const topicId = Number(pathVars[2]);
-    const resourceType = Number(pathVars[3]);
+    const resourceType = pathVars[3];
     const resourceId = Number(pathVars[4]);
-
-    console.log(pathVars);
 
     if (topicId && selectedTopic !== topicId) {
       dispatch({ type: 'SET_SELECTED_TOPIC', payload: topicId });

@@ -4,26 +4,26 @@ import {
   NewCode,
   Code,
   NewImage,
-  NewLink
-} from "./models";
+  NewLink,
+} from './models';
 
-const DEV = process.env.NODE_ENV === "development";
+const DEV = process.env.NODE_ENV === 'development';
 // const DEV = false;
 
 const BASE_API_URL = DEV
-  ? "http://localhost:8000"
-  : "https://app-e3018b9e-b898-41f7-888f-bc656e5af4e1.cleverapps.io";
+  ? 'http://localhost:8000'
+  : 'https://app-e3018b9e-b898-41f7-888f-bc656e5af4e1.cleverapps.io';
 
 export const getTopics = async (topicIds: Array<number>) => {
   try {
     const res = await fetch(`${BASE_API_URL}/topics/`, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ids: topicIds })
+      credentials: 'include',
+      body: JSON.stringify({ ids: topicIds }),
     });
     if (res.status === 200) {
       return await res.json();
@@ -37,13 +37,29 @@ export const getTopics = async (topicIds: Array<number>) => {
 export const createTopic = async (title: String) => {
   try {
     const res = await fetch(`${BASE_API_URL}/topics/create-topic`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ title })
+      credentials: 'include',
+      body: JSON.stringify({ title }),
+    });
+    return await res;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const deleteTopic = async (id: number) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/topics/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
+      },
+      credentials: 'include',
     });
     return await res;
   } catch (e) {
@@ -54,13 +70,13 @@ export const createTopic = async (title: String) => {
 export const updateTopic = async (topic: any) => {
   try {
     const res = await fetch(`${BASE_API_URL}/topics/${topic.id}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ...topic })
+      credentials: 'include',
+      body: JSON.stringify({ ...topic }),
     });
     return await res;
   } catch (e) {
@@ -71,13 +87,13 @@ export const updateTopic = async (topic: any) => {
 export const createNote = async (title: String, topic_id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/notes/create-note`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ title, topic_id })
+      credentials: 'include',
+      body: JSON.stringify({ title, topic_id }),
     });
     return await res;
   } catch (e) {
@@ -88,12 +104,12 @@ export const createNote = async (title: String, topic_id: number) => {
 export const deleteNote = async (note_id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/notes/${note_id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include"
+      credentials: 'include',
     });
     return res;
   } catch (e) {
@@ -104,13 +120,13 @@ export const deleteNote = async (note_id: number) => {
 export const getNotes = async (note_ids: Array<number>) => {
   try {
     const res = await fetch(`${BASE_API_URL}/notes/`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ids: note_ids })
+      credentials: 'include',
+      body: JSON.stringify({ ids: note_ids }),
     });
     return await res;
   } catch (e) {
@@ -127,19 +143,19 @@ export const createResource = async (
 ) => {
   try {
     const res = await fetch(`${BASE_API_URL}/videos/create`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
+      credentials: 'include',
       body: JSON.stringify({
         content_type,
         content,
         generated_by,
         title,
-        thumbnail_img
-      })
+        thumbnail_img,
+      }),
     });
     return await res;
   } catch (e) {
@@ -150,12 +166,12 @@ export const createResource = async (
 export const deleteResource = async (resource_id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/resources/${resource_id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include"
+      credentials: 'include',
     });
     return res;
   } catch (e) {
@@ -166,13 +182,13 @@ export const deleteResource = async (resource_id: number) => {
 export const getResources = async (ids: Array<number>) => {
   try {
     const res = await fetch(`${BASE_API_URL}/resources/`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ids })
+      credentials: 'include',
+      body: JSON.stringify({ ids }),
     });
     return await res;
   } catch (e) {
@@ -183,13 +199,13 @@ export const getResources = async (ids: Array<number>) => {
 export const getVideos = async (ids: Array<number>) => {
   try {
     const res = await fetch(`${BASE_API_URL}/videos/`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ids })
+      credentials: 'include',
+      body: JSON.stringify({ ids }),
     });
     return await res;
   } catch (e) {
@@ -200,13 +216,13 @@ export const getVideos = async (ids: Array<number>) => {
 export const createVideo = async (newVideo: NewVideo) => {
   try {
     const res = await fetch(`${BASE_API_URL}/videos/create`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ...newVideo })
+      credentials: 'include',
+      body: JSON.stringify({ ...newVideo }),
     });
     return await res;
   } catch (e) {
@@ -217,12 +233,12 @@ export const createVideo = async (newVideo: NewVideo) => {
 export const deleteVideo = async (id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/videos/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include"
+      credentials: 'include',
     });
     return res.json();
   } catch (e) {
@@ -233,13 +249,13 @@ export const deleteVideo = async (id: number) => {
 export const getArticleSnippets = async (ids: number[]) => {
   try {
     const res = await fetch(`${BASE_API_URL}/article_snippets/`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ids })
+      credentials: 'include',
+      body: JSON.stringify({ ids }),
     });
     const article_snippets_list = await res.json();
     return article_snippets_list.reverse();
@@ -253,13 +269,13 @@ export const createArticleSnippet = async (
 ) => {
   try {
     const res = await fetch(`${BASE_API_URL}/article_snippets/create`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ...newArticleSnippet })
+      credentials: 'include',
+      body: JSON.stringify({ ...newArticleSnippet }),
     });
     const data = await res.json();
     return data;
@@ -271,12 +287,12 @@ export const createArticleSnippet = async (
 export const deleteArticleSnippet = async (id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/article_snippets/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include"
+      credentials: 'include',
     });
     return res;
   } catch (e) {
@@ -287,13 +303,13 @@ export const deleteArticleSnippet = async (id: number) => {
 export const getCodes = async (ids: number[]): Promise<Code[]> => {
   try {
     const res = await fetch(`${BASE_API_URL}/code/`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ids })
+      credentials: 'include',
+      body: JSON.stringify({ ids }),
     });
     return await res.json();
   } catch (e) {
@@ -304,13 +320,13 @@ export const getCodes = async (ids: number[]): Promise<Code[]> => {
 export const createCode = async (newCode: NewCode) => {
   try {
     const res = await fetch(`${BASE_API_URL}/code/create`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ...newCode })
+      credentials: 'include',
+      body: JSON.stringify({ ...newCode }),
     });
     return await res.json();
   } catch (e) {
@@ -321,12 +337,12 @@ export const createCode = async (newCode: NewCode) => {
 export const deleteCode = async (id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/code/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include"
+      credentials: 'include',
     });
     return res;
   } catch (e) {
@@ -337,13 +353,13 @@ export const deleteCode = async (id: number) => {
 export const getImages = async (ids: number[]) => {
   try {
     const res = await fetch(`${BASE_API_URL}/images`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ids })
+      credentials: 'include',
+      body: JSON.stringify({ ids }),
     });
     return await res.json();
   } catch (e) {
@@ -354,13 +370,13 @@ export const getImages = async (ids: number[]) => {
 export const createImage = async (newImage: NewImage) => {
   try {
     const res = await fetch(`${BASE_API_URL}/images/create`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ...newImage })
+      credentials: 'include',
+      body: JSON.stringify({ ...newImage }),
     });
     return await res.json();
   } catch (e) {
@@ -371,12 +387,12 @@ export const createImage = async (newImage: NewImage) => {
 export const deleteImage = async (id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/images/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include"
+      credentials: 'include',
     });
     return res;
   } catch (e) {
@@ -387,13 +403,13 @@ export const deleteImage = async (id: number) => {
 export const getLinks = async (ids: number[]) => {
   try {
     const res = await fetch(`${BASE_API_URL}/links`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include",
-      body: JSON.stringify({ ids })
+      credentials: 'include',
+      body: JSON.stringify({ ids }),
     });
     return await res.json();
   } catch (e) {
@@ -404,12 +420,12 @@ export const getLinks = async (ids: number[]) => {
 export const createLink = async (newLink: NewLink) => {
   try {
     const res = await fetch(`${BASE_API_URL}/links/create`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      credentials: "include",
-      body: JSON.stringify({ ...newLink })
+      credentials: 'include',
+      body: JSON.stringify({ ...newLink }),
     });
     return await res.json();
   } catch (e) {
@@ -420,12 +436,12 @@ export const createLink = async (newLink: NewLink) => {
 export const loginUser = async (email: string, password: string) => {
   try {
     const res = await fetch(`${BASE_API_URL}/user/login`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      credentials: "include",
-      body: JSON.stringify({ email, password })
+      credentials: 'include',
+      body: JSON.stringify({ email, password }),
     });
     return await res.json();
   } catch (e) {
@@ -436,11 +452,11 @@ export const loginUser = async (email: string, password: string) => {
 export const checkLogin = async () => {
   try {
     const res = await fetch(`${BASE_API_URL}/user/checklogin`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      credentials: "include"
+      credentials: 'include',
     });
     return await res.json();
   } catch (e) {
@@ -451,12 +467,12 @@ export const checkLogin = async () => {
 export const signupUser = async (email: string, password: string) => {
   try {
     const res = await fetch(`${BASE_API_URL}/user/signup`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      credentials: "include",
-      body: JSON.stringify({ email, password, name: email })
+      credentials: 'include',
+      body: JSON.stringify({ email, password, name: email }),
     });
     return await res.json();
   } catch (e) {
@@ -467,12 +483,12 @@ export const signupUser = async (email: string, password: string) => {
 export const logoutUser = async () => {
   try {
     const res = await fetch(`${BASE_API_URL}/user/logout`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-User-ID": "test-user-id"
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
       },
-      credentials: "include"
+      credentials: 'include',
     });
     console.log(res);
   } catch (e) {

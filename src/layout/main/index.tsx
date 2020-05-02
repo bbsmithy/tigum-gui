@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TopicNavigationBar } from '../navbar';
-import { TopicRouter, TOPIC_SCREENS } from '../../routers/TopicRouter';
+import { MainRouter, SCREENS } from '../../routers/MainRouter';
 import { getTopics, createTopic } from '../../clib/api';
 import { SideBar } from '../sidebar';
 import { Modal } from '../../components';
@@ -8,7 +8,17 @@ import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { resourceTypeToScreen } from '../../util';
 import { useReactPath } from '../../hooks';
-import { SET_SELECTED_RESOURCE } from '../../state/ActionTypes';
+import {
+  SET_SELECTED_RESOURCE,
+  FULL_SCREEN,
+  SET_SELECTED_TOPIC,
+  SET_TOPICS,
+  SET_TOPIC_SCREEN,
+  FETCHING_TOPICS,
+  SET_TOPICS_FAILURE,
+  HIDE_SIDEBAR,
+  SHOW_SIDEBAR,
+} from '../../state/ActionTypes';
 
 const useStyles = createUseStyles({
   topicContainer: {
@@ -60,13 +70,13 @@ export const MainContent = (props) => {
   };
 
   const fetchTopics = async () => {
-    dispatch({ type: 'FETCHING_TOPICS' });
+    dispatch({ type: FETCHING_TOPICS });
     try {
       const newTopics = await getTopics([]);
       const orderedTopics = newTopics.reverse();
-      dispatch({ type: 'SET_TOPICS', payload: orderedTopics });
+      dispatch({ type: SET_TOPICS, payload: orderedTopics });
     } catch (e) {
-      dispatch({ type: 'SET_TOPICS_FAILURE' });
+      dispatch({ type: SET_TOPICS_FAILURE });
     }
   };
 
@@ -76,9 +86,9 @@ export const MainContent = (props) => {
 
   const setSidebarDisplay = (width: number) => {
     if (width < 960) {
-      dispatch({ type: 'HIDE_SIDEBAR', payload: { useFullWidth: true } });
+      dispatch({ type: HIDE_SIDEBAR, payload: { useFullWidth: true } });
     } else if (width > 960) {
-      dispatch({ type: 'SHOW_SIDEBAR', payload: { useFullWidth: false } });
+      dispatch({ type: SHOW_SIDEBAR, payload: { useFullWidth: false } });
     }
   };
 
@@ -89,15 +99,29 @@ export const MainContent = (props) => {
     const resourceId = Number(pathVars[4]);
 
     if (topicId && selectedTopic !== topicId) {
-      dispatch({ type: 'SET_SELECTED_TOPIC', payload: topicId });
+      dispatch({ type: SET_SELECTED_TOPIC, payload: topicId });
     }
     if (pathVars.length === 4) {
       const newTopicScreen = resourceTypeToScreen(resourceType);
-      if (newTopicScreen !== false && newTopicScreen !== topicScreen) {
-        dispatch({ type: 'SET_TOPIC_SCREEN', payload: newTopicScreen });
-      }
+      dispatch({ type: FULL_SCREEN, payload: false });
+      dispatch({
+        type: SET_TOPIC_SCREEN,
+        payload: newTopicScreen,
+      });
     } else if (pathVars.length === 5) {
       dispatch({ type: SET_SELECTED_RESOURCE, payload: resourceId });
+      dispatch({ type: FULL_SCREEN, payload: true });
+      if (resourceType === 'videos') {
+        dispatch({
+          type: SET_TOPIC_SCREEN,
+          payload: SCREENS.VIDEO_PLAYER,
+        });
+      } else if (resourceType === 'notes') {
+        dispatch({
+          type: SET_TOPIC_SCREEN,
+          payload: SCREENS.VIEW_NOTE,
+        });
+      }
     }
   };
 
@@ -106,19 +130,19 @@ export const MainContent = (props) => {
   }, [path]);
 
   useEffect(() => {
-    setSidebarDisplay(window.innerWidth);
+    // setSidebarDisplay(window.innerWidth);
     fetchTopics();
-    addListeners();
-    return () => removeListeners();
+    // addListeners();
+    // return () => removeListeners();
   }, []);
 
-  const addListeners = () => {
-    window.addEventListener('resize', handleWindowResize);
-  };
+  // const addListeners = () => {
+  //   window.addEventListener('resize', handleWindowResize);
+  // };
 
-  const removeListeners = () => {
-    window.removeEventListener('resize', handleWindowResize);
-  };
+  // const removeListeners = () => {
+  //   window.removeEventListener('resize', handleWindowResize);
+  // };
 
   const onClickCreateTopic = async () => {
     try {
@@ -152,7 +176,7 @@ export const MainContent = (props) => {
               <TopicNavigationBar title={topic.title} topic={topic} />
             )}
             <div className={classes.topicContainer}>
-              <TopicRouter screen={topicScreen} topic={topic} />
+              <MainRouter screen={topicScreen} topic={topic} />
             </div>
           </>
         )}

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { NOTE_SCREENS } from '../../routers/NoteRouter';
-import { deleteNote } from '../../clib/api';
+import { SCREENS } from '../../routers/MainRouter';
+import { deleteNote, getNotes } from '../../clib/api';
 import { getFile, uploadToBucket } from '../../clib/S3';
-import { debounce } from '../../util';
+import { debounce, goto } from '../../util';
 import TextEditor from '../../components/Editor/TextEditor';
 import { useStateValue } from '../../state/StateProvider';
-import { Markdown } from '../../components/MarkdownEditor';
 
 export const ViewNote = (props: any) => {
   const [html, setNoteHTML] = useState<any>();
@@ -14,6 +13,12 @@ export const ViewNote = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const [editorWidth, setEditorWidth] = useState<number>();
+
+  const {
+    content: { selectedResourceId, notes, selectedTopic, topics },
+  } = state;
+
+  const note = notes.data ? notes.data[selectedResourceId] : false;
 
   const onLayoutEditorWidth = () => {
     const editorContainerWidth = document.getElementById('view-note-container')
@@ -25,23 +30,33 @@ export const ViewNote = (props: any) => {
     debounce(onLayoutEditorWidth(), 300);
   };
 
-  const getNoteData = async () => {
+  const getNoteData = async (noteId: number) => {
     try {
-      const noteHTML = await getFile(`${props.note.id}.html`);
-      console.log(noteHTML);
+      const noteHTML = await getFile(`${noteId}.html`);
       setNoteHTML(noteHTML);
     } catch (e) {
       console.log(e);
     }
   };
 
+  const fetchNotes = async () => {
+    const res = await getNotes(topics.data[selectedTopic].notes);
+    const topicNotes = await res.json();
+    dispatch({ type: 'SET_NOTES', payload: topicNotes });
+    getNoteData(selectedResourceId);
+  };
+
   useEffect(() => {
-    getNoteData();
-    onLayoutEditorWidth();
-    window.addEventListener('resize', debouncedEditorLayout);
-    return () => {
-      window.removeEventListener('resize', debouncedEditorLayout);
-    };
+    if (!note && notes.keys.length === 0) {
+      fetchNotes();
+    } else {
+      getNoteData(note.id);
+      onLayoutEditorWidth();
+      window.addEventListener('resize', debouncedEditorLayout);
+      return () => {
+        window.removeEventListener('resize', debouncedEditorLayout);
+      };
+    }
   }, []);
 
   const onSave = async (content: string) => {
@@ -56,31 +71,33 @@ export const ViewNote = (props: any) => {
   };
 
   const onClickNote = () => {
-    dispatch({ type: 'SHOW_TOPIC_NAVBAR' });
-    props.navigate(NOTE_SCREENS.ALL_NOTES, {});
+    goto(`/topic/${selectedTopic}/notes`);
   };
 
   const onClickDelete = async () => {
     try {
       await deleteNote(props.note.id);
-      props.navigate(NOTE_SCREENS.ALL_NOTES);
+      props.navigate(SCREENS.ALL_NOTES);
     } catch (e) {
       console.log(e);
     }
   };
 
-  return (
-    <div className='z-1 center w-100-m w-70-l w-100' id='view-note-container'>
-      {/* <Markdown /> */}
-      <TextEditor
-        onSave={onSave}
-        saving={saving}
-        width={editorWidth}
-        htmlContent={html}
-        title={props.note.title}
-        onBack={onClickNote}
-        onDelete={onClickDelete}
-      />
-    </div>
-  );
+  if (note) {
+    return (
+      <div className='z-1 center w-100-m w-70-l w-100' id='view-note-container'>
+        {/* <Markdown /> */}
+        <TextEditor
+          onSave={onSave}
+          saving={saving}
+          width={editorWidth}
+          htmlContent={html}
+          title={note.title}
+          onBack={onClickNote}
+          onDelete={onClickDelete}
+        />
+      </div>
+    );
+  }
+  return null;
 };

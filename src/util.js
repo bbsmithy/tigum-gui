@@ -1,3 +1,5 @@
+import { SCREENS } from './routers/MainRouter';
+
 const months_arr = [
   'Jan',
   'Feb',
@@ -101,13 +103,13 @@ export const goto = (url) => {
 export const resourceTypeToScreen = (type) => {
   switch (type) {
     case 'notes':
-      return 0;
+      return SCREENS.ALL_NOTES;
     case 'videos':
-      return 1;
+      return SCREENS.ALL_VIDEOS;
     case 'snippets':
-      return 2;
+      return SCREENS.ARTICLE_SNIPPETS;
     case 'links':
-      return 3;
+      return SCREENS.LINKS;
     default:
       return false;
   }
@@ -115,13 +117,13 @@ export const resourceTypeToScreen = (type) => {
 
 export const screenToResourceType = (screen) => {
   switch (screen) {
-    case 0:
+    case SCREENS.ALL_NOTES:
       return 'notes';
-    case 1:
+    case SCREENS.ALL_VIDEOS:
       return 'videos';
-    case 2:
+    case SCREENS.ARTICLE_SNIPPETS:
       return 'snippets';
-    case 3:
+    case SCREENS.LINKS:
       return 'links';
     default:
       return false;

@@ -1,41 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import TextEditor from '../../components/Editor/TextEditor';
-import { VIDEO_SCREENS } from '../../routers/VideoRouter';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
-import { debounce } from '../../util';
+import { debounce, goto } from '../../util';
+import { getVideos } from '../../clib/api';
 
 const useStyles = createUseStyles({
   videoTitleContainer: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   videoNotesContainer: {
     position: 'fixed',
     top: 0,
     left: 0,
     width: '40%',
-    height: '100%'
+    height: '100%',
   },
   iframeContainer: {
     position: 'fixed',
     top: 0,
     right: 0,
     width: '60%',
-    height: '100%'
-  }
+    height: '100%',
+  },
 });
 
 export const VideoPlayer = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
+  const {
+    content: { selectedResourceId, videos, selectedTopic, topics },
+  } = state;
   const classes = useStyles();
-  const [editorWidth, setEditorWidth] = useState();
+  const [editorWidth, setEditorWidth] = useState<number>();
+  const video = videos.data ? videos.data[selectedResourceId] : false;
+
+  const fetchVideos = async () => {
+    try {
+      const res = await getVideos(topics.data[selectedTopic].videos);
+      const videoData = await res.json();
+      dispatch({ type: 'SET_VIDEOS', payload: videoData });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    if (videos.length === 0) {
+      fetchVideos();
+    }
+  }, [videos]);
 
   const onLayoutEditorWidth = () => {
     const editorContainerWidth = document.getElementById(
       'video-notes-container'
     ).offsetWidth;
-    setEditorWidth(editorContainerWidth);
+    if (editorContainerWidth) {
+      setEditorWidth(editorContainerWidth);
+    }
   };
 
   const debouncedEditorLayout = () => {
@@ -51,40 +73,37 @@ export const VideoPlayer = (props: any) => {
   }, []);
 
   const goBack = () => {
-    dispatch({ type: 'SHOW_TOPIC_NAVBAR' });
-    if (window.innerWidth > 960) {
-      dispatch({
-        type: 'SHOW_SIDEBAR',
-        payload: { useFullWidth: false }
-      });
-    }
-
-    props.navigate(VIDEO_SCREENS.ALL_VIDEOS, {});
+    goto(`/topic/${selectedTopic}/videos`);
   };
-
   return (
     <div className='center w-100 ph2 h-100 video-page-container'>
-      <div className={classes.videoNotesContainer} id='video-notes-container'>
-        {editorWidth && (
-          <TextEditor
-            title={props.title}
-            width={editorWidth}
-            htmlContent={'<h1>Saved video notes</h1>'}
-            saving={false}
-            onSave={html => {
-              console.log(html);
-            }}
-            onDelete={() => {
-              console.log('delete thing');
-            }}
-            onBack={goBack}
-          />
-        )}
-      </div>
       <div
-        dangerouslySetInnerHTML={{ __html: props.iframe }}
-        className={classes.iframeContainer}
+        className={classes.videoNotesContainer}
+        id='video-notes-container'
       ></div>
+      {video && (
+        <>
+          {editorWidth && (
+            <TextEditor
+              title={video.title}
+              width={editorWidth}
+              htmlContent={'<h1>Saved video notes</h1>'}
+              saving={false}
+              onSave={(html) => {
+                console.log(html);
+              }}
+              onDelete={() => {
+                console.log('delete thing');
+              }}
+              onBack={goBack}
+            />
+          )}
+          <div
+            dangerouslySetInnerHTML={{ __html: video.iframe }}
+            className={classes.iframeContainer}
+          ></div>
+        </>
+      )}
     </div>
   );
 };

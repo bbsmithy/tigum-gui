@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { NewButton } from '../../components';
 import { Modal, VideoCard } from '../../components';
 import { createVideo, updateTopic, getVideos } from '../../clib/api';
-import { getEmbedFromUrl } from '../../util';
-import { VIDEO_SCREENS } from '../../routers/VideoRouter';
+import { getEmbedFromUrl, goto } from '../../util';
+import { SCREENS } from '../../routers/MainRouter';
 
 import { createUseStyles } from 'react-jss';
 import { useStateValue } from '../../state/StateProvider';
@@ -39,7 +39,7 @@ export const AllVideos = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { videos },
+    content: { videos, selectedTopic, topics },
   } = state;
 
   const fetchVideos = async (ids: Array<number>) => {
@@ -52,7 +52,7 @@ export const AllVideos = (props: any) => {
   };
 
   useEffect(() => {
-    fetchVideos(props.topic.videos);
+    fetchVideos(topics.data[selectedTopic].videos);
   }, [props.topic.videos]);
 
   const toggleModal = () => {
@@ -86,12 +86,12 @@ export const AllVideos = (props: any) => {
   };
 
   const onClickVideoCard = (video: any) => {
-    props.navigate(VIDEO_SCREENS.VIDEO_PLAYER, video);
-    dispatch({ type: 'HIDE_TOPIC_NAVBAR' });
-    dispatch({
-      type: 'HIDE_SIDEBAR',
-      payload: { useFullWidth: window.innerWidth < 960 },
-    });
+    goto(`${window.location.pathname}/${video.id}`);
+    // dispatch({ type: 'HIDE_TOPIC_NAVBAR' });
+    // dispatch({
+    //   type: 'HIDE_SIDEBAR',
+    //   payload: { useFullWidth: window.innerWidth < 960 },
+    // });
   };
 
   const onDeleteVideoCard = (index: number) => {
@@ -101,15 +101,16 @@ export const AllVideos = (props: any) => {
   };
 
   const renderVideoResources = () => {
-    if (videos.length) {
-      return videos.map((video, index) => {
+    if (videos.keys.length) {
+      return videos.keys.map((videoId, index) => {
+        const video = videos.data[videoId];
         return (
           <VideoCard
             iframe={video.iframe}
             title={video.title}
-            key={video.id}
+            key={videoId}
             thumbnail_img={video.thumbnail_img}
-            id={video.id}
+            id={videoId}
             index={index}
             onClick={onClickVideoCard}
             onDelete={onDeleteVideoCard}
@@ -127,7 +128,7 @@ export const AllVideos = (props: any) => {
   return (
     <div className='ph2 mt4 pt3'>
       <NewButton onClick={toggleModal} text='New Video' />
-      <div className='center w-100 ph3'>{renderVideoResources()}</div>
+      <div className='center w-100 ph1'>{renderVideoResources()}</div>
       <Modal
         title='New Video'
         display={displayVideoModal}

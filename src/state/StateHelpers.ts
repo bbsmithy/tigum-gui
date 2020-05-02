@@ -1,4 +1,4 @@
-import { Topic, Video } from '../clib/models';
+import { Topic, Video, Note } from '../clib/models';
 
 export const topicsToKeys = (topics: Array<Topic>) => {
   const keys = [];
@@ -11,14 +11,21 @@ export const topicsToKeys = (topics: Array<Topic>) => {
   return { data, keys };
 };
 
-export const videosToKey = (videos: Array<Video>) => {
+export const deleteTopic = (data: any, keys: Array<number>, id: number) => {
+  const newTopicData = { ...data };
+  delete newTopicData[id];
+  const newKeys = keys.filter((key) => key !== id);
+  return { data: newTopicData, keys: newKeys };
+};
+
+export const notesToKeys = (notes: Array<Note>) => {
   const keys = [];
   const data = {};
-  videos.forEach((v: Video) => {
-    keys.push(v.id);
-    data[v.id] = v;
+  debugger;
+  notes.forEach((n: Note) => {
+    keys.push(n.id);
+    data[n.id] = n;
   });
-
   return { data, keys };
 };
 
@@ -41,6 +48,17 @@ export const addSnippet = (
   const updatedTopic = state.topics.data[topic_id];
   updatedTopic.article_snippets = updatedTopicNoteIds;
   return updatedTopic;
+};
+
+export const videosToKey = (videos: Array<Video>) => {
+  const keys = [];
+  const data = {};
+  videos.forEach((v: Video) => {
+    keys.push(v.id);
+    data[v.id] = v;
+  });
+
+  return { data, keys };
 };
 
 export const addVideo = (video_id: number, topic_id: number, state: any) => {

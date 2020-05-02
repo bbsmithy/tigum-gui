@@ -1,6 +1,6 @@
 import React from 'react';
 import { NoTopicsMessage } from './NoTopicsMessage';
-import { TOPIC_SCREENS } from '../../routers/TopicRouter';
+import { SCREENS } from '../../routers/MainRouter';
 import { TopicsList } from './TopicsList';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
@@ -77,7 +77,7 @@ const useStyles = createUseStyles({
 });
 
 interface SideBarProps {
-  screen: TOPIC_SCREENS;
+  screen: SCREENS;
   toggleModal: () => void;
 }
 

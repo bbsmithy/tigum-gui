@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import { NewButton, Note } from '../../components';
 import { Modal } from '../../components/Modal';
-import { createNote, getNotes, updateTopic } from '../../clib/api';
-import { NOTE_SCREENS } from '../../routers/NoteRouter';
+import { createNote, getNotes } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
+import { goto } from '../../util';
 
 const useStyles = createUseStyles({
   headerLoadingNote: {
@@ -77,14 +77,9 @@ export const AllNotes = (props: any) => {
     setNoteTitle(e.currentTarget.value);
   };
 
-  const onClickNote = (note: any) => {
-    dispatch({ type: 'HIDE_TOPIC_NAVBAR' });
-    props.navigate(NOTE_SCREENS.VIEW_NOTE, note);
-  };
-
   const renderLoading = () => {
     return (
-      <div className='w-100 w-50-m w-33-l'>
+      <div className='w-100 w-50-m w-33-l ph2 pv1'>
         <div className='card note-card w-100'>
           <div className='mw9 center'>
             <div className='cf ph2-ns pb4'>
@@ -101,9 +96,9 @@ export const AllNotes = (props: any) => {
 
   const renderNotes = () => {
     if (!loading) {
-      if (notes.length) {
-        return notes.map((note: any) => (
-          <Note note={note} key={note.id} onClick={onClickNote} />
+      if (notes.keys.length) {
+        return notes.keys.map((noteKey: number) => (
+          <Note note={notes.data[noteKey]} key={noteKey} />
         ));
       } else {
         return renderNoNotes();

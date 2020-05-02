@@ -33,7 +33,6 @@ export const Note = (props: any) => {
 
   const navigateToNote = () => {
     goto(`${window.location.pathname}/${props.note.id}`);
-    props.onClick(props.note);
   };
 
   const renderDate = () => {

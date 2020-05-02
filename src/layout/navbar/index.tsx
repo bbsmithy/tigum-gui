@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { OptionsButton, Option } from '../../components/OptionsButton';
+import { SCREENS } from '../../routers/MainRouter';
 import { deleteTopic } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
@@ -52,22 +53,22 @@ const navItems = [
   {
     title: 'Notes',
     icon: 'fas fa-pen-square',
-    screen: 0,
+    screen: SCREENS.ALL_NOTES,
   },
   {
     title: 'Videos',
     icon: 'fab fa-youtube',
-    screen: 1,
+    screen: SCREENS.ALL_VIDEOS,
   },
   {
     title: 'Snippets',
     icon: 'fas fa-newspaper',
-    screen: 2,
+    screen: SCREENS.ARTICLE_SNIPPETS,
   },
   {
     title: 'Links',
     icon: 'fas fa-link',
-    screen: 3,
+    screen: SCREENS.LINKS,
   },
 ];
 

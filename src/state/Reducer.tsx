@@ -8,8 +8,8 @@ export const initialState = {
   content: {
     topics: { data: {}, keys: [], loading: true },
     selectedTopic: null,
-    notes: [],
-    videos: [],
+    notes: { data: {}, keys: [] },
+    videos: { data: {}, keys: [] },
     codes: [],
     article_snippets: [],
     images: [],

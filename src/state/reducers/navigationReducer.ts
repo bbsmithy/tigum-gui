@@ -18,6 +18,12 @@ const NavigationReducer = (state: any, action: any) => {
         showSidebar: true,
         useFullWidth: action.payload.useFullWidth,
       };
+    case 'FULL_SCREEN':
+      return {
+        ...state,
+        showSidebar: !action.payload,
+        showTopicNavbar: !action.payload,
+      };
     case SET_TOPIC_SCREEN:
       return {
         ...state,

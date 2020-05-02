@@ -5,6 +5,8 @@ import {
   addSnippet,
   addVideo,
   addLink,
+  deleteTopic,
+  notesToKeys,
 } from '../StateHelpers';
 
 import {
@@ -54,13 +56,15 @@ const ContentReducer = (state: any, action: any) => {
         article_snippets: [],
       };
     case DELETE_TOPIC:
-      const newTopicData = { ...state.topics.data };
-      delete newTopicData[action.payload];
-      const newKeys = state.topics.keys.filter((key) => key !== action.payload);
+      const topics = deleteTopic(
+        state.topics.data,
+        state.topics.keys,
+        action.payload
+      );
       return {
         ...state,
         selectedResourceId: null,
-        topics: { data: newTopicData, keys: newKeys },
+        topics,
       };
     case SET_SELECTED_RESOURCE:
       return {
@@ -84,8 +88,10 @@ const ContentReducer = (state: any, action: any) => {
         },
       };
     }
-    case SET_NOTES:
-      return { ...state, notes: action.payload };
+    case SET_NOTES: {
+      const { data, keys } = notesToKeys(action.payload);
+      return { ...state, notes: { data, keys } };
+    }
     case ADD_NOTE: {
       const { id, topic_id } = action.payload;
       const updatedTopicWithNote = addNote(id, topic_id, state);

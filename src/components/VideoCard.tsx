@@ -30,7 +30,7 @@ export const VideoCard = (props: VideoCardProps) => {
   const classes = useStyles();
 
   const onSelect = () => {
-    props.onClick({ title: props.title, iframe: props.iframe });
+    props.onClick({ title: props.title, iframe: props.iframe, id: props.id });
   };
 
   const onClickDelete = async () => {
@@ -58,9 +58,7 @@ export const VideoCard = (props: VideoCardProps) => {
         <img src={props.thumbnail_img} className='db w-100 br2 br--top' />
         <div className='ph3 pv3 h-30'>
           <div className='dib w-90'>
-            <h2 className={`f3 f5-ns mv0 white ${classes.videoCardTitle}`}>
-              {title}
-            </h2>
+            <h5 className={`mv0 white ${classes.videoCardTitle}`}>{title}</h5>
           </div>
           <div className='dib w-10'>
             <OptionsButton options={videoCardOptions} />

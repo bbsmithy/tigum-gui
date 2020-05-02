@@ -20,3 +20,6 @@ export const ADD_LINK = 'ADD_LINK';
 
 // Navigation Actions
 export const SET_TOPIC_SCREEN = 'SET_TOPIC_SCREEN';
+export const FULL_SCREEN = 'FULL_SCREEN';
+export const HIDE_SIDEBAR = 'HIDE_SIDEBAR';
+export const SHOW_SIDEBAR = 'SHOW_SIDEBAR';

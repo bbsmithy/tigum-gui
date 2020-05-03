@@ -63,7 +63,7 @@ export const ViewNote = (props: any) => {
     try {
       setNoteHTML(content);
       setSaving(true);
-      await uploadToBucket(content, `${props.note.id}.html`);
+      await uploadToBucket(content, `${note.id}.html`);
       setSaving(false);
     } catch (e) {
       setSaving(false);
@@ -76,8 +76,8 @@ export const ViewNote = (props: any) => {
 
   const onClickDelete = async () => {
     try {
-      await deleteNote(props.note.id);
-      props.navigate(SCREENS.ALL_NOTES);
+      await deleteNote(note.id);
+      goto(`/topic/${selectedTopic}/notes`);
     } catch (e) {
       console.log(e);
     }

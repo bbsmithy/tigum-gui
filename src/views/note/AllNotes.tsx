@@ -4,7 +4,7 @@ import { NewButton, Note } from '../../components';
 import { Modal } from '../../components/Modal';
 import { createNote, getNotes } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
-import { goto } from '../../util';
+import { ADD_NOTE } from '../../state/ActionTypes';
 
 const useStyles = createUseStyles({
   headerLoadingNote: {
@@ -34,11 +34,7 @@ export const AllNotes = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: {
-      notes,
-      selectedTopic,
-      topics: { data },
-    },
+    content: { notes, selectedTopic, topics },
   } = state;
 
   const toggleModal = () => {
@@ -60,14 +56,14 @@ export const AllNotes = (props: any) => {
   };
 
   useEffect(() => {
-    fetchNotes(data[selectedTopic].notes);
-  }, [data[selectedTopic].notes]);
+    fetchNotes(topics.data[selectedTopic].notes);
+  }, [topics.data[selectedTopic].notes]);
 
   const createNewNote = async () => {
-    const res = await createNote(noteTitle, data[selectedTopic].id);
+    const res = await createNote(noteTitle, topics.data[selectedTopic].id);
     if (res.status === 200) {
       const newNote = await res.json();
-      dispatch({ type: 'ADD_NOTE', payload: newNote });
+      dispatch({ type: ADD_NOTE, payload: newNote });
       toggleModal();
       setNoteTitle('');
     }
@@ -96,10 +92,12 @@ export const AllNotes = (props: any) => {
 
   const renderNotes = () => {
     if (!loading) {
-      if (notes.keys.length) {
-        return notes.keys.map((noteKey: number) => (
-          <Note note={notes.data[noteKey]} key={noteKey} />
-        ));
+      if (topics.data[selectedTopic].notes.length && notes.data) {
+        return topics.data[selectedTopic].notes.map((noteKey: number) => {
+          if (notes.data[noteKey]) {
+            return <Note note={notes.data[noteKey]} key={noteKey} />;
+          }
+        });
       } else {
         return renderNoNotes();
       }

@@ -7,6 +7,7 @@ import { SCREENS } from '../../routers/MainRouter';
 
 import { createUseStyles } from 'react-jss';
 import { useStateValue } from '../../state/StateProvider';
+import { DELETE_VIDEO } from '../../state/ActionTypes';
 
 const useStyles = createUseStyles({
   videoLoadingCover: {
@@ -87,35 +88,31 @@ export const AllVideos = (props: any) => {
 
   const onClickVideoCard = (video: any) => {
     goto(`${window.location.pathname}/${video.id}`);
-    // dispatch({ type: 'HIDE_TOPIC_NAVBAR' });
-    // dispatch({
-    //   type: 'HIDE_SIDEBAR',
-    //   payload: { useFullWidth: window.innerWidth < 960 },
-    // });
   };
 
-  const onDeleteVideoCard = (index: number) => {
-    let refreshedVideoResources = [...videos];
-    delete refreshedVideoResources[index];
-    dispatch({ type: 'SET_VIDEOS', payload: refreshedVideoResources });
+  const onDeleteVideoCard = (id: number, topic_id: number) => {
+    dispatch({ type: DELETE_VIDEO, payload: { id, topic_id } });
   };
 
   const renderVideoResources = () => {
-    if (videos.keys.length) {
-      return videos.keys.map((videoId, index) => {
+    if (topics.data[selectedTopic].videos.length !== 0 && videos.data) {
+      return topics.data[selectedTopic].videos.map((videoId, index) => {
         const video = videos.data[videoId];
-        return (
-          <VideoCard
-            iframe={video.iframe}
-            title={video.title}
-            key={videoId}
-            thumbnail_img={video.thumbnail_img}
-            id={videoId}
-            index={index}
-            onClick={onClickVideoCard}
-            onDelete={onDeleteVideoCard}
-          />
-        );
+        if (video) {
+          return (
+            <VideoCard
+              iframe={video.iframe}
+              title={video.title}
+              key={videoId}
+              thumbnail_img={video.thumbnail_img}
+              topicId={video.topic_id}
+              id={videoId}
+              index={index}
+              onClick={onClickVideoCard}
+              onDelete={onDeleteVideoCard}
+            />
+          );
+        }
       });
     }
     return (

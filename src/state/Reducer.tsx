@@ -30,7 +30,13 @@ export const initialState = {
 
 export const reducer = ({ content, navigation, user }, action: any) => {
   if (process.env.NODE_ENV === 'development') {
-    console.log(`Action: ${action.type}`, 'Payload: ', action.payload);
+    console.log(
+      `Action: ${action.type}`,
+      'Payload: ',
+      action.payload,
+      'State: ',
+      { content, navigation, user }
+    );
   }
   return {
     content: ContentReducer(content, action),

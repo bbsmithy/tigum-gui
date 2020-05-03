@@ -110,7 +110,7 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
     try {
       await deleteTopic(selectedTopic);
       dispatch({ type: 'DELETE_TOPIC', payload: selectedTopic });
-      goto(`/topic/${topics.keys[0]}/notes/`);
+      goto(`/topic/${topics.keys[0]}/notes`);
     } catch (e) {
       console.log(e);
     }

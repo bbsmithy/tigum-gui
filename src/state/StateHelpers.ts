@@ -21,7 +21,6 @@ export const deleteTopic = (data: any, keys: Array<number>, id: number) => {
 export const notesToKeys = (notes: Array<Note>) => {
   const keys = [];
   const data = {};
-  debugger;
   notes.forEach((n: Note) => {
     keys.push(n.id);
     data[n.id] = n;
@@ -29,11 +28,15 @@ export const notesToKeys = (notes: Array<Note>) => {
   return { data, keys };
 };
 
-export const addNote = (note_id: number, topic_id: number, state: any) => {
-  const updatedTopicNoteIds = [note_id, ...state.topics.data[topic_id].notes];
-  const updatedTopic = state.topics.data[topic_id];
-  updatedTopic.notes = updatedTopicNoteIds;
-  return updatedTopicNoteIds;
+export const addNote = (note: any, state: any) => {
+  const updatedTopicWithNoteId = state.topics.data[note.topic_id];
+  const updatedNoteKeys = [note.id, ...state.notes.keys];
+  const updatedNotesData = {
+    [note.id]: note,
+    ...state.notes.data,
+  };
+  updatedTopicWithNoteId.notes = updatedNoteKeys;
+  return { updatedNotesData, updatedTopicWithNoteId };
 };
 
 export const addSnippet = (
@@ -61,14 +64,24 @@ export const videosToKey = (videos: Array<Video>) => {
   return { data, keys };
 };
 
-export const addVideo = (video_id: number, topic_id: number, state: any) => {
-  const updatedTopicVideoIds = [
-    video_id,
-    ...state.topics.data[topic_id].videos,
-  ];
+export const addVideo = (video: any, state: any) => {
+  const updatedTopicWithVideoId = state.topics.data[video.topic_id];
+  const updatedVideoKeys = [video.id, ...state.videos.keys];
+  const updatedVideoData = {
+    [video.id]: video,
+    ...state.videos.data,
+  };
+  updatedTopicWithVideoId.videos = updatedVideoKeys;
+  return { updatedVideoData, updatedTopicWithVideoId };
+};
+
+export const deleteVideo = (id: number, topic_id: number, state: any) => {
   const updatedTopic = state.topics.data[topic_id];
-  updatedTopic.videos = updatedTopicVideoIds;
-  return updatedTopic;
+  const updatedVideoData = state.videos.data;
+  delete updatedVideoData[id];
+  const updatedVideoKeys = state.videos.keys.filter((key) => key !== id);
+  updatedTopic.videos = updatedVideoKeys;
+  return { updatedVideoData, updatedTopic };
 };
 
 export const addLink = (link_id: number, topic_id: number, state: any) => {

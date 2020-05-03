@@ -18,7 +18,7 @@ const useStyles = createUseStyles({
     },
   },
   topicItemSelected: {
-    borderRight: '6px solid #246bf8',
+    borderRight: '7px solid #246bf8',
   },
 });
 

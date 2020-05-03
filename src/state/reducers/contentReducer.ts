@@ -6,6 +6,7 @@ import {
   addVideo,
   addLink,
   deleteTopic,
+  deleteVideo,
   notesToKeys,
 } from '../StateHelpers';
 
@@ -28,6 +29,7 @@ import {
   SET_LINKS,
   ADD_LINK,
   DELETE_TOPIC,
+  DELETE_VIDEO,
 } from '../ActionTypes';
 
 const ContentReducer = (state: any, action: any) => {
@@ -93,15 +95,17 @@ const ContentReducer = (state: any, action: any) => {
       return { ...state, notes: { data, keys } };
     }
     case ADD_NOTE: {
-      const { id, topic_id } = action.payload;
-      const updatedTopicWithNote = addNote(id, topic_id, state);
+      const { updatedNotesData, updatedTopicWithNoteId } = addNote(
+        action.payload,
+        state
+      );
       return {
         ...state,
-        notes: [action.payload, ...state.notes],
+        notes: { data: updatedNotesData },
         topics: {
           ...state.topics,
           data: {
-            [action.payload.topic_id]: updatedTopicWithNote,
+            [action.payload.topic_id]: updatedTopicWithNoteId,
             ...state.topics.data,
           },
         },
@@ -112,15 +116,35 @@ const ContentReducer = (state: any, action: any) => {
       return { ...state, videos };
     }
     case ADD_VIDEO: {
-      const { id, topic_id } = action.payload;
-      const updatedTopicWithVideo = addVideo(id, topic_id, state);
+      const { updatedTopicWithVideoId, updatedVideoData } = addVideo(
+        action.payload,
+        state
+      );
       return {
         ...state,
-        videos: [action.payload, ...state.videos],
+        videos: { data: updatedVideoData },
         topics: {
           ...state.topics,
           data: {
-            [action.payload.topic_id]: updatedTopicWithVideo,
+            [action.payload.topic_id]: updatedTopicWithVideoId,
+            ...state.topics.data,
+          },
+        },
+      };
+    }
+    case DELETE_VIDEO: {
+      const { updatedTopic, updatedVideoData } = deleteVideo(
+        action.payload.id,
+        action.payload.topic_id,
+        state
+      );
+      return {
+        ...state,
+        videos: { data: updatedVideoData },
+        topics: {
+          ...state.topics,
+          data: {
+            [action.payload.topic_id]: updatedTopic,
             ...state.topics.data,
           },
         },

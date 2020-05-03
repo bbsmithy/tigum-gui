@@ -9,9 +9,10 @@ type VideoCardProps = {
   title: string;
   thumbnail_img: string;
   id: number;
+  topicId: number;
   index: number;
   onClick: (video: any) => void;
-  onDelete: (index: number) => void;
+  onDelete: (id: number, topic_id: number) => void;
 };
 
 const useStyles = createUseStyles({
@@ -36,7 +37,7 @@ export const VideoCard = (props: VideoCardProps) => {
   const onClickDelete = async () => {
     try {
       await deleteVideo(props.id);
-      props.onDelete(props.index);
+      props.onDelete(props.id, props.topicId);
     } catch (e) {
       console.log(e);
     }

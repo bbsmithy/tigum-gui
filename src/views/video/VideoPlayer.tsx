@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TextEditor from '../../components/Editor/TextEditor';
+// import TextEditor from '../../components/Editor/TextEditor';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { debounce, goto } from '../../util';
@@ -84,19 +84,20 @@ export const VideoPlayer = (props: any) => {
       {video && (
         <>
           {editorWidth && (
-            <TextEditor
-              title={video.title}
-              width={editorWidth}
-              htmlContent={'<h1>Saved video notes</h1>'}
-              saving={false}
-              onSave={(html) => {
-                console.log(html);
-              }}
-              onDelete={() => {
-                console.log('delete thing');
-              }}
-              onBack={goBack}
-            />
+            <div />
+            // <TextEditor
+            //   title={video.title}
+            //   width={editorWidth}
+            //   htmlContent={'<h1>Saved video notes</h1>'}
+            //   saving={false}
+            //   onSave={(html) => {
+            //     console.log(html);
+            //   }}
+            //   onDelete={() => {
+            //     console.log('delete thing');
+            //   }}
+            //   onBack={goBack}
+            // />
           )}
           <div
             dangerouslySetInnerHTML={{ __html: video.iframe }}

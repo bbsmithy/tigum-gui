@@ -471,3 +471,7 @@ button:focus {
   font-size: 12px;
   margin-right: 5px;
 }
+
+pre {
+  margin: 0px !important;
+}

@@ -98,21 +98,19 @@ export const AllNotes = (props: any) => {
             return <Note note={notes.data[noteKey]} key={noteKey} />;
           }
         });
-      } else {
-        return renderNoNotes();
       }
     } else {
       return renderLoading();
     }
   };
 
-  const renderNoNotes = () => {
-    return (
-      <div className='no-resources-message'>
-        <i className='fas fa-pen-square' /> <span>No notes yet</span>
-      </div>
-    );
-  };
+  // const renderNoNotes = () => {
+  //   return (
+  //     <div className='no-resources-message'>
+  //       <i className='fas fa-pen-square' /> <span>No notes yet</span>
+  //     </div>
+  //   );
+  // };
 
   return (
     <div className='ph2 mt4 pt3'>

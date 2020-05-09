@@ -200,7 +200,3 @@ pre[class*='language-'] {
 .token.deleted {
   color: red;
 }
-
-pre {
-  margin: 5px !important;
-}

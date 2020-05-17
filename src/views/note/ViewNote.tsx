@@ -33,7 +33,10 @@ const useStyles = createUseStyles(() => ({
 }));
 
 const styles = {
-  mainContainer: { backgroundColor: '#333' },
+  mainContainer: {
+    backgroundColor: '#333',
+    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
+  },
   markdownContainer: { color: 'white' },
   markdownEditor: { backgroundColor: '#333', color: 'white' },
   htmlContainer: { color: 'white' },
@@ -107,6 +110,7 @@ export const ViewNote = (props: any) => {
 
   const save = async (htmlFromMDEditor) => {
     if (htmlFromMDEditor) {
+      debugger;
       setNoteHTML(htmlFromMDEditor);
       setSaving(true);
       await uploadToBucket(htmlFromMDEditor, `${note.id}.html`);
@@ -149,28 +153,31 @@ export const ViewNote = (props: any) => {
               <i className='fa fa-arrow-left' />
             </button>
             <h3 className={`${classes.header} white`}>{note.title}</h3>
-            <button
+            {saving && (
+              <span className='white bg-black'>
+                Saving <i className='fas fa-circle-notch fa-spin'></i>
+              </span>
+            )}
+            {/* <button
               className={`${classes.deleteBtn} ${classes.btn}`}
               onClick={save}
             >
               {saving ? (
                 <i className='fas fa-circle-notch fa-spin'></i>
               ) : (
-                <>
-                  <i className='fa fa-save' />
-                </>
+                <i className='fa fa-save' />
               )}
-            </button>
+            </button> */}
             <button
               className={`${classes.deleteBtn} ${classes.btn}`}
-              onClick={onClickNote}
+              onClick={onClickDelete}
             >
               <i className='fa fa-trash' />
             </button>
           </div>
         )}
-
-        {html && (
+        {loadingHTML && <i className='fas fa-circle-notch fa-spin'></i>}
+        {html && !loadingHTML && (
           <MarkdownEditor
             initialContent={{ type: 'html', content: html }}
             styles={styles}
@@ -179,7 +186,7 @@ export const ViewNote = (props: any) => {
             onDelete={onClickDelete}
           />
         )}
-        {!html && (
+        {!html && !loadingHTML && (
           <MarkdownEditor
             initialContent={{ type: 'html', content: '' }}
             styles={styles}

@@ -17,6 +17,9 @@
     "react-scripts": "^3.4.1",
     "typescript": "3.5.2"
   },
+  "devDependencies": {
+    "html-to-markdown": "*"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

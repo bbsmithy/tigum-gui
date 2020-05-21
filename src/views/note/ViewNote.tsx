@@ -83,7 +83,7 @@ export const ViewNote = (props: any) => {
 
   const getNoteData = async (noteId: number) => {
     try {
-      const noteHTML = await getFile(`${noteId}.html`);
+      const noteHTML = await getFile(`${noteId}.md`);
       setNoteHTML(noteHTML);
       setLoadingHTML(false);
     } catch (e) {
@@ -110,7 +110,6 @@ export const ViewNote = (props: any) => {
 
   const save = async (htmlFromMDEditor) => {
     if (htmlFromMDEditor) {
-      debugger;
       setNoteHTML(htmlFromMDEditor);
       setSaving(true);
       await uploadToBucket(htmlFromMDEditor, `${note.id}.html`);
@@ -118,7 +117,7 @@ export const ViewNote = (props: any) => {
     } else {
       setNoteHTML(html);
       setSaving(true);
-      await uploadToBucket(html, `${note.id}.html`);
+      await uploadToBucket(html, `${note.id}.md`);
       setSaving(false);
     }
   };

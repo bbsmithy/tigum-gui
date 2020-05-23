@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-// import TextEditor from '../../components/Editor/TextEditor';
+import { MarkdownEditor } from 'devkeep-md-editor';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { debounce, goto } from '../../util';
 import { getVideos } from '../../clib/api';
+import { NoteHeader } from '../../components/NoteHeader';
 
 const useStyles = createUseStyles({
   videoTitleContainer: {
@@ -14,6 +15,7 @@ const useStyles = createUseStyles({
     top: 0,
     left: 0,
     width: '40%',
+    padding: 10,
     height: '100%',
   },
   iframeContainer: {
@@ -23,7 +25,46 @@ const useStyles = createUseStyles({
     width: '60%',
     height: '100%',
   },
+  title: {
+    padding: 0,
+    margin: '5px 0px 12px 0px',
+    color: 'white',
+  },
 });
+
+const styles = {
+  mainContainer: {
+    backgroundColor: '#333',
+    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
+  },
+  markdownContainer: { color: 'white' },
+  markdownEditor: { backgroundColor: '#333', color: 'white' },
+  htmlContainer: { color: 'white' },
+  controlsContainer: {
+    marginBottom: 6,
+    overflow: 'scroll',
+    whiteSpace: 'nowrap',
+  },
+  langInput: {
+    color: 'white',
+    backgroundColor: '#333',
+    height: 20,
+    borderRadius: 4,
+    width: 60,
+    padding: 4,
+    border: 'none',
+  },
+  btn: {
+    backgroundColor: '#333',
+    color: 'white',
+    padding: '3px 10px 3px 10px',
+    border: 'none',
+    fontSize: 12,
+    borderRadius: 4,
+    height: 30,
+    marginRight: 4,
+  },
+};
 
 export const VideoPlayer = (props: any) => {
   // @ts-ignore
@@ -75,30 +116,28 @@ export const VideoPlayer = (props: any) => {
   const goBack = () => {
     goto(`/topic/${selectedTopic}/videos`);
   };
+
   return (
     <div className='center w-100 ph2 h-100 video-page-container'>
-      <div
-        className={classes.videoNotesContainer}
-        id='video-notes-container'
-      ></div>
+      <div className={classes.videoNotesContainer} id='video-notes-container'>
+        <div>
+          <NoteHeader
+            onBack={goBack}
+            onDelete={() => {}}
+            title={video.title}
+            saving={false}
+          />
+        </div>
+        <MarkdownEditor
+          initialContent={{ type: 'md', content: '' }}
+          styles={styles}
+          height={window.innerHeight}
+          onSave={() => {}}
+          onDelete={() => {}}
+        />
+      </div>
       {video && (
         <>
-          {editorWidth && (
-            <div />
-            // <TextEditor
-            //   title={video.title}
-            //   width={editorWidth}
-            //   htmlContent={'<h1>Saved video notes</h1>'}
-            //   saving={false}
-            //   onSave={(html) => {
-            //     console.log(html);
-            //   }}
-            //   onDelete={() => {
-            //     console.log('delete thing');
-            //   }}
-            //   onBack={goBack}
-            // />
-          )}
           <div
             dangerouslySetInnerHTML={{ __html: video.iframe }}
             className={classes.iframeContainer}

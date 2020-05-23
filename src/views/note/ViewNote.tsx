@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
+import { createUseStyles } from 'react-jss';
+
 import { deleteNote, getNotes } from '../../clib/api';
 import { getFile, uploadToBucket } from '../../clib/S3';
 import { goto } from '../../util';
 import { useStateValue } from '../../state/StateProvider';
-import { createUseStyles } from 'react-jss';
+import { NoteHeader } from '../../components/NoteHeader';
 
 const useStyles = createUseStyles(() => ({
   btn: {
@@ -65,7 +67,7 @@ const styles = {
 };
 
 export const ViewNote = (props: any) => {
-  const [html, setNoteHTML] = useState<any>('');
+  const [md, setNoteMD] = useState<any>('');
   const [loadingHTML, setLoadingHTML] = useState(true);
   const [error, setError] = useState<string>();
   const [saving, setSaving] = useState(false);
@@ -84,7 +86,7 @@ export const ViewNote = (props: any) => {
   const getNoteData = async (noteId: number) => {
     try {
       const noteHTML = await getFile(`${noteId}.md`);
-      setNoteHTML(noteHTML);
+      setNoteMD(noteHTML);
       setLoadingHTML(false);
     } catch (e) {
       console.log(e);
@@ -110,27 +112,27 @@ export const ViewNote = (props: any) => {
 
   const save = async (htmlFromMDEditor) => {
     if (htmlFromMDEditor) {
-      setNoteHTML(htmlFromMDEditor);
+      setNoteMD(htmlFromMDEditor);
       setSaving(true);
-      await uploadToBucket(htmlFromMDEditor, `${note.id}.html`);
+      await uploadToBucket(htmlFromMDEditor, `${note.id}.md`);
       setSaving(false);
     } else {
-      setNoteHTML(html);
+      setNoteMD(md);
       setSaving(true);
-      await uploadToBucket(html, `${note.id}.md`);
+      await uploadToBucket(md, `${note.id}.md`);
       setSaving(false);
     }
   };
 
   const onSave = async (md, currentHTML) => {
     try {
-      save(currentHTML);
+      save(md);
     } catch (e) {
       setSaving(false);
     }
   };
 
-  const onClickNote = () => {
+  const goBack = () => {
     goto(`/topic/${selectedTopic}/notes`);
   };
 
@@ -147,47 +149,28 @@ export const ViewNote = (props: any) => {
     return (
       <div className='z-1 center w-100-m w-70-l w-100' id='view-note-container'>
         {note && (
-          <div className={classes.headerContainer}>
-            <button className={classes.btn} onClick={onClickNote}>
-              <i className='fa fa-arrow-left' />
-            </button>
-            <h3 className={`${classes.header} white`}>{note.title}</h3>
-            {saving && (
-              <span className='white bg-black'>
-                Saving <i className='fas fa-circle-notch fa-spin'></i>
-              </span>
-            )}
-            {/* <button
-              className={`${classes.deleteBtn} ${classes.btn}`}
-              onClick={save}
-            >
-              {saving ? (
-                <i className='fas fa-circle-notch fa-spin'></i>
-              ) : (
-                <i className='fa fa-save' />
-              )}
-            </button> */}
-            <button
-              className={`${classes.deleteBtn} ${classes.btn}`}
-              onClick={onClickDelete}
-            >
-              <i className='fa fa-trash' />
-            </button>
+          <div className='mt2'>
+            <NoteHeader
+              onBack={goBack}
+              onDelete={onClickDelete}
+              title={note.title}
+              saving={saving}
+            />
           </div>
         )}
         {loadingHTML && <i className='fas fa-circle-notch fa-spin'></i>}
-        {html && !loadingHTML && (
+        {md && !loadingHTML && (
           <MarkdownEditor
-            initialContent={{ type: 'html', content: html }}
+            initialContent={{ type: 'md', content: md }}
             styles={styles}
             height={window.innerHeight}
             onSave={onSave}
             onDelete={onClickDelete}
           />
         )}
-        {!html && !loadingHTML && (
+        {!md && !loadingHTML && (
           <MarkdownEditor
-            initialContent={{ type: 'html', content: '' }}
+            initialContent={{ type: 'md', content: '' }}
             styles={styles}
             height={window.innerHeight}
             onSave={onSave}

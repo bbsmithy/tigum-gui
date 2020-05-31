@@ -45,8 +45,8 @@ export const NoteHeader = (props: NoteHeaderProps) => {
       </button>
       <h3 className={`${classes.header} white`}>{title}</h3>
       {saving && (
-        <span className='white bg-black'>
-          Saving <i className='fas fa-circle-notch fa-spin'></i>
+        <span className='white bg-black pa2 ma1 br1'>
+          Saving <i className='ml1 fas fa-circle-notch fa-spin'></i>
         </span>
       )}
       <button

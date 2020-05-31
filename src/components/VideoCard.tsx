@@ -18,7 +18,6 @@ type VideoCardProps = {
 const useStyles = createUseStyles({
   videoCardTitle: {
     textOverflow: 'ellipsis',
-    /* Required for text-overflow to do anything */
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     '@media (max-width: 1196px)': {

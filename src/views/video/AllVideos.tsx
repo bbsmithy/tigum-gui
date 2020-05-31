@@ -8,6 +8,7 @@ import { SCREENS } from '../../routers/MainRouter';
 import { createUseStyles } from 'react-jss';
 import { useStateValue } from '../../state/StateProvider';
 import { DELETE_VIDEO } from '../../state/ActionTypes';
+import { LoadingVideo } from '../../components/LoadingVideo';
 
 const useStyles = createUseStyles({
   videoLoadingCover: {
@@ -44,6 +45,7 @@ export const AllVideos = (props: any) => {
   } = state;
 
   const fetchVideos = async (ids: Array<number>) => {
+    setLoadingVideos(true);
     const res = await getVideos(ids);
     if (res.status === 200) {
       const body = await res.json();
@@ -122,10 +124,18 @@ export const AllVideos = (props: any) => {
     );
   };
 
+  const renderLoadingVidoes = () => {
+    return <LoadingVideo />;
+  };
+
   return (
-    <div className='ph2 mt4 pt3'>
-      <NewButton onClick={toggleModal} text='New Video' />
-      <div className='center w-100 ph1'>{renderVideoResources()}</div>
+    <>
+      <div className='ph2 mt4 pt3'>
+        <NewButton onClick={toggleModal} text='New Video' />
+        <div className='center w-100 ph1'>
+          {loadingVideos ? renderLoadingVidoes() : renderVideoResources()}
+        </div>
+      </div>
       <Modal
         title='New Video'
         display={displayVideoModal}
@@ -135,19 +145,12 @@ export const AllVideos = (props: any) => {
       >
         <input
           type='text'
-          placeholder='Video Title'
-          id='topic-title-input'
-          value={videoTitle}
-          onChange={onChangeTitle}
-        />
-        <input
-          type='text'
           placeholder='URL (Youtube)'
           id='topic-title-input'
           value={videoUrl}
           onChange={onChangeUrl}
         />
       </Modal>
-    </div>
+    </>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
-import { NewButton, LinkCard } from '../../components';
+import { NewButton, LinkCard, LoadingCard } from '../../components';
 import { Modal } from '../../components/Modal';
 import { getLinks, createLink } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
@@ -53,7 +53,6 @@ export const Links = (props: any) => {
       dispatch({ type: 'SET_LINKS', payload: res.reverse() });
       setLoading(false);
     } catch (e) {
-      console.log(e);
       dispatch({ type: 'SET_LINKS', payload: [] });
       setLoading(false);
     }
@@ -99,23 +98,6 @@ export const Links = (props: any) => {
     setLinkSrc(e.currentTarget.value);
   };
 
-  const renderLoading = () => {
-    return (
-      <div className='card note-card'>
-        <div className='mw9 center'>
-          <div className='cf ph2-ns pb4'>
-            <div className='fl ph2 w-90 pv1'>
-              <div className='bg-white'>
-                <div className={classes.headerLoadingLink}></div>
-                <div className={classes.dateLoadingLink}></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const renderLinks = () => {
     if (!loading) {
       if (links.length) {
@@ -123,6 +105,8 @@ export const Links = (props: any) => {
       } else {
         return renderNoLinks();
       }
+    } else {
+      return <LoadingCard />;
     }
   };
 
@@ -142,7 +126,7 @@ export const Links = (props: any) => {
         title='New Link'
         display={newLinkModalIsOpen}
         toggleModal={toggleModal}
-        buttonText='Add Link'
+        buttonText='Create Link'
         loadingAction={creatingLink}
         onClickAction={createNewLink}
       >

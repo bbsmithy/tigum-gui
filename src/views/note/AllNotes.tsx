@@ -1,35 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
-import { NewButton, Note } from '../../components';
+import { NewButton, Note, LoadingCard } from '../../components';
 import { Modal } from '../../components/Modal';
 import { createNote, getNotes } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
 import { ADD_NOTE } from '../../state/ActionTypes';
 
-const useStyles = createUseStyles({
-  headerLoadingNote: {
-    width: '70%',
-    padding: 5,
-    marginTop: 10,
-    background: 'gray',
-    borderRadius: 5,
-    height: 6,
-  },
-  dateLoadingNote: {
-    width: '50%',
-    padding: 3,
-    marginTop: 10,
-    background: 'gray',
-    borderRadius: 5,
-    height: 6,
-  },
-});
-
 export const AllNotes = (props: any) => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
   const [noteTitle, setNoteTitle] = useState('');
   const [loading, setLoading] = useState(true);
-  const classes = useStyles();
+  const [creatingNote, setCreatingNote] = useState(false);
 
   // @ts-ignore
   const [state, dispatch] = useStateValue();
@@ -60,34 +41,19 @@ export const AllNotes = (props: any) => {
   }, [topics.data[selectedTopic].notes]);
 
   const createNewNote = async () => {
+    setCreatingNote(true);
     const res = await createNote(noteTitle, topics.data[selectedTopic].id);
     if (res.status === 200) {
       const newNote = await res.json();
       dispatch({ type: ADD_NOTE, payload: newNote });
       toggleModal();
       setNoteTitle('');
+      setCreatingNote(false);
     }
   };
 
   const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
     setNoteTitle(e.currentTarget.value);
-  };
-
-  const renderLoading = () => {
-    return (
-      <div className='w-100 w-50-m w-33-l ph2 pv1'>
-        <div className='card note-card w-100'>
-          <div className='mw9 center'>
-            <div className='cf ph2-ns pb4'>
-              <div className='fl ph2 w-90 pv1'>
-                <div className={classes.headerLoadingNote}></div>
-                <div className={classes.dateLoadingNote}></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
   };
 
   const renderNotes = () => {
@@ -100,7 +66,7 @@ export const AllNotes = (props: any) => {
         });
       }
     } else {
-      return renderLoading();
+      return <LoadingCard />;
     }
   };
 
@@ -120,7 +86,7 @@ export const AllNotes = (props: any) => {
         title='New Note'
         display={newNoteModalIsOpen}
         toggleModal={toggleModal}
-        buttonText='Add Note'
+        buttonText='Create Note'
         onClickAction={createNewNote}
       >
         <input

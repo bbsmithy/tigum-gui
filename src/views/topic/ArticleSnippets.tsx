@@ -115,7 +115,7 @@ export const ArticleSnippets = (props: any) => {
     <div className='ph2 mt4 pt3'>
       <Modal
         title='Create snippet'
-        buttonText='Create'
+        buttonText='Create Snippet'
         display={createSnippetModalOpen}
         onClickAction={createSnippet}
         toggleModal={toggleModal}

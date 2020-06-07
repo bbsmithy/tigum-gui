@@ -91,8 +91,7 @@ export const VideoPlayer = () => {
       const noteData = await getFile(file, 'video-notes');
       setNoteMd(noteData);
     } catch (e) {
-      console.log(e);
-      notify(dispatch, 'Could note retreive notes', 'error', 'right');
+      return;
     }
   };
 

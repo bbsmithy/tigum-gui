@@ -119,7 +119,10 @@ export const ViewNote = (props: any) => {
         notify(dispatch, 'Saving notes', 'progress', 'right');
         setNoteMD(htmlFromMDEditor);
         await uploadToBucket(htmlFromMDEditor, `${note.id}.md`, 'notes');
-        notify(dispatch, 'Saved successfully', 'success', 'right');
+        setTimeout(
+          () => notify(dispatch, 'Saved successfully', 'success', 'right'),
+          150
+        );
       } else {
         setNoteMD(md);
         await uploadToBucket(md, `${note.id}.md`, 'notes');

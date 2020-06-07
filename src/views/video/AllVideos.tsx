@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { NewButton } from '../../components';
 import { Modal, VideoCard } from '../../components';
 import { createVideo, updateTopic, getVideos } from '../../clib/api';
+import { getVideoTitle } from '../../clib/yt';
 import { getEmbedFromUrl, goto } from '../../util';
-import { SCREENS } from '../../routers/MainRouter';
 
 import { createUseStyles } from 'react-jss';
 import { useStateValue } from '../../state/StateProvider';
@@ -34,9 +34,9 @@ const useStyles = createUseStyles({
 
 export const AllVideos = (props: any) => {
   const [displayVideoModal, setVideoModal] = useState(false);
-  const [videoTitle, setVideoTitle] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [loadingVideos, setLoadingVideos] = useState(true);
+  const [creatingVideo, setCreatingVideo] = useState(false);
 
   // @ts-ignore
   const [state, dispatch] = useStateValue();
@@ -55,33 +55,39 @@ export const AllVideos = (props: any) => {
   };
 
   useEffect(() => {
-    fetchVideos(topics.data[selectedTopic].videos);
-  }, [props.topic.videos]);
+    if (topics.data[selectedTopic].videos) {
+      fetchVideos(topics.data[selectedTopic].videos);
+    }
+  }, [topics.data[selectedTopic].videos]);
 
   const toggleModal = () => {
     setVideoModal(!displayVideoModal);
   };
 
   const createVideoResource = async () => {
-    const { embedUrl, thumbnailUrl } = getEmbedFromUrl(videoUrl);
-    if (embedUrl && thumbnailUrl) {
-      const res = await createVideo({
-        thumbnail_img: thumbnailUrl,
-        topic_id: props.topic.id,
-        title: videoTitle,
-        iframe: embedUrl,
-        origin: videoUrl,
-      });
-      if (res.status === 200) {
-        const body = await res.json();
-        dispatch({ type: 'ADD_VIDEO', payload: body });
-        toggleModal();
+    setCreatingVideo(true);
+    const embed = getEmbedFromUrl(videoUrl);
+    if (embed) {
+      const { embedUrl, thumbnailUrl } = embed;
+      const videoTitle = await getVideoTitle(videoUrl);
+      if (embedUrl && thumbnailUrl && videoTitle) {
+        const res = await createVideo({
+          thumbnail_img: thumbnailUrl,
+          topic_id: props.topic.id,
+          title: videoTitle.title,
+          iframe: embedUrl,
+          origin: videoUrl,
+        });
+        if (res.status === 200) {
+          const body = await res.json();
+          dispatch({ type: 'ADD_VIDEO', payload: body });
+          toggleModal();
+        }
       }
+    } else {
+      alert('Could not find that video');
     }
-  };
-
-  const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
-    setVideoTitle(e.currentTarget.value);
+    setCreatingVideo(false);
   };
 
   const onChangeUrl = (e: React.FormEvent<HTMLInputElement>) => {
@@ -141,6 +147,7 @@ export const AllVideos = (props: any) => {
         display={displayVideoModal}
         toggleModal={toggleModal}
         onClickAction={createVideoResource}
+        loadingAction={creatingVideo}
         buttonText='Create Video'
       >
         <input

@@ -64,19 +64,17 @@ export const AllNotes = (props: any) => {
             return <Note note={notes.data[noteKey]} key={noteKey} />;
           }
         });
+      } else {
+        return (
+          <div className='no-resources-message'>
+            <i className='fas fa-pen-square' /> <span>No notes yet</span>
+          </div>
+        );
       }
     } else {
       return <LoadingCard />;
     }
   };
-
-  // const renderNoNotes = () => {
-  //   return (
-  //     <div className='no-resources-message'>
-  //       <i className='fas fa-pen-square' /> <span>No notes yet</span>
-  //     </div>
-  //   );
-  // };
 
   return (
     <div className='ph2 mt4 pt3'>
@@ -87,6 +85,7 @@ export const AllNotes = (props: any) => {
         display={newNoteModalIsOpen}
         toggleModal={toggleModal}
         buttonText='Create Note'
+        loadingAction={creatingNote}
         onClickAction={createNewNote}
       >
         <input

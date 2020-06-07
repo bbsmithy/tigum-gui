@@ -490,8 +490,7 @@ export const logoutUser = async () => {
       },
       credentials: 'include',
     });
-    console.log(res);
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 };

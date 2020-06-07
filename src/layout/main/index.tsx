@@ -19,6 +19,7 @@ import {
   HIDE_SIDEBAR,
   SHOW_SIDEBAR,
 } from '../../state/ActionTypes';
+import Notification from '../../components/Notification';
 
 const useStyles = createUseStyles({
   topicContainer: {
@@ -57,6 +58,7 @@ export const MainContent = (props) => {
       content: {
         selectedTopic,
         topics: { data, loading },
+        notification,
       },
       navigation: { showTopicNavbar, showSidebar, useFullWidth, topicScreen },
     },
@@ -197,6 +199,13 @@ export const MainContent = (props) => {
           onChange={onChangeTitle}
         />
       </Modal>
+      {notification && (
+        <Notification
+          message={notification.message}
+          variant={notification.variant}
+          position={notification.position}
+        />
+      )}
     </div>
   );
 };

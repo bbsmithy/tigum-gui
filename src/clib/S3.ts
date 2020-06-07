@@ -14,7 +14,7 @@ export const getBuckets = () => {
   });
 };
 
-export const uploadToBucket = (data: any, fileKey: string) => {
+export const uploadToBucket = (data: any, fileKey: string, bucket: string) => {
   return new Promise((resolve, reject) => {
     const base64data = new Buffer(data, 'binary');
     s3.putObject(
@@ -35,7 +35,7 @@ export const uploadToBucket = (data: any, fileKey: string) => {
   });
 };
 
-export const getFile = (file: string) => {
+export const getFile = (file: string, bucket: string) => {
   return new Promise((resolve, reject) => {
     s3.getObject({ Bucket: 'notes', Key: file }, (err: any, data: any) => {
       if (err) {
@@ -48,9 +48,9 @@ export const getFile = (file: string) => {
   });
 };
 
-export const deleteFile = (file) => {
+export const deleteFile = (file: string, bucket: string) => {
   return new Promise((resolve, reject) => {
-    s3.deleteObject({ Bucket: 'your bucket', Key: file }, function (err, data) {
+    s3.deleteObject({ Bucket: bucket, Key: file }, function (err, data) {
       if (err) {
         reject(err);
       } else {
@@ -65,4 +65,4 @@ export const deleteFile = (file) => {
  * you'll need to use 'putObject' instead.
  * see doc : http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getSignedUrl-property
  */
-s3.getSignedUrl('getObject', { Bucket: 'notes', Key: 'MI4KC197Y2IGVDWCY4ZR' });
+// s3.getSignedUrl('getObject', { Bucket: 'notes', Key: 'MI4KC197Y2IGVDWCY4ZR' });

@@ -8,3 +8,4 @@ export { ImageCard } from './ImageCard';
 export { LinkCard } from './LinkCard';
 export { NoteHeader } from './NoteHeader';
 export { LoadingCard } from './LoadingCard';
+export { Button } from './Button';

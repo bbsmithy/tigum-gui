@@ -7,6 +7,7 @@ import { getFile, uploadToBucket } from '../../clib/S3';
 import { goto } from '../../util';
 import { useStateValue } from '../../state/StateProvider';
 import { NoteHeader } from '../../components/NoteHeader';
+import { notify } from '../../state/Actions';
 
 const useStyles = createUseStyles(() => ({
   btn: {
@@ -69,7 +70,6 @@ const styles = {
 export const ViewNote = (props: any) => {
   const [md, setNoteMD] = useState<any>('');
   const [loadingHTML, setLoadingHTML] = useState(true);
-  const [error, setError] = useState<string>();
   const [saving, setSaving] = useState(false);
 
   const classes = useStyles();
@@ -85,21 +85,24 @@ export const ViewNote = (props: any) => {
 
   const getNoteData = async (noteId: number) => {
     try {
-      const noteHTML = await getFile(`${noteId}.md`);
+      const noteHTML = await getFile(`${noteId}.md`, 'notes');
       setNoteMD(noteHTML);
       setLoadingHTML(false);
     } catch (e) {
       console.log(e);
       setLoadingHTML(false);
-      setError('Sorry we could not load this note. Try again later');
     }
   };
 
   const fetchNotes = async () => {
-    const res = await getNotes(topics.data[selectedTopic].notes);
-    const topicNotes = await res.json();
-    dispatch({ type: 'SET_NOTES', payload: topicNotes });
-    getNoteData(selectedResourceId);
+    try {
+      const res = await getNotes(topics.data[selectedTopic].notes);
+      const topicNotes = await res.json();
+      dispatch({ type: 'SET_NOTES', payload: topicNotes });
+      getNoteData(selectedResourceId);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -111,16 +114,20 @@ export const ViewNote = (props: any) => {
   }, []);
 
   const save = async (htmlFromMDEditor) => {
-    if (htmlFromMDEditor) {
-      setNoteMD(htmlFromMDEditor);
-      setSaving(true);
-      await uploadToBucket(htmlFromMDEditor, `${note.id}.md`);
+    try {
+      if (htmlFromMDEditor) {
+        notify(dispatch, 'Saving notes', 'progress', 'right');
+        setNoteMD(htmlFromMDEditor);
+        await uploadToBucket(htmlFromMDEditor, `${note.id}.md`, 'notes');
+        notify(dispatch, 'Saved successfully', 'success', 'right');
+      } else {
+        setNoteMD(md);
+        await uploadToBucket(md, `${note.id}.md`, 'notes');
+        notify(dispatch, 'Saved successfully', 'success', 'right');
+      }
+    } catch (e) {
       setSaving(false);
-    } else {
-      setNoteMD(md);
-      setSaving(true);
-      await uploadToBucket(md, `${note.id}.md`);
-      setSaving(false);
+      notify(dispatch, 'Could not upload notes', 'error', 'right');
     }
   };
 

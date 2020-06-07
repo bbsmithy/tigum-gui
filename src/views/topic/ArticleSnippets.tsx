@@ -76,7 +76,7 @@ export const ArticleSnippets = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { article_snippets },
+    content: { article_snippets, topics, selectedTopic },
   } = state;
 
   const fetchArticleSnippets = async (ids: number[]) => {
@@ -87,8 +87,10 @@ export const ArticleSnippets = (props: any) => {
   };
 
   useEffect(() => {
-    fetchArticleSnippets(props.topic.article_snippets);
-  }, [props.topic]);
+    if (topics.data[selectedTopic].article_snippets) {
+      fetchArticleSnippets(topics.data[selectedTopic].article_snippets);
+    }
+  }, [topics.data[selectedTopic].article_snippets]);
 
   const toggleModal = () => {
     setCreateSnippetModalOpen(!createSnippetModalOpen);

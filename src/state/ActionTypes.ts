@@ -25,6 +25,9 @@ export const ADD_IMAGE = 'ADD_IMAGE';
 export const SET_LINKS = 'SET_LINKS';
 export const ADD_LINK = 'ADD_LINK';
 
+export const DISPLAY_NOTIFICATION = 'DISPLAY_NOTIFICATION';
+export const HIDE_NOTIFICATION = 'HIDE_NOTIFICATION';
+
 // Navigation Actions
 export const SET_TOPIC_SCREEN = 'SET_TOPIC_SCREEN';
 export const FULL_SCREEN = 'FULL_SCREEN';

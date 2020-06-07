@@ -38,6 +38,15 @@ export const NoteHeader = (props: NoteHeaderProps) => {
   const { onBack, title, saving, onDelete } = props;
   const classes = useStyles();
 
+  const deleteNote = () => {
+    const yesDelete = window.confirm(
+      'Are you sure you want to delete this note?'
+    );
+    if (yesDelete) {
+      onDelete();
+    }
+  };
+
   return (
     <div className={classes.headerContainer}>
       <button className={classes.btn} onClick={onBack}>
@@ -45,13 +54,13 @@ export const NoteHeader = (props: NoteHeaderProps) => {
       </button>
       <h3 className={`${classes.header} white`}>{title}</h3>
       {saving && (
-        <span className='white bg-black pa2 ma1 br1'>
+        <span className='white bg-black pa2 ma1 br1 f6'>
           Saving <i className='ml1 fas fa-circle-notch fa-spin'></i>
         </span>
       )}
       <button
         className={`${classes.deleteBtn} ${classes.btn}`}
-        onClick={onDelete}
+        onClick={deleteNote}
       >
         <i className='fa fa-trash' />
       </button>

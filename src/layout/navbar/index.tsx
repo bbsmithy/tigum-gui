@@ -177,15 +177,13 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
         {displayMobileNavOptions && (
           <div className={classes.mobileNavDropdown}>
             {navItems.map((item) => {
+              console.log(item.screen);
               if (item.screen === topicScreen) return;
               return (
                 <div
                   className={classes.mobileNavItem}
                   onClick={() => {
-                    dispatch({
-                      type: 'SET_TOPIC_SCREEN',
-                      payload: item.screen,
-                    });
+                    goto(`/topic/${selectedTopic}/${item.title.toLowerCase()}`);
                     setDisplayMobileNavOptions(false);
                   }}
                 >

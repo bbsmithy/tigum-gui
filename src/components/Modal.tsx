@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { createUseStyles } from 'react-jss';
+import { Button } from './Button';
 
 const useStyles = createUseStyles({
   modal: {
@@ -51,10 +52,11 @@ const useStyles = createUseStyles({
     position: 'relative',
     backgroundColor: '#333',
     margin: '5% auto' /* 15% from the top and centered */,
-    padding: 0,
-    border: '1px solid #888',
+    padding: 5,
+    border: '1px solid white',
     borderRadius: 5,
-    width: '40%',
+    maxWidth: 700,
+    width: '100%',
     boxShadow:
       '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
     animationName: 'animatetop',
@@ -79,7 +81,6 @@ interface ModalProps {
 
 export const Modal = (props: ModalProps) => {
   const classes = useStyles();
-
   return (
     <div
       id='app-modal'
@@ -97,16 +98,13 @@ export const Modal = (props: ModalProps) => {
         </div>
         <div className={classes.modalBody}>{props.children}</div>
         <div className={classes.modalFooter}>
-          <button
-            className='f6 br2 ph3 pv2 mh3 dib white bg-blue fr pointer'
-            onClick={props.onClickAction}
-          >
-            {props.loadingAction ? (
-              <i className='fas fa-circle-notch fa-spin'></i>
-            ) : (
-              props.buttonText
-            )}
-          </button>
+          <div className='fr mr3'>
+            <Button
+              onClickAction={props.onClickAction}
+              buttonText={props.buttonText}
+              loadingAction={props.loadingAction}
+            />
+          </div>
         </div>
       </div>
     </div>

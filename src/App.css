@@ -416,3 +416,13 @@ button:focus {
 pre {
   margin: 0px !important;
 }
+
+.notification {
+  position: absolute;
+  bottom: 10;
+  left: 10;
+}
+
+code {
+  font-size: 13px;
+}

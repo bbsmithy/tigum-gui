@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
-import { debounce, goto } from '../../util';
+import { goto } from '../../util';
 import { getVideos } from '../../clib/api';
 import { NoteHeader } from '../../components/NoteHeader';
+import { uploadToBucket, getFile } from '../../clib/S3';
+import { notify } from '../../state/Actions';
 
 const useStyles = createUseStyles({
   videoTitleContainer: {
@@ -14,7 +16,7 @@ const useStyles = createUseStyles({
     position: 'fixed',
     top: 0,
     left: 0,
-    width: '40%',
+    width: '45%',
     padding: 10,
     height: '100%',
   },
@@ -22,7 +24,7 @@ const useStyles = createUseStyles({
     position: 'fixed',
     top: 0,
     right: 0,
-    width: '60%',
+    width: '55%',
     height: '100%',
   },
   title: {
@@ -66,15 +68,33 @@ const styles = {
   },
 };
 
-export const VideoPlayer = (props: any) => {
+export const VideoPlayer = () => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { selectedResourceId, videos, selectedTopic, topics },
+    content: {
+      selectedResourceId,
+      videos,
+      selectedTopic,
+      topics,
+      notification,
+    },
   } = state;
+  const [uploadingNote, setUploadingNote] = useState(false);
+  const [noteMd, setNoteMd] = useState<any>();
+
   const classes = useStyles();
-  const [editorWidth, setEditorWidth] = useState<number>();
   const video = videos.data ? videos.data[selectedResourceId] : false;
+
+  const fetchNoteData = async (file) => {
+    try {
+      const noteData = await getFile(file, 'video-notes');
+      setNoteMd(noteData);
+    } catch (e) {
+      console.log(e);
+      notify(dispatch, 'Could note retreive notes', 'error', 'right');
+    }
+  };
 
   const fetchVideos = async () => {
     try {
@@ -82,9 +102,15 @@ export const VideoPlayer = (props: any) => {
       const videoData = await res.json();
       dispatch({ type: 'SET_VIDEOS', payload: videoData });
     } catch (e) {
-      console.log(e);
+      notify(dispatch, 'Could not retrieve video', 'error', 'right');
     }
   };
+
+  useEffect(() => {
+    if (video) {
+      fetchNoteData(`${video.id}_video.md`);
+    }
+  }, [video]);
 
   useEffect(() => {
     if (videos.length === 0) {
@@ -92,26 +118,34 @@ export const VideoPlayer = (props: any) => {
     }
   }, [videos]);
 
-  const onLayoutEditorWidth = () => {
-    const editorContainerWidth = document.getElementById(
-      'video-notes-container'
-    ).offsetWidth;
-    if (editorContainerWidth) {
-      setEditorWidth(editorContainerWidth);
+  const save = async (md) => {
+    if (md) {
+      notify(dispatch, 'Saving notes', 'progress', 'right');
+      await uploadToBucket(
+        md,
+        `${videos.data[selectedResourceId].id}_video.md`,
+        'video-notes'
+      );
+      setUploadingNote(false);
+      setTimeout(
+        () => notify(dispatch, 'Saved successfully', 'success', 'right'),
+        300
+      );
     }
   };
 
-  const debouncedEditorLayout = () => {
-    debounce(onLayoutEditorWidth(), 300);
+  const onSave = async (md, html) => {
+    try {
+      save(md);
+    } catch (e) {
+      setUploadingNote(false);
+      notify(dispatch, 'Could not upload notes', 'error', 'right');
+    }
   };
 
-  useEffect(() => {
-    onLayoutEditorWidth();
-    window.addEventListener('resize', debouncedEditorLayout);
-    return () => {
-      window.removeEventListener('resize', debouncedEditorLayout);
-    };
-  }, []);
+  const onDelete = () => {
+    console.log('Delete');
+  };
 
   const goBack = () => {
     goto(`/topic/${selectedTopic}/videos`);
@@ -123,18 +157,29 @@ export const VideoPlayer = (props: any) => {
         <div>
           <NoteHeader
             onBack={goBack}
-            onDelete={() => {}}
+            onDelete={onDelete}
             title={video.title}
-            saving={false}
+            saving={uploadingNote}
           />
         </div>
-        <MarkdownEditor
-          initialContent={{ type: 'md', content: '' }}
-          styles={styles}
-          height={window.innerHeight}
-          onSave={() => {}}
-          onDelete={() => {}}
-        />
+        {noteMd && (
+          <MarkdownEditor
+            initialContent={{ type: 'md', content: noteMd }}
+            styles={styles}
+            height={window.innerHeight}
+            onSave={onSave}
+            onDelete={onDelete}
+          />
+        )}
+        {!noteMd && (
+          <MarkdownEditor
+            initialContent={{ type: 'md', content: '' }}
+            styles={styles}
+            height={window.innerHeight}
+            onSave={onSave}
+            onDelete={onDelete}
+          />
+        )}
       </div>
       {video && (
         <>

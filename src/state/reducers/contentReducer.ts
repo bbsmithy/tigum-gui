@@ -30,6 +30,8 @@ import {
   ADD_LINK,
   DELETE_TOPIC,
   DELETE_VIDEO,
+  DISPLAY_NOTIFICATION,
+  HIDE_NOTIFICATION,
 } from '../ActionTypes';
 
 const ContentReducer = (state: any, action: any) => {
@@ -196,7 +198,18 @@ const ContentReducer = (state: any, action: any) => {
         },
       };
     }
-
+    case DISPLAY_NOTIFICATION: {
+      return {
+        ...state,
+        notification: action.payload,
+      };
+    }
+    case HIDE_NOTIFICATION: {
+      return {
+        ...state,
+        notification: false,
+      };
+    }
     default:
       return state;
   }

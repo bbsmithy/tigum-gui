@@ -1,23 +1,16 @@
 import React from 'react';
-import {
-  ArticleSnippets,
-  Code,
-  Images,
-  Links,
-  Loading,
-  Excercises,
-} from '../views/topic';
+import { ArticleSnippets, Links, Loading } from '../views/topic';
 import { AllNotes, ViewNote } from '../views/note';
 import { AllVideos, VideoPlayer } from '../views/video';
 import { Topic } from '../clib/models';
 
 export enum SCREENS {
   ALL_NOTES,
-  VIEW_NOTE,
   ALL_VIDEOS,
-  VIDEO_PLAYER,
   ARTICLE_SNIPPETS,
   LINKS,
+  VIDEO_PLAYER,
+  VIEW_NOTE,
   CODE,
   IMAGES,
   EXCERCISES,
@@ -37,19 +30,13 @@ export const MainRouter = ({ screen, topic }: RouterProps) => {
     case SCREENS.VIEW_NOTE:
       return <ViewNote />;
     case SCREENS.VIDEO_PLAYER:
-      return <VideoPlayer topic={topic} />;
+      return <VideoPlayer />;
     case SCREENS.ALL_VIDEOS:
-      return <AllVideos topic={topic} />;
+      return <AllVideos />;
     case SCREENS.ARTICLE_SNIPPETS:
-      return <ArticleSnippets topic={topic} />;
-    case SCREENS.CODE:
-      return <Code topic={topic} />;
-    case SCREENS.IMAGES:
-      return <Images topic={topic} />;
+      return <ArticleSnippets />;
     case SCREENS.LINKS:
       return <Links topic={topic} />;
-    case SCREENS.EXCERCISES:
-      return <Excercises />;
     case SCREENS.LOADING:
       return <Loading topic={topic} />;
     default:

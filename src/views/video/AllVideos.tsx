@@ -67,13 +67,14 @@ export const AllVideos = (props: any) => {
   const createVideoResource = async () => {
     setCreatingVideo(true);
     const embed = getEmbedFromUrl(videoUrl);
+
     if (embed) {
       const { embedUrl, thumbnailUrl } = embed;
       const videoTitle = await getVideoTitle(videoUrl);
       if (embedUrl && thumbnailUrl && videoTitle) {
         const res = await createVideo({
           thumbnail_img: thumbnailUrl,
-          topic_id: props.topic.id,
+          topic_id: topics.data[selectedTopic].id,
           title: videoTitle.title,
           iframe: embedUrl,
           origin: videoUrl,

@@ -68,17 +68,25 @@ const styles = {
   },
 };
 
+const theme = {
+  toolbar: {
+    background: '#333',
+    color: 'white',
+    activeBtnBackground: '#242020',
+    activeBtnColor: 'white',
+    disabledBtnBackground: 'gray',
+    disabledBtnColor: '#333',
+  },
+  preview: { background: '#474646', color: 'white' },
+  editor: { background: '#333', color: 'white' },
+  cursorColor: 'white',
+};
+
 export const VideoPlayer = () => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: {
-      selectedResourceId,
-      videos,
-      selectedTopic,
-      topics,
-      notification,
-    },
+    content: { selectedResourceId, videos, selectedTopic, topics },
   } = state;
   const [uploadingNote, setUploadingNote] = useState(false);
   const [noteMd, setNoteMd] = useState<any>();
@@ -146,6 +154,10 @@ export const VideoPlayer = () => {
     console.log('Delete');
   };
 
+  const codeMirrorHandle = (cm) => {
+    console.log(cm);
+  };
+
   const goBack = () => {
     goto(`/topic/${selectedTopic}/videos`);
   };
@@ -156,29 +168,20 @@ export const VideoPlayer = () => {
         <div>
           <NoteHeader
             onBack={goBack}
-            onDelete={onDelete}
             title={video.title}
             saving={uploadingNote}
           />
         </div>
-        {noteMd && (
-          <MarkdownEditor
-            initialContent={{ type: 'md', content: noteMd }}
-            styles={styles}
-            height={window.innerHeight}
-            onSave={onSave}
-            onDelete={onDelete}
-          />
-        )}
-        {!noteMd && (
-          <MarkdownEditor
-            initialContent={{ type: 'md', content: '' }}
-            styles={styles}
-            height={window.innerHeight}
-            onSave={onSave}
-            onDelete={onDelete}
-          />
-        )}
+        <MarkdownEditor
+          initialValue={noteMd}
+          onSave={onSave}
+          onDelete={onDelete}
+          codeMirrorHandle={codeMirrorHandle}
+          spellChecker={false}
+          useHighlightJS
+          highlightTheme='agate'
+          theme={theme}
+        />
       </div>
       {video && (
         <>

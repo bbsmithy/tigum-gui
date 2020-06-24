@@ -4,8 +4,8 @@ import { createUseStyles } from 'react-jss';
 type NoteHeaderProps = {
   title: string;
   saving: boolean;
-  onDelete: () => void;
   onBack: () => void;
+  onDelete?: () => void;
 };
 
 const useStyles = createUseStyles(() => ({
@@ -58,12 +58,14 @@ export const NoteHeader = (props: NoteHeaderProps) => {
           Saving <i className='ml1 fas fa-circle-notch fa-spin'></i>
         </span>
       )}
-      <button
-        className={`${classes.deleteBtn} ${classes.btn}`}
-        onClick={deleteNote}
-      >
-        <i className='fa fa-trash' />
-      </button>
+      {onDelete && (
+        <button
+          className={`${classes.deleteBtn} ${classes.btn}`}
+          onClick={deleteNote}
+        >
+          <i className='fa fa-trash' />
+        </button>
+      )}
     </div>
   );
 };

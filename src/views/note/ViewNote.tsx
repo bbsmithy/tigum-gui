@@ -67,6 +67,20 @@ const styles = {
   },
 };
 
+const theme = {
+  toolbar: {
+    background: '#333',
+    color: 'white',
+    activeBtnBackground: '#242020',
+    activeBtnColor: 'white',
+    disabledBtnBackground: 'gray',
+    disabledBtnColor: '#333',
+  },
+  preview: { background: '#474646', color: 'white' },
+  editor: { background: '#333', color: 'white' },
+  cursorColor: 'white',
+};
+
 export const ViewNote = (props: any) => {
   const [md, setNoteMD] = useState<any>('');
   const [loadingHTML, setLoadingHTML] = useState(true);
@@ -134,7 +148,7 @@ export const ViewNote = (props: any) => {
     }
   };
 
-  const onSave = async (md, currentHTML) => {
+  const onSave = async (md) => {
     try {
       save(md);
     } catch (e) {
@@ -155,6 +169,10 @@ export const ViewNote = (props: any) => {
     }
   };
 
+  const codeMirrorHandle = (cm) => {
+    console.log(cm);
+  };
+
   if (note) {
     return (
       <div className='z-1 center w-100-m w-70-l w-100' id='view-note-container'>
@@ -171,20 +189,14 @@ export const ViewNote = (props: any) => {
         {loadingHTML && <i className='fas fa-circle-notch fa-spin'></i>}
         {md && !loadingHTML && (
           <MarkdownEditor
-            initialContent={{ type: 'md', content: md }}
-            styles={styles}
-            height={window.innerHeight}
+            initialValue={md}
             onSave={onSave}
             onDelete={onClickDelete}
-          />
-        )}
-        {!md && !loadingHTML && (
-          <MarkdownEditor
-            initialContent={{ type: 'md', content: '' }}
-            styles={styles}
-            height={window.innerHeight}
-            onSave={onSave}
-            onDelete={onClickDelete}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            useHighlightJS
+            highlightTheme='agate'
+            theme={theme}
           />
         )}
       </div>

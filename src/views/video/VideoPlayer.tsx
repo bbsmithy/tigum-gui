@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
 import { useStateValue } from '../../state/StateProvider';
-import { createUseStyles } from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 import { goto } from '../../util';
 import { getVideos } from '../../clib/api';
 import { NoteHeader } from '../../components/NoteHeader';
@@ -34,39 +34,23 @@ const useStyles = createUseStyles({
   },
 });
 
-const styles = {
-  mainContainer: {
-    backgroundColor: '#333',
-    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
-  },
-  markdownContainer: { color: 'white' },
-  markdownEditor: { backgroundColor: '#333', color: 'white' },
-  htmlContainer: { color: 'white' },
-  controlsContainer: {
-    marginBottom: 6,
-    overflow: 'scroll',
-    whiteSpace: 'nowrap',
-  },
-  langInput: {
-    color: 'white',
-    backgroundColor: '#333',
-    height: 20,
-    borderRadius: 4,
-    width: 60,
-    padding: 4,
-    border: 'none',
-  },
-  btn: {
-    backgroundColor: '#333',
-    color: 'white',
-    padding: '3px 10px 3px 10px',
-    border: 'none',
-    fontSize: 12,
-    borderRadius: 4,
-    height: 30,
-    marginRight: 4,
-  },
-};
+const toolbarOptions = [
+  'bold',
+  'italic',
+  'heading',
+  '|',
+  'quote',
+  'ordered-list',
+  'unordered-list',
+  '|',
+  'code',
+  'link',
+  'image',
+  'table',
+  '|',
+  'preview',
+  '|',
+];
 
 const theme = {
   toolbar: {
@@ -80,6 +64,7 @@ const theme = {
   preview: { background: '#474646', color: 'white' },
   editor: { background: '#333', color: 'white' },
   cursorColor: 'white',
+  height: '84vh',
 };
 
 export const VideoPlayer = () => {
@@ -90,15 +75,19 @@ export const VideoPlayer = () => {
   } = state;
   const [uploadingNote, setUploadingNote] = useState(false);
   const [noteMd, setNoteMd] = useState<any>();
+  const [loadingNote, setLoadingNote] = useState(true);
 
   const classes = useStyles();
   const video = videos.data ? videos.data[selectedResourceId] : false;
 
   const fetchNoteData = async (file) => {
     try {
+      setLoadingNote(true);
       const noteData = await getFile(file, 'video-notes');
       setNoteMd(noteData);
+      setLoadingNote(false);
     } catch (e) {
+      setLoadingNote(false);
       return;
     }
   };
@@ -141,7 +130,7 @@ export const VideoPlayer = () => {
     }
   };
 
-  const onSave = async (md, html) => {
+  const onSave = async (md) => {
     try {
       save(md);
     } catch (e) {
@@ -172,16 +161,32 @@ export const VideoPlayer = () => {
             saving={uploadingNote}
           />
         </div>
-        <MarkdownEditor
-          initialValue={noteMd}
-          onSave={onSave}
-          onDelete={onDelete}
-          codeMirrorHandle={codeMirrorHandle}
-          spellChecker={false}
-          useHighlightJS
-          highlightTheme='agate'
-          theme={theme}
-        />
+        {noteMd && !loadingNote && (
+          <MarkdownEditor
+            initialValue={noteMd}
+            onSave={onSave}
+            onDelete={onDelete}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            toolbarOptions={toolbarOptions}
+            useHighlightJS
+            highlightTheme='agate'
+            theme={theme}
+          />
+        )}
+        {!noteMd && !loadingNote && (
+          <MarkdownEditor
+            initialValue={''}
+            onSave={onSave}
+            onDelete={onDelete}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            toolbarOptions={toolbarOptions}
+            useHighlightJS
+            highlightTheme='agate'
+            theme={theme}
+          />
+        )}
       </div>
       {video && (
         <>

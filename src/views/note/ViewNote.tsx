@@ -35,38 +35,6 @@ const useStyles = createUseStyles(() => ({
   },
 }));
 
-const styles = {
-  mainContainer: {
-    backgroundColor: '#333',
-    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
-  },
-  markdownContainer: { color: 'white' },
-  markdownEditor: { backgroundColor: '#333', color: 'white' },
-  htmlContainer: { color: 'white' },
-  controlsContainer: {
-    marginBottom: 6,
-  },
-  langInput: {
-    color: 'white',
-    backgroundColor: '#333',
-    height: 20,
-    borderRadius: 4,
-    width: 60,
-    padding: 4,
-    border: 'none',
-  },
-  btn: {
-    backgroundColor: '#333',
-    color: 'white',
-    padding: '3px 10px 3px 10px',
-    border: 'none',
-    fontSize: 12,
-    borderRadius: 4,
-    height: 30,
-    marginRight: 4,
-  },
-};
-
 const theme = {
   toolbar: {
     background: '#333',
@@ -79,6 +47,7 @@ const theme = {
   preview: { background: '#474646', color: 'white' },
   editor: { background: '#333', color: 'white' },
   cursorColor: 'white',
+  height: '85vh',
 };
 
 export const ViewNote = (props: any) => {
@@ -187,7 +156,7 @@ export const ViewNote = (props: any) => {
           </div>
         )}
         {loadingHTML && <i className='fas fa-circle-notch fa-spin'></i>}
-        {md && !loadingHTML && (
+        {!loadingHTML && (
           <MarkdownEditor
             initialValue={md}
             onSave={onSave}

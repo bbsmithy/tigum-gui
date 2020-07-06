@@ -1,5 +1,3 @@
-![alt text](https://github.com/bbsmithy/tigum-gui/blob/master/src/logo.png)
-
 # tigum-gui
 
 Frontend for Tigum centralized learning tool, built with React/Typescript
@@ -28,4 +26,44 @@ You can go to a topic you've collected some resources on in the tigum-gui. From 
 
 ## Sharing phase
 
-If you feel like notes/collection of resources on a particular topic could help other people, you can share that on the tigum public feed. Other users can up vote your topic if they found it useful to them and their research. You can also export your topic resources to html or pdf doc and share with others that way.
+If you feel like notes/collection of resources on a particular topic could help other people, you can publish that with your own branded site (e.g bsmithdev.tigum.io).
+
+# Setup Guide
+### Pull down frontend repo
+```
+git clone https://github.com/bbsmithy/tigum-gui.git`
+```
+
+### Install node on your machine
+https://nodejs.org/en/download/
+
+### Install project dependencies
+```
+cd ./tigum-gui
+npm install
+```
+
+### Pull down API repo
+```
+cd ..
+git clone https://github.com/bbsmithy/tigum-api.git
+```
+
+### Install cargo (Rust compiler and package manger)
+https://doc.rust-lang.org/cargo/getting-started/installation.html
+
+### Install API dependencies
+This will download crates and run the application
+```
+cd ./tigum-api
+cargo run
+```
+
+### Start frontend app
+```
+cd ..
+cd ./tigum-gui
+npm run start
+```
+Navigate to http://localhost:3000
+And you should see the login page.

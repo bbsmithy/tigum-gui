@@ -1,5 +1,3 @@
-![alt text](https://github.com/bbsmithy/tigum-gui/blob/master/src/logo.png)
-
 # tigum-gui
 
 Frontend for Tigum centralized learning tool, built with React/Typescript
@@ -14,7 +12,7 @@ Over the last few years I've been learning how to write software. About 95% of t
 
 This tool will allow me to centralize online resources that I find the most useful in helping learn about different topics. I will also be able to take my own notes on those resources so that I can describe concepts in my own words/code.
 
-Access to this tool will be completely private but if I wish to share that content I can make it public and it will show up on the tigum public feed. If I want to use the content elsewhere I can export my notes/resources to a html doc.
+Access to this tool will be completely private but if I wish to share that content I can make it public with my own branded site own branded site (e.g bsmithdev.tigum.io). If I want to use the content elsewhere I can export my notes/resources to a html/md/pdf doc.
 
 # V1 flow
 
@@ -28,4 +26,44 @@ You can go to a topic you've collected some resources on in the tigum-gui. From 
 
 ## Sharing phase
 
-If you feel like notes/collection of resources on a particular topic could help other people, you can share that on the tigum public feed. Other users can up vote your topic if they found it useful to them and their research. You can also export your topic resources to html or pdf doc and share with others that way.
+If you feel like notes/collection of resources on a particular topic could help other people, you can publish that with your own branded site (e.g bsmithdev.tigum.io).
+
+# Setup Guide
+### Pull down frontend repo
+```
+git clone https://github.com/bbsmithy/tigum-gui.git`
+```
+
+### Install node on your machine
+https://nodejs.org/en/download/
+
+### Install project dependencies
+```
+cd ./tigum-gui
+npm install
+```
+
+### Pull down API repo
+```
+cd ..
+git clone https://github.com/bbsmithy/tigum-api.git
+```
+
+### Install cargo (Rust compiler and package manger)
+https://doc.rust-lang.org/cargo/getting-started/installation.html
+
+### Install API dependencies
+This will download crates and run the application
+```
+cd ./tigum-api
+cargo run
+```
+
+### Start frontend app
+```
+cd ..
+cd ./tigum-gui
+npm run start
+```
+Navigate to http://localhost:3000
+And you should see the login page.

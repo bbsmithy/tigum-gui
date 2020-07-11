@@ -52,7 +52,7 @@ const useStyles = createUseStyles({
   },
 
   logo: {
-    padding: 10,
+    marginLeft: 10,
     '@media (max-width: 1195px)': {
       padding: 0,
     },
@@ -95,9 +95,9 @@ const SideBarHeader = (props) => {
     <div className={classes.sidebarHeader}>
       <div className={`dib ${classes.logoContainer}`}>
         <img
-          src={require('../../logo.png')}
+          src={require('../../logo-tigum.png')}
           className={classes.logo}
-          height={22}
+          height={45}
         />
         <i
           className={`fas fa-bars white pointer fr ${classes.closeIcon}`}

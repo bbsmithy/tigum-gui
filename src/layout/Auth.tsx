@@ -27,7 +27,7 @@ export const Auth = () => {
 
   useEffect(() => {
     isUserLoggedIn();
-  }, []);
+  }, [isUserLoggedIn]);
 
   if (showSplash && !state.user.loggedIn) {
     return (
@@ -41,7 +41,7 @@ export const Auth = () => {
           width: '100%',
         }}
       >
-        <img src={require('../logo.png')} height={45} />
+        <img src={require('../logo-tigum.png')} height={100} />
       </div>
     );
   }

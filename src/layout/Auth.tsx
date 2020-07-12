@@ -27,7 +27,7 @@ export const Auth = () => {
 
   useEffect(() => {
     isUserLoggedIn();
-  }, [isUserLoggedIn]);
+  }, []);
 
   if (showSplash && !state.user.loggedIn) {
     return (

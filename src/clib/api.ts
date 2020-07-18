@@ -445,6 +445,7 @@ export const loginUser = async (email: string, password: string) => {
     });
     return await res.json();
   } catch (e) {
+    console.log("Error: ", e);
     throw e;
   }
 };

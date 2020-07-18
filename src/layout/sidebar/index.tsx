@@ -25,7 +25,11 @@ const useStyles = createUseStyles({
       width: '100%',
       padding: 10,
     },
+    display: "flex",
+    flexDirection: "row",
     margin: 3,
+    paddingTop: 10,
+    paddingBottom: 10
   },
   logoutText: {
     marginRight: 8,
@@ -38,11 +42,10 @@ const useStyles = createUseStyles({
     boxShadow: '0 1px 4px rgba(0, 0, 0, 0.6)',
     color: 'white',
     backgroundColor: '#1f1f1f',
+    flexDirection: "column",
     '@media (min-width: 1196px)': {
-      float: 'right',
       margin: 2,
       padding: 5,
-      marginTop: 10,
       marginRight: 10,
     },
     '@media (max-width: 1195px)': {
@@ -50,8 +53,8 @@ const useStyles = createUseStyles({
       padding: 7,
     },
   },
-
   logo: {
+    flexGrow: 5,
     marginLeft: 10,
     '@media (max-width: 1195px)': {
       padding: 0,
@@ -65,6 +68,7 @@ const useStyles = createUseStyles({
     },
   },
   logoContainer: {
+    flexGrow: 5,
     '@media (max-width: 1195px)': {
       width: '100%',
       marginBottom: 12,
@@ -97,7 +101,7 @@ const SideBarHeader = (props) => {
         <img
           src={require('../../logo-tigum.png')}
           className={classes.logo}
-          height={45}
+          height={25}
         />
         <i
           className={`fas fa-bars white pointer fr ${classes.closeIcon}`}

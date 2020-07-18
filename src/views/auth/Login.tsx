@@ -41,13 +41,13 @@ export const Login = (props) => {
   return (
     <main className='pa4 white'>
       <div className='measure center'>
-        <img src={require('../../logo.png')} className='w-33' />
-        <p>A personal knowledge base built for developers</p>
+        <img src={require('../../logo-tigum.png')} className='w-33' />
+        <p>A tool building your own personal online university</p>
         <fieldset id='sign_up' className='ba b--transparent ph0 mh0'>
           <div className='mt3 white'>
             <label className='db fw6 lh-copy f6'>Email</label>
             <input
-              className='pa2 white input-reset ba bg-transparent b--white hover-bg-black hover-white w-100'
+              className='pa2 white br2 input-reset ba bg-transparent b--white hover-bg-black hover-white w-100'
               type='email'
               onChange={onChangeEmail}
               value={email}
@@ -58,7 +58,7 @@ export const Login = (props) => {
           <div className='mv3 white'>
             <label className='db fw6 lh-copy f6'>Password</label>
             <input
-              className='b white pa2 bc-white input-reset b--white ba bg-transparent hover-bg-black hover-white w-100'
+              className='b white br2 pa2 bc-white input-reset b--white ba bg-transparent hover-bg-black hover-white w-100'
               type='password'
               onChange={onChangePassword}
               value={password}
@@ -74,7 +74,7 @@ export const Login = (props) => {
         )}
         <div className='white'>
           <button
-            className='b ph3 pv2 input-reset ba b--white bg-transparent white pointer f6 dib'
+            className='b ph3 pv2 br2 input-reset ba b--white bg-transparent white pointer f6 dib'
             type='submit'
             disabled={authing}
             onClick={login}

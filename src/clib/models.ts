@@ -14,8 +14,8 @@ export type Topic = {
 export type NewVideo = {
   topic_id: number;
   title: string;
-  iframe: string;
-  origin: string;
+  iframe: string; // YT Embed URL
+  origin: string; // YT URL
   thumbnail_img: string;
 };
 

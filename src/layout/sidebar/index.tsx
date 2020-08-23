@@ -21,11 +21,12 @@ const useStyles = createUseStyles({
   },
   sidebarHeader: {
     borderBottom: '1px solid rgba(0, 0, 0, 0.3)',
+    display: "flex",
     '@media (max-width: 1195px)': {
       width: '100%',
       padding: 10,
+      flexDirection: "column",
     },
-    display: "flex",
     flexDirection: "row",
     margin: 3,
     paddingTop: 10,
@@ -42,7 +43,6 @@ const useStyles = createUseStyles({
     boxShadow: '0 1px 4px rgba(0, 0, 0, 0.6)',
     color: 'white',
     backgroundColor: '#1f1f1f',
-    flexDirection: "column",
     '@media (min-width: 1196px)': {
       margin: 2,
       padding: 5,
@@ -58,6 +58,7 @@ const useStyles = createUseStyles({
     marginLeft: 10,
     '@media (max-width: 1195px)': {
       padding: 0,
+      marginLeft: 0,
     },
   },
   closeIcon: {

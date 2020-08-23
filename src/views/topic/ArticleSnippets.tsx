@@ -90,7 +90,7 @@ export const ArticleSnippets = (props: any) => {
     if (topics.data[selectedTopic].article_snippets) {
       fetchArticleSnippets(topics.data[selectedTopic].article_snippets);
     }
-  }, [topics.data[selectedTopic].article_snippets]);
+  }, [selectedTopic, topics.data]);
 
   const toggleModal = () => {
     setCreateSnippetModalOpen(!createSnippetModalOpen);
@@ -101,7 +101,7 @@ export const ArticleSnippets = (props: any) => {
       const newSnippet: NewArticleSnippet = {
         content: snippetContent,
         origin: 'TIGUM',
-        topic_id: props.topic.id,
+        topic_id: topics.data[selectedTopic].id,
       };
       const res = await createArticleSnippet(newSnippet);
       dispatch({ type: 'ADD_SNIPPET', payload: res });

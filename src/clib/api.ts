@@ -11,7 +11,7 @@ const DEV = process.env.NODE_ENV === 'development';
 // const DEV = false;
 
 const BASE_API_URL = DEV
-  ? 'http://localhost:8000'
+  ? 'https://bsmithapp.ngrok.io'
   : 'https://app-e3018b9e-b898-41f7-888f-bc656e5af4e1.cleverapps.io';
 
 export const getTopics = async (topicIds: Array<number>) => {

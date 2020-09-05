@@ -5,6 +5,7 @@ import { TopicsList } from './TopicsList';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { logoutUser } from '../../clib/api';
+import classes from '*.module.scss';
 
 const useStyles = createUseStyles({
   sidebarContainer: {
@@ -78,7 +79,7 @@ const useStyles = createUseStyles({
   btnIcon: {
     marginRight: '10px',
     fontSize: 10,
-  },
+  }
 });
 
 interface SideBarProps {

@@ -6,6 +6,7 @@ import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { goto } from '../../util';
 import './styles.css';
+import { SearchBar } from './SearchBar';
 
 interface TopicNavigationBarProps {
   title: string;
@@ -47,18 +48,48 @@ const useStyles = createUseStyles({
   selectedNavIcon: {
     marginRight: 5,
   },
+  searchBarContainer:{
+    flex: 2
+  },
+  titleContainer: {
+    flex: 1.5,
+    display: "flex",
+    flexDirection: "row"
+  },
+  titleTextContainer:{
+    flex: 6,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    maxWidth: 200,
+    display: 'block'
+  },
+  navbarContainer:{
+    display: "flex",
+    flexDirection: "row",
+    backgroundColor: "#1f1f1f"
+  },
+  navItemsContainer:{
+    flex: 2,
+    float: "right",
+    marginTop: 8
+  },
+  navIconContainer:{
+    flex: 1,
+    marginTop: 15,
+    maxWidth: 30
+  },
+  optionsButtonContainer:{
+    flex: 2,
+    marginTop: 10
+  }
 });
 
 const navItems = [
   {
-    title: 'Notes',
-    icon: 'fas fa-pen-square',
-    screen: SCREENS.ALL_NOTES,
-  },
-  {
-    title: 'Videos',
-    icon: 'fab fa-youtube',
-    screen: SCREENS.ALL_VIDEOS,
+    title: 'Links',
+    icon: 'fas fa-link',
+    screen: SCREENS.LINKS,
   },
   {
     title: 'Snippets',
@@ -66,14 +97,21 @@ const navItems = [
     screen: SCREENS.ARTICLE_SNIPPETS,
   },
   {
-    title: 'Links',
-    icon: 'fas fa-link',
-    screen: SCREENS.LINKS,
+    title: 'Videos',
+    icon: 'fab fa-youtube',
+    screen: SCREENS.ALL_VIDEOS,
   },
+  {
+    title: 'Notes',
+    icon: 'fas fa-pen-square',
+    screen: SCREENS.ALL_NOTES,
+  }
 ];
 
 export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
+  
   const [useMobileNavItems, setMobileNavItems] = useState(false);
+  const [showSearch, setShowSearch] = useState(true);
   const [displayMobileNavOptions, setDisplayMobileNavOptions] = useState(false);
   const classes = useStyles();
 
@@ -99,9 +137,14 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
   }, []);
 
   const setNavOptionsType = (width: number) => {
-    if (width < 580) {
+    if(width < 600){
+      setShowSearch(false)
+    } else {
+      setShowSearch(true)
+    }
+    if (width < 1000) {
       setMobileNavItems(true);
-    } else if (width > 580) {
+    } else if (width > 1000) {
       setMobileNavItems(false);
     }
   };
@@ -112,7 +155,7 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
       dispatch({ type: 'DELETE_TOPIC', payload: selectedTopic });
       goto(`/topic/${topics.keys[0]}/notes`);
     } catch (e) {
-      console.log(e);
+      return
     }
   };
 
@@ -141,7 +184,7 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
     return navItems.map((navItem) => {
       return (
         <div
-          className={`btn topic-nav-btn f6 f5-ns dib mr3 mr4-ns ${
+          className={`btn topic-nav-btn fr f6 f5-ns dib mr3 mr4-ns ${
             navItem.screen === topicScreen && 'selected'
           }`}
           key={navItem.title}
@@ -169,15 +212,12 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
             {navItems[topicScreen].title}
           </span>
           <i
-            className={`fas ${
-              displayMobileNavOptions ? 'fa-chevron-up' : 'fa-chevron-down'
-            }`}
+            className={`fas ${displayMobileNavOptions ? 'fa-chevron-up' : 'fa-chevron-down'}`}
           ></i>
         </div>
         {displayMobileNavOptions && (
           <div className={classes.mobileNavDropdown}>
             {navItems.map((item) => {
-              console.log(item.screen);
               if (item.screen === topicScreen) return;
               return (
                 <div
@@ -199,20 +239,27 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
   };
 
   return (
-    <nav
-      className={`dt fixed topic-navigation-bar ${
+    <nav className={`fixed ${classes.navbarContainer} ${
         showSidebar && !useFullWidth ? 'w-80' : 'w-100'
       } border-box ph3 z-2`}
     >
-      <div className='dtc'>
-        <i
-          className='fas fa-bars white pointer pr3'
-          onClick={toggleSidebar}
-        ></i>
-        <h2 id='topic-header'>{title}</h2>
-        <OptionsButton options={topicMenuOptions} />
+      <div className={classes.titleContainer}>
+        <div className={classes.navIconContainer}>
+          <i className='fas fa-bars white pointer pr3' onClick={toggleSidebar}></i>
+        </div>
+        <div className={classes.titleTextContainer}>
+          <h2 id="topic-header">{title}</h2>
+        </div>
+        <div className={classes.optionsButtonContainer}>
+          <OptionsButton options={topicMenuOptions} />
+        </div>
       </div>
-      <div className='dtc v-mid tr'>
+      {showSearch && (
+        <div className={classes.searchBarContainer}>
+          <SearchBar />
+        </div>
+      )}
+      <div className={classes.navItemsContainer}>
         {useMobileNavItems ? renderNavItemsMobile() : renderNavItemsDesktop()}
       </div>
     </nav>

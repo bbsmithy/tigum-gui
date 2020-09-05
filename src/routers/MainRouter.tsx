@@ -5,10 +5,10 @@ import { AllVideos, VideoPlayer } from '../views/video';
 import { Topic } from '../clib/models';
 
 export enum SCREENS {
-  ALL_NOTES,
-  ALL_VIDEOS,
-  ARTICLE_SNIPPETS,
   LINKS,
+  ARTICLE_SNIPPETS,
+  ALL_VIDEOS,
+  ALL_NOTES,
   VIDEO_PLAYER,
   VIEW_NOTE,
   CODE,

@@ -17,7 +17,7 @@ const useStyles = createUseStyles({
     top: 0,
     left: 0,
     width: '45%',
-    padding: 10,
+    padding: 2,
     height: '100%',
   },
   iframeContainer: {

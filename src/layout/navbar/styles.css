@@ -1,14 +1,11 @@
-.topic-navigation-bar {
-  position: fixed;
-  background-color: #1f1f1f;
-}
-
 #topic-header {
   font-weight: 800;
   font-size: 17px;
-  padding: 1px;
   color: white;
-  display: inline-block;
+  overflow: hidden;
+  max-width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .topic-nav-btn {

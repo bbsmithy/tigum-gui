@@ -495,3 +495,19 @@ export const logoutUser = async () => {
     throw e;
   }
 };
+
+export const findByTitle = async (title) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/search/${title}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
+      },
+      credentials: 'include',
+    });
+    return await res.json()
+  } catch (e) {
+    throw e
+  }
+}

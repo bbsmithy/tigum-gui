@@ -64,6 +64,16 @@ const useStyles = createUseStyles({
     },
     resultType: {
         flex: 1
+    },
+    resultLoading: {
+        padding: "20px 10px",
+        borderBottom: "1px solid black"
+    },
+    resultLoadingTitle:{
+        background: "gray",
+        height: 15,
+        borderRadius: 10,
+        width: "50%"
     }
 });
 
@@ -117,6 +127,17 @@ const SearchResult = ({ result, reset }) => {
     )
 }
 
+const ResultLoading = () => {
+
+    const classses = useStyles()
+
+    return (
+        <div className={classses.resultLoading}>
+            <div className={classses.resultLoadingTitle}></div>
+        </div>
+    )
+}
+
 
 const SearchModal = ({results, loading, reset }) => {
     const classes = useStyles();
@@ -124,7 +145,13 @@ const SearchModal = ({results, loading, reset }) => {
     return (
         <div className={classes.searchModal}>
             {!loading && results && results.map((result) => <SearchResult result={result} reset={reset} />)}
-            {loading && <div>loading</div>}
+            {loading && (
+                <div>
+                    <ResultLoading />
+                    <ResultLoading />
+                    <ResultLoading />
+                </div>
+            )}
         </div>
     )
 }

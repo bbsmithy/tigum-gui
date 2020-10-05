@@ -66,6 +66,7 @@ export const MainContent = (props) => {
   ] = useStateValue();
 
   const topic = data[selectedTopic];
+  const isMobile = window.innerWidth < 960
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
@@ -105,7 +106,12 @@ export const MainContent = (props) => {
     }
     if (pathVars.length === 4) {
       const newTopicScreen = resourceTypeToScreen(resourceType);
-      dispatch({ type: FULL_SCREEN, payload: false });
+      dispatch({ type: "SHOW_TOPIC_NAVBAR", payload: true })
+      if(isMobile){
+        dispatch({ type: HIDE_SIDEBAR, payload: { useFullWidth: true } })
+      } else {
+        dispatch({ type: SHOW_SIDEBAR, payload: { useFullWidth: false } })
+      }
       dispatch({
         type: SET_TOPIC_SCREEN,
         payload: newTopicScreen,
@@ -132,19 +138,9 @@ export const MainContent = (props) => {
   }, [path]);
 
   useEffect(() => {
-    // setSidebarDisplay(window.innerWidth);
+    setSidebarDisplay(window.innerWidth);
     fetchTopics();
-    // addListeners();
-    // return () => removeListeners();
   }, []);
-
-  // const addListeners = () => {
-  //   window.addEventListener('resize', handleWindowResize);
-  // };
-
-  // const removeListeners = () => {
-  //   window.removeEventListener('resize', handleWindowResize);
-  // };
 
   const onClickCreateTopic = async () => {
     try {

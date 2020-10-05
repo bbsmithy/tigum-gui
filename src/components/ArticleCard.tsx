@@ -37,7 +37,7 @@ export const ArticleCard = (props: ArticleCardProps) => {
   };
 
   return (
-    <article className='center shadow-card mw5 mw7-ns hidden br2 ba b--black-10 text mv3'>
+    <article className='shadow-card hidden br2 ba b--black-10 text mv3'>
       <div className='pa3'>
         <p className='f6 f5-ns lh-copy white'>{props.content}</p>
         <a href={props.origin} className='i f6'>

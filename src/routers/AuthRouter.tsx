@@ -1,5 +1,5 @@
 import React from 'react';
-import { Login, SignUp } from '../views/auth';
+import { Login } from '../views/auth';
 
 export enum AUTH_SCREENS {
   SIGNUP,
@@ -13,8 +13,6 @@ type NoteRouterType = {
 
 export const AuthRouter = ({ screen, navigate }: NoteRouterType) => {
   switch (screen) {
-    case AUTH_SCREENS.SIGNUP:
-      return <SignUp navigate={navigate} />;
     case AUTH_SCREENS.LOGIN:
       return <Login navigate={navigate} />;
     default:

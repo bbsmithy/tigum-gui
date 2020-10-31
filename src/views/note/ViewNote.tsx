@@ -1,39 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
 import { createUseStyles } from 'react-jss';
-
 import { deleteNote, getNotes } from '../../clib/api';
 import { getFile, uploadToBucket } from '../../clib/S3';
 import { goto } from '../../util';
 import { useStateValue } from '../../state/StateProvider';
 import { NoteHeader } from '../../components/NoteHeader';
+import ResourceDialog from '../../components/ResourceDialog';
 import { notify } from '../../state/Actions';
+import { CursorState } from "../../types";
 
-const useStyles = createUseStyles(() => ({
-  btn: {
-    backgroundColor: '#333',
-    color: 'white',
-    padding: '3px 10px 3px 10px',
-    border: 'none',
-    fontSize: 12,
-    borderRadius: 4,
-    height: 30,
-    marginRight: 4,
-    cursor: 'pointer',
-    display: 'inline',
-  },
-  deleteBtn: {
-    float: 'right',
-  },
-  header: {
-    display: 'inline',
-    marginLeft: 10,
-  },
-  headerContainer: {
-    marginBottom: 10,
-    marginTop: 10,
-  },
-}));
 
 const theme = {
   toolbar: {
@@ -51,20 +27,47 @@ const theme = {
 };
 
 export const ViewNote = (props: any) => {
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
   const [md, setNoteMD] = useState<any>('');
   const [loadingHTML, setLoadingHTML] = useState(true);
   const [saving, setSaving] = useState(false);
-
-  const classes = useStyles();
-
-  // @ts-ignore
-  const [state, dispatch] = useStateValue();
-
+  const [cmdControl, setCMDControl] = useState<CursorState>();
+  const cmRef = useRef()
   const {
     content: { selectedResourceId, notes, selectedTopic, topics },
   } = state;
-
   const note = notes.data ? notes.data[selectedResourceId] : false;
+
+  useEffect(() => {
+    if (!note && notes.keys.length === 0) {
+      fetchNotes();
+    } else {
+      getNoteData(note.id);
+    }
+    document.addEventListener('keydown', commandListener);
+    return () => {
+      document.removeEventListener('keydown', commandListener)
+    }
+  }, []);
+
+  const closeCMDDialog = () => {
+    setCMDControl(null)
+    document.removeEventListener("click", closeCMDDialog)
+  }
+
+  const commandListener = (event) => {
+    if (event.ctrlKey && event.key === '/') {
+      if (cmRef.current !== undefined) {
+        // @ts-ignore
+        const position = cmRef.current.cursorCoords(true)
+        // @ts-ignore
+        const cursorLine = cmRef.current.getCursor().line
+        setCMDControl({ position, cursorLine })
+        document.addEventListener("click", closeCMDDialog)
+      }
+    }
+  }
 
   const getNoteData = async (noteId: number) => {
     try {
@@ -87,14 +90,6 @@ export const ViewNote = (props: any) => {
       console.log(e);
     }
   };
-
-  useEffect(() => {
-    if (!note && notes.keys.length === 0) {
-      fetchNotes();
-    } else {
-      getNoteData(note.id);
-    }
-  }, []);
 
   const save = async (htmlFromMDEditor) => {
     try {
@@ -139,7 +134,7 @@ export const ViewNote = (props: any) => {
   };
 
   const codeMirrorHandle = (cm) => {
-    console.log(cm);
+    cmRef.current = cm
   };
 
   if (note) {
@@ -167,6 +162,9 @@ export const ViewNote = (props: any) => {
             highlightTheme='agate'
             theme={theme}
           />
+        )}
+        {cmdControl && (
+          <ResourceDialog {...cmdControl} />
         )}
       </div>
     );

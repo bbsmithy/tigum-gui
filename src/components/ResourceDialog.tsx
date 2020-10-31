@@ -6,29 +6,28 @@ import { CursorState } from "../types"
 const useStyles = createUseStyles({
     cmdInput: {
       position: "absolute",
-      backgroundColor: "#474646 !important",
-      boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
-      border: "1px solid white",
       zIndex: 10,
       borderRadius: 5,
-      width: 250,
-      height: 300,
-      padding: 5,
-      overflow: "hidden"
+      width: 300,
     },
     searchResourceInput: {
       width: "100%",
-      borderRadius: 5,
+      borderRadius: "4px 4px 0px 0px",
       border: "1px solid white",
       '&:focus': {
         outline: 'none'
       },
       fontSize: 12,
-      padding: 5
+      padding: 5,
+      height: 30
     },
     resultsContainer:{
         overflow: "scroll",
-        height: "100%"
+        padding: 5,
+        height: 300,
+        border: "1px solid white",
+        borderRadius: "px 0px 4px 4px",
+        backgroundColor: "#474646 !important",
     },
     result: {
         padding: 10,
@@ -56,13 +55,17 @@ const ResourceDialog = ({ position, cursorLine } : CursorState) => {
     const onChangeSearch = (evt) => {
         clearTimeout(searchTimeOut)
         _setQuery(evt.target.value)
-        searchTimeOut = setTimeout(() => {
-            findByTitle(queryRef.current).then((res) => {
-                setResults(res)
-            }).catch(() => {
-
-            })
-        }, 400)
+        if (evt.target.value.trim() === "") {
+            setResults(null)
+        } else {
+            searchTimeOut = setTimeout(() => {
+                findByTitle(queryRef.current).then((res) => {
+                    setResults(res)
+                }).catch(() => {
+                    setResults(null)
+                })
+            }, 400)
+        }
     }
 
     const selectResource = (resource) => {
@@ -75,8 +78,7 @@ const ResourceDialog = ({ position, cursorLine } : CursorState) => {
             style={{
               left: position.left,
               right: position.right,
-              top: position.top + 25,
-              bottom: position.bottom
+              top: position.top
             }}
           >
             <input
@@ -86,20 +88,23 @@ const ResourceDialog = ({ position, cursorLine } : CursorState) => {
                 className={classes.searchResourceInput}
                 onChange={onChangeSearch}
                 value={query}
+                style={{ borderRadius: results ? "4px 4px 0px 0px" : 4 }}
             >
             </input>
-            <div className={classes.resultsContainer}>
-                {results && results.map((resource) => {
-                    return (
-                        <div className={classes.result} onClick={(evt) => {
-                            evt.stopPropagation()
-                            selectResource(resource)}
-                        }>
-                            {resource.title}
-                        </div>
-                    )
-                })}
-            </div>
+            {results && (
+                <div className={classes.resultsContainer}>
+                    {results.map((resource) => {
+                        return (
+                            <div className={classes.result} onClick={(evt) => {
+                                evt.stopPropagation()
+                                selectResource(resource)}
+                            }>
+                                {resource.title}
+                            </div>
+                        )
+                    })}
+                </div>
+            )}
         </div>
     )
 }

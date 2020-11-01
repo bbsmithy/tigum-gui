@@ -10,11 +10,11 @@ export type VideoPlayerProps = {
 
 
 export type CursorState = { 
-  position: {
+  absPos: {
       bottom: number,
       left: number,
       top: number,
       right: number
     },
-  cursorLine: number
+  cursorPos: any
 }

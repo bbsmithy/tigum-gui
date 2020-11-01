@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles, useTheme } from 'react-jss';
 import { goto } from '../../util';
 import { getVideos } from '../../clib/api';
 import { NoteHeader } from '../../components/NoteHeader';
+import ResourceDialog from '../../components/ResourceDialog';
 import { uploadToBucket, getFile } from '../../clib/S3';
 import { notify } from '../../state/Actions';
+import { CursorState } from "../../types";
 
 const useStyles = createUseStyles({
   videoTitleContainer: {
@@ -76,9 +78,43 @@ export const VideoPlayer = () => {
   const [uploadingNote, setUploadingNote] = useState(false);
   const [noteMd, setNoteMd] = useState<any>();
   const [loadingNote, setLoadingNote] = useState(true);
+  const [cmdControl, setCMDControl] = useState<CursorState>();
+  const cmRef = useRef()
 
   const classes = useStyles();
   const video = videos.data ? videos.data[selectedResourceId] : false;
+
+  
+  useEffect(() => {
+    document.addEventListener('keydown', commandListener);
+    return () => {
+      document.removeEventListener('keydown', commandListener)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (videos.length === 0) {
+      fetchVideos();
+    } else if (video) {
+      fetchNoteData(`${video.id}_video.md`);
+    }
+  }, [video, videos]);
+
+  const closeCMDDialog = () => {
+    setCMDControl(null)
+    document.removeEventListener("click", closeCMDDialog)
+  }
+
+  const commandListener = (event) => {
+    if (event.ctrlKey && event.key === '/') {
+        // @ts-ignore
+        const absPos = cmRef.current.cursorCoords(true)
+        // @ts-ignore
+        const cursorPos = cmRef.current.getCursor()
+        setCMDControl({ absPos, cursorPos })
+        document.addEventListener("click", closeCMDDialog)
+    }
+  }
 
   const fetchNoteData = async (file) => {
     try {
@@ -101,18 +137,6 @@ export const VideoPlayer = () => {
       notify(dispatch, 'Could not retrieve video', 'error', 'right');
     }
   };
-
-  useEffect(() => {
-    if (video) {
-      fetchNoteData(`${video.id}_video.md`);
-    }
-  }, [video]);
-
-  useEffect(() => {
-    if (videos.length === 0) {
-      fetchVideos();
-    }
-  }, [videos]);
 
   const save = async (md) => {
     if (md) {
@@ -144,7 +168,7 @@ export const VideoPlayer = () => {
   };
 
   const codeMirrorHandle = (cm) => {
-    console.log(cm);
+    cmRef.current = cm
   };
 
   const goBack = () => {
@@ -195,6 +219,9 @@ export const VideoPlayer = () => {
             className={classes.iframeContainer}
           ></div>
         </>
+      )}
+      {cmdControl && (
+          <ResourceDialog selection={cmdControl} cm={cmRef.current} />
       )}
     </div>
   );

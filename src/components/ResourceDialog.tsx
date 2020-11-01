@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { findByTitle } from '../clib/api';
 import { CursorState } from "../types"
+import ResultTypeIcon from './ResultTypeIcon';
 
 const useStyles = createUseStyles({
     cmdInput: {
@@ -19,28 +20,42 @@ const useStyles = createUseStyles({
       },
       fontSize: 12,
       padding: 5,
-      height: 30
+      height: 35,
+      boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)"
     },
     resultsContainer:{
         overflow: "scroll",
-        padding: 5,
-        height: 300,
+        height: 200,
         border: "1px solid white",
-        borderRadius: "px 0px 4px 4px",
+        borderRadius: "0px 0px 4px 4px",
         backgroundColor: "#474646 !important",
     },
     result: {
-        padding: 10,
+        padding: 8,
         fontSize: 12,
         color: "white",
         borderBottom: "1px solid white",
-        cursor: "pointer"
+        cursor: "pointer",
+        "&:hover":{
+            backgroundColor: "#246bf8"
+        }
+    },
+    resTitle: {
+        marginLeft: 10
     }
 });
 
 let searchTimeOut;
 
-const ResourceDialog = ({ position, cursorLine } : CursorState) => {
+type Props = {
+    selection: CursorState,
+    cm: any
+}
+
+// TODOs
+// Write to cm based off of resource type
+
+const ResourceDialog = ({selection: { absPos, cursorPos }, cm}: Props) => {
     const [results, setResults] = useState(null)
     const [query, setQuery] = useState()
     const classes = useStyles()
@@ -61,30 +76,52 @@ const ResourceDialog = ({ position, cursorLine } : CursorState) => {
             searchTimeOut = setTimeout(() => {
                 findByTitle(queryRef.current).then((res) => {
                     setResults(res)
-                }).catch(() => {
+                }).catch((err) => {
+                    console.log(err)
                     setResults(null)
                 })
-            }, 400)
+            }, 200)
         }
     }
 
     const selectResource = (resource) => {
-        alert(resource.title)
+        switch(resource.result_type){
+            case 'link': {
+                const linkMD = `[${resource.title}](${resource.misc})`
+                cm.replaceRange(linkMD, cursorPos)
+                break
+            }
+            case 'note':{
+                const noteMD = `[${resource.title}](https://tigum.io/topic/${resource.topic_id}/${resource.resource_id})`
+                cm.replaceRange(noteMD, cursorPos)
+                break
+            }
+            case 'snippet': {
+                const snippetMD = `> ${resource.title} <a href="${resource.misc}">Source</a>`
+                cm.replaceRange(snippetMD, cursorPos)
+                break
+            }
+            case 'video': {
+                cm.replaceRange(resource.misc, cursorPos)
+                break
+            }
+        }
     }
 
     return (
         <div
             className={classes.cmdInput}
             style={{
-              left: position.left,
-              right: position.right,
-              top: position.top
+              left: absPos.left,
+              right: absPos.right,
+              top: absPos.top,
+              bottom: absPos.bottom
             }}
           >
             <input
                 type="text"
                 autoFocus
-                placeholder="Search for resource/flagpole"
+                placeholder="Search for resource or flagpole"
                 className={classes.searchResourceInput}
                 onChange={onChangeSearch}
                 value={query}
@@ -99,7 +136,10 @@ const ResourceDialog = ({ position, cursorLine } : CursorState) => {
                                 evt.stopPropagation()
                                 selectResource(resource)}
                             }>
-                                {resource.title}
+                                <ResultTypeIcon type={resource.result_type} />
+                                <span className={classes.resTitle}>
+                                    {resource.title}
+                                </span>
                             </div>
                         )
                     })}

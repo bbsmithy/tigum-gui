@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
-import { createUseStyles } from 'react-jss';
 import { deleteNote, getNotes } from '../../clib/api';
 import { getFile, uploadToBucket } from '../../clib/S3';
 import { goto } from '../../util';
@@ -60,10 +59,10 @@ export const ViewNote = (props: any) => {
     if (event.ctrlKey && event.key === '/') {
       if (cmRef.current !== undefined) {
         // @ts-ignore
-        const position = cmRef.current.cursorCoords(true)
+        const absPos = cmRef.current.cursorCoords(true)
         // @ts-ignore
-        const cursorLine = cmRef.current.getCursor().line
-        setCMDControl({ position, cursorLine })
+        const cursorPos = cmRef.current.getCursor()
+        setCMDControl({ absPos, cursorPos })
         document.addEventListener("click", closeCMDDialog)
       }
     }
@@ -164,7 +163,7 @@ export const ViewNote = (props: any) => {
           />
         )}
         {cmdControl && (
-          <ResourceDialog {...cmdControl} />
+          <ResourceDialog selection={cmdControl} cm={cmRef.current} />
         )}
       </div>
     );

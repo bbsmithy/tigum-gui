@@ -178,13 +178,6 @@ export const VideoPlayer = () => {
   return (
     <div className='center w-100 ph2 h-100 video-page-container'>
       <div className={classes.videoNotesContainer} id='video-notes-container'>
-        <div>
-          <NoteHeader
-            onBack={goBack}
-            title={video.title}
-            saving={uploadingNote}
-          />
-        </div>
         {noteMd && !loadingNote && (
           <MarkdownEditor
             initialValue={noteMd}
@@ -196,6 +189,8 @@ export const VideoPlayer = () => {
             useHighlightJS
             highlightTheme='agate'
             theme={theme}
+            title={video.title}
+            onBack={goBack}
           />
         )}
         {!noteMd && !loadingNote && (
@@ -209,6 +204,8 @@ export const VideoPlayer = () => {
             useHighlightJS
             highlightTheme='agate'
             theme={theme}
+            title={video.title}
+            onBack={goBack}
           />
         )}
       </div>

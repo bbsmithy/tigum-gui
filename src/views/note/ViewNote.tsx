@@ -19,7 +19,7 @@ const theme = {
     disabledBtnBackground: 'gray',
     disabledBtnColor: '#333',
   },
-  preview: { background: '#474646', color: 'white' },
+  preview: { background: '#333', color: 'white' },
   editor: { background: '#333', color: 'white' },
   cursorColor: 'white',
   height: '85vh',
@@ -139,16 +139,6 @@ export const ViewNote = (props: any) => {
   if (note) {
     return (
       <div className='z-1 center w-100-m w-70-l w-100' id='view-note-container'>
-        {note && (
-          <div className='mt2'>
-            <NoteHeader
-              onBack={goBack}
-              onDelete={onClickDelete}
-              title={note.title}
-              saving={saving}
-            />
-          </div>
-        )}
         {loadingHTML && <i className='fas fa-circle-notch fa-spin'></i>}
         {!loadingHTML && (
           <MarkdownEditor
@@ -160,6 +150,9 @@ export const ViewNote = (props: any) => {
             useHighlightJS
             highlightTheme='agate'
             theme={theme}
+            onBack={goBack}
+            title={note.title}
+            defaultView="side-by-side"
           />
         )}
         {cmdControl && (

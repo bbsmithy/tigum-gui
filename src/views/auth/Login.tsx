@@ -42,7 +42,7 @@ export const Login = (props) => {
     <main className='pa4 white'>
       <div className='measure center'>
         <img src={require('../../logo-tigum.png')} className='w-33' />
-        <p>A tool building your own personal online university</p>
+        <p>Your personal knowledge base for the web</p>
         <fieldset id='sign_up' className='ba b--transparent ph0 mh0'>
           <div className='mt3 white'>
             <label className='db fw6 lh-copy f6'>Email</label>

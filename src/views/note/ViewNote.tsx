@@ -8,6 +8,7 @@ import { NoteHeader } from '../../components/NoteHeader';
 import ResourceDialog from '../../components/ResourceDialog';
 import { notify } from '../../state/Actions';
 import { CursorState } from "../../types";
+import { createUseStyles } from 'react-jss';
 
 
 const theme = {
@@ -22,8 +23,20 @@ const theme = {
   preview: { background: '#333', color: 'white' },
   editor: { background: '#333', color: 'white' },
   cursorColor: 'white',
-  height: '85vh',
+  height: '90vh'
 };
+
+const useStyles = createUseStyles({
+  loadingSpinner: {
+    fontSize: 40,
+    marginTop: "30%"
+  },
+  loadingSpinnerContainer: {
+    textAlign: "center",
+    height: window.innerHeight,
+    width: "100%"
+  }
+})
 
 export const ViewNote = (props: any) => {
   // @ts-ignore
@@ -33,6 +46,8 @@ export const ViewNote = (props: any) => {
   const [saving, setSaving] = useState(false);
   const [cmdControl, setCMDControl] = useState<CursorState>();
   const cmRef = useRef()
+  const classes = useStyles()
+
   const {
     content: { selectedResourceId, notes, selectedTopic, topics },
   } = state;
@@ -139,7 +154,11 @@ export const ViewNote = (props: any) => {
   if (note) {
     return (
       <div className='z-1 center w-100-m w-70-l w-100' id='view-note-container'>
-        {loadingHTML && <i className='fas fa-circle-notch fa-spin'></i>}
+        {loadingHTML && (
+          <div className={classes.loadingSpinnerContainer}>
+            <i className={`fas fa-circle-notch fa-spin white ${classes.loadingSpinner}`}></i>
+          </div>
+        )}
         {!loadingHTML && (
           <MarkdownEditor
             initialValue={md}
@@ -152,7 +171,7 @@ export const ViewNote = (props: any) => {
             theme={theme}
             onBack={goBack}
             title={note.title}
-            defaultView="side-by-side"
+            defaultView={window.innerWidth > 500 ? "side-by-side" : "preview"}
           />
         )}
         {cmdControl && (

@@ -66,7 +66,7 @@ const theme = {
   preview: { background: '#474646', color: 'white' },
   editor: { background: '#333', color: 'white' },
   cursorColor: 'white',
-  height: '84vh',
+  height: '95vh',
 };
 
 export const VideoPlayer = () => {
@@ -96,9 +96,30 @@ export const VideoPlayer = () => {
     if (videos.length === 0) {
       fetchVideos();
     } else if (video) {
+      // setupVideoPlayer()
       fetchNoteData(`${video.id}_video.md`);
     }
   }, [video, videos]);
+
+  // const setupVideoPlayer = () => {
+  //   // 2. This code loads the IFrame Player API code asynchronously.
+  //   var tag = document.createElement('script');
+
+  //   tag.src = "https://www.youtube.com/iframe_api";
+  //   var firstScriptTag = document.getElementsByTagName('script')[0];
+  //   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  //   var player;
+  //   player = new YT.Player('player', {
+  //     height: '390',
+  //     width: '640',
+  //     videoId: 'M7lc1UVf-VE',
+  //     events: {
+  //       'onReady': onPlayerReady,
+  //       'onStateChange': onPlayerStateChange
+  //     }
+  //   });
+  // }
 
   const closeCMDDialog = () => {
     setCMDControl(null)
@@ -106,13 +127,26 @@ export const VideoPlayer = () => {
   }
 
   const commandListener = (event) => {
-    if (event.ctrlKey && event.key === '/') {
-        // @ts-ignore
-        const absPos = cmRef.current.cursorCoords(true)
-        // @ts-ignore
-        const cursorPos = cmRef.current.getCursor()
-        setCMDControl({ absPos, cursorPos })
-        document.addEventListener("click", closeCMDDialog)
+    if (event.ctrlKey) {
+      switch (event.key) {
+        case "/": {
+          // @ts-ignore
+          const absPos = cmRef.current.cursorCoords(true)
+          // @ts-ignore
+          const cursorPos = cmRef.current.getCursor()
+          setCMDControl({ absPos, cursorPos })
+          document.addEventListener("click", closeCMDDialog)
+          break;
+        }
+        // case "h": {
+        //   var ytIframe = document.getElementsByTagName("iframe")[0]
+        //   var player = ytIframe.contentWindow.document.getElementById('movie_player');
+        //   // @ts-ignore
+        //   var time = player.getCurrentTime();
+        //   alert(time)
+        //   break;
+        // }
+      }   
     }
   }
 

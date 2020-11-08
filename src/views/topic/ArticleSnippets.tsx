@@ -29,6 +29,10 @@ const useStyles = createUseStyles({
   },
   snippetLoading: {
     width: "85%",
+    maxWidth: 1000,
+    '@media (max-width: 600px)':{
+      width: "100%"
+    },
     margin: "auto",
     marginTop: 15,
     padding: "8px 15px"

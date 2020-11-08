@@ -10,6 +10,10 @@ const useStyles = createUseStyles({
   snippet: {
     fontFamily: "Arial",
     width: "85%",
+    maxWidth: 1000,
+    '@media (max-width: 600px)':{
+      width: "100%"
+    },
     margin: "auto",
     marginTop: 15,
     padding: "8px 15px"
@@ -18,7 +22,8 @@ const useStyles = createUseStyles({
     color: "white",
   },
   sourceContainer: {
-    flex: 1
+    flex: 1,
+    overflow: "hidden"
   },
   deleteBtn: {
     borderRadius: 3,

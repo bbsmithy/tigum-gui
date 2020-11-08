@@ -24,8 +24,14 @@ const useStyles = createUseStyles({
   snippetBox: {
     height: 250,
   },
-  snippetsContainer:{
+  snippetsContainer: {
     paddingBottom: 200
+  },
+  snippetLoading: {
+    width: "85%",
+    margin: "auto",
+    marginTop: 15,
+    padding: "8px 15px"
   }
 });
 
@@ -54,8 +60,7 @@ const Snippets = (props) => {
     }
   } else {
     return (
-      <article className='shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3'>
-        <div className='ph3 pv2'>
+      <article className={`shadow-card mw5 mw7-ns hidden br3 ba dark-gray b--black-10  mv3 ${classes.snippetLoading}`}>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
@@ -64,7 +69,6 @@ const Snippets = (props) => {
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.linkLoading}></div>
-        </div>
       </article>
     );
   }

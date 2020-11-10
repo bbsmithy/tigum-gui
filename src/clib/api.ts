@@ -511,3 +511,19 @@ export const findByTitle = async (title) => {
     throw e
   }
 }
+
+export const findByTopicId = async (topic_id) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/searchByTopic/${topic_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
+      },
+      credentials: 'include',
+    });
+    return await res.json()
+  } catch (e) {
+    throw e
+  }
+}

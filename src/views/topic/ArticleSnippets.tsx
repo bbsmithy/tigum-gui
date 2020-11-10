@@ -23,6 +23,9 @@ const useStyles = createUseStyles({
   },
   snippetBox: {
     height: 250,
+    color: "white",
+    border: "1px solid white",
+    resize: "none"
   },
   snippetsContainer: {
     paddingBottom: 200
@@ -133,9 +136,14 @@ export const ArticleSnippets = (props: any) => {
         onClickAction={createSnippet}
         toggleModal={toggleModal}
       >
-        <form className='w-100 black-80'>
+        <input
+          type='text'
+          placeholder='Title'
+          id='topic-title-input'
+        />
+        <form className='w-100'>
           <textarea
-            className={`${classes.snippetBox} db border-box hover-black w-100 ba b--black-20 pa2 br2 mb2`}
+            className={`${classes.snippetBox} db border-box hover-black w-100 pa2 br2 mb2`}
             onChange={onChangeSnippetContent}
           ></textarea>
         </form>

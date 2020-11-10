@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { createUseStyles } from 'react-jss'
-import { findByTitle } from '../clib/api';
+import { findByTitle, findByTopicId } from '../clib/api';
 import { CursorState } from "../types"
 import ResultTypeIcon from './ResultTypeIcon';
 
@@ -49,17 +49,27 @@ let searchTimeOut;
 
 type Props = {
     selection: CursorState,
-    cm: any
+    cm: any,
+    topic_id: number
 }
 
 // TODOs
 // Write to cm based off of resource type
 
-const ResourceDialog = ({selection: { absPos, cursorPos }, cm}: Props) => {
+const ResourceDialog = ({selection: { absPos, cursorPos }, cm, topic_id}: Props) => {
     const [results, setResults] = useState(null)
     const [query, setQuery] = useState()
     const classes = useStyles()
     const queryRef = useRef()
+
+    useEffect(() => {
+        findByTopicId(topic_id).then((res)=>{
+            setResults(res)
+        }).catch(() => {
+            return
+        })
+    }, [])
+
 
     const _setQuery = (term) => {
         setQuery(term)

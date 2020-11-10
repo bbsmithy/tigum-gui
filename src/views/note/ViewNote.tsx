@@ -175,7 +175,7 @@ export const ViewNote = (props: any) => {
           />
         )}
         {cmdControl && (
-          <ResourceDialog selection={cmdControl} cm={cmRef.current} />
+          <ResourceDialog selection={cmdControl} cm={cmRef.current} topic_id={selectedTopic} />
         )}
       </div>
     );

@@ -138,14 +138,6 @@ export const VideoPlayer = () => {
           document.addEventListener("click", closeCMDDialog)
           break;
         }
-        // case "h": {
-        //   var ytIframe = document.getElementsByTagName("iframe")[0]
-        //   var player = ytIframe.contentWindow.document.getElementById('movie_player');
-        //   // @ts-ignore
-        //   var time = player.getCurrentTime();
-        //   alert(time)
-        //   break;
-        // }
       }   
     }
   }
@@ -252,7 +244,7 @@ export const VideoPlayer = () => {
         </>
       )}
       {cmdControl && (
-          <ResourceDialog selection={cmdControl} cm={cmRef.current} />
+          <ResourceDialog selection={cmdControl} cm={cmRef.current} topic_id={selectedTopic} />
       )}
     </div>
   );

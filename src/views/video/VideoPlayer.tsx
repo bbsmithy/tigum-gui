@@ -193,7 +193,7 @@ export const VideoPlayer = () => {
   const [noteMd, setNoteMd] = useState<any>();
   const [loadingNote, setLoadingNote] = useState(true);
   const [cmdControl, setCMDControl] = useState<CursorState>();
-  const [isMobile, setIsMobile] = useState(true)
+  const [isMobile, setIsMobile] = useState(null)
   const cmRef = useRef()
   const classes = useStyles();
   const video = videos.data ? videos.data[selectedResourceId] : false;
@@ -202,6 +202,11 @@ export const VideoPlayer = () => {
 
   
   useEffect(() => {
+    if (window.innerWidth < 1108) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
     window.addEventListener("resize", checkDisplaySize)
     document.addEventListener('keydown', commandListener)
     return () => {
@@ -219,7 +224,7 @@ export const VideoPlayer = () => {
   }, [video, videos]);
 
   const checkDisplaySize = (evt) => {
-    if (evt.target.innerWidth < 1210) {
+    if (evt.target.innerWidth < 1108) {
       setIsMobile(true)
     } else {
       setIsMobile(false)

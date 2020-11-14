@@ -97,17 +97,34 @@ const MobileLayout = ({
       </div>
       <div dangerouslySetInnerHTML={{ __html: video.iframe }} className={classes.iframeMobileContainer}>
       </div>
-      <MarkdownEditor
-        initialValue={noteMd}
-        onSave={onSave}
-        onDelete={onDelete}
-        codeMirrorHandle={codeMirrorHandle}
-        spellChecker={false}
-        toolbarOptions={toolbarOptions}
-        useHighlightJS
-        highlightTheme='agate'
-        theme={theme}
-      />
+      {noteMd && !loadingNote && (
+          <MarkdownEditor
+            initialValue={noteMd}
+            onSave={onSave}
+            onDelete={onDelete}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            toolbarOptions={toolbarOptions}
+            useHighlightJS
+            highlightTheme='agate'
+            theme={theme}
+          />
+        )}
+        {!noteMd && !loadingNote && (
+          <MarkdownEditor
+            initialValue={''}
+            onSave={onSave}
+            onDelete={onDelete}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            toolbarOptions={toolbarOptions}
+            useHighlightJS
+            highlightTheme='agate'
+            theme={theme}
+            title={video.title}
+            onBack={goBack}
+          />
+        )}
     </>
   )
 

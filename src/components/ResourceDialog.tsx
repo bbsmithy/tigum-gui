@@ -53,9 +53,6 @@ type Props = {
     topic_id: number
 }
 
-// TODOs
-// Write to cm based off of resource type
-
 const ResourceDialog = ({selection: { absPos, cursorPos }, cm, topic_id}: Props) => {
     const [results, setResults] = useState(null)
     const [query, setQuery] = useState()

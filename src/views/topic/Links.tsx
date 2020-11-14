@@ -50,7 +50,7 @@ export const Links = (props: any) => {
   const fetchLinks = async (topic_content: Array<number>) => {
     try {
       const res = await getLinks(topic_content);
-      dispatch({ type: 'SET_LINKS', payload: res.reverse() });
+      dispatch({ type: 'SET_LINKS', payload: res });
       setLoading(false);
     } catch (e) {
       dispatch({ type: 'SET_LINKS', payload: [] });

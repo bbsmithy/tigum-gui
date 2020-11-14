@@ -3,7 +3,7 @@ import { MarkdownEditor } from 'devkeep-md-editor';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles, useTheme } from 'react-jss';
 import { goto } from '../../util';
-import { getVideos } from '../../clib/api';
+import { getVideos, deleteVideo } from '../../clib/api';
 import { NoteHeader } from '../../components/NoteHeader';
 import ResourceDialog from '../../components/ResourceDialog';
 import { uploadToBucket, getFile } from '../../clib/S3';
@@ -29,11 +29,31 @@ const useStyles = createUseStyles({
     width: '55%',
     height: '100%',
   },
+  iframeMobileContainer:{
+    height: 300,
+    marginBottom: 3
+  },
   title: {
     padding: 0,
     margin: '5px 0px 12px 0px',
     color: 'white',
   },
+  header: {
+    background: "#333",
+    width: "100%",
+    display: "flex",
+    color: "white",
+    fontSize: 13,
+    padding: 10
+  },
+  backBtn: {
+    padding: 5,
+    cursor: "pointer",
+    marginRight: 10
+  },
+  videoTitleMobile: {
+    padding: 4
+  }
 });
 
 const toolbarOptions = [
@@ -53,6 +73,100 @@ const toolbarOptions = [
   'preview',
   '|',
 ];
+
+const MobileLayout = ({
+  noteMd,
+  loadingNote,
+  onSave,
+  onDelete,
+  codeMirrorHandle,
+  video,
+  goBack
+ }) => {
+
+  const classes = useStyles()
+  const [showNotes, setShowNotes] = useState(false)
+
+  return (
+    <>
+      <div className={classes.header}>
+        <div className={classes.backBtn} onClick={goBack}>
+          <i className="fas fa-arrow-left"></i>
+        </div>
+        <div className={classes.videoTitleMobile}>{video.title}</div>
+      </div>
+      <div dangerouslySetInnerHTML={{ __html: video.iframe }} className={classes.iframeMobileContainer}>
+      </div>
+      <MarkdownEditor
+        initialValue={noteMd}
+        onSave={onSave}
+        onDelete={onDelete}
+        codeMirrorHandle={codeMirrorHandle}
+        spellChecker={false}
+        toolbarOptions={toolbarOptions}
+        useHighlightJS
+        highlightTheme='agate'
+        theme={theme}
+      />
+    </>
+  )
+
+}
+
+const DesktopLayout = ({
+  noteMd,
+  loadingNote,
+  onSave,
+  onDelete,
+  codeMirrorHandle,
+  video,
+  goBack
+}) => {
+  const classes = useStyles()
+  return (
+    <>
+      <div className={classes.videoNotesContainer} id='video-notes-container'>
+        {noteMd && !loadingNote && (
+          <MarkdownEditor
+            initialValue={noteMd}
+            onSave={onSave}
+            onDelete={onDelete}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            toolbarOptions={toolbarOptions}
+            useHighlightJS
+            highlightTheme='agate'
+            theme={theme}
+            title={video.title}
+            onBack={goBack}
+          />
+        )}
+        {!noteMd && !loadingNote && (
+          <MarkdownEditor
+            initialValue={''}
+            onSave={onSave}
+            onDelete={onDelete}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            toolbarOptions={toolbarOptions}
+            useHighlightJS
+            highlightTheme='agate'
+            theme={theme}
+            title={video.title}
+            onBack={goBack}
+          />
+        )}
+      </div>
+      <div
+        dangerouslySetInnerHTML={{ __html: video.iframe }}
+        className={classes.iframeContainer}
+      >
+      </div>
+    </>
+  )
+}
+
+
 
 const theme = {
   toolbar: {
@@ -79,16 +193,20 @@ export const VideoPlayer = () => {
   const [noteMd, setNoteMd] = useState<any>();
   const [loadingNote, setLoadingNote] = useState(true);
   const [cmdControl, setCMDControl] = useState<CursorState>();
+  const [isMobile, setIsMobile] = useState(true)
   const cmRef = useRef()
-
   const classes = useStyles();
   const video = videos.data ? videos.data[selectedResourceId] : false;
 
+
+
   
   useEffect(() => {
-    document.addEventListener('keydown', commandListener);
+    window.addEventListener("resize", checkDisplaySize)
+    document.addEventListener('keydown', commandListener)
     return () => {
       document.removeEventListener('keydown', commandListener)
+      window.removeEventListener("resize", checkDisplaySize)
     }
   }, [])
 
@@ -96,10 +214,17 @@ export const VideoPlayer = () => {
     if (videos.length === 0) {
       fetchVideos();
     } else if (video) {
-      // setupVideoPlayer()
       fetchNoteData(`${video.id}_video.md`);
     }
   }, [video, videos]);
+
+  const checkDisplaySize = (evt) => {
+    if (evt.target.innerWidth < 1210) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
 
   // const setupVideoPlayer = () => {
   //   // 2. This code loads the IFrame Player API code asynchronously.
@@ -189,8 +314,16 @@ export const VideoPlayer = () => {
     }
   };
 
-  const onDelete = () => {
-    console.log('Delete');
+  const onDelete = async () => {
+    const yesDelete = window.confirm("Are you sure you want to delete this video")
+    try {
+      if (yesDelete) {
+        await deleteVideo(videos.data[selectedResourceId].id)
+        goBack()
+      }
+    } catch(e) {
+      notify(dispatch, 'Could not delete video', 'error', 'right');
+    }
   };
 
   const codeMirrorHandle = (cm) => {
@@ -202,46 +335,27 @@ export const VideoPlayer = () => {
   };
 
   return (
-    <div className='center w-100 ph2 h-100 video-page-container'>
-      <div className={classes.videoNotesContainer} id='video-notes-container'>
-        {noteMd && !loadingNote && (
-          <MarkdownEditor
-            initialValue={noteMd}
-            onSave={onSave}
-            onDelete={onDelete}
-            codeMirrorHandle={codeMirrorHandle}
-            spellChecker={false}
-            toolbarOptions={toolbarOptions}
-            useHighlightJS
-            highlightTheme='agate'
-            theme={theme}
-            title={video.title}
-            onBack={goBack}
-          />
-        )}
-        {!noteMd && !loadingNote && (
-          <MarkdownEditor
-            initialValue={''}
-            onSave={onSave}
-            onDelete={onDelete}
-            codeMirrorHandle={codeMirrorHandle}
-            spellChecker={false}
-            toolbarOptions={toolbarOptions}
-            useHighlightJS
-            highlightTheme='agate'
-            theme={theme}
-            title={video.title}
-            onBack={goBack}
-          />
-        )}
-      </div>
-      {video && (
-        <>
-          <div
-            dangerouslySetInnerHTML={{ __html: video.iframe }}
-            className={classes.iframeContainer}
-          ></div>
-        </>
+    <div className='center w-100 h-100 video-page-container'>
+      {isMobile ? (
+        <MobileLayout
+          video={video}
+          noteMd={noteMd}
+          loadingNote={loadingNote}
+          onSave={onSave}
+          onDelete={onDelete}
+          codeMirrorHandle={codeMirrorHandle}
+          goBack={goBack}
+        />
+      ): (
+        <DesktopLayout
+          noteMd={noteMd}
+          loadingNote={loadingNote}
+          onSave={onSave}
+          onDelete={onDelete}
+          codeMirrorHandle={codeMirrorHandle}
+          video={video}
+          goBack={goBack}
+        />
       )}
       {cmdControl && (
           <ResourceDialog selection={cmdControl} cm={cmRef.current} topic_id={selectedTopic} />

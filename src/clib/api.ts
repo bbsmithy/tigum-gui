@@ -7,8 +7,8 @@ import {
   NewLink,
 } from './models';
 
-const DEV = process.env.NODE_ENV === 'development';
-// const DEV = false;
+// const DEV = process.env.NODE_ENV === 'development';
+const DEV = false;
 
 const BASE_API_URL = DEV
   ? 'https://bsmithapp.ngrok.io'
@@ -258,7 +258,7 @@ export const getArticleSnippets = async (ids: number[]) => {
       body: JSON.stringify({ ids }),
     });
     const article_snippets_list = await res.json();
-    return article_snippets_list.reverse();
+    return article_snippets_list
   } catch (e) {
     throw e;
   }

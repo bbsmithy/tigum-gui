@@ -76,8 +76,7 @@ export const MainContent = (props) => {
     dispatch({ type: FETCHING_TOPICS });
     try {
       const newTopics = await getTopics([]);
-      const orderedTopics = newTopics.reverse();
-      dispatch({ type: SET_TOPICS, payload: orderedTopics });
+      dispatch({ type: SET_TOPICS, payload: newTopics });
     } catch (e) {
       dispatch({ type: SET_TOPICS_FAILURE });
     }

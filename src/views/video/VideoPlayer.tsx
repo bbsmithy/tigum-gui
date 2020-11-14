@@ -121,8 +121,6 @@ const MobileLayout = ({
             useHighlightJS
             highlightTheme='agate'
             theme={theme}
-            title={video.title}
-            onBack={goBack}
           />
         )}
     </>

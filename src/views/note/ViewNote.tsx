@@ -46,6 +46,7 @@ export const ViewNote = (props: any) => {
   const [saving, setSaving] = useState(false);
   const [cmdControl, setCMDControl] = useState<CursorState>();
   const cmRef = useRef()
+  const simpleMDERef = useRef()
   const classes = useStyles()
 
   const {
@@ -54,6 +55,14 @@ export const ViewNote = (props: any) => {
   const note = notes.data ? notes.data[selectedResourceId] : false;
 
   useEffect(() => {
+    setupNote()
+  }, []);
+
+  useEffect(() => {
+    setupNote()
+  }, [selectedResourceId])
+
+  const setupNote = () => {
     if (!note && notes.keys.length === 0) {
       fetchNotes();
     } else {
@@ -63,7 +72,7 @@ export const ViewNote = (props: any) => {
     return () => {
       document.removeEventListener('keydown', commandListener)
     }
-  }, []);
+  }
 
   const closeCMDDialog = () => {
     setCMDControl(null)
@@ -85,11 +94,11 @@ export const ViewNote = (props: any) => {
 
   const getNoteData = async (noteId: number) => {
     try {
+      setLoadingHTML(true)
       const noteHTML = await getFile(`${noteId}.md`, 'notes');
       setNoteMD(noteHTML);
       setLoadingHTML(false);
     } catch (e) {
-      console.log(e);
       setLoadingHTML(false);
     }
   };
@@ -135,7 +144,7 @@ export const ViewNote = (props: any) => {
   };
 
   const goBack = () => {
-    goto(`/topic/${selectedTopic}/notes`);
+    window.history.back();
   };
 
   const onClickDelete = async () => {
@@ -151,20 +160,50 @@ export const ViewNote = (props: any) => {
     cmRef.current = cm
   };
 
+  const simpleMdeHandle = (simpleMDE) => {
+    simpleMDERef.current = simpleMDE
+  }
+
+  const onClickNote = (evt) => {
+    evt.preventDefault()
+    const el = evt.target
+    if (el.tagName === "A" && el.href) {
+      if (el.href.includes("tigum.io")) {
+        const localUrl = el.href.split("tigum.io")[1]
+        goto(localUrl)
+      } else {
+        window.open(el.href, "blank")
+      }
+    }
+  }
+
+  const onDoubleClick = () => {
+    // @ts-ignore
+    if (simpleMDERef.current && simpleMDERef.current.isPreviewActive()) {
+      // @ts-ignore
+      simpleMDERef.current.togglePreview()
+    }
+  }
+
   if (note) {
     return (
-      <div className='z-1 center w-100-m w-70-l w-100' id='view-note-container'>
+      <div
+        className='z-1 center w-100-m w-70-l w-100' id='view-note-container' 
+        onClick={onClickNote}
+        onDoubleClick={onDoubleClick}
+      >
         {loadingHTML && (
           <div className={classes.loadingSpinnerContainer}>
             <i className={`fas fa-circle-notch fa-spin white ${classes.loadingSpinner}`}></i>
           </div>
         )}
-        {!loadingHTML && (
+        {!loadingHTML && selectedResourceId && (
           <MarkdownEditor
             initialValue={md}
             onSave={onSave}
             onDelete={onClickDelete}
             codeMirrorHandle={codeMirrorHandle}
+            simplemdeHandle={simpleMdeHandle}
             spellChecker={false}
             useHighlightJS
             highlightTheme='agate'

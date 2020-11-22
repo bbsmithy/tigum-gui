@@ -99,17 +99,22 @@ const ResourceDialog = ({selection: { absPos, cursorPos }, cm, topic_id}: Props)
                 break
             }
             case 'note':{
-                const noteMD = `[${resource.title}](https://tigum.io/topic/${resource.topic_id}/${resource.resource_id})`
-                cm.replaceRange(noteMD, cursorPos)
+                const noteLinkMD = `[${resource.title}](https://tigum.io/topic/${resource.topic_id}/notes/${resource.resource_id})`
+                cm.replaceRange(noteLinkMD, cursorPos)
                 break
             }
             case 'snippet': {
-                const snippetMD = `> ${resource.title} <a href="${resource.misc}">Source</a>`
+                const snippetMD = `
+> ${resource.title}
+>
+> [Snippet Source](${resource.misc})
+                `
                 cm.replaceRange(snippetMD, cursorPos)
                 break
             }
             case 'video': {
-                cm.replaceRange(resource.misc, cursorPos)
+                const videoLinkMD = `[${resource.title}](https://tigum.io/topic/${resource.topic_id}/videos/${resource.resource_id})`
+                cm.replaceRange(videoLinkMD, cursorPos)
                 break
             }
         }

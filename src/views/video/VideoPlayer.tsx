@@ -80,12 +80,14 @@ const MobileLayout = ({
   onSave,
   onDelete,
   codeMirrorHandle,
+  simpleMdeHandle,
   video,
-  goBack
+  goBack,
+  onDoubleClick,
+  onClickNote
  }) => {
 
   const classes = useStyles()
-  const [showNotes, setShowNotes] = useState(false)
 
   return (
     <>
@@ -97,32 +99,41 @@ const MobileLayout = ({
       </div>
       <div dangerouslySetInnerHTML={{ __html: video.iframe }} className={classes.iframeMobileContainer}>
       </div>
+      <div
+        onDoubleClick={onDoubleClick}
+        onClick={onClickNote}
+      >
       {noteMd && !loadingNote && (
-          <MarkdownEditor
-            initialValue={noteMd}
-            onSave={onSave}
-            onDelete={onDelete}
-            codeMirrorHandle={codeMirrorHandle}
-            spellChecker={false}
-            toolbarOptions={toolbarOptions}
-            useHighlightJS
-            highlightTheme='agate'
-            theme={theme}
-          />
-        )}
-        {!noteMd && !loadingNote && (
-          <MarkdownEditor
-            initialValue={''}
-            onSave={onSave}
-            onDelete={onDelete}
-            codeMirrorHandle={codeMirrorHandle}
-            spellChecker={false}
-            toolbarOptions={toolbarOptions}
-            useHighlightJS
-            highlightTheme='agate'
-            theme={theme}
-          />
-        )}
+            <MarkdownEditor
+              initialValue={noteMd}
+              onSave={onSave}
+              onDelete={onDelete}
+              codeMirrorHandle={codeMirrorHandle}
+              simpleMdeHandle={simpleMdeHandle}
+              spellChecker={false}
+              toolbarOptions={toolbarOptions}
+              useHighlightJS
+              highlightTheme='agate'
+              defaultView="preview"
+              theme={theme}
+            />
+          )}
+          {!noteMd && !loadingNote && (
+            <MarkdownEditor
+              initialValue={''}
+              onSave={onSave}
+              onDelete={onDelete}
+              codeMirrorHandle={codeMirrorHandle}
+              simpleMdeHandle={simpleMdeHandle}
+              spellChecker={false}
+              toolbarOptions={toolbarOptions}
+              useHighlightJS
+              highlightTheme='agate'
+              defaultView="preview"
+              theme={theme}
+            />
+      )}
+      </div>
     </>
   )
 
@@ -134,23 +145,35 @@ const DesktopLayout = ({
   onSave,
   onDelete,
   codeMirrorHandle,
+  simpleMdeHandle,
   video,
-  goBack
+  goBack,
+  onDoubleClick,
+  onClickNote
 }) => {
+
   const classes = useStyles()
+
   return (
     <>
-      <div className={classes.videoNotesContainer} id='video-notes-container'>
+      <div
+        className={classes.videoNotesContainer}
+        id='video-notes-container'
+        onDoubleClick={onDoubleClick}
+        onClick={onClickNote}
+      >
         {noteMd && !loadingNote && (
           <MarkdownEditor
             initialValue={noteMd}
             onSave={onSave}
             onDelete={onDelete}
             codeMirrorHandle={codeMirrorHandle}
+            simplemdeHandle={simpleMdeHandle}
             spellChecker={false}
             toolbarOptions={toolbarOptions}
             useHighlightJS
             highlightTheme='agate'
+            defaultView="preview"
             theme={theme}
             title={video.title}
             onBack={goBack}
@@ -162,10 +185,12 @@ const DesktopLayout = ({
             onSave={onSave}
             onDelete={onDelete}
             codeMirrorHandle={codeMirrorHandle}
+            simplemdeHandle={simpleMdeHandle}
             spellChecker={false}
             toolbarOptions={toolbarOptions}
             useHighlightJS
             highlightTheme='agate'
+            defaultView="preview"
             theme={theme}
             title={video.title}
             onBack={goBack}
@@ -192,7 +217,7 @@ const theme = {
     disabledBtnBackground: 'gray',
     disabledBtnColor: '#333',
   },
-  preview: { background: '#474646', color: 'white' },
+  preview: { background: '#333', color: 'white' },
   editor: { background: '#333', color: 'white' },
   cursorColor: 'white',
   height: '95vh',
@@ -204,16 +229,14 @@ export const VideoPlayer = () => {
   const {
     content: { selectedResourceId, videos, selectedTopic, topics },
   } = state;
-  const [uploadingNote, setUploadingNote] = useState(false);
+
   const [noteMd, setNoteMd] = useState<any>();
   const [loadingNote, setLoadingNote] = useState(true);
   const [cmdControl, setCMDControl] = useState<CursorState>();
   const [isMobile, setIsMobile] = useState(null)
   const cmRef = useRef()
-  const classes = useStyles();
+  const simpleMDERef = useRef()
   const video = videos.data ? videos.data[selectedResourceId] : false;
-
-
 
   
   useEffect(() => {
@@ -266,6 +289,8 @@ export const VideoPlayer = () => {
   //   });
   // }
 
+  
+
   const closeCMDDialog = () => {
     setCMDControl(null)
     document.removeEventListener("click", closeCMDDialog)
@@ -317,9 +342,12 @@ export const VideoPlayer = () => {
         `${videos.data[selectedResourceId].id}_video.md`,
         'video-notes'
       );
-      setUploadingNote(false);
       setTimeout(
-        () => notify(dispatch, 'Saved successfully', 'success', 'right'),
+        () => {
+          // @ts-ignore
+          simpleMDERef.current.togglePreview()
+          notify(dispatch, 'Saved successfully', 'success', 'right')
+        },
         300
       );
     }
@@ -329,7 +357,6 @@ export const VideoPlayer = () => {
     try {
       save(md);
     } catch (e) {
-      setUploadingNote(false);
       notify(dispatch, 'Could not upload notes', 'error', 'right');
     }
   };
@@ -350,9 +377,34 @@ export const VideoPlayer = () => {
     cmRef.current = cm
   };
 
+  const simpleMdeHandle = (simpleMDE) => {
+    simpleMDERef.current = simpleMDE
+  }
+
   const goBack = () => {
-    goto(`/topic/${selectedTopic}/videos`);
+    window.history.back();
   };
+
+  const onClickNote = (evt) => {
+    evt.preventDefault()
+    const el = evt.target
+    if (el.tagName === "A" && el.href) {
+      if (el.href.includes("tigum.io")) {
+        const localUrl = el.href.split("tigum.io")[1]
+        goto(localUrl)
+      } else {
+        window.open(el.href, "blank")
+      }
+    }
+  }
+
+  const switchToPreview = () => {
+    // @ts-ignore
+    if (simpleMDERef.current && simpleMDERef.current.isPreviewActive()) {
+      // @ts-ignore
+      simpleMDERef.current.togglePreview()
+    }
+  }
 
   return (
     <div className='center w-100 h-100 video-page-container'>
@@ -364,6 +416,9 @@ export const VideoPlayer = () => {
           onSave={onSave}
           onDelete={onDelete}
           codeMirrorHandle={codeMirrorHandle}
+          simpleMdeHandle={simpleMdeHandle}
+          onClickNote={onClickNote}
+          onDoubleClick={switchToPreview}
           goBack={goBack}
         />
       ): (
@@ -372,7 +427,10 @@ export const VideoPlayer = () => {
           loadingNote={loadingNote}
           onSave={onSave}
           onDelete={onDelete}
+          simpleMdeHandle={simpleMdeHandle}
           codeMirrorHandle={codeMirrorHandle}
+          onClickNote={onClickNote}
+          onDoubleClick={switchToPreview}
           video={video}
           goBack={goBack}
         />

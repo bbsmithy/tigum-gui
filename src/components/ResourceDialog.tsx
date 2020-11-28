@@ -107,8 +107,7 @@ const ResourceDialog = ({selection: { absPos, cursorPos }, cm, topic_id}: Props)
                 const snippetMD = `
 > ${resource.title}
 >
-> [Snippet Source](${resource.misc})
-                `
+> [Snippet Source](${resource.misc})`
                 cm.replaceRange(snippetMD, cursorPos)
                 break
             }

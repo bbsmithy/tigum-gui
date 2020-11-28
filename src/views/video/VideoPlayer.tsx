@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
 import { useStateValue } from '../../state/StateProvider';
-import { createUseStyles, useTheme } from 'react-jss';
-import { goto } from '../../util';
+import { createUseStyles } from 'react-jss';
+import { goto, getJsonFromUrl } from '../../util';
 import { getVideos, deleteVideo } from '../../clib/api';
-import { NoteHeader } from '../../components/NoteHeader';
 import ResourceDialog from '../../components/ResourceDialog';
 import { uploadToBucket, getFile } from '../../clib/S3';
 import { notify } from '../../state/Actions';
 import { CursorState } from "../../types";
+import { useYTPlayer } from "../../hooks"
 
 const useStyles = createUseStyles({
   videoTitleContainer: {
@@ -153,6 +153,14 @@ const DesktopLayout = ({
 }) => {
 
   const classes = useStyles()
+  const player = useYTPlayer("desktop-vid", video)
+
+  const checkForRefLinks = (evt) => {
+    // @ts-ignore
+    onClickNote(evt, player)
+  }
+
+
 
   return (
     <>
@@ -160,7 +168,7 @@ const DesktopLayout = ({
         className={classes.videoNotesContainer}
         id='video-notes-container'
         onDoubleClick={onDoubleClick}
-        onClick={onClickNote}
+        onClick={checkForRefLinks}
       >
         {noteMd && !loadingNote && (
           <MarkdownEditor
@@ -198,7 +206,7 @@ const DesktopLayout = ({
         )}
       </div>
       <div
-        dangerouslySetInnerHTML={{ __html: video.iframe }}
+        id="desktop-vid"
         className={classes.iframeContainer}
       >
       </div>
@@ -240,6 +248,8 @@ export const VideoPlayer = () => {
 
   
   useEffect(() => {
+    // @ts-ignore
+    console.log(window.YT)
     if (window.innerWidth < 1108) {
       setIsMobile(true)
     } else {
@@ -385,13 +395,19 @@ export const VideoPlayer = () => {
     window.history.back();
   };
 
-  const onClickNote = (evt) => {
+  const onClickNote = (evt, player) => {
     evt.preventDefault()
     const el = evt.target
     if (el.tagName === "A" && el.href) {
-      if (el.href.includes("tigum.io")) {
-        const localUrl = el.href.split("tigum.io")[1]
-        goto(localUrl)
+      if (el.href.includes("tigum.io") || el.href.includes("localhost:3000")) {
+        const timeParam = el.href.split("t=")[1]
+        if (timeParam) {
+            player.seekTo(timeParam)
+            window.history.pushState(null, null, el.href);
+        } else {
+          const localUrl = el.href.split("tigum.io")[1]
+          goto(localUrl)
+        }
       } else {
         window.open(el.href, "blank")
       }

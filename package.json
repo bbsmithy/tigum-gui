@@ -19,7 +19,8 @@
     "typescript": "3.5.2"
   },
   "devDependencies": {
-    "html-to-markdown": "*"
+    "html-to-markdown": "*",
+    "axios": "0.20.0"
   },
   "scripts": {
     "start": "react-scripts start",

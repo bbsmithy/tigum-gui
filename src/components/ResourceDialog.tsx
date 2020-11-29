@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { findByTitle, findByTopicId } from '../clib/api';
 import { CursorState } from "../types"
+import ClickAwayListener from './ClickAwayListener';
 import ResultTypeIcon from './ResultTypeIcon';
 
 const useStyles = createUseStyles({
@@ -50,10 +51,15 @@ let searchTimeOut;
 type Props = {
     selection: CursorState,
     cm: any,
-    topic_id: number
+    topic_id: number,
+    onClickAway: Function
 }
 
-const ResourceDialog = ({selection: { absPos, cursorPos }, cm, topic_id}: Props) => {
+const ResourceDialog = ({ 
+    selection: { absPos, cursorPos },
+    cm, topic_id,
+    onClickAway
+}: Props) => {
     const [results, setResults] = useState(null)
     const [query, setQuery] = useState()
     const classes = useStyles()
@@ -117,46 +123,49 @@ const ResourceDialog = ({selection: { absPos, cursorPos }, cm, topic_id}: Props)
                 break
             }
         }
+        onClickAway()
     }
 
     return (
-        <div
-            className={classes.cmdInput}
-            style={{
-              left: absPos.left,
-              right: absPos.right,
-              top: absPos.top,
-              bottom: absPos.bottom
-            }}
-          >
-            <input
-                type="text"
-                autoFocus
-                placeholder="Search for resource or flagpole"
-                className={classes.searchResourceInput}
-                onChange={onChangeSearch}
-                value={query}
-                style={{ borderRadius: results ? "4px 4px 0px 0px" : 4 }}
+        <ClickAwayListener onClickAway={onClickAway}>
+            <div
+                className={classes.cmdInput}
+                style={{
+                left: absPos.left,
+                right: absPos.right,
+                top: absPos.top,
+                bottom: absPos.bottom
+                }}
             >
-            </input>
-            {results && (
-                <div className={classes.resultsContainer}>
-                    {results.map((resource) => {
-                        return (
-                            <div className={classes.result} onClick={(evt) => {
-                                evt.stopPropagation()
-                                selectResource(resource)}
-                            }>
-                                <ResultTypeIcon type={resource.result_type} />
-                                <span className={classes.resTitle}>
-                                    {resource.title}
-                                </span>
-                            </div>
-                        )
-                    })}
-                </div>
-            )}
-        </div>
+                <input
+                    type="text"
+                    autoFocus
+                    placeholder="Search for resource or flagpole"
+                    className={classes.searchResourceInput}
+                    onChange={onChangeSearch}
+                    value={query}
+                    style={{ borderRadius: results ? "4px 4px 0px 0px" : 4 }}
+                >
+                </input>
+                {results && (
+                    <div className={classes.resultsContainer}>
+                        {results.map((resource) => {
+                            return (
+                                <div className={classes.result} onClick={(evt) => {
+                                    evt.stopPropagation()
+                                    selectResource(resource)}
+                                }>
+                                    <ResultTypeIcon type={resource.result_type} />
+                                    <span className={classes.resTitle}>
+                                        {resource.title}
+                                    </span>
+                                </div>
+                            )
+                        })}
+                    </div>
+                )}
+            </div>
+        </ClickAwayListener>
     )
 }
 

@@ -76,7 +76,6 @@ export const ViewNote = (props: any) => {
 
   const closeCMDDialog = () => {
     setCMDControl(null)
-    document.removeEventListener("click", closeCMDDialog)
   }
 
   const commandListener = (event) => {
@@ -87,7 +86,6 @@ export const ViewNote = (props: any) => {
         // @ts-ignore
         const cursorPos = cmRef.current.getCursor()
         setCMDControl({ absPos, cursorPos })
-        document.addEventListener("click", closeCMDDialog)
       }
     }
   }
@@ -214,7 +212,12 @@ export const ViewNote = (props: any) => {
           />
         )}
         {cmdControl && (
-          <ResourceDialog selection={cmdControl} cm={cmRef.current} topic_id={selectedTopic} />
+          <ResourceDialog
+            onClickAway={closeCMDDialog}
+            selection={cmdControl}
+            cm={cmRef.current}
+            topic_id={selectedTopic}
+          />
         )}
       </div>
     );

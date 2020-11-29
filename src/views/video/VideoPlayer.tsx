@@ -5,10 +5,10 @@ import { createUseStyles } from 'react-jss';
 import { goto, getJsonFromUrl } from '../../util';
 import { getVideos, deleteVideo } from '../../clib/api';
 import ResourceDialog from '../../components/ResourceDialog';
+import ReferenceDialog from '../../components/ReferenceDialog';
 import { uploadToBucket, getFile } from '../../clib/S3';
 import { notify } from '../../state/Actions';
 import { CursorState } from "../../types";
-import { useYTPlayer } from "../../hooks"
 
 const useStyles = createUseStyles({
   videoTitleContainer: {
@@ -88,6 +88,27 @@ const MobileLayout = ({
  }) => {
 
   const classes = useStyles()
+  const vidIDRef = useRef()
+  const playerRef = useRef()
+
+
+  useEffect(() => {
+    if (video && video.id !== vidIDRef.current) {
+      const videoId = video.iframe.slice(30)
+      const iframeContainer = document.getElementById('mobile-vid').parentElement
+      document.getElementById('mobile-vid').remove()
+      const newDiv = document.createElement('div')
+      newDiv.id = "mobile-vid"
+      iframeContainer.insertAdjacentElement("beforeend", newDiv)
+      // @ts-ignore
+      playerRef.current = new window.YT.Player('mobile-vid', {
+        videoId,
+        height: "100%",
+        width: "100%"
+      })
+      vidIDRef.current = videoId
+    }
+  }, [video])
 
   return (
     <>
@@ -97,7 +118,9 @@ const MobileLayout = ({
         </div>
         <div className={classes.videoTitleMobile}>{video.title}</div>
       </div>
-      <div dangerouslySetInnerHTML={{ __html: video.iframe }} className={classes.iframeMobileContainer}>
+      <div className={classes.iframeMobileContainer}>
+        <div id="mobile-vid">
+        </div>
       </div>
       <div
         onDoubleClick={onDoubleClick}
@@ -146,6 +169,7 @@ const DesktopLayout = ({
   onDelete,
   codeMirrorHandle,
   simpleMdeHandle,
+  playerHandle,
   video,
   goBack,
   onDoubleClick,
@@ -153,11 +177,31 @@ const DesktopLayout = ({
 }) => {
 
   const classes = useStyles()
-  const player = useYTPlayer("desktop-vid", video)
+  const vidIDRef = useRef()
+  const playerRef = useRef()
+
+  useEffect(() => {
+    if (video && video.id !== vidIDRef.current) {
+      const videoId = video.iframe.slice(30)
+      const iframeContainer = document.getElementById('desktop-vid').parentElement
+      document.getElementById('desktop-vid').remove()
+      const newDiv = document.createElement('div')
+      newDiv.id = "desktop-vid"
+      iframeContainer.insertAdjacentElement("beforeend", newDiv)
+      // @ts-ignore
+      playerRef.current = new window.YT.Player('desktop-vid', {
+        videoId,
+        height: "100%",
+        width: "100%"
+      })
+      playerHandle(playerRef.current)
+      vidIDRef.current = videoId
+    }
+  }, [video])
 
   const checkForRefLinks = (evt) => {
     // @ts-ignore
-    onClickNote(evt, player)
+    onClickNote(evt, playerRef.current)
   }
 
 
@@ -205,10 +249,9 @@ const DesktopLayout = ({
           />
         )}
       </div>
-      <div
-        id="desktop-vid"
-        className={classes.iframeContainer}
-      >
+      <div className={classes.iframeContainer}>
+        <div id="desktop-vid">
+        </div>
       </div>
     </>
   )
@@ -241,9 +284,11 @@ export const VideoPlayer = () => {
   const [noteMd, setNoteMd] = useState<any>();
   const [loadingNote, setLoadingNote] = useState(true);
   const [cmdControl, setCMDControl] = useState<CursorState>();
+  const [vidRefControl, setVidRefControl] = useState<CursorState>();
   const [isMobile, setIsMobile] = useState(null)
   const cmRef = useRef()
   const simpleMDERef = useRef()
+  const playerRef = useRef()
   const video = videos.data ? videos.data[selectedResourceId] : false;
 
   
@@ -278,31 +323,15 @@ export const VideoPlayer = () => {
       setIsMobile(false)
     }
   }
-
-  // const setupVideoPlayer = () => {
-  //   // 2. This code loads the IFrame Player API code asynchronously.
-  //   var tag = document.createElement('script');
-
-  //   tag.src = "https://www.youtube.com/iframe_api";
-  //   var firstScriptTag = document.getElementsByTagName('script')[0];
-  //   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-  //   var player;
-  //   player = new YT.Player('player', {
-  //     height: '390',
-  //     width: '640',
-  //     videoId: 'M7lc1UVf-VE',
-  //     events: {
-  //       'onReady': onPlayerReady,
-  //       'onStateChange': onPlayerStateChange
-  //     }
-  //   });
-  // }
-
   
 
   const closeCMDDialog = () => {
     setCMDControl(null)
+    document.removeEventListener("click", closeCMDDialog)
+  }
+
+  const closeVidRefDialog = () => {
+    setVidRefControl(null)
     document.removeEventListener("click", closeCMDDialog)
   }
 
@@ -316,6 +345,15 @@ export const VideoPlayer = () => {
           const cursorPos = cmRef.current.getCursor()
           setCMDControl({ absPos, cursorPos })
           document.addEventListener("click", closeCMDDialog)
+          break;
+        }
+        case "t": {
+          // @ts-ignore
+          const absPos = cmRef.current.cursorCoords(true)
+          // @ts-ignore
+          const cursorPos = cmRef.current.getCursor()
+          setVidRefControl({ absPos, cursorPos })
+          // document.addEventListener("click", closeVidRefDialog)
           break;
         }
       }   
@@ -391,6 +429,10 @@ export const VideoPlayer = () => {
     simpleMDERef.current = simpleMDE
   }
 
+  const playerHandle = (player) => {
+    playerRef.current = player
+  }
+
   const goBack = () => {
     window.history.back();
   };
@@ -399,13 +441,14 @@ export const VideoPlayer = () => {
     evt.preventDefault()
     const el = evt.target
     if (el.tagName === "A" && el.href) {
-      if (el.href.includes("tigum.io") || el.href.includes("localhost:3000")) {
+      const baseUrl = "tigum.io"
+      if (el.href.includes(baseUrl)) {
         const timeParam = el.href.split("t=")[1]
         if (timeParam) {
             player.seekTo(timeParam)
             window.history.pushState(null, null, el.href);
         } else {
-          const localUrl = el.href.split("tigum.io")[1]
+          const localUrl = el.href.split(baseUrl)[1]
           goto(localUrl)
         }
       } else {
@@ -445,6 +488,7 @@ export const VideoPlayer = () => {
           onDelete={onDelete}
           simpleMdeHandle={simpleMdeHandle}
           codeMirrorHandle={codeMirrorHandle}
+          playerHandle={playerHandle}
           onClickNote={onClickNote}
           onDoubleClick={switchToPreview}
           video={video}
@@ -452,7 +496,22 @@ export const VideoPlayer = () => {
         />
       )}
       {cmdControl && (
-          <ResourceDialog selection={cmdControl} cm={cmRef.current} topic_id={selectedTopic} />
+          <ResourceDialog
+            selection={cmdControl}
+            onClickAway={closeCMDDialog}
+            cm={cmRef.current}
+            topic_id={selectedTopic}
+          />
+      )}
+      {vidRefControl && (
+          <ReferenceDialog
+            onCreate={() => {}}
+            onClickAway={closeVidRefDialog}
+            player={playerRef.current}
+            selection={vidRefControl}
+            cm={cmRef.current}
+            topic_id={selectedTopic}
+          />
       )}
     </div>
   );

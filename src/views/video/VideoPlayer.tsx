@@ -446,7 +446,6 @@ export const VideoPlayer = () => {
         const timeParam = el.href.split("t=")[1]
         if (timeParam) {
             player.seekTo(timeParam)
-            window.history.pushState(null, null, el.href);
         } else {
           const localUrl = el.href.split(baseUrl)[1]
           goto(localUrl)

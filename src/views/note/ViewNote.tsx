@@ -62,6 +62,7 @@ export const ViewNote = (props: any) => {
         // @ts-ignore
         const currentMD = cmRef.current.getValue()
         if (currentMD !== initialNoteMDRef.current) {
+          console.log(currentMD)
           save(currentMD)
         }
       }
@@ -106,6 +107,7 @@ export const ViewNote = (props: any) => {
       const noteHTML = await getFile(`${noteId}.md`, 'notes');
       setNoteMD(noteHTML);
       setLoadingHTML(false);
+      initialNoteMDRef.current = noteHTML
     } catch (e) {
       setLoadingHTML(false);
     }
@@ -124,21 +126,14 @@ export const ViewNote = (props: any) => {
 
   const save = async (htmlFromMDEditor) => {
     try {
-      if (htmlFromMDEditor) {
-        notify(dispatch, 'Saving notes', 'progress', 'right');
-        setNoteMD(htmlFromMDEditor);
-        await uploadToBucket(htmlFromMDEditor, `${note.id}.md`, 'notes');
-        setTimeout(
-          () => notify(dispatch, 'Saved successfully', 'success', 'right'),
-          150
-        );
-      } else {
-        setNoteMD(md);
-        await uploadToBucket(md, `${note.id}.md`, 'notes');
-        notify(dispatch, 'Saved successfully', 'success', 'right');
-      }
+      notify(dispatch, 'Saving notes', 'progress', 'right');
+      setNoteMD(htmlFromMDEditor);
+      await uploadToBucket(htmlFromMDEditor, `${selectedResourceId}.md`, 'notes');
+      setTimeout(
+        () => notify(dispatch, 'Saved successfully', 'success', 'right'),
+        150
+      );
     } catch (e) {
-      setSaving(false);
       notify(dispatch, 'Could not upload notes', 'error', 'right');
     }
   };

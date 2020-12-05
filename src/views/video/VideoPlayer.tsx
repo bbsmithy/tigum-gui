@@ -296,7 +296,6 @@ export const VideoPlayer = () => {
   
   useEffect(() => {
     // @ts-ignore
-    console.log(window.YT)
     if (window.innerWidth < 1108) {
       setIsMobile(true)
     } else {
@@ -398,7 +397,7 @@ export const VideoPlayer = () => {
       notify(dispatch, 'Saving notes', 'progress', 'right');
       await uploadToBucket(
         md,
-        `${video.id}_video.md`,
+        `${selectedResourceId}_video.md`,
         'video-notes'
       );
       setTimeout(

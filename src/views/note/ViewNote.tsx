@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
-import { deleteNote, getNotes } from '../../clib/api';
+import { deleteNote, getNotes, updateNote } from '../../clib/api';
 import { getFile, uploadToBucket } from '../../clib/S3';
 import { goto } from '../../util';
 import { useStateValue } from '../../state/StateProvider';
-import { NoteHeader } from '../../components/NoteHeader';
 import ResourceDialog from '../../components/ResourceDialog';
 import { notify } from '../../state/Actions';
 import { CursorState } from "../../types";
@@ -150,6 +149,12 @@ export const ViewNote = (props: any) => {
     window.history.back();
   };
 
+  const onEditTitle = (newTitle) => {
+    if (newTitle) {
+      updateNote({ ...note, title: newTitle })
+    }
+  }
+
   const onClickDelete = async () => {
     try {
       await deleteNote(note.id);
@@ -213,6 +218,8 @@ export const ViewNote = (props: any) => {
             theme={theme}
             onBack={goBack}
             title={note.title}
+            onEditTitle={onEditTitle}
+            editTitleWidth={"35%"}
             defaultView={window.innerWidth > 500 ? "side-by-side" : "preview"}
           />
         )}

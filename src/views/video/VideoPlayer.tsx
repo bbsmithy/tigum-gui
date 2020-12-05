@@ -3,7 +3,7 @@ import { MarkdownEditor } from 'devkeep-md-editor';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { goto, getJsonFromUrl } from '../../util';
-import { getVideos, deleteVideo } from '../../clib/api';
+import { getVideos, deleteVideo, updateNote, updateVideo } from '../../clib/api';
 import ResourceDialog from '../../components/ResourceDialog';
 import ReferenceDialog from '../../components/ReferenceDialog';
 import { uploadToBucket, getFile } from '../../clib/S3';
@@ -204,6 +204,12 @@ const DesktopLayout = ({
     onClickNote(evt, playerRef.current)
   }
 
+  const onEditTitle = (newTitle) => {
+    if (newTitle) {
+      updateVideo({ ...video, title: newTitle })
+    }
+  }
+
   return (
     <>
       <div
@@ -226,6 +232,8 @@ const DesktopLayout = ({
             defaultView="preview"
             theme={theme}
             title={video.title}
+            editTitleWidth={"90%"}
+            onEditTitle={onEditTitle}
             onBack={goBack}
           />
         )}
@@ -243,6 +251,8 @@ const DesktopLayout = ({
             defaultView="preview"
             theme={theme}
             title={video.title}
+            onEditTitle={onEditTitle}
+            editTitleWidth={"90%"}
             onBack={goBack}
           />
         )}

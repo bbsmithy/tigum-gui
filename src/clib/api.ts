@@ -101,6 +101,32 @@ export const createNote = async (title: String, topic_id: number) => {
   }
 };
 
+// pub id: i32,
+// pub title: String,
+// pub date_created: NaiveDateTime,
+// pub topic_id: i32,
+// pub user_id: i32,
+
+// #[put("/notes/<note_id>", format = "application/json", data = "<note>")]
+
+
+export const updateNote = async (note) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/notes/${note.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
+      },
+      credentials: 'include',
+      body: JSON.stringify(note),
+    });
+    return await res;
+  } catch (e) {
+    throw e;
+  }
+};
+
 export const deleteNote = async (note_id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/notes/${note_id}`, {
@@ -206,6 +232,23 @@ export const getVideos = async (ids: Array<number>) => {
       },
       credentials: 'include',
       body: JSON.stringify({ ids }),
+    });
+    return await res;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const updateVideo = async (video) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/videos/${video.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
+      },
+      credentials: 'include',
+      body: JSON.stringify(video),
     });
     return await res;
   } catch (e) {

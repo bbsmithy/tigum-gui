@@ -87,6 +87,8 @@ const SearchResult = ({ result, reset }) => {
             goto(`/topic/${result.topic_id}/notes`)
         } else if (result.result_type === 'snippet') {
             goto(`/topic/${result.topic_id}/${result.result_type}s`)
+        } else if (result.result_type === 'link') {
+            window.open(result.misc, "blank")
         } else {
             goto(`/topic/${result.topic_id}/${result.result_type}s/${result.resource_id}`)
         }

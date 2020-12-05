@@ -35,7 +35,7 @@ export const uploadToBucket = (data: any, fileKey: string, bucket: string) => {
   });
 };
 
-export const getFile = (file: string, bucket: string) => {
+export const getFile = (file: string, bucket: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     s3.getObject({ Bucket: 'notes', Key: file }, (err: any, data: any) => {
       if (err) {

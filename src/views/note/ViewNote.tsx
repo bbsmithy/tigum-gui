@@ -47,6 +47,7 @@ export const ViewNote = (props: any) => {
   const [cmdControl, setCMDControl] = useState<CursorState>();
   const cmRef = useRef()
   const simpleMDERef = useRef()
+  const initialNoteMDRef = useRef<string>()
   const classes = useStyles()
 
   const {
@@ -56,6 +57,15 @@ export const ViewNote = (props: any) => {
 
   useEffect(() => {
     setupNote()
+    return () => {
+      if (cmRef.current) {
+        // @ts-ignore
+        const currentMD = cmRef.current.getValue()
+        if (currentMD !== initialNoteMDRef.current) {
+          save(currentMD)
+        }
+      }
+    }
   }, []);
 
   useEffect(() => {

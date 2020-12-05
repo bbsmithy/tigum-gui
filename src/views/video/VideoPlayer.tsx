@@ -204,8 +204,6 @@ const DesktopLayout = ({
     onClickNote(evt, playerRef.current)
   }
 
-
-
   return (
     <>
       <div
@@ -286,9 +284,13 @@ export const VideoPlayer = () => {
   const [cmdControl, setCMDControl] = useState<CursorState>();
   const [vidRefControl, setVidRefControl] = useState<CursorState>();
   const [isMobile, setIsMobile] = useState(null)
+
   const cmRef = useRef()
   const simpleMDERef = useRef()
   const playerRef = useRef()
+  const initialNoteMDRef = useRef<string>()
+
+
   const video = videos.data ? videos.data[selectedResourceId] : false;
 
   
@@ -303,8 +305,16 @@ export const VideoPlayer = () => {
     window.addEventListener("resize", checkDisplaySize)
     document.addEventListener('keydown', commandListener)
     return () => {
+      if (cmRef.current) {
+        // @ts-ignore
+        const currentMD = cmRef.current.getValue()
+        if (currentMD !== initialNoteMDRef.current) {
+          save(currentMD)
+        }
+      }
       document.removeEventListener('keydown', commandListener)
       window.removeEventListener("resize", checkDisplaySize)
+      
     }
   }, [])
 
@@ -366,6 +376,7 @@ export const VideoPlayer = () => {
       const noteData = await getFile(file, 'video-notes');
       setNoteMd(noteData);
       setLoadingNote(false);
+      initialNoteMDRef.current = noteData
     } catch (e) {
       setLoadingNote(false);
       return;
@@ -387,7 +398,7 @@ export const VideoPlayer = () => {
       notify(dispatch, 'Saving notes', 'progress', 'right');
       await uploadToBucket(
         md,
-        `${videos.data[selectedResourceId].id}_video.md`,
+        `${video.id}_video.md`,
         'video-notes'
       );
       setTimeout(

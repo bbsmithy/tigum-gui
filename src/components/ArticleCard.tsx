@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { createUseStyles } from 'react-jss';
 import { deleteArticleSnippet } from '../clib/api';
 import { useStateValue } from '../state/StateProvider';
+import marked from "marked"
 
 const useStyles = createUseStyles({
   divider: {
@@ -9,14 +10,23 @@ const useStyles = createUseStyles({
   },
   snippet: {
     fontFamily: "Arial",
-    width: "85%",
+    width: "80%",
     maxWidth: 1000,
     '@media (max-width: 600px)':{
       width: "100%"
     },
     margin: "auto",
     marginTop: 15,
-    padding: "8px 15px"
+    padding: "8px 15px",
+    '& a': {
+      color: "white !important",
+      padding: 2,
+    },
+    '& a:hover': {
+      backgroundColor: "#246bf8 !important",
+      padding: 2,
+      borderRadius: 5
+    }
   },
   source: {
     color: "white",
@@ -28,30 +38,48 @@ const useStyles = createUseStyles({
   deleteBtn: {
     borderRadius: 3,
     border: "none",
-    backgroundColor: "#246bf8",
+    backgroundColor: "#dc3545",
     color: "white",
+    fontFamily: "Montserrat, sans-serif",
     padding: 8,
     float: "right",
     fontSize: 13,
     cursor: "pointer"
   },
-  deleteBtnConatiner: {
+  editBtn: {
+    borderRadius: 3,
+    border: "none",
+    backgroundColor: "#246bf8",
+    fontFamily: "Montserrat, sans-serif",
+    color: "white",
+    padding: 8,
+    float: "right",
+    fontSize: 13,
+    marginLeft: 10,
+    cursor: "pointer"
+  },
+  btnsConatiner: {
     flex: 1
   },
   controlsContainer:{
     display: "flex",
     justifyContent: "space-between"
+  },
+  title:{
+    borderBottom: "1px solid white"
   }
 });
 
 export type ArticleCardProps = {
-  origin: string;
+  onEdit: Function,
+  title: string;
   content: string;
+  origin: string;
   id: number;
   index: number;
 };
 
-export const ArticleCard = (props: ArticleCardProps) => {
+export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue()
   const classes = useStyles()
@@ -61,27 +89,45 @@ export const ArticleCard = (props: ArticleCardProps) => {
 
   const deleteSnippet = async () => {
     try {
-      const res = await deleteArticleSnippet(props.id);
-      if (res.status === 200) {
-        let newSnippets = article_snippets;
-        delete newSnippets[props.index];
-        dispatch({ type: 'SET_SNIPPETS', payload: newSnippets });
+      const yesDelete = window.confirm("Are you sure you want to delete this snippet?")
+      if (yesDelete) {
+        const res = await deleteArticleSnippet(props.id);
+        if (res.status === 200) {
+          let newSnippets = article_snippets;
+          delete newSnippets[props.index];
+          dispatch({ type: 'SET_SNIPPETS', payload: newSnippets });
+        }
       }
     } catch (e) {
       console.log(e);
     }
   };
 
+  const onEditSnippet = () => {
+    props.onEdit({ title: props.title, content: props.content, id: props.id, origin: props.origin })
+  }
+
   return (
     <article className={`shadow-card hidden br3 ba b--black-10 text mv3 ${classes.snippet}`}>
-      <p className='f6 f5-ns lh-copy white'>{props.content}</p>
+      {props.title && <h2 className={classes.title}>{props.title}</h2>}
+      <div className='f6 f5-ns lh-copy white' dangerouslySetInnerHTML={{ __html:  marked(props.content) }} />
       <div className={classes.controlsContainer}>
         <div className={classes.sourceContainer}>
-          <a href={props.origin} target="blank" className={classes.source}>
-            {props.origin}
-          </a>
+          {props.origin === "TIGUM" ? (
+            <span className={classes.source}>Source: You</span>
+          ) : (
+            <a href={props.origin} target="blank" className={classes.source}>
+              Source: {props.origin}
+            </a>
+          )}
         </div>
-        <div className={classes.deleteBtnConatiner}>
+        <div className={classes.btnsConatiner}>
+          <button
+            className={classes.editBtn}
+            onClick={onEditSnippet}
+          >
+            <i className='fa fa-trash' /> Edit
+          </button>
           <button
             className={classes.deleteBtn}
             onClick={deleteSnippet}

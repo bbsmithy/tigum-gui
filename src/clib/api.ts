@@ -327,6 +327,26 @@ export const createArticleSnippet = async (
   }
 };
 
+export const updateArticleSnippet = async (
+  newArticleSnippet: NewArticleSnippet
+) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/article_snippets/${newArticleSnippet.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ ...newArticleSnippet }),
+    });
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    throw e;
+  }
+};
+
 export const deleteArticleSnippet = async (id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/article_snippets/${id}`, {

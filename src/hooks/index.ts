@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Video } from '../clib/models';
+import React from 'react';
 
 export const useReactPath = () => {
   const [path, setPath] = React.useState(window.location.pathname);

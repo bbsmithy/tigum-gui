@@ -39,6 +39,8 @@ export type ArticleSnippet = {
 };
 
 export type NewArticleSnippet = {
+  id?: number;
+  title: string;
   content: string;
   origin: string;
   topic_id: number;

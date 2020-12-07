@@ -11,6 +11,7 @@
     "@types/react-dom": "16.8.4",
     "aws-sdk": "^2.547.0",
     "devkeep-md-editor": "0.5.3",
+    "marked": "^1.2.5",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-jss": "^10.0.0",
@@ -19,8 +20,8 @@
     "typescript": "3.5.2"
   },
   "devDependencies": {
-    "html-to-markdown": "*",
-    "axios": "0.20.0"
+    "axios": "0.20.0",
+    "html-to-markdown": "*"
   },
   "scripts": {
     "start": "react-scripts start",

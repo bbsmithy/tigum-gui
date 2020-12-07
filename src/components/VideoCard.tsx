@@ -55,7 +55,9 @@ export const VideoCard = (props: VideoCardProps) => {
   return (
     <div className='w-100 w-50-m w-25-l dib ph2'>
       <article className='br2 video-card w-100 pointer mt2' onClick={onSelect}>
-        <img src={props.thumbnail_img} className='db w-100 br2 br--top' />
+        <div style={{minHeight: 220}}>
+          <img src={props.thumbnail_img} className='db w-100 br2 br--top' />
+        </div>
         <div className='ph3 pv3 h-30'>
           <div className='dib w-90'>
             <h5 className={`mv0 white ${classes.videoCardTitle}`}>{title}</h5>

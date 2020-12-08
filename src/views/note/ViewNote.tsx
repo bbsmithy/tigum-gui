@@ -37,6 +37,7 @@ const useStyles = createUseStyles({
   }
 })
 
+
 export const ViewNote = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
@@ -48,11 +49,45 @@ export const ViewNote = (props: any) => {
   const simpleMDERef = useRef()
   const initialNoteMDRef = useRef<string>()
   const classes = useStyles()
-
   const {
     content: { selectedResourceId, notes, selectedTopic, topics },
   } = state;
   const note = notes.data ? notes.data[selectedResourceId] : false;
+  const toolbarOptions = [
+    {
+      name: "home",
+      action: function customFunction(editor){
+        goto(`topic/${selectedTopic}/notes`)
+      },
+      className: "fa fa-home",
+      title: "Custom Button",
+    },
+    'bold',
+    'italic',
+    'heading',
+    '|',
+    'quote',
+    'ordered-list',
+    'unordered-list',
+    '|',
+    {
+      name: "resource",
+      action: function customFunction(editor){
+        showReferenceDialog()
+      },
+      className: "fa fa-book",
+      title: "Find Resource",
+    },
+    'code',
+    'link',
+    'image',
+    'table',
+    '|',
+    'preview',
+    'fullscreen',
+    'side-by-side',
+    '|',
+  ];
 
   useEffect(() => {
     setupNote()
@@ -91,13 +126,17 @@ export const ViewNote = (props: any) => {
   const commandListener = (event) => {
     if (event.ctrlKey && event.key === '/') {
       if (cmRef.current !== undefined) {
-        // @ts-ignore
-        const absPos = cmRef.current.cursorCoords(true)
-        // @ts-ignore
-        const cursorPos = cmRef.current.getCursor()
-        setCMDControl({ absPos, cursorPos })
+        showReferenceDialog()
       }
     }
+  }
+
+  const showReferenceDialog = () => {
+    // @ts-ignore
+    const absPos = cmRef.current.cursorCoords(true)
+    // @ts-ignore
+    const cursorPos = cmRef.current.getCursor()
+    setCMDControl({ absPos, cursorPos })
   }
 
   const getNoteData = async (noteId: number) => {
@@ -214,6 +253,7 @@ export const ViewNote = (props: any) => {
             simplemdeHandle={simpleMdeHandle}
             spellChecker={false}
             useHighlightJS
+            toolbarOptions={toolbarOptions}
             highlightTheme='agate'
             theme={theme}
             onBack={goBack}

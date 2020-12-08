@@ -79,6 +79,7 @@ const MobileLayout = ({
   loadingNote,
   onSave,
   onDelete,
+  toolbarOptions,
   codeMirrorHandle,
   simpleMdeHandle,
   video,
@@ -167,6 +168,7 @@ const DesktopLayout = ({
   loadingNote,
   onSave,
   onDelete,
+  toolbarOptions,
   codeMirrorHandle,
   simpleMdeHandle,
   playerHandle,
@@ -303,6 +305,47 @@ export const VideoPlayer = () => {
 
   const video = videos.data ? videos.data[selectedResourceId] : false;
 
+  const toolbarOptions = [
+    {
+      name: "home",
+      action: function customFunction(editor){
+        goto(`topic/${selectedTopic}/videos`)
+      },
+      className: "fa fa-home",
+      title: "Home",
+    },
+    'bold',
+    'italic',
+    'heading',
+    '|',
+    'quote',
+    'ordered-list',
+    'unordered-list',
+    '|',
+    {
+      name: "resource",
+      action: function customFunction(editor){
+        showReferenceDialog()
+      },
+      className: "fa fa-book",
+      title: "Find Resource",
+    },
+    {
+      name: "reference",
+      action: function customFunction(editor){
+        showVidReference()
+      },
+      className: "fa fa-flag",
+      title: "Video Reference",
+    },
+    'code',
+    'link',
+    'image',
+    '|',
+    'preview',
+    '|',
+  ];
+
   
   useEffect(() => {
     // @ts-ignore
@@ -354,25 +397,32 @@ export const VideoPlayer = () => {
     document.removeEventListener("click", closeCMDDialog)
   }
 
+  const showReferenceDialog = () => {
+    // @ts-ignore
+    const absPos = cmRef.current.cursorCoords(true)
+    // @ts-ignore
+    const cursorPos = cmRef.current.getCursor()
+    setCMDControl({ absPos, cursorPos })
+  }
+
+
+  const showVidReference = () => {
+    // @ts-ignore
+    const absPos = cmRef.current.cursorCoords(true)
+    // @ts-ignore
+    const cursorPos = cmRef.current.getCursor()
+    setVidRefControl({ absPos, cursorPos })
+  }
+
   const commandListener = (event) => {
     if (event.ctrlKey) {
       switch (event.key) {
         case "/": {
-          // @ts-ignore
-          const absPos = cmRef.current.cursorCoords(true)
-          // @ts-ignore
-          const cursorPos = cmRef.current.getCursor()
-          setCMDControl({ absPos, cursorPos })
-          document.addEventListener("click", closeCMDDialog)
+          showReferenceDialog()
           break;
         }
         case "t": {
-          // @ts-ignore
-          const absPos = cmRef.current.cursorCoords(true)
-          // @ts-ignore
-          const cursorPos = cmRef.current.getCursor()
-          setVidRefControl({ absPos, cursorPos })
-          // document.addEventListener("click", closeVidRefDialog)
+          showVidReference()
           break;
         }
       }   
@@ -454,7 +504,7 @@ export const VideoPlayer = () => {
   }
 
   const goBack = () => {
-    window.history.back();
+    window.history.back()
   };
 
   const onClickNote = (evt, player) => {
@@ -491,6 +541,7 @@ export const VideoPlayer = () => {
           video={video}
           noteMd={noteMd}
           loadingNote={loadingNote}
+          toolbarOptions={toolbarOptions}
           onSave={onSave}
           onDelete={onDelete}
           codeMirrorHandle={codeMirrorHandle}
@@ -505,6 +556,7 @@ export const VideoPlayer = () => {
           loadingNote={loadingNote}
           onSave={onSave}
           onDelete={onDelete}
+          toolbarOptions={toolbarOptions}
           simpleMdeHandle={simpleMdeHandle}
           codeMirrorHandle={codeMirrorHandle}
           playerHandle={playerHandle}

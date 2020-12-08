@@ -86,6 +86,7 @@ export const ViewNote = (props: any) => {
     'preview',
     'fullscreen',
     'side-by-side',
+    'guide',
     '|',
   ];
 

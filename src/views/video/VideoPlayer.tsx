@@ -71,6 +71,7 @@ const toolbarOptions = [
   'table',
   '|',
   'preview',
+  'guide',
   '|',
 ];
 
@@ -343,6 +344,7 @@ export const VideoPlayer = () => {
     'image',
     '|',
     'preview',
+    'guide',
     '|',
   ];
 

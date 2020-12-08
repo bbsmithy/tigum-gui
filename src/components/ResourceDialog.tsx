@@ -111,9 +111,11 @@ const ResourceDialog = ({
             }
             case 'snippet': {
                 const snippetMD = `
+> [Source: ${resource.misc}](${resource.misc})
+>
 > ${resource.title}
 >
-> [Snippet Source](${resource.misc})`
+>`
                 cm.replaceRange(snippetMD, cursorPos)
                 break
             }

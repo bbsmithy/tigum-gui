@@ -142,7 +142,7 @@ const ResourceDialog = ({
                 <input
                     type="text"
                     autoFocus
-                    placeholder="Search for resource or flagpole"
+                    placeholder="Search for resource"
                     className={classes.searchResourceInput}
                     onChange={onChangeSearch}
                     value={query}

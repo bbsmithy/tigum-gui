@@ -48,7 +48,7 @@ export const Auth = () => {
 
   return (
     <>
-      {state.user && state.user.loggedIn ? (
+      {state.user.loggedIn ? (
         <MainContent />
       ) : (
         <AuthRouter screen={authScreen} navigate={navigate} />

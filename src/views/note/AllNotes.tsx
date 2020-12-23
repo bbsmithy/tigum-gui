@@ -28,7 +28,7 @@ export const AllNotes = (props: any) => {
       const res = await getNotes(topic_content);
       if (res.status === 200) {
         const body = await res.json();
-        dispatch({ type: 'SET_NOTES', payload: body.reverse() });
+        dispatch({ type: 'SET_NOTES', payload: body });
         setLoading(false);
       }
     } catch (e) {
@@ -58,8 +58,8 @@ export const AllNotes = (props: any) => {
 
   const renderNotes = () => {
     if (!loading) {
-      if (topics.data[selectedTopic].notes.length && notes.data) {
-        return topics.data[selectedTopic].notes.map((noteKey: number) => {
+      if (notes.keys && notes.keys.length && notes.data) {
+        return notes.keys.map((noteKey: number) => {
           if (notes.data[noteKey]) {
             return <Note note={notes.data[noteKey]} key={noteKey} />;
           }
@@ -77,7 +77,7 @@ export const AllNotes = (props: any) => {
   };
 
   return (
-    <div className='ph2 mt4 pt3'>
+    <div className='ph2 pb4 mb4 mt4 pt3'>
       <NewButton onClick={toggleModal} />
       {renderNotes()}
       <Modal

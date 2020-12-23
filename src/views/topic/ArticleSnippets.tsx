@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArticleCard, NewButton, Modal } from '../../components';
+import { MarkdownEditor } from 'devkeep-md-editor';
 import { createUseStyles } from 'react-jss';
-import { getArticleSnippets, createArticleSnippet } from '../../clib/api';
+import { getArticleSnippets, createArticleSnippet, updateArticleSnippet } from '../../clib/api';
 import { NewArticleSnippet } from '../../clib/models';
 
 import { useStateValue } from '../../state/StateProvider';
@@ -23,11 +24,39 @@ const useStyles = createUseStyles({
   },
   snippetBox: {
     height: 250,
+    color: "white",
+    border: "1px solid white",
+    resize: "none"
   },
-  snippetsContainer:{
+  snippetsContainer: {
     paddingBottom: 200
+  },
+  snippetLoading: {
+    width: "85%",
+    maxWidth: 1000,
+    '@media (max-width: 600px)':{
+      width: "100%"
+    },
+    margin: "auto",
+    marginTop: 15,
+    padding: "8px 15px"
   }
 });
+
+const theme = {
+  toolbar: {
+    background: '#424242',
+    color: 'white',
+    activeBtnBackground: '#242020',
+    activeBtnColor: 'white',
+    disabledBtnBackground: 'gray',
+    disabledBtnColor: '#333',
+  },
+  preview: { background: '#424242', color: 'white' },
+  editor: { background: '#424242', color: 'white' },
+  cursorColor: 'white',
+  height: '40vh'
+};
 
 const Snippets = (props) => {
   const classes = useStyles();
@@ -35,15 +64,22 @@ const Snippets = (props) => {
   if (!loading) {
     if (snippets.length) {
       return snippets.map((snippet, idx) => {
-        return (
-          <ArticleCard
-            content={snippet.content}
-            origin={snippet.origin}
-            index={idx}
-            id={snippet.id}
-            key={snippet.id}
-          />
-        );
+        if (snippet) {
+          return (
+            <ArticleCard
+              onEdit={props.onEdit}
+              title={snippet.title}
+              content={snippet.content}
+              origin={snippet.origin}
+              index={idx}
+              id={snippet.id}
+              key={snippet.id}
+            />
+          );
+        } else {
+          return null
+        }
+        
       });
     } else {
       return (
@@ -54,8 +90,7 @@ const Snippets = (props) => {
     }
   } else {
     return (
-      <article className='shadow-card mw5 mw7-ns hidden br2 ba dark-gray b--black-10  mv3'>
-        <div className='ph3 pv2'>
+      <article className={`shadow-card mw5 mw7-ns hidden br3 ba dark-gray b--black-10  mv3 ${classes.snippetLoading}`}>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
@@ -64,7 +99,6 @@ const Snippets = (props) => {
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.linkLoading}></div>
-        </div>
       </article>
     );
   }
@@ -73,7 +107,12 @@ const Snippets = (props) => {
 export const ArticleSnippets = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [createSnippetModalOpen, setCreateSnippetModalOpen] = useState(false);
-  const [snippetContent, setSnippetContent] = useState('');
+  const [snippetTitle, setSnippetTitle] = useState('')
+  const [editTitle, setEditTitle] = useState('')
+  const [editContent, setEditContent] = useState('')
+  const [snippetToEdit, setSnippetToEdit] = useState()
+  const [edit, setEdit] = useState(false)
+  const cmRef = useRef()
 
   const classes = useStyles();
   // @ts-ignore
@@ -99,42 +138,119 @@ export const ArticleSnippets = (props: any) => {
     setCreateSnippetModalOpen(!createSnippetModalOpen);
   };
 
-  const createSnippet = async () => {
-    if (snippetContent) {
-      const newSnippet: NewArticleSnippet = {
-        content: snippetContent,
-        origin: 'TIGUM',
-        topic_id: topics.data[selectedTopic].id,
-      };
-      const res = await createArticleSnippet(newSnippet);
-      dispatch({ type: 'ADD_SNIPPET', payload: res });
-      toggleModal();
-    }
-  };
+  const onChangeSnippetTitle = (val) => {
+    setSnippetTitle(val)
+  }
 
-  const onChangeSnippetContent = (e: any) => {
-    setSnippetContent(e.target.value);
-  };
+  const onChangeSnippetEditTitle = (val) => {
+    setEditTitle(val)
+  }
+
+  const codeMirrorHandle = (cm) => {
+    cmRef.current = cm
+  }
+
+  const onCreateSnippet = async () => {
+    try {
+        if (cmRef.current) {
+          // @ts-ignore
+          const snippetValue = cmRef.current.getValue()
+          if (snippetValue) {
+            const newSnippet: NewArticleSnippet = {
+              title: snippetTitle,
+              content: snippetValue,
+              origin: 'TIGUM',
+              topic_id: topics.data[selectedTopic].id,
+            };
+            const res = await createArticleSnippet(newSnippet);
+            dispatch({ type: 'ADD_SNIPPET', payload: res });
+            toggleModal();
+          }
+        }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const onEditSnippet = async () => {
+    if (cmRef.current) {
+      // @ts-ignore
+      const snippetValue = cmRef.current.getValue()
+      if (snippetValue) {
+        const editedSnippet: NewArticleSnippet = {
+          // @ts-ignore
+          id: snippetToEdit.id,
+          title: editTitle,
+          content: snippetValue,
+          origin: 'TIGUM',
+          topic_id: topics.data[selectedTopic].id,
+        };
+        const res = await updateArticleSnippet(editedSnippet);
+        // debugger
+        dispatch({ type: 'ADD_SNIPPET', payload: res });
+        toggleEdit()
+      }
+    }
+  }
+
+  const onEditOpen = (snippet) => {
+    setEditTitle(snippet.title)
+    setEditContent(snippet.content)
+    setSnippetToEdit(snippet)
+    toggleEdit()
+  }
+
+  const toggleEdit = () => {
+    setEdit(!edit)
+  }
 
   return (
     <div className='ph2 mt4 pt3'>
-      <Modal
+      {edit && (
+        <Modal
+          title='Edit snippet'
+          buttonText='Edit Snippet'
+          display={edit}
+          onClickAction={onEditSnippet}
+          toggleModal={toggleEdit}
+        >
+          <MarkdownEditor
+            initialValue={editContent}
+            onSave={onEditSnippet}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            useHighlightJS
+            highlightTheme='agate'
+            theme={theme}
+            title={editTitle}
+            onEditTitle={onChangeSnippetEditTitle}
+            autoFocusEditTitle={true}
+          />
+      </Modal>
+      )}
+      {createSnippetModalOpen && <Modal
         title='Create snippet'
         buttonText='Create Snippet'
         display={createSnippetModalOpen}
-        onClickAction={createSnippet}
+        onClickAction={onCreateSnippet}
         toggleModal={toggleModal}
       >
-        <form className='w-100 black-80'>
-          <textarea
-            className={`${classes.snippetBox} db border-box hover-black w-100 ba b--black-20 pa2 br2 mb2`}
-            onChange={onChangeSnippetContent}
-          ></textarea>
-        </form>
-      </Modal>
+          <MarkdownEditor
+            initialValue={''}
+            onSave={onCreateSnippet}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            useHighlightJS
+            highlightTheme='agate'
+            theme={theme}
+            title={''}
+            onEditTitle={onChangeSnippetTitle}
+            autoFocusEditTitle={true}
+          />
+      </Modal>}
       <NewButton onClick={toggleModal} text='New Snippet' />
       <div className={classes.snippetsContainer}>
-        <Snippets snippets={article_snippets} loading={loading} />
+        <Snippets snippets={article_snippets} loading={loading} onEdit={onEditOpen} />
       </div>
     </div>
   );

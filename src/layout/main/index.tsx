@@ -76,25 +76,12 @@ export const MainContent = (props) => {
     dispatch({ type: FETCHING_TOPICS });
     try {
       const newTopics = await getTopics([]);
-      const orderedTopics = newTopics.reverse();
-      dispatch({ type: SET_TOPICS, payload: orderedTopics });
+      dispatch({ type: SET_TOPICS, payload: newTopics });
     } catch (e) {
       dispatch({ type: SET_TOPICS_FAILURE });
     }
   };
-
-  const handleWindowResize = (evt) => {
-    setSidebarDisplay(evt.target.innerWidth);
-  };
-
-  const setSidebarDisplay = (width: number) => {
-    if (width < 960) {
-      dispatch({ type: HIDE_SIDEBAR, payload: { useFullWidth: true } });
-    } else if (width > 960) {
-      dispatch({ type: SHOW_SIDEBAR, payload: { useFullWidth: false } });
-    }
-  };
-
+  
   const handleLocationChange = (path) => {
     const pathVars = path.split(/\//);
     const topicId = Number(pathVars[2]);
@@ -138,7 +125,6 @@ export const MainContent = (props) => {
   }, [path]);
 
   useEffect(() => {
-    setSidebarDisplay(window.innerWidth);
     fetchTopics();
   }, []);
 

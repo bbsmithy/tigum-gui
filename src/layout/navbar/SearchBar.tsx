@@ -1,8 +1,9 @@
 
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { createUseStyles } from 'react-jss'
 import { findByTitle } from "../../clib/api";
 import { goto } from "../../util";
+import ResultTypeIcon from "../../components/ResultTypeIcon"
 
 const useStyles = createUseStyles({
     searchBar: {
@@ -77,29 +78,6 @@ const useStyles = createUseStyles({
     }
 });
 
-const ResultTypeIcon = ({ type }) => {
-    switch(type){
-        case 'topic':{
-        return <span style={{ marginRight: 10, background: "#246bf8", padding: 5, borderRadius: 4 }}>Topic:</span>
-        }
-        case 'note': {
-            return <i className="fas fa-pen-square"></i>
-        }
-        case 'snippet': {
-            return <i className="fas fa-newspaper"></i>
-        }
-        case 'video': {
-            return <i className="fab fa-youtube"></i>
-        }
-        case 'link': {
-            return <i className="fas fa-link"></i>
-        }
-        default: {
-            return null
-        }
-    }
-}
-
 const SearchResult = ({ result, reset }) => {
 
     const classes = useStyles()
@@ -109,6 +87,8 @@ const SearchResult = ({ result, reset }) => {
             goto(`/topic/${result.topic_id}/notes`)
         } else if (result.result_type === 'snippet') {
             goto(`/topic/${result.topic_id}/${result.result_type}s`)
+        } else if (result.result_type === 'link') {
+            window.open(result.misc, "blank")
         } else {
             goto(`/topic/${result.topic_id}/${result.result_type}s/${result.resource_id}`)
         }
@@ -128,9 +108,7 @@ const SearchResult = ({ result, reset }) => {
 }
 
 const ResultLoading = () => {
-
     const classses = useStyles()
-
     return (
         <div className={classses.resultLoading}>
             <div className={classses.resultLoadingTitle}></div>
@@ -165,6 +143,21 @@ export const SearchBar = () => {
     const [results, setResults] = useState()
     const [loading, setLoading] = useState(false)
     const queryRef = useRef()
+    const searchFieldRef = useRef()
+
+    useEffect(() => {
+        window.addEventListener("keydown", searchCommandListener)
+        return () => {
+            window.removeEventListener("keydown", searchCommandListener)
+        }
+    }, [])
+
+    const searchCommandListener = (event) => {
+        if (event.ctrlKey && event.key === 's') {
+            // @ts-ignore
+          searchFieldRef.current.focus()
+        }
+      }
 
     const _setQuery = (term) => {
         setQuery(term)
@@ -196,7 +189,14 @@ export const SearchBar = () => {
 
     return (
         <div style={{ position: "relative" }}>
-            <input type="text" placeholder="Search All" value={query} className={query ? classes.searchBarFocused : classes.searchBar} onChange={onChangeQuery}>
+            <input
+                type="text"
+                placeholder="Search All"
+                ref={searchFieldRef}
+                value={query}
+                className={query ? classes.searchBarFocused : classes.searchBar}
+                onChange={onChangeQuery}
+            >
             </input>
             {query && (
                 <SearchModal results={results} loading={loading} reset={reset} />

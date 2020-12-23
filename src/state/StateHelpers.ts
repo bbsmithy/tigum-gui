@@ -22,10 +22,10 @@ export const notesToKeys = (notes: Array<Note>) => {
   const keys = [];
   const data = {};
   notes.forEach((n: Note) => {
-    keys.push(n.id);
+    keys.unshift(n.id);
     data[n.id] = n;
   });
-  return { data, keys };
+  return { data, keys};
 };
 
 export const addNote = (note: any, state: any) => {

@@ -104,8 +104,8 @@ export const AllVideos = (props: any) => {
   };
 
   const renderVideoResources = () => {
-    if (topics.data[selectedTopic].videos.length !== 0 && videos.data) {
-      return topics.data[selectedTopic].videos.map((videoId, index) => {
+    if (videos.keys && videos.keys.length !== 0 && videos.data) {
+      return videos.keys.map((videoId, index) => {
         const video = videos.data[videoId];
         if (video) {
           return (

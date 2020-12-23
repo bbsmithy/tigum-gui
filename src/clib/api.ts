@@ -7,8 +7,8 @@ import {
   NewLink,
 } from './models';
 
-const DEV = process.env.NODE_ENV === 'development';
-// const DEV = false;
+// const DEV = process.env.NODE_ENV === 'development';
+const DEV = false;
 
 const BASE_API_URL = DEV
   ? 'https://bsmithapp.ngrok.io'
@@ -94,6 +94,32 @@ export const createNote = async (title: String, topic_id: number) => {
       },
       credentials: 'include',
       body: JSON.stringify({ title, topic_id }),
+    });
+    return await res;
+  } catch (e) {
+    throw e;
+  }
+};
+
+// pub id: i32,
+// pub title: String,
+// pub date_created: NaiveDateTime,
+// pub topic_id: i32,
+// pub user_id: i32,
+
+// #[put("/notes/<note_id>", format = "application/json", data = "<note>")]
+
+
+export const updateNote = async (note) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/notes/${note.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
+      },
+      credentials: 'include',
+      body: JSON.stringify(note),
     });
     return await res;
   } catch (e) {
@@ -213,6 +239,23 @@ export const getVideos = async (ids: Array<number>) => {
   }
 };
 
+export const updateVideo = async (video) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/videos/${video.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
+      },
+      credentials: 'include',
+      body: JSON.stringify(video),
+    });
+    return await res;
+  } catch (e) {
+    throw e;
+  }
+};
+
 export const createVideo = async (newVideo: NewVideo) => {
   try {
     const res = await fetch(`${BASE_API_URL}/videos/create`, {
@@ -258,7 +301,7 @@ export const getArticleSnippets = async (ids: number[]) => {
       body: JSON.stringify({ ids }),
     });
     const article_snippets_list = await res.json();
-    return article_snippets_list.reverse();
+    return article_snippets_list
   } catch (e) {
     throw e;
   }
@@ -270,6 +313,26 @@ export const createArticleSnippet = async (
   try {
     const res = await fetch(`${BASE_API_URL}/article_snippets/create`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ ...newArticleSnippet }),
+    });
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const updateArticleSnippet = async (
+  newArticleSnippet: NewArticleSnippet
+) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/article_snippets/${newArticleSnippet.id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'X-User-ID': 'test-user-id',
@@ -499,6 +562,22 @@ export const logoutUser = async () => {
 export const findByTitle = async (title) => {
   try {
     const res = await fetch(`${BASE_API_URL}/search/${title}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-ID': 'test-user-id',
+      },
+      credentials: 'include',
+    });
+    return await res.json()
+  } catch (e) {
+    throw e
+  }
+}
+
+export const findByTopicId = async (topic_id) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/searchByTopic/${topic_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

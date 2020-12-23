@@ -24,6 +24,10 @@ const useStyles = createUseStyles({
       fontSize: 12,
     },
   },
+  videoCardImage: {
+    height: 190,
+    backgroundColor: "black"
+  }
 });
 
 export const VideoCard = (props: VideoCardProps) => {
@@ -55,7 +59,7 @@ export const VideoCard = (props: VideoCardProps) => {
   return (
     <div className='w-100 w-50-m w-25-l dib ph2'>
       <article className='br2 video-card w-100 pointer mt2' onClick={onSelect}>
-        <img src={props.thumbnail_img} className='db w-100 br2 br--top' />
+        <img src={props.thumbnail_img} className={`db w-100 br2 br--top ${classes.videoCardImage}`} />
         <div className='ph3 pv3 h-30'>
           <div className='dib w-90'>
             <h5 className={`mv0 white ${classes.videoCardTitle}`}>{title}</h5>

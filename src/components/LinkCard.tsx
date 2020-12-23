@@ -29,12 +29,15 @@ const useStyles = createUseStyles({
 export const LinkCard = (props: any) => {
   const classes = useStyles();
 
+  const onClick = () => {
+    window.open(props.link.source, "blank")
+  }
+
   return (
     <div className='fl w-100 w-50-m w-33-l ph2 pv1'>
-      <a
-        href={props.link.source}
-        target='blank'
-        className='card note-card pointer w-100'
+      <div
+        onClick={onClick}
+        className='card link-card pointer w-100'
       >
         <div className='mw9 center'>
           <div className='cf ph2-ns'>
@@ -51,7 +54,7 @@ export const LinkCard = (props: any) => {
             </div>
           </div>
         </div>
-      </a>
+      </div>
     </div>
   );
 };

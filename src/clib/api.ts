@@ -7,8 +7,8 @@ import {
   NewLink,
 } from './models';
 
-// const DEV = process.env.NODE_ENV === 'development';
-const DEV = false;
+const DEV = process.env.NODE_ENV === 'development';
+// const DEV = false;
 
 const BASE_API_URL = DEV
   ? 'https://bsmithapp.ngrok.io'
@@ -498,7 +498,7 @@ export const createLink = async (newLink: NewLink) => {
 
 export const loginUser = async (email: string, password: string) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/user/login`, {
+    return await fetch(`${BASE_API_URL}/user/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -506,7 +506,6 @@ export const loginUser = async (email: string, password: string) => {
       credentials: 'include',
       body: JSON.stringify({ email, password }),
     });
-    return await res.json();
   } catch (e) {
     console.log("Error: ", e);
     throw e;
@@ -528,7 +527,7 @@ export const checkLogin = async () => {
   }
 };
 
-export const signupUser = async (email: string, password: string) => {
+export const signupUser = async (name: string, email: string, email_encrypted: string, password: string) => {
   try {
     const res = await fetch(`${BASE_API_URL}/user/signup`, {
       method: 'POST',
@@ -536,7 +535,7 @@ export const signupUser = async (email: string, password: string) => {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify({ email, password, name: email }),
+      body: JSON.stringify({ email, password, email_encrypted, name }),
     });
     return await res.json();
   } catch (e) {

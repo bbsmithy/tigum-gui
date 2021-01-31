@@ -3,12 +3,16 @@ import { Topic, Video, Note } from '../clib/models';
 export const topicsToKeys = (topics: Array<Topic>) => {
   const keys = [];
   const data = {};
-  topics.forEach((topic: Topic) => {
-    keys.push(topic.id);
-    data[topic.id] = topic;
-  });
-
-  return { data, keys };
+  if (topics) {
+    topics.forEach((topic: Topic) => {
+      keys.push(topic.id);
+      data[topic.id] = topic;
+    });
+  
+    return { data, keys };
+  } else {
+    return { data: {}, keys: [] };
+  }
 };
 
 export const deleteTopic = (data: any, keys: Array<number>, id: number) => {

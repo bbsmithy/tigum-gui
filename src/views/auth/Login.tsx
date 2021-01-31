@@ -86,9 +86,12 @@ const LoginForm = ({ dispatch, navigateToSignup, classes }) => {
       setAuthing(true);
       try {
         const res = await loginUser(email, password);
-        if (res) {
+        if (res.status === 200) {
           dispatch({ type: 'LOGIN_SUCCESS', payload: res });
           setAuthing(false);
+        } else {
+          setAuthing(false);
+          setLoginError('Incorrect email or password');
         }
       } catch (e) {
         setAuthing(false);
@@ -173,7 +176,7 @@ const SignupForm = ({ dispatch, navigateToSignup, classes }) => {
       try {
         setAuthing(true)
         const encrypted = await evervault.encrypt({ email })
-        await signupUser(name, encrypted.email, password)
+        await signupUser(name, email, encrypted.email, password)
         setAuthing(false)
       } catch (e) {
         setAuthing(false)

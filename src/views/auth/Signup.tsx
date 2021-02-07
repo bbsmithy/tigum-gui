@@ -75,27 +75,26 @@ const PasswordInput = ({ onChangePassword, password, classes }) => {
 }
 
 
-const LoginForm = ({ dispatch, classes }) => {
+const SignupForm = ({ dispatch, classes }) => {
+
+  const evervault = useEvervault();
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [authing, setAuthing] = useState(false);
 
-  const login = async () => {
+  const onClickSignUp = async () => {
     if (isValidForm && !authing) {
-      setAuthing(true);
+      setAuthing(true)
       try {
-        const res = await loginUser(email, password);
-        if (res.status === 200) {
-          dispatch({ type: 'LOGIN_SUCCESS', payload: res });
-          setAuthing(false);
-        } else {
-          setAuthing(false);
-          setLoginError('Incorrect email or password');
-        }
+        setAuthing(true)
+        const encrypted = await evervault.encrypt({ email })
+        await signupUser(name, email, encrypted.email, password)
+        setAuthing(false)
       } catch (e) {
-        setAuthing(false);
-        setLoginError('Incorrect email or password');
+        setAuthing(false)
+        setLoginError('Failed to create account')
       }
     }
   };
@@ -104,28 +103,40 @@ const LoginForm = ({ dispatch, classes }) => {
     setEmail(e.target.value);
   };
 
+  const onChangeName= (e) => {
+    setName(e.target.value);
+  };
+
   const onChangePassword = (e) => {
     setPassword(e.target.value);
   };
 
-  const isValidForm = email && password
+  const isValidForm = email && password && name
+
 
   return (
     <>
-      <fieldset id='sign_up' className='ba b--transparent ph0 mh0'>
+      <fieldset id='sign_up' className='ba b--transparent ph0'>
         <div className='mt3 white'>
-          <label className='db fw6 lh-copy f6 mb1'>Enter Email</label>
+          <label className='db fw6 lh-copy f6 mb1'>Username</label>
+          <input
+            className='pa2 white br2 input-reset ba bg-transparent b--white hover-bg-black hover-white w-100'
+            type="text"
+            onChange={onChangeName}
+            value={name}
+          />
+        </div>
+        <div className='mt3 white'>
+          <label className='db fw6 lh-copy f6 mb1'>New Email</label>
           <input
             className='pa2 white br2 input-reset ba bg-transparent b--white hover-bg-black hover-white w-100'
             type='email'
             onChange={onChangeEmail}
             value={email}
-            name='email-address'
-            id='email-address'
           />
         </div>
         <div className='mv3 white'>
-          <label className='db fw6 lh-copy f6 mb1'>Enter Password</label>
+          <label className='db fw6 lh-copy f6 mb1'>New Password</label>
           <PasswordInput onChangePassword={onChangePassword} password={password} classes={classes} />
         </div>
       </fieldset>
@@ -134,35 +145,35 @@ const LoginForm = ({ dispatch, classes }) => {
           <p>{loginError}</p>
         </div>
       )}
-      <div className='white'>
+      <div className='white center'>
         <button
           className={`${isValidForm ? classes.activeBtn : classes.disabledBtn} b ph3 pv2 br2 input-reset ba b--white bg-transparent white f6`}
           type='submit'
           disabled={!isValidForm || authing}
-          onClick={login}
+          onClick={onClickSignUp}
         >
           {authing ? (
             <div>
-              <i className='fas fa-circle-notch fa-spin'></i> Beep Bop Boop
+              <i className='fas fa-circle-notch fa-spin'></i> Computing...
             </div>
           ) : (
-            'Login'
+            'Sign Up'
           )}
         </button>
         <div
           onClick={() => {
-            goto(`signup`);
+            goto(`login`);
           }}
-          className={`link underline tc mt4 white pointer`}
+          className='link underline tc mt4 white pointer'
         >
-          I don't have an account yet
+          I already have an account login
         </div>
       </div>
     </>
   )
 }
 
-export const Login = (props) => {
+export const Signup = (props) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const classes = useStyles()
@@ -172,7 +183,7 @@ export const Login = (props) => {
       <div className='measure center'>
         <img src={require('../../logo-tigum.png')} className='w-33' />
         <p>Your personal knowledge base for the web</p>
-        <LoginForm dispatch={dispatch} classes={classes} />
+        <SignupForm dispatch={dispatch} classes={classes} />
       </div>
     </main>
   );

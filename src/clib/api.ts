@@ -589,3 +589,20 @@ export const findByTopicId = async (topic_id) => {
     throw e
   }
 }
+
+export const verifyUser = async (verifyHash) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/user/verify`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        verify_hash: verifyHash
+      })
+    });
+    return res
+  } catch (e) {
+    throw e
+  }
+}

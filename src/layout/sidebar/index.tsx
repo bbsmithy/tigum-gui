@@ -6,6 +6,7 @@ import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { logoutUser } from '../../clib/api';
 import classes from '*.module.scss';
+import { goto } from '../../util';
 
 const useStyles = createUseStyles({
   sidebarContainer: {
@@ -137,9 +138,10 @@ export const SideBar: React.FC<SideBarProps> = ({
     toggleModal();
   };
 
-  const onLogout = () => {
+  const onLogout = async () => {
     dispatch({ type: 'LOGOUT' });
-    logoutUser();
+    await logoutUser();
+    goto("login")
   };
 
   if (showSidebar) {

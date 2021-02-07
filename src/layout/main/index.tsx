@@ -94,7 +94,7 @@ export const MainContent = (props) => {
     if (pathVars.length === 4) {
       const newTopicScreen = resourceTypeToScreen(resourceType);
       dispatch({ type: "SHOW_TOPIC_NAVBAR", payload: true })
-      if(isMobile){
+      if (isMobile) {
         dispatch({ type: HIDE_SIDEBAR, payload: { useFullWidth: true } })
       } else {
         dispatch({ type: SHOW_SIDEBAR, payload: { useFullWidth: false } })

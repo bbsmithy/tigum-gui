@@ -5,7 +5,6 @@ import { TopicsList } from './TopicsList';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { logoutUser } from '../../clib/api';
-import classes from '*.module.scss';
 import { goto } from '../../util';
 
 const useStyles = createUseStyles({

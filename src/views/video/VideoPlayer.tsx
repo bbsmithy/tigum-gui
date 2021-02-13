@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
-import { goto, getJsonFromUrl } from '../../util';
+import { goto, getJsonFromUrl, setPageTitle } from '../../util';
 import { getVideos, deleteVideo, updateNote, updateVideo } from '../../clib/api';
 import ResourceDialog from '../../components/ResourceDialog';
 import ReferenceDialog from '../../components/ReferenceDialog';
@@ -432,6 +432,7 @@ export const VideoPlayer = () => {
   }
 
   const fetchNoteData = async (file) => {
+    setPageTitle(`${video.title} | ${topics.data[selectedTopic].title}`);
     try {
       setLoadingNote(true);
       const noteData = await getFile(file, 'video-notes');

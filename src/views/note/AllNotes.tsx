@@ -5,6 +5,7 @@ import { Modal } from '../../components/Modal';
 import { createNote, getNotes } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
 import { ADD_NOTE } from '../../state/ActionTypes';
+import { setPageTitle } from '../../util';
 
 export const AllNotes = (props: any) => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
@@ -37,6 +38,7 @@ export const AllNotes = (props: any) => {
   };
 
   useEffect(() => {
+    setPageTitle(`${topics.data[selectedTopic].title} | Notes`);
     fetchNotes(topics.data[selectedTopic].notes);
   }, [topics.data[selectedTopic].notes]);
 

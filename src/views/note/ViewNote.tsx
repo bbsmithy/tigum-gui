@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
 import { deleteNote, getNotes, updateNote } from '../../clib/api';
 import { getFile, uploadToBucket } from '../../clib/S3';
-import { goto } from '../../util';
+import { goto, setPageTitle } from '../../util';
 import { useStateValue } from '../../state/StateProvider';
 import ResourceDialog from '../../components/ResourceDialog';
 import { notify } from '../../state/Actions';
@@ -53,6 +53,7 @@ export const ViewNote = (props: any) => {
     content: { selectedResourceId, notes, selectedTopic, topics },
   } = state;
   const note = notes.data ? notes.data[selectedResourceId] : false;
+  const currentTopic = topics.data ? topics.data[selectedTopic] : false;
   const toolbarOptions = [
     {
       name: "home",
@@ -143,6 +144,7 @@ export const ViewNote = (props: any) => {
   const getNoteData = async (noteId: number) => {
     try {
       setLoadingHTML(true)
+      setPageTitle(`${note.title} | ${currentTopic.title}`)
       const noteHTML = await getFile(`${noteId}.md`, 'notes');
       setNoteMD(noteHTML);
       setLoadingHTML(false);

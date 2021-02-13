@@ -5,6 +5,7 @@ import { Modal } from '../../components/Modal';
 import { getLinks, createLink } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
 import { NewLink } from '../../clib/models';
+import { setPageTitle } from '../../util';
 
 const useStyles = createUseStyles({
   headerLoadingLink: {
@@ -60,6 +61,7 @@ export const Links = (props: any) => {
 
   useEffect(() => {
     if (topic.links.length) {
+      setPageTitle(`${topic.title} | Links`)
       fetchLinks(topic.links);
     } else {
       dispatch({ type: 'SET_LINKS', payload: [] });

@@ -6,6 +6,7 @@ import { getArticleSnippets, createArticleSnippet, updateArticleSnippet } from '
 import { NewArticleSnippet } from '../../clib/models';
 
 import { useStateValue } from '../../state/StateProvider';
+import { setPageTitle } from '../../util';
 
 const useStyles = createUseStyles({
   paragraphLoading: {
@@ -90,9 +91,8 @@ const Snippets = (props) => {
     }
   } else {
     return (
+      <>
       <article className={`shadow-card mw5 mw7-ns hidden br3 ba dark-gray b--black-10  mv3 ${classes.snippetLoading}`}>
-          <div className={classes.paragraphLoading}></div>
-          <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
@@ -100,6 +100,14 @@ const Snippets = (props) => {
           <div className={classes.paragraphLoading}></div>
           <div className={classes.linkLoading}></div>
       </article>
+      <article className={`shadow-card mw5 mw7-ns hidden br3 ba dark-gray b--black-10  mv3 ${classes.snippetLoading}`}>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.paragraphLoading}></div>
+          <div className={classes.linkLoading}></div>
+      </article>
+      </>
     );
   }
 };
@@ -130,6 +138,7 @@ export const ArticleSnippets = (props: any) => {
 
   useEffect(() => {
     if (topics.data[selectedTopic].article_snippets) {
+      setPageTitle(`${topics.data[selectedTopic].title} | Snippets`)
       fetchArticleSnippets(topics.data[selectedTopic].article_snippets);
     }
   }, [selectedTopic, topics.data]);

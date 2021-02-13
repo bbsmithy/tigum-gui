@@ -141,3 +141,7 @@ export const screenToResourceType = (screen) => {
       return false;
   }
 };
+
+export const setPageTitle = (title) => {
+  document.title = title
+}

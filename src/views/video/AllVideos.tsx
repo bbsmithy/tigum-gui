@@ -3,7 +3,7 @@ import { NewButton } from '../../components';
 import { Modal, VideoCard } from '../../components';
 import { createVideo, updateTopic, getVideos } from '../../clib/api';
 import { getVideoTitle } from '../../clib/yt';
-import { getEmbedFromUrl, goto } from '../../util';
+import { getEmbedFromUrl, goto, setPageTitle } from '../../util';
 
 import { createUseStyles } from 'react-jss';
 import { useStateValue } from '../../state/StateProvider';
@@ -53,8 +53,9 @@ export const AllVideos = (props: any) => {
       setLoadingVideos(false);
     }
   };
-
+  
   useEffect(() => {
+    setPageTitle(`${topics.data[selectedTopic].title} | Videos`);
     if (topics.data[selectedTopic].videos) {
       fetchVideos(topics.data[selectedTopic].videos);
     }

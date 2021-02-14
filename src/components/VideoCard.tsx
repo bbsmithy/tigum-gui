@@ -1,9 +1,6 @@
 import React from 'react';
 import { getDate, truncated } from '../util';
-import { OptionsButton } from './OptionsButton';
-import { deleteVideo } from '../clib/api';
 import { createUseStyles } from 'react-jss';
-import { render } from 'react-dom';
 
 type VideoCardProps = {
   date_created: string;

@@ -2,17 +2,21 @@ const AWS = require('aws-sdk');
 
 AWS.config.update({
   accessKeyId: 'MI4KC197Y2IGVDWCY4ZR',
-  secretAccessKey: 'lAVozczUatRDEQ1RAcAvVcbhmh1u3N1W1UIPYkC8',
+  secretAccessKey: 'e4Jb6HMD6EeLDZwC2b4AGl4DbuLLzBKFKotxQAOX',
 });
+
+
 const endpoint = new AWS.Endpoint('cellar-c2.services.clever-cloud.com');
 
-const s3 = new AWS.S3({ endpoint });
+const s3 = new AWS.S3({ endpoint: "cellar-c2.services.clever-cloud.com" });
 
 export const getBuckets = () => {
   s3.listBuckets(function (err: any, res: any) {
     console.log(res);
   });
 };
+
+getBuckets()
 
 export const uploadToBucket = (data: any, fileKey: string, bucket: string) => {
   return new Promise((resolve, reject) => {
@@ -65,4 +69,44 @@ export const deleteFile = (file: string, bucket: string) => {
  * you'll need to use 'putObject' instead.
  * see doc : http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getSignedUrl-property
  */
-// s3.getSignedUrl('getObject', { Bucket: 'notes', Key: 'MI4KC197Y2IGVDWCY4ZR' });
+export const getSignedPublicUrl = (bucket, key) => {
+  return new Promise((resolve, reject) => {
+    s3.getSignedUrl('getObject', { Bucket: bucket, Key: key }, (err, url) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(url)
+      }
+    })
+  })
+}
+
+export const uploadImage = (data, type, fileName) => {
+  return new Promise((resolve, reject) => {
+    s3.putObject(
+      {
+        Bucket: 'images-tigum',
+        Key: fileName,
+        Body: data,
+        ContentType: type,
+      },
+      (err: any, data: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log("Image uplaod res: ", data)
+          resolve(data);
+        }
+      }
+    );
+  })
+}
+
+export const uploadImageandGetPublicUrl = async ({
+  data,
+  type,
+  fileName
+}) => {
+  await uploadImage(data, type, fileName);
+  return `https://images-tigum.cellar-c2.services.clever-cloud.com/${fileName}`
+}

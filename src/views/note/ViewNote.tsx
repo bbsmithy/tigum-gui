@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
 import { deleteNote, getNotes, updateNote } from '../../clib/api';
-import { getFile, uploadToBucket } from '../../clib/S3';
+import { getFile, uploadImageandGetPublicUrl, uploadToBucket } from '../../clib/S3';
 import { goto, setPageTitle } from '../../util';
 import { useStateValue } from '../../state/StateProvider';
 import ResourceDialog from '../../components/ResourceDialog';
@@ -81,7 +81,35 @@ export const ViewNote = (props: any) => {
     },
     'code',
     'link',
-    'image',
+    {
+      name: "image",
+      action: function customFunction(editor){
+        var input = document.createElement("input")
+        input.setAttribute("type", "file")
+        input.setAttribute("accept", "image/*")
+        // add onchange handler if you wish to get the file :)
+        input.id = "image-input-uploader"
+        input.onchange = async (evt) => {
+          // @ts-ignore
+          var files = evt.target.files; // FileList object
+          var file = files[0];
+          try {
+            const imageUrl = await uploadImageandGetPublicUrl({
+              // @ts-ignore
+              data: file,
+              type: file.type,
+              fileName: file.name
+            })
+            insertNewImageUrl(imageUrl.replace(" ", "%20"))
+          } catch (err) {
+            console.log("Error: ", err)
+          }
+        }
+        input.click()
+      },
+      className: "fa fa-picture-o",
+      title: "Upload Image",
+    },
     'table',
     '|',
     'preview',
@@ -136,6 +164,13 @@ export const ViewNote = (props: any) => {
         showReferenceDialog()
       }
     }
+  }
+
+  const insertNewImageUrl = (url) => {
+    // @ts-ignore
+    const cursorPos = cmRef.current.getCursor()
+    // @ts-ignore
+    cmRef.current.replaceRange(`![](${url})`, cursorPos)
   }
 
   const showReferenceDialog = () => {
@@ -278,6 +313,7 @@ export const ViewNote = (props: any) => {
             topic_id={selectedTopic}
           />
         )}
+        <input type="file" id="open-fs" style={{ display: "none" }}></input>
       </div>
     );
   }

@@ -54,6 +54,32 @@ export const ViewNote = (props: any) => {
   } = state;
   const note = notes.data ? notes.data[selectedResourceId] : false;
   const currentTopic = topics.data ? topics.data[selectedTopic] : false;
+  
+  const openImageFiles = () => {
+    var input = document.createElement("input")
+    input.setAttribute("type", "file")
+    input.setAttribute("accept", "image/*")
+    // add onchange handler if you wish to get the file :)
+    input.id = "image-input-uploader"
+    input.onchange = async (evt) => {
+      // @ts-ignore
+      var files = evt.target.files; // FileList object
+      var file = files[0];
+      try {
+        const imageUrl = await uploadImageandGetPublicUrl({
+          // @ts-ignore
+          data: file,
+          type: file.type,
+          fileName: file.name
+        })
+        insertNewImageUrl(imageUrl.replace(" ", "%20"))
+      } catch (err) {
+        console.log("Error: ", err)
+      }
+    }
+    input.click()
+  }
+
   const toolbarOptions = [
     {
       name: "home",
@@ -83,30 +109,7 @@ export const ViewNote = (props: any) => {
     'link',
     {
       name: "image",
-      action: function customFunction(editor){
-        var input = document.createElement("input")
-        input.setAttribute("type", "file")
-        input.setAttribute("accept", "image/*")
-        // add onchange handler if you wish to get the file :)
-        input.id = "image-input-uploader"
-        input.onchange = async (evt) => {
-          // @ts-ignore
-          var files = evt.target.files; // FileList object
-          var file = files[0];
-          try {
-            const imageUrl = await uploadImageandGetPublicUrl({
-              // @ts-ignore
-              data: file,
-              type: file.type,
-              fileName: file.name
-            })
-            insertNewImageUrl(imageUrl.replace(" ", "%20"))
-          } catch (err) {
-            console.log("Error: ", err)
-          }
-        }
-        input.click()
-      },
+      action: openImageFiles,
       className: "fa fa-picture-o",
       title: "Upload Image",
     },
@@ -163,6 +166,8 @@ export const ViewNote = (props: any) => {
       if (cmRef.current !== undefined) {
         showReferenceDialog()
       }
+    } else if (event.ctrlKey && event.key === 'i'){
+      openImageFiles()
     }
   }
 

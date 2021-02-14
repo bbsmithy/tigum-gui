@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NewButton } from '../../components';
 import { Modal, VideoCard } from '../../components';
-import { createVideo, updateTopic, getVideos } from '../../clib/api';
+import { createVideo, getVideos } from '../../clib/api';
 import { getVideoTitle } from '../../clib/yt';
 import { getEmbedFromUrl, goto, setPageTitle } from '../../util';
 
@@ -53,7 +53,7 @@ export const AllVideos = (props: any) => {
       setLoadingVideos(false);
     }
   };
-  
+
   useEffect(() => {
     setPageTitle(`${topics.data[selectedTopic].title} | Videos`);
     if (topics.data[selectedTopic].videos) {
@@ -111,6 +111,7 @@ export const AllVideos = (props: any) => {
         if (video) {
           return (
             <VideoCard
+              date_created={video.date_created}
               iframe={video.iframe}
               title={video.title}
               key={videoId}

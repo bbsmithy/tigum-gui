@@ -4,8 +4,15 @@ import { createUseStyles } from 'react-jss';
 const useStyles = createUseStyles({
   videoCardTitleLoading: {
     backgroundColor: 'gray',
-    padding: 5,
-    borderRadius: 5,
+    padding: 4,
+    borderRadius: 4,
+  },
+  videoCardSubTitleLoading: {
+    backgroundColor: 'gray',
+    marginTop: 10,
+    padding: 4,
+    borderRadius: 4,
+    width: "50%"
   },
   videCardImageLoading: {
     height: 190,
@@ -17,15 +24,17 @@ export const LoadingVideo = () => {
   const classes = useStyles();
 
   return (
-    <div className='w-100 w-50-m w-25-l dib ph2'>
-      <article className='br2 video-card w-100 pointer mt2'>
-        <div
-          className={`db w-100 br2 br--top h3 ${classes.videCardImageLoading}`}
-        />
-        <div className='ph3 pv3 h-30'>
-          <div className='dib w-90'>
+    <div className='fl w-100 w-50-m w-33-l ph2 pv1'>
+      <article
+        style={{ display: "flex", flexDirection: "row", overflow: "hidden" }}
+        className='br2 video-card w-100 pointer'
+      >
+        <div style={{ flex: 1, height: 90}}>
+          <div className={classes.videCardImageLoading}></div>
+        </div>
+        <div style={{ flex: 2, margin: "20px 10px 0px 10px" }}>
             <div className={classes.videoCardTitleLoading}></div>
-          </div>
+            <div className={classes.videoCardSubTitleLoading}></div>
         </div>
       </article>
     </div>

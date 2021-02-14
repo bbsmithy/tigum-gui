@@ -138,6 +138,7 @@ const MobileLayout = ({
               spellChecker={false}
               toolbarOptions={toolbarOptions}
               useHighlightJS
+              title={false}
               highlightTheme='agate'
               defaultView="preview"
               theme={theme}

@@ -92,7 +92,6 @@ export const ViewNote = (props: any) => {
   ];
 
   useEffect(() => {
-    setupNote()
     return () => {
       if (cmRef.current) {
         // @ts-ignore
@@ -108,6 +107,12 @@ export const ViewNote = (props: any) => {
   useEffect(() => {
     setupNote()
   }, [selectedResourceId])
+
+  useEffect(() => {
+    if (note) {
+      setPageTitle(`${note.title} | ${currentTopic.title}`)
+    }
+  }, [note])
 
   const setupNote = () => {
     if (!note && notes.keys.length === 0) {
@@ -144,7 +149,6 @@ export const ViewNote = (props: any) => {
   const getNoteData = async (noteId: number) => {
     try {
       setLoadingHTML(true)
-      setPageTitle(`${note.title} | ${currentTopic.title}`)
       const noteHTML = await getFile(`${noteId}.md`, 'notes');
       setNoteMD(noteHTML);
       setLoadingHTML(false);

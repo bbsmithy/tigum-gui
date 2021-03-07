@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MarkdownEditor } from 'devkeep-md-editor';
 import { deleteNote, getNotes, updateNote } from '../../clib/api';
-import { getFile, uploadImageandGetPublicUrl, uploadToBucket } from '../../clib/S3';
-import { goto, setPageTitle } from '../../util';
+import { deleteImage, getFile, uploadImageandGetPublicUrl, uploadToBucket } from '../../clib/S3';
+import { debounce, goto, setPageTitle } from '../../util';
 import { useStateValue } from '../../state/StateProvider';
 import ResourceDialog from '../../components/ResourceDialog';
 import { notify } from '../../state/Actions';
 import { CursorState } from "../../types";
 import { createUseStyles } from 'react-jss';
-
 
 const theme = {
   toolbar: {
@@ -45,6 +44,7 @@ export const ViewNote = (props: any) => {
   const [loadingHTML, setLoadingHTML] = useState(true);
   const [saving, setSaving] = useState(false);
   const [cmdControl, setCMDControl] = useState<CursorState>();
+  const diffCheckerWorkerRef = useRef<Worker>()
   const cmRef = useRef()
   const simpleMDERef = useRef()
   const initialNoteMDRef = useRef<string>()
@@ -70,9 +70,11 @@ export const ViewNote = (props: any) => {
           // @ts-ignore
           data: file,
           type: file.type,
-          fileName: file.name
+          fileName: file.name.replaceAll(" ", "_")
         })
-        insertNewImageUrl(imageUrl.replace(" ", "%20"))
+        // @ts-ignore
+        insertNewImageUrl(imageUrl)
+        input.remove()
       } catch (err) {
         console.log("Error: ", err)
       }
@@ -128,9 +130,13 @@ export const ViewNote = (props: any) => {
         // @ts-ignore
         const currentMD = cmRef.current.getValue()
         if (currentMD !== initialNoteMDRef.current) {
-          console.log(currentMD)
           save(currentMD)
         }
+      }
+      if (diffCheckerWorkerRef.current) {
+        // @ts-ignore
+        diffCheckerWorkerRef.current.terminate()
+        diffCheckerWorkerRef.current = null
       }
     }
   }, []);
@@ -172,10 +178,11 @@ export const ViewNote = (props: any) => {
   }
 
   const insertNewImageUrl = (url) => {
+    let parsedUrl = url.replaceAll(" ", "%20")
     // @ts-ignore
     const cursorPos = cmRef.current.getCursor()
     // @ts-ignore
-    cmRef.current.replaceRange(`![](${url})`, cursorPos)
+    cmRef.current.replaceRange(`![](${parsedUrl})`, cursorPos)
   }
 
   const showReferenceDialog = () => {
@@ -254,8 +261,37 @@ export const ViewNote = (props: any) => {
     cmRef.current = cm
   };
 
+  const handleCodeMirrorChanges = debounce((val) => {
+    diffCheckerWorkerRef.current.postMessage(val)
+  }, 1000)
+
   const simpleMdeHandle = (simpleMDE) => {
     simpleMDERef.current = simpleMDE
+    if (simpleMDERef.current) {
+      diffCheckerWorkerRef.current = new Worker("./documentDiffListener.js")
+      diffCheckerWorkerRef.current.addEventListener("message", (msg) => {
+        switch (msg.data.action) {
+          case "DELETE_IMAGES": {
+            const deleteImageReqs = msg.data.deletedImageUrls.map((url) => {
+              let fileName = url.replace("https://images-tigum.cellar-c2.services.clever-cloud.com/", "")
+              return deleteImage(fileName)
+            })
+            Promise.all(deleteImageReqs).then((res) => {
+              console.log("Success", res)
+            }).catch((err) => {
+              console.log("Error: ", err)
+            })
+            console.log("received ww urls: ", )
+            break;
+          }
+        }
+      })
+      // @ts-ignore
+      simpleMDERef.current.codemirror.on("changes", () =>  {
+        // @ts-ignore
+        handleCodeMirrorChanges(simpleMDERef.current.value())
+      });
+    }
   }
 
   const onClickNote = (evt) => {
@@ -306,7 +342,7 @@ export const ViewNote = (props: any) => {
             onBack={goBack}
             title={note.title}
             onEditTitle={onEditTitle}
-            editTitleWidth={"35%"}
+            editTitleWidth={"50%"}
             defaultView={window.innerWidth > 500 ? "side-by-side" : "preview"}
           />
         )}
@@ -318,7 +354,6 @@ export const ViewNote = (props: any) => {
             topic_id={selectedTopic}
           />
         )}
-        <input type="file" id="open-fs" style={{ display: "none" }}></input>
       </div>
     );
   }

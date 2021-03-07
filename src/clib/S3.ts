@@ -94,11 +94,29 @@ export const uploadImage = (data, type, fileName) => {
         if (err) {
           reject(err);
         } else {
-          console.log("Image uplaod res: ", data)
           resolve(data);
         }
       }
     );
+  })
+}
+
+export const deleteImage = (fileName) => {
+  return new Promise((resolve, reject) => {
+    s3.deleteObject(
+      {
+        Bucket: 'images-tigum',
+        Key: fileName,
+      },
+      (err: any, data: any) => {
+        if (err) {
+          console.log(err)
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      }
+    )
   })
 }
 

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Login, Verify, Signup } from '../views/auth';
+import { Login, Verify, Signup, RequestAccess } from '../views/auth';
 
 export enum AUTH_SCREENS {
   SIGNUP,
   LOGIN,
-  VERIFY
+  VERIFY,
+  REQUEST_ACCESS
 }
 
 type NoteRouterType = {
@@ -20,6 +21,8 @@ export const AuthRouter = ({ screen, navigate }: NoteRouterType) => {
       return <Signup navigate={navigate} />
     case AUTH_SCREENS.VERIFY:
       return <Verify navigate={navigate} />
+    case AUTH_SCREENS.REQUEST_ACCESS:
+      return <RequestAccess navigate={navigate} />
     default:
       return null
   }

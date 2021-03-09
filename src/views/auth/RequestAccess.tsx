@@ -4,6 +4,7 @@ import { useStateValue } from '../../state/StateProvider';
 import { useEvervault } from '@evervault/react';
 import { createUseStyles } from 'react-jss';
 import { goto } from '../../util';
+import { requestBetaAccess } from '../../clib/fb';
 
 const useStyles = createUseStyles({
   disabledBtn: {
@@ -75,27 +76,23 @@ const PasswordInput = ({ onChangePassword, password, classes }) => {
 }
 
 
-const LoginForm = ({ dispatch, classes }) => {
+const BetaAccessForm = ({ dispatch, classes }) => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
+  const [accessMsg, setAccessMsg] = useState('');
   const [authing, setAuthing] = useState(false);
+  const [requestedAccess, setRequestedAccess] = useState(false)
 
   const login = async () => {
     if (isValidForm && !authing) {
       setAuthing(true);
       try {
-        const res = await loginUser(email, password);
-        if (res.status === 200) {
-          dispatch({ type: 'LOGIN_SUCCESS', payload: res });
-          setAuthing(false);
-        } else {
-          setAuthing(false);
-          setLoginError('Incorrect email or password');
-        }
+        await requestBetaAccess(email)
+        setAuthing(false)
+        setAccessMsg("Thank you for requesting beta access! I'll email you soon with details on beta program.")
+        setRequestedAccess(true)
       } catch (e) {
         setAuthing(false);
-        setLoginError('Incorrect email or password');
+        setAccessMsg('Something went wrong try again later');
       }
     }
   };
@@ -104,11 +101,7 @@ const LoginForm = ({ dispatch, classes }) => {
     setEmail(e.target.value);
   };
 
-  const onChangePassword = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const isValidForm = email && password
+  const isValidForm = email || requestedAccess
 
   return (
     <>
@@ -124,14 +117,10 @@ const LoginForm = ({ dispatch, classes }) => {
             id='email-address'
           />
         </div>
-        <div className='mv3 white'>
-          <label className='db fw6 lh-copy f6 mb1'>Enter Password</label>
-          <PasswordInput onChangePassword={onChangePassword} password={password} classes={classes} />
-        </div>
       </fieldset>
-      {loginError && (
+      {accessMsg && (
         <div>
-          <p>{loginError}</p>
+          <p>{accessMsg}</p>
         </div>
       )}
       <div className='white'>
@@ -146,23 +135,23 @@ const LoginForm = ({ dispatch, classes }) => {
               <i className='fas fa-circle-notch fa-spin'></i> Beep Bop Boop
             </div>
           ) : (
-            'Login'
+            'Request Beta Access'
           )}
         </button>
         <div
           onClick={() => {
-            goto(`request-access`);
+            goto(`login`);
           }}
           className={`link underline tc mt4 white pointer`}
         >
-          I don't have an account
+          I already have an account login
         </div>
       </div>
     </>
   )
 }
 
-export const Login = (props) => {
+export const RequestAccess = (props) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const classes = useStyles()
@@ -172,7 +161,7 @@ export const Login = (props) => {
       <div className='measure center'>
         <img src={require('../../logo-tigum.png')} className='w-33' />
         <p>Your personal knowledge base for the web</p>
-        <LoginForm dispatch={dispatch} classes={classes} />
+        <BetaAccessForm dispatch={dispatch} classes={classes} />
       </div>
     </main>
   );

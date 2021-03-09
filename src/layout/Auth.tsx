@@ -34,6 +34,8 @@ export const Auth = () => {
       navigate(AUTH_SCREENS.SIGNUP)
     } else if (screen === "verify") {
       navigate(AUTH_SCREENS.VERIFY)
+    } else if (screen === "request-access") {
+      navigate(AUTH_SCREENS.REQUEST_ACCESS)
     } else if (screen === ""){
       goto("login")
     }

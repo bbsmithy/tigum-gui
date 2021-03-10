@@ -35,7 +35,12 @@ const MarkdownEditor = (props) => {
   useEffect(() => {
     setUpSimpleMDE(initialValue);
     document.addEventListener('keydown', commandListener);
-    return () => document.removeEventListener('keydown', commandListener);
+    return () => {
+      document.getElementById('devkeep-md-editor-theme').remove();
+      document.getElementsByTagName("body")[0].removeAttribute("style")
+      document.getElementsByTagName("html")[0].removeAttribute("style")
+      document.removeEventListener('keydown', commandListener);
+    }
   }, [])
 
   useEffect(() => {

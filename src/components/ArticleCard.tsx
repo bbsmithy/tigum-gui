@@ -66,7 +66,7 @@ const useStyles = createUseStyles({
     justifyContent: "space-between"
   },
   title:{
-    borderBottom: "1px solid white"
+    color: "white"
   }
 });
 
@@ -91,12 +91,10 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
     try {
       const yesDelete = window.confirm("Are you sure you want to delete this snippet?")
       if (yesDelete) {
-        const res = await deleteArticleSnippet(props.id);
-        if (res.status === 200) {
-          let newSnippets = article_snippets;
-          delete newSnippets[props.index];
-          dispatch({ type: 'SET_SNIPPETS', payload: newSnippets });
-        }
+        let newSnippets = article_snippets;
+        delete newSnippets[props.index];
+        dispatch({ type: 'SET_SNIPPETS', payload: newSnippets });
+        await deleteArticleSnippet(props.id);
       }
     } catch (e) {
       console.log(e);

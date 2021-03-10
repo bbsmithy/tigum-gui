@@ -1,5 +1,5 @@
 import React from 'react';
-import { MarkdownEditor } from 'devkeep-md-editor/dist';
+import { MarkdownEditor } from './lib';
 
 const styles = {
   mainContainer: { backgroundColor: '#333' },
@@ -8,6 +8,6 @@ const styles = {
   htmlContainer: { color: 'white' },
 };
 
-export const Markdown = () => {
+export const MDE = () => {
   return <MarkdownEditor height={window.innerHeight} styles={styles} />;
 };

@@ -150,9 +150,7 @@ const LoginForm = ({ dispatch, classes }) => {
           )}
         </button>
         <div
-          onClick={() => {
-            goto(`request-access`);
-          }}
+          onClick={() => goto(`request-access`)}
           className={`link underline tc mt4 white pointer`}
         >
           I don't have an account

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MarkdownEditor } from 'devkeep-md-editor';
+import { MarkdownEditor } from '../../components/MarkdownEditor/lib';
 import { deleteNote, getNotes, updateNote } from '../../clib/api';
 import { deleteImage, getFile, uploadImageandGetPublicUrl, uploadToBucket } from '../../clib/S3';
 import { debounce, goto, setPageTitle } from '../../util';

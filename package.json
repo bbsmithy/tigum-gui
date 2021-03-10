@@ -14,11 +14,13 @@
     "devkeep-md-editor": "0.5.3",
     "firebase": "^8.2.10",
     "marked": "^1.2.5",
+    "mathjax": "3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-jss": "^10.0.0",
     "react-scripts": "^3.4.1",
     "simple-youtube-api": "^5.2.1",
+    "simplemde": "^1.11.2",
     "typescript": "3.5.2"
   },
   "devDependencies": {

@@ -111,6 +111,7 @@ export const AllVideos = (props: any) => {
         if (video) {
           return (
             <VideoCard
+              date_updated={video.date_updated}
               date_created={video.date_created}
               iframe={video.iframe}
               title={video.title}

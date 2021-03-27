@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { loginUser, signupUser } from '../../clib/api';
+import { loginUser } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
-import { useEvervault } from '@evervault/react';
 import { createUseStyles } from 'react-jss';
 import { goto } from '../../util';
 

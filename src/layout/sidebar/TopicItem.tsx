@@ -35,7 +35,8 @@ export const TopicItem = ({
   };
 
   const renderDate = () => {
-    const dateText = new Date(topic.date_created);
+    console.log(topic)
+    const dateText = new Date(topic.date_updated);
     return getDate(dateText);
   };
 

@@ -36,7 +36,7 @@ export const Note = (props: any) => {
   };
 
   const renderDate = () => {
-    const dateText = new Date(props.note.date_created);
+    const dateText = new Date(props.note.date_updated);
     return getDate(dateText);
   };
 

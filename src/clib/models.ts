@@ -2,6 +2,7 @@ export type Topic = {
   id: number;
   title: string;
   date_created: string;
+  date_updated: string;
   notes: number[];
   videos: number[];
   code: number[];

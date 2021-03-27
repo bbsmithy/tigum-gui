@@ -4,6 +4,7 @@ import { createUseStyles } from 'react-jss';
 
 type VideoCardProps = {
   date_created: string;
+  date_updated: string;
   iframe: string;
   title: string;
   thumbnail_img: string;
@@ -48,7 +49,7 @@ export const VideoCard = (props: VideoCardProps) => {
   };
 
   const renderDate = () => {
-    const dateText = new Date(props.date_created);
+    const dateText = new Date(props.date_updated);
     return getDate(dateText);
   };
 

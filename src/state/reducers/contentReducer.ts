@@ -46,7 +46,6 @@ const ContentReducer = (state: any, action: any) => {
       };
     case SET_TOPICS:
       const { data, keys } = topicsToKeys(action.payload);
-      console.log(action.payload)
       return { ...state, topics: { data, keys, loading: false } };
     case SET_TOPICS_FAILURE:
       return { ...state, topics: { ...state.topics, loading: false } };

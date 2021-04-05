@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MarkdownEditor } from '../../components/MarkdownEditor/lib';
-import { deleteNote, getNotes, updateNote } from '../../clib/api';
+import { deleteNote, getNotes, updateNote, updateTopicModDate } from '../../clib/api';
 import { deleteImage, getFile, uploadImageandGetPublicUrl, uploadToBucket } from '../../clib/S3';
 import { debounce, goto, setPageTitle } from '../../util';
 import { useStateValue } from '../../state/StateProvider';
@@ -221,6 +221,7 @@ export const ViewNote = (props: any) => {
       notify(dispatch, 'Saving notes', 'progress', 'right');
       setNoteMD(htmlFromMDEditor);
       await uploadToBucket(htmlFromMDEditor, `${selectedResourceId}.md`, 'notes');
+      await updateTopicModDate(selectedTopic)
       setTimeout(
         () => notify(dispatch, 'Saved successfully', 'success', 'right'),
         150

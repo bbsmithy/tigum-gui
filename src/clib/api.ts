@@ -84,6 +84,17 @@ export const updateTopic = async (topic: any) => {
   }
 };
 
+export const updateTopicModDate = (topicId: number) => {
+  return fetch(`${BASE_API_URL}/topics/update-mod-date/${topicId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-User-ID': 'test-user-id',
+    },
+    credentials: 'include'
+  });
+}
+
 export const createNote = async (title: String, topic_id: number) => {
   try {
     const res = await fetch(`${BASE_API_URL}/notes/create-note`, {

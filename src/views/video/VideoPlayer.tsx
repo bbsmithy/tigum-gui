@@ -3,7 +3,7 @@ import { MarkdownEditor } from 'devkeep-md-editor';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { goto, getJsonFromUrl, setPageTitle } from '../../util';
-import { getVideos, deleteVideo, updateNote, updateVideo } from '../../clib/api';
+import { getVideos, deleteVideo, updateVideo, updateTopicModDate } from '../../clib/api';
 import ResourceDialog from '../../components/ResourceDialog';
 import ReferenceDialog from '../../components/ReferenceDialog';
 import { uploadToBucket, getFile } from '../../clib/S3';
@@ -464,6 +464,7 @@ export const VideoPlayer = () => {
         `${selectedResourceId}_video.md`,
         'video-notes'
       );
+      await updateTopicModDate(selectedTopic)
       setTimeout(
         () => {
           // @ts-ignore

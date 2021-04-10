@@ -7,6 +7,7 @@ import { NewArticleSnippet } from '../../clib/models';
 
 import { useStateValue } from '../../state/StateProvider';
 import { setPageTitle } from '../../util';
+import { UPDATE_SNIPPET } from '../../state/ActionTypes';
 
 const useStyles = createUseStyles({
   paragraphLoading: {
@@ -195,8 +196,7 @@ export const ArticleSnippets = (props: any) => {
           topic_id: topics.data[selectedTopic].id,
         };
         const res = await updateArticleSnippet(editedSnippet);
-        // debugger
-        dispatch({ type: 'ADD_SNIPPET', payload: res });
+        dispatch({ type: UPDATE_SNIPPET, payload: res });
         toggleEdit()
       }
     }
@@ -237,26 +237,28 @@ export const ArticleSnippets = (props: any) => {
           />
       </Modal>
       )}
-      {createSnippetModalOpen && <Modal
-        title='Create snippet'
-        buttonText='Create Snippet'
-        display={createSnippetModalOpen}
-        onClickAction={onCreateSnippet}
-        toggleModal={toggleModal}
-      >
-          <MarkdownEditor
-            initialValue={''}
-            onSave={onCreateSnippet}
-            codeMirrorHandle={codeMirrorHandle}
-            spellChecker={false}
-            useHighlightJS
-            highlightTheme='agate'
-            theme={theme}
-            title={''}
-            onEditTitle={onChangeSnippetTitle}
-            autoFocusEditTitle={true}
-          />
-      </Modal>}
+      {createSnippetModalOpen && (
+        <Modal
+          title='Create snippet'
+          buttonText='Create Snippet'
+          display={createSnippetModalOpen}
+          onClickAction={onCreateSnippet}
+          toggleModal={toggleModal}
+        >
+            <MarkdownEditor
+              initialValue={''}
+              onSave={onCreateSnippet}
+              codeMirrorHandle={codeMirrorHandle}
+              spellChecker={false}
+              useHighlightJS
+              highlightTheme='agate'
+              theme={theme}
+              title={''}
+              onEditTitle={onChangeSnippetTitle}
+              autoFocusEditTitle={true}
+            />
+        </Modal>
+      )}
       <NewButton onClick={toggleModal} text='New Snippet' />
       <div className={classes.snippetsContainer}>
         <Snippets snippets={article_snippets} loading={loading} onEdit={onEditOpen} />

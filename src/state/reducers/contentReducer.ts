@@ -17,6 +17,7 @@ import {
   SET_TOPICS_FAILURE,
   SET_SELECTED_TOPIC,
   SET_SNIPPETS,
+  UPDATE_SNIPPET,
   ADD_SNIPPET,
   SET_NOTES,
   ADD_NOTE,
@@ -91,6 +92,15 @@ const ContentReducer = (state: any, action: any) => {
           },
         },
       };
+    }
+    case UPDATE_SNIPPET: {
+      const newArticleSnippets = state.article_snippets
+      const snippetToUpdateIndex = state.article_snippets.findIndex((snippet) => snippet.id === action.payload.id)
+      newArticleSnippets[snippetToUpdateIndex] = action.payload
+      return {
+        ...state,
+        article_snippets: newArticleSnippets
+      }
     }
     case SET_NOTES: {
       const { data, keys } = notesToKeys(action.payload);

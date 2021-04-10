@@ -14,29 +14,27 @@ const useStyles = createUseStyles({
     },
     searchResourceInput: {
       width: "100%",
-      borderRadius: "4px 4px 0px 0px",
       border: "1px solid white",
       '&:focus': {
         outline: 'none'
       },
       fontSize: 12,
       padding: 5,
-      height: 35,
-      boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)"
+      height: 30
     },
     resultsContainer:{
         overflow: "scroll",
         height: 200,
-        border: "1px solid white",
         borderRadius: "0px 0px 4px 4px",
         backgroundColor: "#474646 !important",
     },
     result: {
         padding: 8,
-        fontSize: 12,
+        fontSize: 11,
         color: "white",
-        borderBottom: "1px solid white",
         cursor: "pointer",
+        margin: "3px 6px",
+        borderRadius: 4,
         "&:hover":{
             backgroundColor: "#246bf8"
         }
@@ -133,39 +131,46 @@ const ResourceDialog = ({
             <div
                 className={classes.cmdInput}
                 style={{
-                left: absPos.left,
-                right: absPos.right,
-                top: absPos.top,
-                bottom: absPos.bottom
+                    left: absPos.left,
+                    right: absPos.right,
+                    top: absPos.top - 40,
+                    bottom: absPos.bottom
                 }}
             >
-                <input
-                    type="text"
-                    autoFocus
-                    placeholder="Search for resource"
-                    className={classes.searchResourceInput}
-                    onChange={onChangeSearch}
-                    value={query}
-                    style={{ borderRadius: results ? "4px 4px 0px 0px" : 4 }}
-                >
-                </input>
-                {results && (
-                    <div className={classes.resultsContainer}>
-                        {results.map((resource) => {
-                            return (
-                                <div className={classes.result} onClick={(evt) => {
-                                    evt.stopPropagation()
-                                    selectResource(resource)}
-                                }>
-                                    <ResultTypeIcon type={resource.result_type} />
-                                    <span className={classes.resTitle}>
-                                        {resource.title}
-                                    </span>
-                                </div>
-                            )
-                        })}
+                <div style={{ backgroundColor: "#474646", boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)", borderRadius: 4, fontFamily: "Arial" }}>
+                    <div style={{ flexDirection: "row", display: "flex", borderBottom: "1px solid #efefef" }}>
+                        <div style={{ flex: 1, textAlign: "center", padding: 8, color: "white" }}>Search</div>
+                        <div style={{ flex: 1, textAlign: "center", padding: 8, color: "white" }}>Find</div>
                     </div>
-                )}
+                    <div style={{ padding: 7 }}>
+                        <input
+                            type="text"
+                            autoFocus
+                            placeholder="Search for resource"
+                            className={classes.searchResourceInput}
+                            onChange={onChangeSearch}
+                            value={query}
+                        >
+                        </input>
+                    </div>
+                    {results && (
+                        <div className={classes.resultsContainer}>
+                            {results.map((resource) => {
+                                return (
+                                    <div className={classes.result} onClick={(evt) => {
+                                        evt.stopPropagation()
+                                        selectResource(resource)}
+                                    }>
+                                        <ResultTypeIcon type={resource.result_type} />
+                                        <span className={classes.resTitle}>
+                                            {resource.title}
+                                        </span>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
+                </div>
             </div>
         </ClickAwayListener>
     )

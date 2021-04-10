@@ -18,7 +18,7 @@ const useStyles = createUseStyles({
       '&:focus': {
         outline: 'none'
       },
-      fontSize: 12,
+      fontSize: 13,
       padding: 5,
       height: 30
     },
@@ -30,7 +30,7 @@ const useStyles = createUseStyles({
     },
     result: {
         padding: 8,
-        fontSize: 11,
+        fontSize: 12,
         color: "white",
         cursor: "pointer",
         margin: "3px 6px",
@@ -142,7 +142,7 @@ const ResourceDialog = ({
                         <div style={{ flex: 1, textAlign: "center", padding: 8, fontSize: 14, color: "white", borderBottom: "3px solid #246bf8", cursor: "pointer" }}>Search</div>
                         <div style={{ flex: 1, textAlign: "center", padding: 8, fontSize: 14, color: "white", borderBottom: "1px solid white", cursor: "pointer" }}>Find</div>
                     </div>
-                    <div style={{ padding: 7 }}>
+                    <div style={{ padding: "5px 4px" }}>
                         <input
                             type="text"
                             autoFocus

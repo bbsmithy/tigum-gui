@@ -137,10 +137,10 @@ const ResourceDialog = ({
                     bottom: absPos.bottom
                 }}
             >
-                <div style={{ backgroundColor: "#474646", boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)", borderRadius: 4, fontFamily: "Arial" }}>
-                    <div style={{ flexDirection: "row", display: "flex", borderBottom: "1px solid #efefef" }}>
-                        <div style={{ flex: 1, textAlign: "center", padding: 8, color: "white" }}>Search</div>
-                        <div style={{ flex: 1, textAlign: "center", padding: 8, color: "white" }}>Find</div>
+                <div style={{ backgroundColor: "#474646", boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)", borderRadius: 4, fontFamily: "Arial", border: "1px solid white" }}>
+                    <div style={{ flexDirection: "row", display: "flex" }}>
+                        <div style={{ flex: 1, textAlign: "center", padding: 8, fontSize: 14, color: "white", borderBottom: "3px solid #246bf8", cursor: "pointer" }}>Search</div>
+                        <div style={{ flex: 1, textAlign: "center", padding: 8, fontSize: 14, color: "white", borderBottom: "1px solid white", cursor: "pointer" }}>Find</div>
                     </div>
                     <div style={{ padding: 7 }}>
                         <input

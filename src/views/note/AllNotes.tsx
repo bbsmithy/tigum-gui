@@ -26,12 +26,9 @@ export const AllNotes = (props: any) => {
   const fetchNotes = async (topic_content: Array<number>) => {
     try {
       setLoading(true);
-      const res = await getNotes(topic_content);
-      if (res.status === 200) {
-        const body = await res.json();
-        dispatch({ type: 'SET_NOTES', payload: body });
-        setLoading(false);
-      }
+      const body = await getNotes(topic_content);
+      dispatch({ type: 'SET_NOTES', payload: body });
+      setLoading(false);
     } catch (e) {
       setLoading(false);
     }

@@ -207,8 +207,7 @@ export const ViewNote = (props: any) => {
 
   const fetchNotes = async () => {
     try {
-      const res = await getNotes(topics.data[selectedTopic].notes);
-      const topicNotes = await res.json();
+      const topicNotes = await getNotes(topics.data[selectedTopic].notes);
       dispatch({ type: 'SET_NOTES', payload: topicNotes });
       getNoteData(selectedResourceId);
     } catch (e) {

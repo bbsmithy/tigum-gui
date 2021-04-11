@@ -165,7 +165,8 @@ export const getNotes = async (note_ids: Array<number>) => {
       credentials: 'include',
       body: JSON.stringify({ ids: note_ids }),
     });
-    return await res;
+    const notes = await res.json()
+    return notes
   } catch (e) {
     throw e;
   }
@@ -244,7 +245,8 @@ export const getVideos = async (ids: Array<number>) => {
       credentials: 'include',
       body: JSON.stringify({ ids }),
     });
-    return await res;
+    const videos = res.json()
+    return videos
   } catch (e) {
     throw e;
   }

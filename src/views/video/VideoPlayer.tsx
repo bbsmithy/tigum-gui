@@ -448,8 +448,7 @@ export const VideoPlayer = () => {
 
   const fetchVideos = async () => {
     try {
-      const res = await getVideos(topics.data[selectedTopic].videos);
-      const videoData = await res.json();
+      const videoData = await getVideos(topics.data[selectedTopic].videos);
       dispatch({ type: 'SET_VIDEOS', payload: videoData });
     } catch (e) {
       notify(dispatch, 'Could not retrieve video', 'error', 'right');

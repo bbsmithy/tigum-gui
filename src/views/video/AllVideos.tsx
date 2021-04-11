@@ -46,12 +46,9 @@ export const AllVideos = (props: any) => {
 
   const fetchVideos = async (ids: Array<number>) => {
     setLoadingVideos(true);
-    const res = await getVideos(ids);
-    if (res.status === 200) {
-      const body = await res.json();
-      dispatch({ type: 'SET_VIDEOS', payload: body });
-      setLoadingVideos(false);
-    }
+    const body = await getVideos(ids);
+    dispatch({ type: 'SET_VIDEOS', payload: body });
+    setLoadingVideos(false);
   };
 
   useEffect(() => {

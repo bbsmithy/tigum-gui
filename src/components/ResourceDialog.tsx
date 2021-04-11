@@ -144,7 +144,7 @@ const TopicsTab = ({
                         )}
                         {!loadingResources && resources && resources.map((resource) => {
                             return (
-                                <div className={classes.menuItem} key={resource.id} onClick={}>
+                                <div className={classes.menuItem} key={resource.id}>
                                     {resource.title}
                                 </div>
                             )

@@ -31,7 +31,8 @@ const TopicsTab = ({
     setResources,
     resources,
     loadingResources,
-    setLoadingResources
+    setLoadingResources,
+    onSelectResource
 }) => {
 
     useEffect(() => {
@@ -53,6 +54,24 @@ const TopicsTab = ({
     const gotoResources = (evt) => {
         setMenuScreen("RESOURCES")
         setResourceType(evt.target.dataset.resource)
+    }
+
+    const onClickResource = (type, resource) => {
+        const lowercaseType = type.toLowerCase()
+        const convertedResource = {
+            title: resource.title,
+            topic_id: resource.topic_id,
+            resource_id: resource.id,
+            result_type: lowercaseType.slice(0 , lowercaseType.length - 1),
+            misc: ""
+        }
+        if (lowercaseType === "snippets") {
+            convertedResource.misc = resource.origin
+            convertedResource.title = resource.content
+        } else if (lowercaseType === "links") {
+            convertedResource.misc = resource.source
+        }
+        onSelectResource(convertedResource)
     }
 
     const getTopicResources = async (resourceType) => {
@@ -106,7 +125,7 @@ const TopicsTab = ({
             )}
             {menuScreen === "RESOURCE_TYPES" && (
                 <>
-                    <div style={{ padding: 5, color: "white",  borderBottom: "1px solid gray" }}>
+                    <div style={{ padding: 8, color: "white",  borderBottom: "1px solid gray" }}>
                         <div>
                             <i className="fa fa-arrow-left" style={{ cursor: "pointer", fontSize: 14 }} onClick={goToTopics} />
                             <span style={{ fontSize: 14, marginLeft: 10 }}>{selectedTopic.title}</span>
@@ -132,7 +151,7 @@ const TopicsTab = ({
             )}
             {menuScreen === "RESOURCES" && (
                 <>
-                    <div style={{ padding: 5, color: "white", borderBottom: "1px solid gray" }}>
+                    <div style={{ padding: 8, color: "white", borderBottom: "1px solid gray" }}>
                         <div>
                             <i className="fa fa-arrow-left" style={{ cursor: "pointer", fontSize: 14 }} onClick={gotoResourceTypes} />
                             <span style={{ fontSize: 14, marginLeft: 10 }}>{selectedTopic.title} / {resourceType}</span>
@@ -144,7 +163,11 @@ const TopicsTab = ({
                         )}
                         {!loadingResources && resources && resources.map((resource) => {
                             return (
-                                <div className={classes.menuItem} key={resource.id}>
+                                <div 
+                                    className={classes.menuItem}
+                                    key={resource.id}
+                                    onClick={() => onClickResource(resourceType, resource)}
+                                >
                                     {resource.title}
                                 </div>
                             )
@@ -286,7 +309,6 @@ const ResourceDialog = ({
                 findByTitle(queryRef.current).then((res) => {
                     setResults(res)
                 }).catch((err) => {
-                    console.log(err)
                     setResults(null)
                 })
             }, 200)
@@ -361,10 +383,14 @@ const ResourceDialog = ({
                                 <div className={classes.resultsContainer}>
                                     {results.map((resource) => {
                                         return (
-                                            <div className={classes.result} onClick={(evt) => {
-                                                evt.stopPropagation()
-                                                selectResource(resource)}
-                                            }>
+                                            <div 
+                                                key={resource.id} 
+                                                className={classes.result}
+                                                onClick={(evt) => {
+                                                    evt.stopPropagation()
+                                                    selectResource(resource)}
+                                                }
+                                            >
                                                 <ResultTypeIcon type={resource.result_type} />
                                                 <span className={classes.resTitle}>
                                                     {resource.title}
@@ -390,6 +416,7 @@ const ResourceDialog = ({
                             setResources={setResources}
                             loadingResources={loadingResources}
                             setLoadingResources={setLoadingResources}
+                            onSelectResource={selectResource}
                         />
                     )}
 

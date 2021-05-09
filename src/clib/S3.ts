@@ -16,8 +16,6 @@ export const getBuckets = () => {
   });
 };
 
-getBuckets()
-
 export const uploadToBucket = (data: any, fileKey: string, bucket: string) => {
   return new Promise((resolve, reject) => {
     const base64data = new Buffer(data, 'binary');

@@ -3,7 +3,7 @@ import { TopicNavigationBar } from '../navbar';
 import { MainRouter, SCREENS } from '../../routers/MainRouter';
 import { getTopics, createTopic } from '../../clib/api';
 import { SideBar } from '../sidebar';
-import { Modal } from '../../components';
+import { Button, Modal } from '../../components';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { resourceTypeToScreen } from '../../util';
@@ -57,13 +57,15 @@ export const MainContent = (props) => {
     {
       content: {
         selectedTopic,
-        topics: { data, loading },
+        topics: { data, loading, keys },
         notification,
       },
       navigation: { showTopicNavbar, showSidebar, useFullWidth, topicScreen },
     },
     dispatch,
   ] = useStateValue();
+
+  console.log("keys: ", keys)
 
   const topic = data[selectedTopic];
   const isMobile = window.innerWidth < 960
@@ -164,18 +166,32 @@ export const MainContent = (props) => {
             </div>
           </>
         )}
-        {!topic && !loading && <TopicNotFound />}
+        {!topic && !loading && keys.length > 0 && <TopicNotFound />}
+        {!topic && !loading && keys.length === 0 && (
+          <div className='no-resources-message mt-1'>
+              <div style={{marginBottom: 12}}>Welcome to Tigum 🎉🥂</div>
+              <div style={{ fontSize: 17, marginTop: 70, maxWidth: 600, margin: "auto", lineHeight: 1.3, marginBottom: 10 }}>
+                  Thanks for joing the beta programme! I will be emailing you about Tigums progress weekly,
+                  and you can email me with bug reports or feature suggestions any time at briansmith.work578@gmail.com
+              </div>
+              <div style={{ fontSize: 12, fontStyle: "italic"}}>
+                Founder and Creator of Tigum - Brian Smith
+              </div>
+              <Button buttonText="Create Topic" onClickAction={toggleModal} />
+          </div>
+        )}
       </div>
       <Modal
         display={modalOpen}
         toggleModal={toggleModal}
         onClickAction={onClickCreateTopic}
+        actionDisabled={!topicTitle}
         buttonText='Create'
         title='Create Topic'
       >
         <input
           type='text'
-          placeholder='Title'
+          placeholder='Enter Topic Title'
           id='topic-title-input'
           value={topicTitle}
           onChange={onChangeTitle}

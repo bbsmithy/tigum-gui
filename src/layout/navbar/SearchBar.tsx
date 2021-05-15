@@ -4,6 +4,7 @@ import { createUseStyles } from 'react-jss'
 import { findByTitle } from "../../clib/api";
 import { goto } from "../../util";
 import ResultTypeIcon from "../../components/ResultTypeIcon"
+import ClickAwayListener from "../../components/ClickAwayListener";
 
 const useStyles = createUseStyles({
     searchBar: {
@@ -48,6 +49,18 @@ const useStyles = createUseStyles({
         borderRadius: "0px 0px 10px 10px",
         overflow: "auto"
     },
+    videoResult: {
+        width: "100%",
+        padding: 10,
+        borderBottom: "1px solid #1f1f1f",
+        color: "white",
+        cursor: "pointer",
+        "&:hover": {
+            backgroundColor: "#246bf8"
+        },
+        display: "flex",
+        flexDirection: "row"
+    },
     result: {
         width: "100%",
         padding: 15,
@@ -60,11 +73,18 @@ const useStyles = createUseStyles({
         display: "flex",
         flexDirection: "row"
     },
-    resultTitle: {
+    videoResultTitle: {
+        paddingTop: 10,
         flex: 10
+    },
+    resultTitle: {
+        flex: 10,
     },
     resultType: {
         flex: 1
+    },
+    videoResultImage: {
+        flex: 3
     },
     resultLoading: {
         padding: "20px 10px",
@@ -77,6 +97,26 @@ const useStyles = createUseStyles({
         width: "50%"
     }
 });
+
+const VideoResult = ({ result, reset }) => {
+    const classes = useStyles()
+
+    const onSelectResult = (url) => {
+        goto(`/topic/${result.topic_id}/${result.result_type}s/${result.resource_id}`)
+        reset()
+    }
+
+    return (
+        <div className={classes.videoResult} onClick={onSelectResult}>
+            <div className={classes.videoResultImage}>
+                <img src={result.misc2} width="80px" style={{borderRadius: 4}} />
+            </div>
+            <div className={classes.videoResultTitle}>
+                {result.title}
+            </div>
+        </div> 
+    )
+}
 
 const SearchResult = ({ result, reset }) => {
 
@@ -122,7 +162,13 @@ const SearchModal = ({results, loading, reset }) => {
 
     return (
         <div className={classes.searchModal}>
-            {!loading && results && results.map((result) => <SearchResult result={result} reset={reset} />)}
+            {!loading && results && results.map((result) => {
+                if (result.result_type === "video") {
+                    return <VideoResult result={result} reset={reset} />
+                } else {
+                    return <SearchResult result={result} reset={reset} />
+                }
+            })}
             {loading && (
                 <div>
                     <ResultLoading />
@@ -188,19 +234,21 @@ export const SearchBar = () => {
     }
 
     return (
-        <div style={{ position: "relative" }}>
-            <input
-                type="text"
-                placeholder="Search All"
-                ref={searchFieldRef}
-                value={query}
-                className={query ? classes.searchBarFocused : classes.searchBar}
-                onChange={onChangeQuery}
-            >
-            </input>
-            {query && (
-                <SearchModal results={results} loading={loading} reset={reset} />
-            )}
-        </div>
+        <ClickAwayListener onClickAway={reset}>
+            <div style={{ position: "relative" }}>
+                <input
+                    type="text"
+                    placeholder="Search All"
+                    ref={searchFieldRef}
+                    value={query}
+                    className={query ? classes.searchBarFocused : classes.searchBar}
+                    onChange={onChangeQuery}
+                >
+                </input>
+                    {query && (
+                        <SearchModal results={results} loading={loading} reset={reset} />
+                    )}
+            </div>
+        </ClickAwayListener>
     )
 }

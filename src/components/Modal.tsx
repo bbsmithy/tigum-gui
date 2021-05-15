@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import { Button } from './Button';
 
@@ -75,12 +75,14 @@ interface ModalProps {
   onClickAction: () => void;
   title: string;
   buttonText: string;
+  actionDisabled?: boolean;
   children: ReactNode;
   loadingAction?: boolean;
 }
 
 export const Modal = (props: ModalProps) => {
   const classes = useStyles();
+
   return (
     <div
       id='app-modal'
@@ -100,6 +102,7 @@ export const Modal = (props: ModalProps) => {
         <div className={classes.modalFooter}>
           <div className='fr mr3'>
             <Button
+              disabled={props.actionDisabled}
               onClickAction={props.onClickAction}
               buttonText={props.buttonText}
               loadingAction={props.loadingAction}

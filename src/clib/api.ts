@@ -156,7 +156,7 @@ export const deleteNote = async (note_id: number) => {
 
 export const getNotes = async (note_ids: Array<number>) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/notes/`, {
+    const res = await fetch(`${BASE_API_URL}/notes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

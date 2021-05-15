@@ -18,6 +18,48 @@ const LoadingResults = ({ classes }) => {
     )
 }
 
+const ResourceResult = ({ resource, type, classes, onClickResource }) => {
+    const renderRow = () => {
+        switch (type) {
+            case "Videos": {
+                return (
+                    <div style={{ flexDirection: "row", display: "flex" }}>
+                        <div style={{flex: 2}}>
+                            <img src={resource.thumbnail_img} style={{borderRadius: 3 }} width="50px" />
+                        </div>
+                        <div style={{flex: 7, paddingTop: 5}}>
+                            {resource.title}
+                        </div>
+                    </div>
+                )
+            }
+            case "Notes": {
+                return resource.title
+            }
+            case "Links": {
+                return resource.title
+            }
+            case "Snippets": {
+                return (
+                    <div>
+                        <div style={{ fontWeight: "bold", marginBottom: 10 }}>{resource.title}</div>
+                        <div>{resource.content}</div>
+                    </div>
+                )
+            }
+        }
+    }
+    return (
+        <div 
+            className={classes.resourceResult}
+            key={resource.id}
+            onClick={() => onClickResource(type, resource)}
+        >
+            {renderRow()}
+        </div>
+    )
+}
+
 
 const TopicsTab = ({ 
     topics,
@@ -90,13 +132,13 @@ const TopicsTab = ({
                 break
             }
             case "Links": {
-                const links = await getLinks(selectedTopic.notes)
+                const links = await getLinks(selectedTopic.links)
                 setResources(links)
                 setLoadingResources(false)
                 break
             }
             case "Snippets": {
-                const snippets = await getArticleSnippets(selectedTopic.links)
+                const snippets = await getArticleSnippets(selectedTopic.article_snippets)
                 setResources(snippets)
                 setLoadingResources(false)
                 break
@@ -163,13 +205,12 @@ const TopicsTab = ({
                         )}
                         {!loadingResources && resources && resources.map((resource) => {
                             return (
-                                <div 
-                                    className={classes.menuItem}
-                                    key={resource.id}
-                                    onClick={() => onClickResource(resourceType, resource)}
-                                >
-                                    {resource.title}
-                                </div>
+                                <ResourceResult 
+                                    resource={resource}
+                                    type={resourceType}
+                                    classes={classes}
+                                    onClickResource={onClickResource}
+                                />
                             )
                         })}
                     </div>
@@ -229,6 +270,17 @@ const useStyles = createUseStyles({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
+        cursor: "pointer",
+        "&:hover": {
+            backgroundColor: "#246bf8"
+        }
+    },
+    resourceResult: {
+        margin: 5,
+        padding: 8,
+        borderRadius: 4,
+        fontSize: 12,
+        color: "white",
         cursor: "pointer",
         "&:hover": {
             backgroundColor: "#246bf8"
@@ -346,6 +398,31 @@ const ResourceDialog = ({
         onClickAway()
     }
 
+    const renderResourceSearchResult = (resource) => {
+        return (
+            <>
+                {resource.result_type === "video" && (
+                    <div style={{ flexDirection: "row", display: "flex" }}>
+                        <div style={{flex: 2}}>
+                            <img src={resource.misc2} style={{borderRadius: 3 }} width="50px" />
+                        </div>
+                        <div style={{flex: 7, paddingTop: 5}}>
+                            {resource.title}
+                        </div>
+                    </div>
+                )}
+                {resource.result_type !== "video" && (
+                    <>
+                        <ResultTypeIcon type={resource.result_type} />
+                        <span className={classes.resTitle}>
+                            {resource.title}
+                        </span>
+                    </>
+                )}
+            </>
+        )
+    }
+
     return (
         <ClickAwayListener onClickAway={onClickAway}>
             <div
@@ -391,10 +468,7 @@ const ResourceDialog = ({
                                                     selectResource(resource)}
                                                 }
                                             >
-                                                <ResultTypeIcon type={resource.result_type} />
-                                                <span className={classes.resTitle}>
-                                                    {resource.title}
-                                                </span>
+                                                {renderResourceSearchResult(resource)}
                                             </div>
                                         )
                                     })}

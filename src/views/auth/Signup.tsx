@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { loginUser, signupUser } from '../../clib/api';
+import { signupUser } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
 import { useEvervault } from '@evervault/react';
 import { createUseStyles } from 'react-jss';
@@ -81,7 +81,8 @@ const SignupForm = ({ dispatch, classes }) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
+  const [signupError, setSignupError] = useState('');
+  const [signupSuccess, setSignupSuccess] = useState('')
   const [authing, setAuthing] = useState(false);
 
   const onClickSignUp = async () => {
@@ -94,7 +95,7 @@ const SignupForm = ({ dispatch, classes }) => {
         setAuthing(false)
       } catch (e) {
         setAuthing(false)
-        setLoginError('Failed to create account')
+        setSignupError('Failed to create account')
       }
     }
   };
@@ -140,9 +141,9 @@ const SignupForm = ({ dispatch, classes }) => {
           <PasswordInput onChangePassword={onChangePassword} password={password} classes={classes} />
         </div>
       </fieldset>
-      {loginError && (
+      {signupError && (
         <div>
-          <p>{loginError}</p>
+          <p>{signupError}</p>
         </div>
       )}
       <div className='white center'>

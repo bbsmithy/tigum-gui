@@ -133,6 +133,9 @@ export const SideBar: React.FC<SideBarProps> = ({
     navigation: { showSidebar },
   } = state;
 
+
+  const noTopics = topics.keys.length === 0 && !topics.loading
+
   const onClickNewTopic = () => {
     toggleModal();
   };
@@ -147,8 +150,8 @@ export const SideBar: React.FC<SideBarProps> = ({
     return (
       <div className={`${classes.sidebarContainer}`}>
         <SideBarHeader onClickNewTopic={onClickNewTopic} />
-        <TopicsList />
-        {topics.keys.length === 0 && !topics.loading && <NoTopicsMessage />}
+        {!noTopics && <TopicsList />}
+        {noTopics && <NoTopicsMessage />}
         <div id='sidebar-footer' className='pointer' onClick={onLogout}>
           <span className='sidebar-footer-option'>
             <span className={classes.logoutText}>Logout</span>

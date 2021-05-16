@@ -108,6 +108,26 @@ export const ViewNote = (props: any) => {
       title: "Find Resource",
     },
     'code',
+    {
+      name: "latex",
+      action: () => {
+        // @ts-ignore
+        const cursorPos = cmRef.current.getCursor()
+        if (cmRef.current) {
+          // @ts-ignore
+          cmRef.current.replaceRange(`$$\n\n$$`, cursorPos)
+          // @ts-ignore
+          cmRef.current.focus()
+          // @ts-ignore
+          cmRef.current.setCursor({
+            line: cursorPos.line + 1,
+            ch: 0
+          })
+        }
+      },
+      className: "fas fa-square-root-alt",
+      title: "LaTex"
+    },
     'link',
     {
       name: "image",
@@ -338,6 +358,7 @@ export const ViewNote = (props: any) => {
             useHighlightJS
             toolbarOptions={toolbarOptions}
             highlightTheme='agate'
+            previewClassName="editor-preview-side"
             theme={theme}
             onBack={goBack}
             title={note.title}

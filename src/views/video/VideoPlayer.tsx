@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MarkdownEditor } from 'devkeep-md-editor';
+import { MarkdownEditor } from '../../components/MarkdownEditor/lib';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
-import { goto, getJsonFromUrl, setPageTitle } from '../../util';
+import { goto, setPageTitle } from '../../util';
 import { getVideos, deleteVideo, updateVideo, updateTopicModDate } from '../../clib/api';
 import ResourceDialog from '../../components/ResourceDialog';
 import ReferenceDialog from '../../components/ReferenceDialog';
@@ -140,7 +140,7 @@ const MobileLayout = ({
               useHighlightJS
               title={false}
               highlightTheme='agate'
-              defaultView="preview"
+              defaultView="editor-preview-side"
               theme={theme}
             />
           )}
@@ -148,6 +148,7 @@ const MobileLayout = ({
             <MarkdownEditor
               initialValue={''}
               onSave={onSave}
+              previewClassName="editor-preview-side"
               onDelete={onDelete}
               codeMirrorHandle={codeMirrorHandle}
               simpleMdeHandle={simpleMdeHandle}
@@ -155,7 +156,6 @@ const MobileLayout = ({
               toolbarOptions={toolbarOptions}
               useHighlightJS
               highlightTheme='agate'
-              defaultView="preview"
               theme={theme}
             />
       )}
@@ -231,9 +231,9 @@ const DesktopLayout = ({
             simplemdeHandle={simpleMdeHandle}
             spellChecker={false}
             toolbarOptions={toolbarOptions}
+            previewClassName="editor-preview"
             useHighlightJS
             highlightTheme='agate'
-            defaultView="preview"
             theme={theme}
             title={video.title}
             editTitleWidth={"90%"}
@@ -250,9 +250,9 @@ const DesktopLayout = ({
             simplemdeHandle={simpleMdeHandle}
             spellChecker={false}
             toolbarOptions={toolbarOptions}
+            previewClassName="editor-preview"
             useHighlightJS
             highlightTheme='agate'
-            defaultView="preview"
             theme={theme}
             title={video.title}
             onEditTitle={onEditTitle}
@@ -341,6 +341,26 @@ export const VideoPlayer = () => {
       title: "Video Reference",
     },
     'code',
+    {
+      name: "latex",
+      action: () => {
+        // @ts-ignore
+        const cursorPos = cmRef.current.getCursor()
+        if (cmRef.current) {
+          // @ts-ignore
+          cmRef.current.replaceRange(`$$\n\n$$`, cursorPos)
+          // @ts-ignore
+          cmRef.current.focus()
+          // @ts-ignore
+          cmRef.current.setCursor({
+            line: cursorPos.line + 1,
+            ch: 0
+          })
+        }
+      },
+      className: "fas fa-square-root-alt",
+      title: "LaTex"
+    },
     'link',
     'image',
     '|',

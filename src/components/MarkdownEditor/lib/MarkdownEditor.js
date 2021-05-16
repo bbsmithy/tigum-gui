@@ -27,7 +27,8 @@ const MarkdownEditor = (props) => {
     theme,
     defaultView,
     simplemdeHandle,
-    codeMirrorHandle
+    codeMirrorHandle,
+    previewClassName
   } = props;
 
   const simplemdeRef = useRef();
@@ -49,10 +50,12 @@ const MarkdownEditor = (props) => {
 
 
   const updateHTML = debounce((plainText, parent) => {
-    const preview = document.getElementsByClassName("editor-preview-side")[0];
-    preview.innerHTML = parent.markdown(plainText);
-    preview.setAttribute('id','editor-preview')
-    MathJax.Hub.Queue(["Typeset",MathJax.Hub,"editor-preview"]);
+    const preview = document.getElementsByClassName(previewClassName)[0];
+    if (preview) {
+      preview.innerHTML = parent.markdown(plainText);
+      preview.setAttribute('id','editor-preview')
+      MathJax.Hub.Queue(["Typeset",MathJax.Hub,"editor-preview"]);
+    }
   }, 500)
 
 
@@ -110,8 +113,12 @@ const MarkdownEditor = (props) => {
       autofocus: !props.autoFocusEditTitle,
       previewRender: function(plainText) {
         updateHTML(plainText, this.parent)
-        const preview = document.getElementsByClassName("editor-preview-side")[0];
-        return preview.innerHTML
+        const preview = document.getElementsByClassName(previewClassName)[0];
+        if (preview) {
+          return preview.innerHTML
+        } else {
+          return ''
+        }
       },
       shortcuts: {
         drawTable: "Cmd-Alt-T"

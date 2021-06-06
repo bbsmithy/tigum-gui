@@ -307,12 +307,12 @@ const MarkdownEditor = (props) => {
     #editor-container .editor-toolbar {
       background-color: ${background} !important;
       color: ${color} !important;
-      height: ${height}
+      min-height: ${height}
     }
     #editor-container .editor-toolbar.fullscreen {
       background-color: ${background} !important;
       color: ${color} !important;
-      height: ${height}
+      min-height: ${height}
     }
     #editor-container .editor-toolbar a {
       color: ${color} !important;

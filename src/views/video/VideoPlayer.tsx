@@ -233,6 +233,7 @@ const DesktopLayout = ({
             toolbarOptions={toolbarOptions}
             previewClassName="editor-preview"
             useHighlightJS
+            defaultView="preview"
             highlightTheme='agate'
             theme={theme}
             title={video.title}
@@ -252,6 +253,7 @@ const DesktopLayout = ({
             toolbarOptions={toolbarOptions}
             previewClassName="editor-preview"
             useHighlightJS
+            defaultView="preview"
             highlightTheme='agate'
             theme={theme}
             title={video.title}

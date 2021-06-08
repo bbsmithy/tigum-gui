@@ -1,8 +1,6 @@
-import classes from '*.module.css';
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { verifyUser } from '../../clib/api';
-import { AUTH_SCREENS } from '../../routers/AuthRouter';
 import { goto } from '../../util';
 
 const useStyles = createUseStyles({

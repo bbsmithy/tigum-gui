@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { checkLogin } from '../clib/api';
 import { useStateValue } from '../state/StateProvider';
 import { MainContent } from './main';
-import { AuthRouter, AUTH_SCREENS } from '../routers/AuthRouter';
+import { PublicRouter, PUBLIC_SCREENS } from '../routers/PublicRouter';
 import { useReactPath } from '../hooks';
 import { goto } from '../util';
 
@@ -29,15 +29,17 @@ export const Auth = () => {
     const pathVars = window.location.pathname.split(/\//)
     const screen = pathVars[1]
     if (screen === "login") {
-      navigate(AUTH_SCREENS.LOGIN)
+      navigate(PUBLIC_SCREENS.LOGIN)
     } else if (screen === "signup") {
-      navigate(AUTH_SCREENS.SIGNUP)
+      navigate(PUBLIC_SCREENS.SIGNUP)
     } else if (screen === "verify") {
-      navigate(AUTH_SCREENS.VERIFY)
+      navigate(PUBLIC_SCREENS.VERIFY)
     } else if (screen === "request-access") {
-      navigate(AUTH_SCREENS.REQUEST_ACCESS)
+      navigate(PUBLIC_SCREENS.REQUEST_ACCESS)
     } else if (screen === ""){
       goto("login")
+    } else {
+      navigate(PUBLIC_SCREENS.PROFILE)
     }
   }
 
@@ -53,7 +55,7 @@ export const Auth = () => {
     }
   };
 
-  const navigate = (screen: AUTH_SCREENS) => {
+  const navigate = (screen: PUBLIC_SCREENS) => {
     setAuthScreen(screen);
   };
 
@@ -65,11 +67,12 @@ export const Auth = () => {
           textAlign: 'center',
           marginTop: '22%',
           backgroundColor: '#1f1f1f',
+          padding: 20,
           height: '100%',
           width: '100%',
         }}
       >
-        <img src={require('../logo-tigum.png')} height={100} />
+        <img src={require('../logo-tigum.png')} height={"80%"} />
       </div>
     );
   }
@@ -79,7 +82,7 @@ export const Auth = () => {
       {state.user.loggedIn ? (
         <MainContent />
       ) : (
-        <AuthRouter screen={authScreen} navigate={navigate} />
+        <PublicRouter screen={authScreen} navigate={navigate} />
       )}
     </>
   );

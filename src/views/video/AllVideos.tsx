@@ -65,7 +65,6 @@ export const AllVideos = (props: any) => {
   const createVideoResource = async () => {
     setCreatingVideo(true);
     const embed = getEmbedFromUrl(videoUrl);
-
     if (embed) {
       const { embedUrl, thumbnailUrl } = embed;
       const videoTitle = await getVideoTitle(videoUrl);

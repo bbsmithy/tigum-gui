@@ -530,7 +530,7 @@ export const VideoPlayer = () => {
   }
 
   const goBack = () => {
-    if (window.history.length > 0) {
+    if (window.history.length > 1) {
       window.history.back()
     } else {
       goto(`topic/${selectedTopic}/videos`) 

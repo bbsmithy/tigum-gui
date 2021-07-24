@@ -3,6 +3,7 @@ import { loginUser } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { goto } from '../../util';
+import LoginCardResult from '../../components/LoginResultCard';
 
 const useStyles = createUseStyles({
   disabledBtn: {
@@ -129,9 +130,7 @@ const LoginForm = ({ dispatch, classes }) => {
         </div>
       </fieldset>
       {loginError && (
-        <div>
-          <p>{loginError}</p>
-        </div>
+        <LoginCardResult message={loginError} type="ERROR" />
       )}
       <div className='white'>
         <button
@@ -168,7 +167,7 @@ export const Login = (props) => {
     <main className={`white ${classes.container}`}>
       <div className='measure center'>
         <img src={require('../../logo-tigum.png')} className='w-33' />
-        <p>Your personal knowledge base for the web</p>
+        <p>Your personal learning enviroment for the web</p>
         <LoginForm dispatch={dispatch} classes={classes} />
       </div>
     </main>

@@ -1,10 +1,9 @@
-import React, { createElement, useRef } from "react"
+import React, { useRef } from "react"
 import { useEffect } from "react"
 import SimpleMDE from "simplemde"
 import { createTitleElement, createTitleInputElement } from "./util"
 import "./mde.css";
 import "./custom.css";
-import { debounce } from "../../../util";
 
 const MathJax = window.MathJax
 MathJax.Hub.Config({

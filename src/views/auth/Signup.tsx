@@ -4,6 +4,7 @@ import { useStateValue } from '../../state/StateProvider';
 import { useEvervault } from '@evervault/react';
 import { createUseStyles } from 'react-jss';
 import { goto } from '../../util';
+import LoginCardResult from '../../components/LoginResultCard';
 
 const useStyles = createUseStyles({
   disabledBtn: {
@@ -92,10 +93,11 @@ const SignupForm = ({ dispatch, classes }) => {
         setAuthing(true)
         const encrypted = await evervault.encrypt({ email })
         await signupUser(name, email, encrypted.email, password)
+        setSignupSuccess('Thanks for signing up! Check your email for your account verification link')
         setAuthing(false)
       } catch (e) {
         setAuthing(false)
-        setSignupError('Failed to create account')
+        setSignupError('Failed to create account, contact briansmith.work578@gmail.com for support')
       }
     }
   };
@@ -142,9 +144,10 @@ const SignupForm = ({ dispatch, classes }) => {
         </div>
       </fieldset>
       {signupError && (
-        <div>
-          <p>{signupError}</p>
-        </div>
+        <LoginCardResult type="ERROR" message={signupError} />
+      )}
+      {signupSuccess && (
+        <LoginCardResult type="SUCCESS" message={signupSuccess} />
       )}
       <div className='white center'>
         <button
@@ -183,7 +186,7 @@ export const Signup = (props) => {
     <main className={`white ${classes.container}`}>
       <div className='measure center'>
         <img src={require('../../logo-tigum.png')} className='w-33' />
-        <p>Your personal knowledge base for the web</p>
+        <p>Your personal learning enviroment for the web</p>
         <SignupForm dispatch={dispatch} classes={classes} />
       </div>
     </main>

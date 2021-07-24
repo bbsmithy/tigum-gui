@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { loginUser, signupUser } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
-import { useEvervault } from '@evervault/react';
 import { createUseStyles } from 'react-jss';
 import { goto } from '../../util';
 import { requestBetaAccess } from '../../clib/fb';
+import LoginCardResult from '../../components/LoginResultCard';
 
 const useStyles = createUseStyles({
   disabledBtn: {
@@ -79,6 +78,7 @@ const PasswordInput = ({ onChangePassword, password, classes }) => {
 const BetaAccessForm = ({ dispatch, classes }) => {
   const [email, setEmail] = useState('');
   const [accessMsg, setAccessMsg] = useState('');
+  const [accessFailed, setAccesFailed] = useState('');
   const [authing, setAuthing] = useState(false);
   const [requestedAccess, setRequestedAccess] = useState(false)
 
@@ -90,9 +90,10 @@ const BetaAccessForm = ({ dispatch, classes }) => {
         setAuthing(false)
         setAccessMsg("Thank you for requesting beta access! I'll email you soon with details on beta program.")
         setRequestedAccess(true)
+        setAuthing(false)
       } catch (e) {
         setAuthing(false);
-        setAccessMsg('Something went wrong try again later');
+        setAccesFailed('Something went wrong try again later');
       }
     }
   };
@@ -119,9 +120,10 @@ const BetaAccessForm = ({ dispatch, classes }) => {
         </div>
       </fieldset>
       {accessMsg && (
-        <div>
-          <p>{accessMsg}</p>
-        </div>
+        <LoginCardResult message={accessMsg} type="SUCCESS" />
+      )}
+      {accessFailed && (
+        <LoginCardResult message={accessFailed} type="ERROR" />
       )}
       <div className='white'>
         <button
@@ -160,7 +162,7 @@ export const RequestAccess = (props) => {
     <main className={`white ${classes.container}`}>
       <div className='measure center'>
         <img src={require('../../logo-tigum.png')} className='w-33' />
-        <p>Your personal knowledge base for the web</p>
+        <p>Your personal learning enviroment for the web</p>
         <BetaAccessForm dispatch={dispatch} classes={classes} />
       </div>
     </main>

@@ -530,7 +530,11 @@ export const VideoPlayer = () => {
   }
 
   const goBack = () => {
-    window.history.back()
+    if (window.history.length > 0) {
+      window.history.back()
+    } else {
+      goto(`topic/${selectedTopic}/videos`) 
+    }
   };
 
   const onClickNote = (evt, player) => {

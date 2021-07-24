@@ -48,16 +48,14 @@ const MarkdownEditor = (props) => {
     applyStyleOptions();
   }, [theme])
 
-
-  const updateHTML = debounce((plainText, parent) => {
+  const updateHTML = (plainText, parent) => {
     const preview = document.getElementsByClassName(previewClassName)[0];
     if (preview) {
       preview.innerHTML = parent.markdown(plainText);
       preview.setAttribute('id','editor-preview')
       MathJax.Hub.Queue(["Typeset",MathJax.Hub,"editor-preview"]);
     }
-  }, 500)
-
+  }
 
   const setUpSimpleMDE = (initialValue) => {
     const toolbar = toolbarOptions ? [...toolbarOptions, {
@@ -101,8 +99,11 @@ const MarkdownEditor = (props) => {
           title: "Save",
         }]
 
+    const editor = document.getElementById("editor")
+    editor.style.display = "none"
+
     simplemdeRef.current = new SimpleMDE({
-      element: document.getElementById("editor"),
+      element: editor,
       renderingConfig: {
         singleLineBreaks: false,
         codeSyntaxHighlighting: true,
@@ -137,6 +138,7 @@ const MarkdownEditor = (props) => {
       styleSelectedText: true,
       status: false
     })
+
     if (defaultView) setupDefaultView(defaultView)
     if (props.title !== null) setupTitle(props.title, props.onEditTitle, props.editTitleWidth, props.autoFocusEditTitle)
     if (codeMirrorHandle) codeMirrorHandle(simplemdeRef.current.codemirror);

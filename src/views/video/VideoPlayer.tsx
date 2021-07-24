@@ -148,6 +148,7 @@ const MobileLayout = ({
             <MarkdownEditor
               initialValue={''}
               onSave={onSave}
+              defaultView="editor-preview-side"
               previewClassName="editor-preview-side"
               onDelete={onDelete}
               codeMirrorHandle={codeMirrorHandle}

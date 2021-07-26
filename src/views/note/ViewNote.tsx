@@ -235,11 +235,11 @@ export const ViewNote = (props: any) => {
     }
   };
 
-  const save = async (htmlFromMDEditor) => {
+  const save = async (MD) => {
     try {
       notify(dispatch, 'Saving notes', 'progress', 'right');
-      setNoteMD(htmlFromMDEditor);
-      await uploadToBucket(htmlFromMDEditor, `${selectedResourceId}.md`, 'notes');
+      setNoteMD(MD);
+      await uploadToBucket(MD, `${selectedResourceId}.md`, 'notes');
       await updateTopicModDate(selectedTopic)
       setTimeout(
         () => notify(dispatch, 'Saved successfully', 'success', 'right'),
@@ -285,6 +285,10 @@ export const ViewNote = (props: any) => {
     diffCheckerWorkerRef.current.postMessage(val)
   }, 1000)
 
+  const autoSaveOnChangeFinished = debounce((val) => {
+    save(val)
+  }, 3500)
+
   const simpleMdeHandle = (simpleMDE) => {
     simpleMDERef.current = simpleMDE
     if (simpleMDERef.current) {
@@ -309,7 +313,9 @@ export const ViewNote = (props: any) => {
       // @ts-ignore
       simpleMDERef.current.codemirror.on("changes", () =>  {
         // @ts-ignore
-        handleCodeMirrorChanges(simpleMDERef.current.value())
+        const val = simpleMDERef.current.value()
+        handleCodeMirrorChanges(val)
+        autoSaveOnChangeFinished(val)
       });
     }
   }

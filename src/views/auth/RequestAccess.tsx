@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
-import { goto } from '../../util';
+import { goto, validateEmail } from '../../util';
 import { requestBetaAccess } from '../../clib/fb';
 import LoginCardResult from '../../components/LoginResultCard';
 
@@ -79,30 +79,40 @@ const BetaAccessForm = ({ dispatch, classes }) => {
   const [email, setEmail] = useState('');
   const [accessMsg, setAccessMsg] = useState('');
   const [accessFailed, setAccesFailed] = useState('');
+  const [invalidEmail, setInvalidEmail] = useState('');
   const [authing, setAuthing] = useState(false);
   const [requestedAccess, setRequestedAccess] = useState(false)
 
-  const login = async () => {
+  const isValidForm = (email || requestedAccess)
+  
+
+  const request = async () => {
     if (isValidForm && !authing) {
       setAuthing(true);
-      try {
-        await requestBetaAccess(email)
+      if (!validateEmail(email)) {
+        setInvalidEmail("Invalid email")
         setAuthing(false)
-        setAccessMsg("Thank you for requesting beta access! I'll email you soon with details on beta program.")
-        setRequestedAccess(true)
-        setAuthing(false)
-      } catch (e) {
-        setAuthing(false);
-        setAccesFailed('Something went wrong try again later');
+      } else {
+        try {
+          await requestBetaAccess(email)
+          setAuthing(false)
+          setAccessMsg("Thank you for requesting beta access! I'll email you soon with details on beta program.")
+          setRequestedAccess(true)
+          setAuthing(false)
+        } catch (e) {
+          setAuthing(false);
+          setAccesFailed('Something went wrong please contact briansmith.work578@gmail.com for support');
+        }
       }
     }
   };
 
   const onChangeEmail = (e) => {
+    setAccesFailed("")
+    setInvalidEmail("")
     setEmail(e.target.value);
   };
 
-  const isValidForm = email || requestedAccess
 
   return (
     <>
@@ -125,12 +135,15 @@ const BetaAccessForm = ({ dispatch, classes }) => {
       {accessFailed && (
         <LoginCardResult message={accessFailed} type="ERROR" />
       )}
+      {invalidEmail && (
+        <LoginCardResult message={invalidEmail} type="WARN" />
+      )}
       <div className='white'>
         <button
           className={`${isValidForm ? classes.activeBtn : classes.disabledBtn} b ph3 pv2 br2 input-reset ba b--white bg-transparent white f6`}
           type='submit'
           disabled={!isValidForm || authing}
-          onClick={login}
+          onClick={request}
         >
           {authing ? (
             <div>

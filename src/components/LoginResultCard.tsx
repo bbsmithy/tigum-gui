@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { createUseStyles } from "react-jss";
 import NotificationIcon from "./NotificationIcon";
 
@@ -42,8 +42,19 @@ type LoginCardResultProps = {
 
 const LoginCardResult = ({ message, type } : LoginCardResultProps) => {
     const classes = useStyles()
+
+    const style = useMemo(() => {
+        if (type === "SUCCESS") {
+            return classes.success
+        } else if (type === "ERROR") {
+            return classes.error
+        } else {
+            return classes.warn
+        }
+    }, [type])
+
     return (
-        <div className={type === "SUCCESS" ? classes.success : classes.error}>
+        <div className={style}>
             <div className={classes.notifContainer}>
                 <NotificationIcon 
                     variant={type.toLowerCase()} 

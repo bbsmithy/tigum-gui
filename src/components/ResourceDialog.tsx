@@ -399,28 +399,42 @@ const ResourceDialog = ({
     }
 
     const renderResourceSearchResult = (resource) => {
-        return (
-            <>
-                {resource.result_type === "video" && (
-                    <div style={{ flexDirection: "row", display: "flex" }}>
-                        <div style={{flex: 2}}>
-                            <img src={resource.misc2} style={{borderRadius: 3 }} width="50px" />
-                        </div>
-                        <div style={{flex: 7, paddingTop: 5}}>
-                            {resource.title}
-                        </div>
+
+        if (resource.result_type === "snippet") {
+            console.log(resource)
+        }
+
+        if (resource.result_type === "video") {
+            return (
+                <div style={{ flexDirection: "row", display: "flex" }}>
+                    <div style={{flex: 2}}>
+                        <img src={resource.misc2} style={{borderRadius: 3 }} width="50px" />
                     </div>
-                )}
-                {resource.result_type !== "video" && (
-                    <>
+                    <div style={{flex: 7, paddingTop: 5}}>
+                        {resource.title}
+                    </div>
+                </div>
+            )
+        } else if (resource.result_type === "snippet") {
+            return (
+                <>
+                    <div style={{ marginBottom: 5 }}>
                         <ResultTypeIcon type={resource.result_type} />
-                        <span className={classes.resTitle}>
-                            {resource.title}
-                        </span>
-                    </>
-                )}
-            </>
-        )
+                        <div style={{ fontWeight: "bold", marginBottom: 10, display: "inline", marginLeft: 8 }}>{resource.misc2}</div>
+                    </div>
+                    <div>{resource.title}</div>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <ResultTypeIcon type={resource.result_type} />
+                    <span className={classes.resTitle}>
+                        {resource.title}
+                    </span>
+                </>
+            )
+        }
     }
 
     return (

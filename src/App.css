@@ -307,6 +307,7 @@ a .link-card:hover {
   padding: 0px 10px 0px 10px;
   margin-right: auto;
   margin-left: auto;
+  margin-top: 50px;
   max-width: 800px;
 }
 

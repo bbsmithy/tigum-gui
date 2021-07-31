@@ -1,6 +1,9 @@
 import classes from "*.module.css"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { createUseStyles } from "react-jss"
+import { getPublicTopics } from "../../clib/api"
+import { LoadingCard } from "../../components"
+import UserNotFound from "./components/UserNotFound"
 
 
 const useStyles = createUseStyles({
@@ -76,8 +79,100 @@ const useStyles = createUseStyles({
         marginBottom: 10,
         borderRadius: 5,
         backgroundColor: "white"
+    },
+    loadingProfile: {
+        fontSize: 25,
+        width: "40%",
+        color: "white",
+        margin: "auto",
+        background: "#333",
+        textAlign: "center",
+        marginTop: "10%",
+        height: 200,
+        borderRadius: 5,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: 20
     }
 })
+
+const TopicList = ({ topics }) => {
+    return topics.map((topic) => {
+        return (
+            <div style={{borderBottom: "1px solid gray", cursor: "pointer", borderRight: "5px solid #246bf8", padding: 10}}>
+                {topic.title}
+            </div>
+        )
+    })
+}
+
+const SelectedTopic = ({ topic }) => {
+    return (
+        <h2>{topic.title}</h2>
+    )
+}
+
+
+const ProfileTopics = ({ openMenu, classes, topics, userName }) => {
+
+    const [selectedTopic, setSelectedTopic] = useState()
+
+    const onSelectTopic = (topic) => {
+        setSelectedTopic(topic)
+    }
+    console.log("topics: ", topics)
+
+    return (
+        <>
+            <div className="fl w-100">
+                <div style={{
+                        display: "flex", 
+                        flexDirection: "row", 
+                        justifyContent: "space-between",
+                        // boxShadow: "0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%)",
+                        padding: "4px 8px 6px 8px",
+                        borderBottom: "1px solid gray"
+                    }}>
+                    <div>
+                        <ProfileButton classes={classes} openMenu={openMenu} />
+                    </div>
+                    <div style={{width: 200}}>
+                        <input placeholder="Search All" className={classes.searchInput}></input>
+                    </div>      
+                </div>
+            </div>
+            <div className="fl w-100">
+                <div 
+                style={{
+                    // backgroundColor: "#333", 
+                    borderRadius: 4,
+                    // boxShadow: "0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%)",
+                    color: "white",
+                    display: "flex",
+                    flexDirection: "row"
+                }}>
+                    {topics && topics.length > 0 && (
+                        <>
+                            <div className={classes.topicSidebar}>
+                                <TopicList topics={topics} onSelectTopic={onSelectTopic} />
+                            </div>
+                            <div className={classes.contentSection}>
+                                <SelectedTopic topic={selectedTopic} />
+                            </div>
+                        </>
+                    )}
+                    {topics.length === 0 && (
+                        <div style={{ textAlign: "center", color: "gray", margin: "auto", marginTop: "15%"}}>
+                            <i className="far fa-folder-open" style={{ fontSize: 35, marginBottom: 5}}></i>
+                            <h3>{userName} hasn't published any topics yet</h3>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </>
+    )
+}
+
 
 const ProfileButton = ({ classes, openMenu }) => {
     return (
@@ -95,7 +190,33 @@ const ProfileButton = ({ classes, openMenu }) => {
 
 export const Profile = ({ }) => {
     const classes = useStyles()
+    const [loading, setLoading] = useState(true)
+    const [userNotFound, setUserNotFound] = useState(false)
+    const [userName, setUserName] = useState("")
+    const [topics, setTopics] = useState()
     const [menuOpen, setMenu] = useState(false)
+
+    useEffect(() => {
+        findProfile()
+    }, [])
+
+    const findProfile = async () => {
+        try {
+            const pathArray = window.location.pathname.split('/');
+            const userName = pathArray[1]
+            setUserName(userName)
+            const profile = await getPublicTopics(userName)
+            if (profile.error) {
+                throw profile.error
+            } else if (profile.topics) {
+                setTopics(profile.topics)
+            }
+            setLoading(false)
+        } catch (err) {
+            setUserNotFound(true)
+            setLoading(false)
+        }
+    }
 
     const openMenu = () => {
         setMenu(true)
@@ -144,40 +265,26 @@ export const Profile = ({ }) => {
             </div>
         )}
         <div className={`cf helvetica ${classes.mainContainer}`}>
-            <div className="fl w-100">
-                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between",
-                        // boxShadow: "0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%)",
-                        padding: "4px 8px 6px 8px",
-                        borderBottom: "1px solid gray",}}>
-                    <div>
-                        <ProfileButton classes={classes} openMenu={openMenu} />
-                    </div>
-                    <div style={{width: 200}}>
-                        <input placeholder="Search All" className={classes.searchInput}></input>
-                    </div>      
+            {!loading && !userNotFound && topics && (
+                <ProfileTopics
+                    userName={userName}
+                    topics={topics}
+                    openMenu={openMenu} 
+                    classes={classes}
+                />
+            )}
+            {!loading && userNotFound && (
+                <UserNotFound userName={userName} />
+            )}
+            {loading && (
+                <div className={classes.loadingProfile}>
+                    <i 
+                        className={`fas fa-circle-notch fa-spin white`} 
+                        style={{fontSize: 35, marginTop: 20}}
+                    ></i>
+                    <h3 style={{textAlign: "center"}}>Searching the cosmos</h3>
                 </div>
-            </div>
-            <div className="fl w-100">
-                <div 
-                style={{
-                    // backgroundColor: "#333", 
-                    borderRadius: 4,
-                    // boxShadow: "0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%)",
-                    color: "white",
-                    display: "flex",
-                    flexDirection: "row"
-                 }}>
-                    <div className={classes.topicSidebar}>
-                        <div style={{borderBottom: "1px solid gray", cursor: "pointer", borderRight: "5px solid #246bf8", padding: 10}}>TEST</div>
-                        <div style={{borderBottom: "1px solid gray", padding: 10}}>TEST</div>
-                        <div style={{borderBottom: "1px solid gray", padding: 10}}>TEST</div>
-                        <div style={{ padding: 10 }}>TEST</div>
-                    </div>
-                    <div className={classes.contentSection}>
-                        <h2>6502 Computer Build</h2>
-                    </div>
-                </div>
-            </div>
+            )}
         </div>
         </>
     )

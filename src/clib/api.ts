@@ -34,6 +34,16 @@ export const getTopics = async (topicIds: Array<number>) => {
   }
 };
 
+export const getPublicTopics = async (userName: string) => {
+  try {
+    const response = await fetch(`${BASE_API_URL}/profile/${userName}`)
+    const data = await response.json()
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
 export const createTopic = async (title: String) => {
   try {
     const res = await fetch(`${BASE_API_URL}/topics/create-topic`, {
@@ -111,15 +121,6 @@ export const createNote = async (title: String, topic_id: number) => {
     throw e;
   }
 };
-
-// pub id: i32,
-// pub title: String,
-// pub date_created: NaiveDateTime,
-// pub topic_id: i32,
-// pub user_id: i32,
-
-// #[put("/notes/<note_id>", format = "application/json", data = "<note>")]
-
 
 export const updateNote = async (note) => {
   try {

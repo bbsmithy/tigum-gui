@@ -44,6 +44,16 @@ export const getPublicTopics = async (userName: string) => {
   }
 }
 
+export const getPublicNotes = async (topicId: number) => {
+  try {
+    const response = await fetch(`${BASE_API_URL}/profile/notes/${topicId}`)
+    const data = await response.json()
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
 export const createTopic = async (title: String) => {
   try {
     const res = await fetch(`${BASE_API_URL}/topics/create-topic`, {

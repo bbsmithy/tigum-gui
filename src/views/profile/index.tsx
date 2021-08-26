@@ -1,8 +1,8 @@
-import classes from "*.module.css"
 import React, { useEffect, useState } from "react"
 import { createUseStyles } from "react-jss"
-import { getPublicTopics } from "../../clib/api"
-import { LoadingCard } from "../../components"
+import { getPublicNotes, getPublicTopics } from "../../clib/api"
+import { Note } from "../../components"
+import { getDate } from "../../util"
 import UserNotFound from "./components/UserNotFound"
 
 
@@ -25,7 +25,7 @@ const useStyles = createUseStyles({
         width: "79%",
         borderRadius: 3,
         padding: 10,
-        backgroundColor: "#333"
+        // backgroundColor: "#333"
     },
     mainContainer: {
         margin: "auto",
@@ -93,34 +93,167 @@ const useStyles = createUseStyles({
         justifyContent: "center",
         alignItems: "center",
         paddingTop: 20
+    },
+    selectedTopicNavBarItem: {
+        marginLeft: 4,
+        marginRight: 4,
+        padding: "5px 10px",
+        height: 33,
+        fontSize: "bold",
+        justifyContent: "center",
+        alignItems: "center",
+        cursor: "pointer",
+        // border: "1px solid #333"
+    },
+    shadow: {
+        // boxShadow: "2px 2px 1px 0px rgb(0 0 0 / 75%)",
+        borderBottom: "3px solid rgb(36, 107, 248)",
+        // backgroundColor: "#1f1f1f"
+    },
+    selectedTopicHeader: {
+        display: "flex", 
+        flexDirection: "row", 
+        justifyContent: "space-between"
+    },
+    selectTopicTitle: {
+        margin: 4, 
+        padding: 0
     }
 })
 
-const TopicList = ({ topics }) => {
+const TopicList = ({ topics, onSelectTopic, selectedTopicId }) => {
     return topics.map((topic) => {
         return (
-            <div style={{borderBottom: "1px solid gray", cursor: "pointer", borderRight: "5px solid #246bf8", padding: 10}}>
+            <div onClick={() => {
+                onSelectTopic(topic)
+            }} style={{
+                borderRight: topic.id === selectedTopicId ? "5px solid #246bf8" : "none",
+                borderBottom: "1px solid gray", 
+                cursor: "pointer",
+                padding: 10
+            }}>
                 {topic.title}
             </div>
         )
     })
 }
 
-const SelectedTopic = ({ topic }) => {
+const NotesList = ({ notes }) => {
+    return notes.map((note) => {
+
+
+        const renderDate = () => {
+            const dateText = new Date(note.date_updated);
+            return getDate(dateText);
+        };
+
+        return (
+            <div className='card w-33 note-card pointer'>
+                <div className='mw9 center'>
+                    <div className='cf ph2-ns'>
+                        <div className='fl ph2 w-90 pv3' style={{alignItems: "center", justifyContent: "center"}}>
+                            <h4 style={{marginTop: 4, marginBottom: 0}}>{note.title}</h4>
+                            <div style={{fontSize: 13, marginTop: 10, fontStyle: "italic", color: "gray"}}>{renderDate()}</div>
+                        </div>
+                        <div className='fl w-10 pv4'>
+                            <div>
+                                <i className='fas fa-chevron-right'></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    })
+}
+
+const SelectedTopic = ({ topic, classes, userName }) => {
+
+    const [selectedResourceType, setSelectedResourceType] = useState("NOTES")
+    const [resources, setResources] = useState()
+    
+    useEffect(() => {
+        getResources(selectedResourceType)
+    }, [selectedResourceType, topic])
+
+    const getResources = async (selectedResourceType) => {
+        switch (selectedResourceType) {
+            case "NOTES": {
+                const res = await getPublicNotes(topic.id)
+                setResources(res.notes)
+            }
+            case "SNIPPETS": {
+                console.log("Fetch snippets")
+            }
+            case "VIDEOS": {
+                console.log("videos")
+            }
+            case "LINKS": {
+                console.log("links")
+            }
+        }
+    }
+
     return (
-        <h2>{topic.title}</h2>
+        <div>
+            <div className={classes.selectedTopicHeader}>
+                <div>
+                    <h2 className={classes.selectTopicTitle}>{topic.title}</h2>
+                </div>
+                <div style={{display: "flex", flexDirection: "row"}}>
+                    <div 
+                        className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "NOTES" ? classes.shadow : null}`}
+                        onClick={() => {
+                            setSelectedResourceType("NOTES")
+                        }}
+                    >   
+                        <i className="fas fa-pen-square" />
+                        <span style={{ marginLeft: 6 }}>Notes</span>
+                    </div>
+                    <div 
+                        className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "SNIPPETS" ? classes.shadow : null}`}
+                        onClick={() => {
+                            setSelectedResourceType("SNIPPETS")
+                        }}
+                    >
+                        <i className="fas fa-newspaper" />
+                        <span style={{ marginLeft: 6 }}>Snippets</span>
+                    </div>
+                    <div 
+                        className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "VIDEOS" ? classes.shadow : null}`}
+                        onClick={() => {
+                            setSelectedResourceType("VIDEOS")
+                        }}
+                    >
+                        <i className="fab fa-youtube" />
+                        <span style={{ marginLeft: 6 }}>Videos</span>
+                    </div>
+                    <div 
+                        className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "LINKS" ? classes.shadow : null}`}
+                        onClick={() => {
+                            setSelectedResourceType("LINKS")
+                        }}
+                    >
+                        <i className="fas fa-link" />
+                        <span style={{ marginLeft: 6 }}>Links</span>
+                    </div>
+                </div>
+            </div>
+            <div style={{ marginTop: 15 }}>
+                {selectedResourceType === "NOTES" && resources && <NotesList notes={resources} />}
+            </div>
+        </div>
     )
 }
 
 
 const ProfileTopics = ({ openMenu, classes, topics, userName }) => {
 
-    const [selectedTopic, setSelectedTopic] = useState()
+    const [selectedTopic, setSelectedTopic] = useState(topics[0])
 
     const onSelectTopic = (topic) => {
         setSelectedTopic(topic)
     }
-    console.log("topics: ", topics)
 
     return (
         <>
@@ -144,20 +277,22 @@ const ProfileTopics = ({ openMenu, classes, topics, userName }) => {
             <div className="fl w-100">
                 <div 
                 style={{
-                    // backgroundColor: "#333", 
                     borderRadius: 4,
-                    // boxShadow: "0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%)",
                     color: "white",
                     display: "flex",
                     flexDirection: "row"
                 }}>
-                    {topics && topics.length > 0 && (
+                    {topics && topics.length > 0 && selectedTopic && (
                         <>
                             <div className={classes.topicSidebar}>
-                                <TopicList topics={topics} onSelectTopic={onSelectTopic} />
+                                <TopicList 
+                                    topics={topics} 
+                                    onSelectTopic={onSelectTopic} 
+                                    selectedTopicId={selectedTopic.id} 
+                                />
                             </div>
                             <div className={classes.contentSection}>
-                                <SelectedTopic topic={selectedTopic} />
+                                <SelectedTopic topic={selectedTopic} userName={userName} classes={classes} />
                             </div>
                         </>
                     )}
@@ -189,7 +324,9 @@ const ProfileButton = ({ classes, openMenu }) => {
 }
 
 export const Profile = ({ }) => {
+    
     const classes = useStyles()
+    
     const [loading, setLoading] = useState(true)
     const [userNotFound, setUserNotFound] = useState(false)
     const [userName, setUserName] = useState("")

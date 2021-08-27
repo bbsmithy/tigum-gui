@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { createUseStyles } from "react-jss"
-import { getPublicNotes, getPublicTopics } from "../../clib/api"
+import { getPublicLinks, getPublicNotes, getPublicSnippets, getPublicTopics, getPublicVideos } from "../../clib/api"
 import { Note } from "../../components"
 import { getDate } from "../../util"
 import UserNotFound from "./components/UserNotFound"
@@ -167,10 +167,28 @@ const NotesList = ({ notes }) => {
     })
 }
 
+const SnippetList = ({ snippets }) => {
+    return snippets.map((snippet) => {
+        // const renderDate = () => {
+        //     const dateText = new Date(note.date_updated);
+        //     return getDate(dateText);
+        // };
+        return (
+            <div className='card w-50 note-card' style={{display: "inline-block"}}>
+                <h3>{snippet.title}</h3>
+                {snippet.content}
+            </div>
+        )
+    })
+}
+
 const SelectedTopic = ({ topic, classes, userName }) => {
 
     const [selectedResourceType, setSelectedResourceType] = useState("NOTES")
-    const [resources, setResources] = useState()
+    const [notes, setNotes] = useState()
+    const [snippets, setSnippets] = useState()
+    const [videos, setVideos] = useState()
+    const [links, setLinks] = useState()
     
     useEffect(() => {
         getResources(selectedResourceType)
@@ -180,16 +198,23 @@ const SelectedTopic = ({ topic, classes, userName }) => {
         switch (selectedResourceType) {
             case "NOTES": {
                 const res = await getPublicNotes(topic.id)
-                setResources(res.notes)
+                setNotes(res.notes)
+                break
             }
             case "SNIPPETS": {
-                console.log("Fetch snippets")
+                const res = await getPublicSnippets(topic.id)
+                setSnippets(res.snippets)
+                break
             }
             case "VIDEOS": {
-                console.log("videos")
+                const res = await getPublicVideos(topic.id)
+                setVideos(res.videos)
+                break
             }
             case "LINKS": {
-                console.log("links")
+                const res = await getPublicLinks(topic.id)
+                setLinks(res.links)
+                break
             }
         }
     }
@@ -240,7 +265,16 @@ const SelectedTopic = ({ topic, classes, userName }) => {
                 </div>
             </div>
             <div style={{ marginTop: 15 }}>
-                {selectedResourceType === "NOTES" && resources && <NotesList notes={resources} />}
+                {selectedResourceType === "NOTES" && notes && <NotesList notes={notes} />}
+                {selectedResourceType === "SNIPPETS" && snippets && (
+                    <SnippetList snippets={snippets} />
+                )}
+                {selectedResourceType === "VIDEOS" && videos && (
+                    <div>{JSON.stringify(videos)}</div>
+                )}
+                {selectedResourceType === "LINKS" && links && (
+                    <div>{JSON.stringify(links)}</div>
+                )}
             </div>
         </div>
     )
@@ -262,7 +296,6 @@ const ProfileTopics = ({ openMenu, classes, topics, userName }) => {
                         display: "flex", 
                         flexDirection: "row", 
                         justifyContent: "space-between",
-                        // boxShadow: "0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%)",
                         padding: "4px 8px 6px 8px",
                         borderBottom: "1px solid gray"
                     }}>

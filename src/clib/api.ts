@@ -54,6 +54,37 @@ export const getPublicNotes = async (topicId: number) => {
   }
 }
 
+export const getPublicVideos = async (topicId: number) => {
+  try {
+    const response = await fetch(`${BASE_API_URL}/profile/videos/${topicId}`)
+    const data = await response.json()
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getPublicSnippets = async (topicId: number) => {
+  try {
+    const response = await fetch(`${BASE_API_URL}/profile/snippets/${topicId}`)
+    const data = await response.json()
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+
+export const getPublicLinks = async (topicId: number) => {
+  try {
+    const response = await fetch(`${BASE_API_URL}/profile/links/${topicId}`)
+    const data = await response.json()
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
 export const createTopic = async (title: String) => {
   try {
     const res = await fetch(`${BASE_API_URL}/topics/create-topic`, {

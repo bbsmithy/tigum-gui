@@ -6,7 +6,7 @@ import UserNotFound from "./components/UserNotFound"
 import LoadingSnippet from "../../components/LoadingSnippet"
 import marked from "marked"
 import { LoadingVideo } from "../../components/LoadingVideo"
-import { LinkCard, LoadingCard } from "../../components"
+import { LinkCard, LoadingCard, VideoCard } from "../../components"
 
 
 const useStyles = createUseStyles({
@@ -217,7 +217,9 @@ const VideoList = ({ videos }) => {
     if (videos.length > 0) {
         return videos.map((video, idx) => {
             return (
-                <div>{JSON.stringify(video)}</div>
+                <VideoCard
+                    {...video}
+                />
             )
         })
     } else {
@@ -234,7 +236,7 @@ const LinkList = ({ links }) => {
         return links.map((link, idx) => {
             return (
                 <LinkCard link={link} onClick={() => {
-                    
+
                 }} />
             )
         })

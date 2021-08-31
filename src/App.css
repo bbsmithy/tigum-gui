@@ -388,9 +388,10 @@ a .link-card:hover {
 
 .no-resources-message {
   font-size: 40px;
-  font-weight: 100;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
   color: gray;
-  margin-top: 200px;
+  margin-top: 17%;
   text-align: center;
 }
 

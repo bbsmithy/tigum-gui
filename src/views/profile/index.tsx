@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { createUseStyles } from "react-jss"
 import { getPublicLinks, getPublicNotes, getPublicSnippets, getPublicTopics, getPublicVideos } from "../../clib/api"
-import { Note } from "../../components"
 import { getDate } from "../../util"
 import UserNotFound from "./components/UserNotFound"
+import LoadingSnippet from "../../components/LoadingSnippet"
+import marked from "marked"
+import { LoadingVideo } from "../../components/LoadingVideo"
+import { LinkCard, LoadingCard } from "../../components"
 
 
 const useStyles = createUseStyles({
@@ -22,9 +25,12 @@ const useStyles = createUseStyles({
             width: "100%"
         },
         marginTop: 10,
-        width: "79%",
+        flex: 8,
         borderRadius: 3,
         padding: 10,
+        "a": {
+            color: "red"
+        }
         // backgroundColor: "#333"
     },
     mainContainer: {
@@ -37,17 +43,12 @@ const useStyles = createUseStyles({
             width: "85%"
         },
         '@media (min-width: 1200px)':{
-            width: "75%",
+            width: "80%",
         },
         height:"100%"
     },
     topicSidebar: {
-        width: "20%",
-        backgroundColor: "#333",
-        border: 2,
-        marginRight: "1%",
-        // border: "1px solid gray",
-        borderRadius: 3,
+        flex: 2,
         marginTop: 10,
         overflow: "hidden",
         '@media (max-width: 1000px)':{
@@ -102,18 +103,15 @@ const useStyles = createUseStyles({
         fontSize: "bold",
         justifyContent: "center",
         alignItems: "center",
-        cursor: "pointer",
-        // border: "1px solid #333"
+        cursor: "pointer"
     },
     shadow: {
-        // boxShadow: "2px 2px 1px 0px rgb(0 0 0 / 75%)",
-        borderBottom: "3px solid rgb(36, 107, 248)",
-        // backgroundColor: "#1f1f1f"
+        borderBottom: "3px solid rgb(36, 107, 248)"
     },
     selectedTopicHeader: {
         display: "flex", 
         flexDirection: "row", 
-        justifyContent: "space-between"
+        justifyContent: "space-between",
     },
     selectTopicTitle: {
         margin: 4, 
@@ -122,98 +120,280 @@ const useStyles = createUseStyles({
 })
 
 const TopicList = ({ topics, onSelectTopic, selectedTopicId }) => {
-    return topics.map((topic) => {
-        return (
-            <div onClick={() => {
-                onSelectTopic(topic)
-            }} style={{
-                borderRight: topic.id === selectedTopicId ? "5px solid #246bf8" : "none",
-                borderBottom: "1px solid gray", 
-                cursor: "pointer",
-                padding: 10
-            }}>
-                {topic.title}
-            </div>
-        )
-    })
+    return (
+        <div style={{
+            backgroundColor: "#333",
+            border: 2,
+            marginRight: "1%",
+            borderRadius: 3,
+            overflow: "hidden"
+        }}>
+        {    
+            topics.map((topic) => {
+                return (
+                    <div onClick={() => {
+                        onSelectTopic(topic)
+                    }} style={{
+                        borderRight: topic.id === selectedTopicId ? "5px solid #246bf8" : "none",
+                        borderBottom: "1px solid gray", 
+                        cursor: "pointer",
+                        padding: 10
+                    }}>
+                        {topic.title}
+                    </div>
+                )
+            })
+        }
+        </div>
+    )
 }
 
 const NotesList = ({ notes }) => {
-    return notes.map((note) => {
-
-
-        const renderDate = () => {
-            const dateText = new Date(note.date_updated);
-            return getDate(dateText);
-        };
-
-        return (
-            <div className='card w-33 note-card pointer'>
-                <div className='mw9 center'>
-                    <div className='cf ph2-ns'>
-                        <div className='fl ph2 w-90 pv3' style={{alignItems: "center", justifyContent: "center"}}>
-                            <h4 style={{marginTop: 4, marginBottom: 0}}>{note.title}</h4>
-                            <div style={{fontSize: 13, marginTop: 10, fontStyle: "italic", color: "gray"}}>{renderDate()}</div>
-                        </div>
-                        <div className='fl w-10 pv4'>
-                            <div>
-                                <i className='fas fa-chevron-right'></i>
+    if (notes.length > 0) {
+        return notes.map((note) => {
+            const renderDate = () => {
+                const dateText = new Date(note.date_updated);
+                return getDate(dateText);
+            };
+    
+            return (
+                <div className='card w-33 note-card pointer'>
+                    <div className='mw9 center'>
+                        <div className='cf ph2-ns'>
+                            <div className='fl ph2 w-90 pv3' style={{alignItems: "center", justifyContent: "center"}}>
+                                <h4 style={{marginTop: 4, marginBottom: 0}}>{note.title}</h4>
+                                <div style={{fontSize: 13, marginTop: 10, fontStyle: "italic", color: "gray"}}>{renderDate()}</div>
+                            </div>
+                            <div className='fl w-10 pv4'>
+                                <div>
+                                    <i className='fas fa-chevron-right'></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            )
+        })
+    } else {
+        return (
+            <div className='no-resources-message'>
+                <i className='fas fa-pen-square' /> <span>No notes yet</span>
             </div>
         )
-    })
+    }
 }
 
 const SnippetList = ({ snippets }) => {
-    return snippets.map((snippet) => {
-        // const renderDate = () => {
-        //     const dateText = new Date(note.date_updated);
-        //     return getDate(dateText);
-        // };
+    if (snippets.length) {
+        return snippets.map((snippet, idx) => {
+            return (
+                <>
+                    <div className="note-card" style={{
+                        padding: 10, 
+                        marginTop: 10, 
+                        borderRadius: 5
+                    }}>
+                        <h4 style={{ marginTop: 5, marginBottom: 5 }}>{snippet.title}</h4>
+                        <div dangerouslySetInnerHTML={{ __html: marked(snippet.content) }} />
+                        {snippet.origin != "TIGUM" && (
+                            <div style={{marginTop: 10}}>
+                                Source: <a href={`${snippet.origin}`} target="blank" style={{color: "rgb(36, 107, 248)"}}>{snippet.origin}</a>
+                            </div>
+                        )}
+                    </div>
+                </>
+            )
+        })
+    } else {
         return (
-            <div className='card w-50 note-card' style={{display: "inline-block"}}>
-                <h3>{snippet.title}</h3>
-                {snippet.content}
+            <div className='no-resources-message'>
+                <i className='fas fa-newspaper' /> <span>No snippets yet</span>
             </div>
         )
-    })
+    }
+}
+
+const VideoList = ({ videos }) => {
+    if (videos.length > 0) {
+        return videos.map((video, idx) => {
+            return (
+                <div>{JSON.stringify(video)}</div>
+            )
+        })
+    } else {
+        return (
+            <div className='no-resources-message'>
+                <i className='fab fa-youtube' /> <span>No videos yet</span>
+            </div>
+        )
+    }
+}
+
+const LinkList = ({ links }) => {
+    if (links.length > 0) {
+        return links.map((link, idx) => {
+            return (
+                <LinkCard link={link} onClick={() => {
+                    
+                }} />
+            )
+        })
+    } else {
+        return (
+            <div className='no-resources-message'>
+                <i className='fas fa-link' /> <span>No links yet</span>
+            </div>
+        )
+    }
+}
+
+
+const TopicHeader = ({ classes, topic, setSelectedResourceType, selectedResourceType }) => {
+    return (
+        <div className={classes.selectedTopicHeader}>
+            <div>
+                <h2 className={classes.selectTopicTitle}>{topic.title}</h2>
+            </div>
+            <div style={{display: "flex", flexDirection: "row"}}>
+                <div 
+                    className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "NOTES" ? classes.shadow : null}`}
+                    onClick={() => {
+                        setSelectedResourceType("NOTES")
+                    }}
+                >   
+                    <i className="fas fa-pen-square" />
+                    <span style={{ marginLeft: 6 }}>Notes</span>
+                </div>
+                <div 
+                    className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "SNIPPETS" ? classes.shadow : null}`}
+                    onClick={() => {
+                        setSelectedResourceType("SNIPPETS")
+                    }}
+                >
+                    <i className="fas fa-newspaper" />
+                    <span style={{ marginLeft: 6 }}>Snippets</span>
+                </div>
+                <div 
+                    className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "VIDEOS" ? classes.shadow : null}`}
+                    onClick={() => {
+                        setSelectedResourceType("VIDEOS")
+                    }}
+                >
+                    <i className="fab fa-youtube" />
+                    <span style={{ marginLeft: 6 }}>Videos</span>
+                </div>
+                <div 
+                    className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "LINKS" ? classes.shadow : null}`}
+                    onClick={() => {
+                        setSelectedResourceType("LINKS")
+                    }}
+                >
+                    <i className="fas fa-link" />
+                    <span style={{ marginLeft: 6 }}>Links</span>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const LoadingResources = ({
+    selectedResourceType
+}) => {
+    switch (selectedResourceType) {
+        case "NOTES": {
+            return (
+                <LoadingCard />
+            )
+        }
+        case "SNIPPETS": {
+            return (
+                <LoadingSnippet />
+            )
+        }
+        case "VIDEOS": {
+            return <LoadingVideo />
+        }
+        case "LINKS": {
+            return <LoadingCard />
+        }
+        default: {
+            return null
+        }
+    }
 }
 
 const SelectedTopic = ({ topic, classes, userName }) => {
 
+    const topicIdRef = useRef()
     const [selectedResourceType, setSelectedResourceType] = useState("NOTES")
-    const [notes, setNotes] = useState()
-    const [snippets, setSnippets] = useState()
-    const [videos, setVideos] = useState()
-    const [links, setLinks] = useState()
+    const [notes, setNotes] = useState([])
+    const [snippets, setSnippets] = useState([])
+    const [videos, setVideos] = useState([])
+    const [links, setLinks] = useState([])
+    const [loadingResources, setLoadingResources] = useState(false)
+
     
     useEffect(() => {
-        getResources(selectedResourceType)
+        if (topicIdRef.current !== topic.id) {
+            resetResources()
+            getResources(selectedResourceType)
+        } else {
+            if (!checkIsResourceLoaded(selectedResourceType)) {
+                getResources(selectedResourceType)
+            }
+        }
+        topicIdRef.current = topic.id
     }, [selectedResourceType, topic])
 
+    const resetResources = () => {
+        setNotes([])
+        setSnippets([])
+        setVideos([])
+        setLinks([])
+    }
+
+    const checkIsResourceLoaded = (selectedResourceType) => {
+        switch(selectedResourceType){
+            case "NOTES": {
+                return notes && notes.length > 0
+            }
+            case "VIDEOS": {
+                return videos && videos.length > 0
+            }
+            case "SNIPPETS": {
+                return snippets && snippets.length > 0
+            }
+            case "LINKS": {
+                return links && links.length > 0
+            }
+        }
+    }
+
     const getResources = async (selectedResourceType) => {
+        setLoadingResources(true)
         switch (selectedResourceType) {
             case "NOTES": {
                 const res = await getPublicNotes(topic.id)
                 setNotes(res.notes)
+                setLoadingResources(false)
                 break
             }
             case "SNIPPETS": {
                 const res = await getPublicSnippets(topic.id)
                 setSnippets(res.snippets)
+                setLoadingResources(false)
                 break
             }
             case "VIDEOS": {
                 const res = await getPublicVideos(topic.id)
                 setVideos(res.videos)
+                setLoadingResources(false)
                 break
             }
             case "LINKS": {
                 const res = await getPublicLinks(topic.id)
                 setLinks(res.links)
+                setLoadingResources(false)
                 break
             }
         }
@@ -221,59 +401,29 @@ const SelectedTopic = ({ topic, classes, userName }) => {
 
     return (
         <div>
-            <div className={classes.selectedTopicHeader}>
-                <div>
-                    <h2 className={classes.selectTopicTitle}>{topic.title}</h2>
-                </div>
-                <div style={{display: "flex", flexDirection: "row"}}>
-                    <div 
-                        className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "NOTES" ? classes.shadow : null}`}
-                        onClick={() => {
-                            setSelectedResourceType("NOTES")
-                        }}
-                    >   
-                        <i className="fas fa-pen-square" />
-                        <span style={{ marginLeft: 6 }}>Notes</span>
-                    </div>
-                    <div 
-                        className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "SNIPPETS" ? classes.shadow : null}`}
-                        onClick={() => {
-                            setSelectedResourceType("SNIPPETS")
-                        }}
-                    >
-                        <i className="fas fa-newspaper" />
-                        <span style={{ marginLeft: 6 }}>Snippets</span>
-                    </div>
-                    <div 
-                        className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "VIDEOS" ? classes.shadow : null}`}
-                        onClick={() => {
-                            setSelectedResourceType("VIDEOS")
-                        }}
-                    >
-                        <i className="fab fa-youtube" />
-                        <span style={{ marginLeft: 6 }}>Videos</span>
-                    </div>
-                    <div 
-                        className={`${classes.selectedTopicNavBarItem} ${selectedResourceType === "LINKS" ? classes.shadow : null}`}
-                        onClick={() => {
-                            setSelectedResourceType("LINKS")
-                        }}
-                    >
-                        <i className="fas fa-link" />
-                        <span style={{ marginLeft: 6 }}>Links</span>
-                    </div>
-                </div>
-            </div>
+            <TopicHeader 
+                classes={classes} 
+                topic={topic} 
+                setSelectedResourceType={setSelectedResourceType} 
+                selectedResourceType={selectedResourceType} 
+            />
             <div style={{ marginTop: 15 }}>
-                {selectedResourceType === "NOTES" && notes && <NotesList notes={notes} />}
-                {selectedResourceType === "SNIPPETS" && snippets && (
-                    <SnippetList snippets={snippets} />
+                {loadingResources && (
+                    <LoadingResources selectedResourceType={selectedResourceType} />
                 )}
-                {selectedResourceType === "VIDEOS" && videos && (
-                    <div>{JSON.stringify(videos)}</div>
-                )}
-                {selectedResourceType === "LINKS" && links && (
-                    <div>{JSON.stringify(links)}</div>
+                {!loadingResources && (
+                    <>
+                        {selectedResourceType === "NOTES" && <NotesList notes={notes} />}
+                        {selectedResourceType === "SNIPPETS" && (
+                            <SnippetList snippets={snippets} />
+                        )}
+                        {selectedResourceType === "VIDEOS" && (
+                            <VideoList videos={videos} />
+                        )}
+                        {selectedResourceType === "LINKS" && (
+                            <LinkList links={links} />
+                        )}
+                    </>
                 )}
             </div>
         </div>
@@ -281,13 +431,14 @@ const SelectedTopic = ({ topic, classes, userName }) => {
 }
 
 
-const ProfileTopics = ({ openMenu, classes, topics, userName }) => {
-
-    const [selectedTopic, setSelectedTopic] = useState(topics[0])
-
-    const onSelectTopic = (topic) => {
-        setSelectedTopic(topic)
-    }
+const ProfileTopics = ({ 
+    openMenu, 
+    classes, 
+    topics, 
+    userName, 
+    onSelectTopic, 
+    selectedTopic 
+}) => {
 
     return (
         <>
@@ -363,12 +514,17 @@ export const Profile = ({ }) => {
     const [loading, setLoading] = useState(true)
     const [userNotFound, setUserNotFound] = useState(false)
     const [userName, setUserName] = useState("")
-    const [topics, setTopics] = useState()
+    const [topics, setTopics] = useState([])
     const [menuOpen, setMenu] = useState(false)
+    const [selectedTopic, setSelectedTopic] = useState()
 
     useEffect(() => {
         findProfile()
     }, [])
+
+    const onSelectTopic = (topic) => {
+        setSelectedTopic(topic)
+    }
 
     const findProfile = async () => {
         try {
@@ -380,6 +536,7 @@ export const Profile = ({ }) => {
                 throw profile.error
             } else if (profile.topics) {
                 setTopics(profile.topics)
+                setSelectedTopic(profile.topics[0])
             }
             setLoading(false)
         } catch (err) {
@@ -414,30 +571,24 @@ export const Profile = ({ }) => {
                     </div>
                 </div>
                 <input placeholder="Search All" className={classes.mobileSearchInput}></input>
-                <div style={{ border:"1px solid gray", marginTop: 10, borderRadius: 5, padding: "15px 10px", background: "#333", color: "white", display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-                    <div>TEST</div>
-                    <div>
-                        <i className="fas fa-chevron-right white"></i>
-                    </div>
-                </div>
-                <div style={{ border:"1px solid gray", marginTop: 10, borderRadius: 5, padding: "15px 10px", background: "#333", color: "white", display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-                    <div>TEST</div>
-                    <div>
-                        <i className="fas fa-chevron-right white"></i>
-                    </div>
-                </div>
-                <div style={{ border:"1px solid gray", marginTop: 10, borderRadius: 5, padding: "15px 10px", background: "#333", color: "white", display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-                    <div>TEST</div>
-                    <div>
-                        <i className="fas fa-chevron-right white"></i>
-                    </div>
-                </div>
+                {topics && topics.map((topic) => {
+                    return (
+                        <div style={{ border:"1px solid gray", marginTop: 10, borderRadius: 5, padding: "15px 10px", background: "#333", color: "white", display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
+                            <div>{topic.title}</div>
+                            <div>
+                                <i className="fas fa-chevron-right white"></i>
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
         )}
         <div className={`cf helvetica ${classes.mainContainer}`}>
             {!loading && !userNotFound && topics && (
                 <ProfileTopics
                     userName={userName}
+                    selectedTopic={selectedTopic}
+                    onSelectTopic={onSelectTopic}
                     topics={topics}
                     openMenu={openMenu} 
                     classes={classes}

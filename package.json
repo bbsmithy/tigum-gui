@@ -1,5 +1,5 @@
 {
-  "name": "devkeep.io",
+  "name": "tigum.io",
   "version": "0.1.0",
   "author": "Brian Smith",
   "homepage": ".",
@@ -34,7 +34,7 @@
     "eject": "react-scripts eject"
   },
   "build": {
-    "appId": "com.devkeep.io",
+    "appId": "com.tigum.io",
     "files": [
       "build/**/*",
       "node_modules/**/*"

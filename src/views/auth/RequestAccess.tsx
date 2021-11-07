@@ -131,18 +131,17 @@ const BetaAccessForm = ({ dispatch, classes }) => {
             type='email'
             onChange={onChangeEmail}
             value={email}
-            name='email-address'
+            name='Email Address'
             id='email-address'
           />
           <div className='mv3 white'>
             <label className='db fw6 lh-copy f6 mb1'>Enter Name (optional)</label>
             <input
               className='pa2 white br2 input-reset ba bg-transparent b--white hover-bg-black hover-white w-100'
-              type='email'
               onChange={onChangeName}
               value={username}
-              name='email-address'
-              id='email-address'
+              name='Name'
+              id='beta-name'
             />
           </div>
         </div>

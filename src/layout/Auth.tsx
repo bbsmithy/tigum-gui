@@ -36,10 +36,8 @@ export const Auth = () => {
       navigate(PUBLIC_SCREENS.VERIFY)
     } else if (screen === "request-access") {
       navigate(PUBLIC_SCREENS.REQUEST_ACCESS)
-    } else if (screen === ""){
-      goto("login")
     } else {
-      navigate(PUBLIC_SCREENS.PROFILE)
+      goto("login")
     }
   }
 

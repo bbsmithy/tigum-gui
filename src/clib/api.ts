@@ -661,3 +661,18 @@ export const verifyUser = async (verifyHash) => {
     throw e
   }
 }
+
+export const requestBetaAccess = async (betaUser: { email: string, username: string }) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/user/beta-signup`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(betaUser)
+    })
+    return res.json()
+  } catch (err) {
+    throw err
+  }
+}

@@ -34,26 +34,19 @@ const useStyles = createUseStyles({
         // backgroundColor: "#333"
     },
     mainContainer: {
-        margin: "auto",
-        '@media (max-width: 1000px)':{
-            width: "100%",
-            padding: 10
-        },
-        '@media (min-width: 1000px)':{
-            width: "85%"
-        },
-        '@media (min-width: 1200px)':{
-            width: "80%",
-        },
-        height:"100%"
+        height:"100%",
+        display: "flex",
+        flexDirection: "row"
     },
     topicSidebar: {
         flex: 2,
-        marginTop: 10,
         overflow: "hidden",
         '@media (max-width: 1000px)':{
             display: "none"
         },
+    },
+    topicContent: {
+        flex: 10
     },
     searchInput: {
         '@media (max-width: 420px)':{
@@ -470,13 +463,6 @@ const ProfileTopics = ({
                 }}>
                     {topics && topics.length > 0 && selectedTopic && (
                         <>
-                            <div className={classes.topicSidebar}>
-                                <TopicList 
-                                    topics={topics} 
-                                    onSelectTopic={onSelectTopic} 
-                                    selectedTopicId={selectedTopic.id} 
-                                />
-                            </div>
                             <div className={classes.contentSection}>
                                 <SelectedTopic topic={selectedTopic} userName={userName} classes={classes} />
                             </div>
@@ -586,16 +572,25 @@ export const Profile = ({ }) => {
             </div>
         )}
         <div className={`cf helvetica ${classes.mainContainer}`}>
-            {!loading && !userNotFound && topics && (
-                <ProfileTopics
-                    userName={userName}
-                    selectedTopic={selectedTopic}
-                    onSelectTopic={onSelectTopic}
-                    topics={topics}
-                    openMenu={openMenu} 
-                    classes={classes}
+            <div className={classes.topicSidebar}>
+                <TopicList 
+                    topics={topics} 
+                    onSelectTopic={onSelectTopic} 
+                    selectedTopicId={10} 
                 />
-            )}
+            </div>
+            <div className={classes.topicContent}>
+                {!loading && !userNotFound && topics && (
+                    <ProfileTopics
+                        userName={userName}
+                        selectedTopic={selectedTopic}
+                        onSelectTopic={onSelectTopic}
+                        topics={topics}
+                        openMenu={openMenu} 
+                        classes={classes}
+                    />
+                )}
+            </div>
             {!loading && userNotFound && (
                 <UserNotFound userName={userName} />
             )}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { goto, validateEmail } from '../../util';
-import { requestBetaAccess } from '../../clib/fb';
+import { requestBetaAccess } from '../../clib/api'
 import LoginCardResult from '../../components/LoginResultCard';
 
 const useStyles = createUseStyles({
@@ -77,6 +77,7 @@ const PasswordInput = ({ onChangePassword, password, classes }) => {
 
 const BetaAccessForm = ({ dispatch, classes }) => {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [accessMsg, setAccessMsg] = useState('');
   const [accessFailed, setAccesFailed] = useState('');
   const [invalidEmail, setInvalidEmail] = useState('');
@@ -94,7 +95,7 @@ const BetaAccessForm = ({ dispatch, classes }) => {
         setAuthing(false)
       } else {
         try {
-          await requestBetaAccess(email)
+          await requestBetaAccess({ email, username })
           setAuthing(false)
           setAccessMsg("Thank you for requesting beta access! I'll email you soon with details on beta program.")
           setRequestedAccess(true)
@@ -113,6 +114,12 @@ const BetaAccessForm = ({ dispatch, classes }) => {
     setEmail(e.target.value);
   };
 
+  const onChangeName = (e) => {
+    setAccesFailed("")
+    setInvalidEmail("")
+    setUsername(e.target.value);
+  };
+
 
   return (
     <>
@@ -127,6 +134,17 @@ const BetaAccessForm = ({ dispatch, classes }) => {
             name='email-address'
             id='email-address'
           />
+          <div className='mv3 white'>
+            <label className='db fw6 lh-copy f6 mb1'>Enter Name (optional)</label>
+            <input
+              className='pa2 white br2 input-reset ba bg-transparent b--white hover-bg-black hover-white w-100'
+              type='email'
+              onChange={onChangeName}
+              value={username}
+              name='email-address'
+              id='email-address'
+            />
+          </div>
         </div>
       </fieldset>
       {accessMsg && (

@@ -46,34 +46,6 @@ const useStyles = createUseStyles({
   }
 });
 
-const PasswordInput = ({ onChangePassword, password, classes }) => {
-  const [showPassword, setShowPassword] = useState(false)
-
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword)
-  }
-
-  return (
-    <div style={{display: "flex", flexDirection: "row"}}>
-      <div style={{ flex: 9 }}>
-        <input
-          className={`${classes.passwordInput} b white dib pa2 bc-white input-reset b--white ba bg-transparent hover-bg-black hover-white w-100`}
-          type={showPassword ? 'text' : 'password'}
-          onChange={onChangePassword}
-          value={password}
-          name='password'
-          id='password'
-        />
-      </div>
-      <div style={{ flex: 1 }}>
-        <div className={classes.eyeIcon} onClick={toggleShowPassword}>
-          {showPassword ? <i className="fas fa-eye-slash"></i> : <i className='fas fa-eye' />}
-        </div>
-      </div>
-    </div>
-  )
-}
-
 
 const BetaAccessForm = ({ dispatch, classes }) => {
   const [email, setEmail] = useState('');
@@ -97,7 +69,7 @@ const BetaAccessForm = ({ dispatch, classes }) => {
         try {
           await requestBetaAccess({ email, username })
           setAuthing(false)
-          setAccessMsg("Thank you for requesting beta access! I'll email you soon with details on beta program.")
+          setAccessMsg("Thank you for requesting beta access! I'll email you soon with your login details.")
           setRequestedAccess(true)
           setAuthing(false)
         } catch (e) {

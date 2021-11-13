@@ -113,6 +113,7 @@ const BetaAccessForm = ({ dispatch, classes }) => {
               onChange={onChangeName}
               value={username}
               name='Name'
+              style={{boxSizing: "border-box"}}
               id='beta-name'
             />
           </div>

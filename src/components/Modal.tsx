@@ -69,19 +69,32 @@ const useStyles = createUseStyles({
   },
 });
 
+
+type ModalAction = {
+  action: (data?: any) => void,
+  textColor: string;
+  text: string;
+  position: string,
+  icon?: string,
+  btnColor?: string;
+
+}
 interface ModalProps {
   display: boolean;
   toggleModal: () => void;
-  onClickAction: () => void;
+  actions: Array<ModalAction>;
+  onClickAction?: () => void;
   title: string;
   buttonText: string;
   actionDisabled?: boolean;
   children: ReactNode;
-  loadingAction?: boolean;
+  loadingAction?: string;
 }
 
 export const Modal = (props: ModalProps) => {
   const classes = useStyles();
+
+  console.log("loadingAction: ", props.loadingAction)
 
   return (
     <div
@@ -100,14 +113,36 @@ export const Modal = (props: ModalProps) => {
         </div>
         <div className={classes.modalBody}>{props.children}</div>
         <div className={classes.modalFooter}>
-          <div className='fr mr3'>
-            <Button
-              disabled={props.actionDisabled}
-              onClickAction={props.onClickAction}
-              buttonText={props.buttonText}
-              loadingAction={props.loadingAction}
-            />
-          </div>
+
+          {props.actions.map((a) => {
+            if (a.position === "left") {
+              return (
+                <div className='fl ml3'>
+                  <Button
+                    disabled={props.actionDisabled}
+                    onClickAction={a.action}
+                    buttonText={a.text}
+                    buttonColor={a.btnColor}
+                    icon={a.icon}
+                    loadingAction={props.loadingAction === a.text}
+                  />
+                </div>
+              )
+            } else {
+              return (
+                <div className='fr mr3'>
+                  <Button
+                    disabled={props.actionDisabled}
+                    onClickAction={a.action}
+                    icon={a.icon}
+                    buttonColor={a.btnColor}
+                    buttonText={a.text}
+                    loadingAction={props.loadingAction === a.text}
+                  />
+                </div>
+              )
+            }
+          })}
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { SCREENS } from '../routers/MainRouter';
 import ContentReducer from './reducers/ContentReducer';
 import NavigationReducer from './reducers/NavigationReducer';
 import UserReducer from './reducers/UserReducer';
@@ -24,7 +25,7 @@ export const initialState = {
   navigation: {
     showTopicNavbar: true,
     showSidebar: true,
-    topicScreen: 0,
+    topicScreen: SCREENS.ALL_NOTES,
   },
 };
 

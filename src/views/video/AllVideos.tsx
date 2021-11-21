@@ -37,6 +37,7 @@ export const AllVideos = (props: any) => {
   const [videoUrl, setVideoUrl] = useState('');
   const [loadingVideos, setLoadingVideos] = useState(true);
   const [creatingVideo, setCreatingVideo] = useState(false);
+  const [runningAction, setRunningAction] = useState("")
 
   // @ts-ignore
   const [state, dispatch] = useStateValue();
@@ -63,6 +64,7 @@ export const AllVideos = (props: any) => {
   };
 
   const createVideoResource = async () => {
+    setRunningAction("Create")
     setCreatingVideo(true);
     const embed = getEmbedFromUrl(videoUrl);
     if (embed) {
@@ -145,9 +147,16 @@ export const AllVideos = (props: any) => {
       <Modal
         title='New Video'
         display={displayVideoModal}
+        actions={[{
+          text: "Create",
+          textColor: "white",
+          btnColor: "blue",
+          action: createVideoResource,
+          position: "right"
+        }]}
         toggleModal={toggleModal}
         onClickAction={createVideoResource}
-        loadingAction={creatingVideo}
+        loadingAction={runningAction}
         buttonText='Create Video'
       >
         <input

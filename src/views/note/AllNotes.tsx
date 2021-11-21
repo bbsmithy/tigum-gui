@@ -12,6 +12,7 @@ export const AllNotes = (props: any) => {
   const [noteTitle, setNoteTitle] = useState('');
   const [loading, setLoading] = useState(true);
   const [creatingNote, setCreatingNote] = useState(false);
+  const [runningAction, setRunningAction] = useState("")
 
   // @ts-ignore
   const [state, dispatch] = useStateValue();
@@ -40,6 +41,7 @@ export const AllNotes = (props: any) => {
   }, [topics.data[selectedTopic].notes]);
 
   const createNewNote = async () => {
+    setRunningAction("Create")
     setCreatingNote(true);
     const res = await createNote(noteTitle, topics.data[selectedTopic].id);
     if (res.status === 200) {
@@ -47,7 +49,10 @@ export const AllNotes = (props: any) => {
       dispatch({ type: ADD_NOTE, payload: newNote });
       toggleModal();
       setNoteTitle('');
+      setRunningAction("")
       setCreatingNote(false);
+    } else {
+      setRunningAction("");
     }
   };
 
@@ -75,17 +80,25 @@ export const AllNotes = (props: any) => {
     }
   };
 
+  const actions = [{
+    text: "Create",
+    textColor: "white",
+    btnColor: "blue",
+    action: createNewNote,
+    position: "right"
+  }]
+
   return (
     <div className='ph2 pb4 mb4 mt4 pt3'>
       <NewButton onClick={toggleModal} />
       {renderNotes()}
       <Modal
         title='New Note'
+        actions={actions}
         display={newNoteModalIsOpen}
         toggleModal={toggleModal}
         buttonText='Create Note'
-        loadingAction={creatingNote}
-        onClickAction={createNewNote}
+        loadingAction={runningAction}
       >
         <input
           type='text'

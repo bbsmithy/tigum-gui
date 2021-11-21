@@ -676,3 +676,19 @@ export const requestBetaAccess = async (betaUser: { email: string, username: str
     throw err
   }
 }
+
+export const updatePassword = async (password: { new_password: string, old_password: string }) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/user/update-password`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(password),
+      credentials: 'include'
+    })
+    return res.json()
+  } catch (err) {
+    throw err
+  }
+}

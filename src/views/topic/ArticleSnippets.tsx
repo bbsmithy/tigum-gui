@@ -219,6 +219,13 @@ export const ArticleSnippets = (props: any) => {
         <Modal
           title='Edit snippet'
           buttonText='Edit Snippet'
+          actions={[{
+            action: onEditSnippet,
+            text: 'Edit Snippet',
+            textColor: "white",
+            btnColor: "blue",
+            position: "white"
+          }]}
           display={edit}
           onClickAction={onEditSnippet}
           toggleModal={toggleEdit}
@@ -241,6 +248,13 @@ export const ArticleSnippets = (props: any) => {
         <Modal
           title='Create snippet'
           buttonText='Create Snippet'
+          actions={[{
+            action: onEditSnippet,
+            text: 'Edit Snippet',
+            textColor: "white",
+            btnColor: "blue",
+            position: "white"
+          }]}
           display={createSnippetModalOpen}
           onClickAction={onCreateSnippet}
           toggleModal={toggleModal}

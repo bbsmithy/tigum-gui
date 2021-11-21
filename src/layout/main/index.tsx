@@ -65,8 +65,6 @@ export const MainContent = (props) => {
     dispatch,
   ] = useStateValue();
 
-  console.log("keys: ", keys)
-
   const topic = data[selectedTopic];
   const isMobile = window.innerWidth < 960
 
@@ -123,6 +121,7 @@ export const MainContent = (props) => {
   };
 
   useEffect(() => {
+    console.log("path: ", path)
     handleLocationChange(path);
   }, [path]);
 
@@ -145,6 +144,8 @@ export const MainContent = (props) => {
   const onChangeTitle = (e: React.FormEvent<HTMLInputElement>) => {
     setTopicTitle(e.currentTarget.value);
   };
+
+  const actions = [{ text: "Create", action: () => {onClickCreateTopic()}, textColor: "white", "btnColor": "blue", position: 'right' }]
 
   return (
     <div id='main-content'>
@@ -184,7 +185,7 @@ export const MainContent = (props) => {
       <Modal
         display={modalOpen}
         toggleModal={toggleModal}
-        onClickAction={onClickCreateTopic}
+        actions={actions}
         actionDisabled={!topicTitle}
         buttonText='Create'
         title='Create Topic'

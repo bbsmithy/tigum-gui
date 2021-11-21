@@ -30,6 +30,7 @@ export const Links = (props: any) => {
   const [linkSrc, setLinkSrc] = useState('');
   const [loading, setLoading] = useState(true);
   const [creatingLink, setCreatingLink] = useState(false);
+  const [runningAction, setRunningAction] = useState("")
   const classes = useStyles();
 
   // @ts-ignore
@@ -76,6 +77,7 @@ export const Links = (props: any) => {
 
   const createNewLink = async () => {
     try {
+      setRunningAction("")
       setCreatingLink(true);
       const newLink: NewLink = {
         topic_id: selectedTopic,
@@ -84,7 +86,7 @@ export const Links = (props: any) => {
       };
       const res = await createLink(newLink);
       dispatch({ type: 'ADD_LINK', payload: res });
-      setCreatingLink(false);
+      setRunningAction("")
       toggleModal();
       resetAddLink();
     } catch (e) {
@@ -128,8 +130,15 @@ export const Links = (props: any) => {
         title='New Link'
         display={newLinkModalIsOpen}
         toggleModal={toggleModal}
+        actions={[{
+          action: createNewLink,
+          text: 'Create Link',
+          textColor: "white",
+          btnColor: "blue",
+          position: "white"
+        }]}
         buttonText='Create Link'
-        loadingAction={creatingLink}
+        loadingAction={runningAction}
         onClickAction={createNewLink}
       >
         <input

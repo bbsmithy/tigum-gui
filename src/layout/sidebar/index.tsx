@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NoTopicsMessage } from './NoTopicsMessage';
 import { SCREENS } from '../../routers/MainRouter';
 import { TopicsList } from './TopicsList';
@@ -6,6 +6,8 @@ import { useStateValue } from '../../state/StateProvider';
 import { createUseStyles } from 'react-jss';
 import { logoutUser } from '../../clib/api';
 import { goto } from '../../util';
+import { Modal } from '../../components';
+import SettingsModal from './SettingsModal';
 
 const useStyles = createUseStyles({
   sidebarContainer: {
@@ -34,7 +36,7 @@ const useStyles = createUseStyles({
     paddingBottom: 10
   },
   logoutText: {
-    marginRight: 8,
+    marginLeft: 8,
   },
   sidebarButton: {
     borderWidth: 0,
@@ -125,6 +127,9 @@ export const SideBar: React.FC<SideBarProps> = ({
   screen,
   toggleModal,
 }: SideBarProps) => {
+
+  const [accountModal, setAccountModal] = useState(false);
+
   const classes = useStyles();
   // @ts-ignore
   const [state, dispatch] = useStateValue();
@@ -133,32 +138,35 @@ export const SideBar: React.FC<SideBarProps> = ({
     navigation: { showSidebar },
   } = state;
 
-
   const noTopics = topics.keys.length === 0 && !topics.loading
 
   const onClickNewTopic = () => {
     toggleModal();
   };
 
-  const onLogout = async () => {
-    dispatch({ type: 'LOGOUT' });
-    await logoutUser();
-    goto("login")
-  };
+  const toggleAccountModal = () => {
+    setAccountModal(!accountModal)
+  }
 
   if (showSidebar) {
     return (
-      <div className={`${classes.sidebarContainer}`}>
-        <SideBarHeader onClickNewTopic={onClickNewTopic} />
-        {!noTopics && <TopicsList />}
-        {noTopics && <NoTopicsMessage />}
-        <div id='sidebar-footer' className='pointer' onClick={onLogout}>
-          <span className='sidebar-footer-option'>
-            <span className={classes.logoutText}>Logout</span>
-            <i className='fas fa-sign-out-alt'></i>
-          </span>
+      <>
+        <div className={`${classes.sidebarContainer}`}>
+          <SideBarHeader onClickNewTopic={onClickNewTopic} />
+          {!noTopics && <TopicsList />}
+          {noTopics && <NoTopicsMessage />}
+          <div id='sidebar-footer' className='pointer' onClick={toggleAccountModal}>
+            <span className='sidebar-footer-option'>
+              <i className='fas fa-cog'></i>
+              <span className={classes.logoutText}>Settings</span>
+            </span>
+          </div>
+          <SettingsModal 
+            display={accountModal} 
+            toggle={toggleAccountModal}
+          />
         </div>
-      </div>
+      </>
     );
   }
   return null;

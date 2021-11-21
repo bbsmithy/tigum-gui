@@ -19,16 +19,18 @@ const useStyles = createUseStyles({
 });
 
 export const Button = (props) => {
-  const { loadingAction, buttonText, onClickAction, disabled } = props;
+  const { loadingAction, buttonText, onClickAction, disabled, icon, buttonColor = "#357edd" } = props;
   const classes = useStyles();
-  console.log(disabled)
 
   return (
-    <button className={classes.button} disabled={disabled} style={{backgroundColor: disabled ? "gray" : "#357edd"}} onClick={onClickAction}>
+    <button className={classes.button} disabled={disabled} style={{backgroundColor: disabled ? "gray" : buttonColor }} onClick={onClickAction}>
       {loadingAction ? (
         <i className='fas fa-circle-notch fa-spin'></i>
       ) : (
-        buttonText
+        <>
+        {buttonText}
+        {icon && <i className={icon} style={{ marginLeft: 5 }}></i>}
+        </>
       )}
     </button>
   );

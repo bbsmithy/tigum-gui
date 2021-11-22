@@ -687,7 +687,7 @@ export const updatePassword = async (password: { new_password: string, old_passw
       body: JSON.stringify(password),
       credentials: 'include'
     })
-    return res.json()
+    return await res.json()
   } catch (err) {
     throw err
   }

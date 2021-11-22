@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { loginUser, logoutUser, updatePassword } from "../../clib/api";
 import { Modal, PasswordInput } from "../../components";
+import { notify } from "../../state/Actions";
 import { useStateValue } from "../../state/StateProvider";
 import { goto } from "../../util";
 
@@ -19,6 +20,7 @@ const SettingsModal = ({
     const [oldPassword, setOldPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
     const [runningAction, setRunningAction] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
 
     const onChangeOldPassword = (evt) => {
         setOldPassword(evt.target.value)
@@ -39,18 +41,28 @@ const SettingsModal = ({
             console.log(err)
         }
     };
+    
+    const updatePasswordSettings = async () => {
+        try {
+            const res = await updatePassword({ old_password: oldPassword,  new_password: newPassword })
+            if (res.error) {
+                throw res
+            }
+        } catch (err) {
+            throw err
+        }
+    }
 
     const onSaveSettings = async () => {
         try {
             setRunningAction("Save")
-            console.log(state.user)
-            const res = await updatePassword({ old_password: oldPassword,  new_password: newPassword })
+            await updatePasswordSettings()
             setRunningAction("")
             toggle()
+            notify(dispatch, "Updated Settings", "success", "right")
         } catch (err) {
+            setErrorMessage(err.error)
             setRunningAction("")
-            toggle()
-            console.log("err: ", err)
         }
     }
 
@@ -80,7 +92,25 @@ const SettingsModal = ({
         title='Account Settings'
       >
         <div style={{marginBottom: 20}}>
-          <h5 className="white">Update Password</h5>
+        <div className="mb3 mt3">
+            <h5 className="white" style={{display: "inline"}}>Update Password</h5>
+            {errorMessage && (
+                <span style={{
+                    marginLeft: 10,
+                    backgroundColor: "rgb(220, 53, 69)", 
+                    paddingTop: 3,
+                    paddingBottom: 3,
+                    paddingLeft: 5, 
+                    paddingRight: 5,
+                    display: "inline", 
+                    borderRadius: 8, 
+                    fontSize: 11
+                }}>
+                    <i className="fas fa-exclamation-circle mr1"></i>
+                    {errorMessage}
+                </span>
+            )}
+        </div>
           <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
             <div style={{ flex: 1, marginRight: 5 }}>
                 <PasswordInput 
@@ -97,6 +127,7 @@ const SettingsModal = ({
                 />
             </div>
           </div>
+
         </div>
       </Modal>
     )

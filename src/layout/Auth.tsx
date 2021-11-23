@@ -20,7 +20,7 @@ export const Auth = () => {
   }, [])
 
   useEffect(() => {
-    if (!state.user.loggedIn) {
+    if (!state.user.loggedIn && loginCheckedRef.current) {
       checkForAuthScreenUpdate()
     }
   }, [path])

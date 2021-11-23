@@ -187,7 +187,7 @@ const DesktopLayout = ({
 
   useEffect(() => {
     if (video && video.id !== vidIDRef.current) {
-      const videoId = video.iframe.slice(30)
+      const videoId = video.iframe.split("?")[0].slice(30)
       const iframeContainer = document.getElementById('desktop-vid').parentElement
       document.getElementById('desktop-vid').remove()
       const newDiv = document.createElement('div')
@@ -565,6 +565,15 @@ export const VideoPlayer = () => {
     }
   }
 
+  const getCurrentVideoTime = () => {
+    if (playerRef.current) {
+      // @ts-ignore
+      return playerRef.current.getCurrentTime()
+    } else {
+      return 0
+    }
+  }
+
   return (
     <div className='center w-100 h-100 video-page-container'>
       {isMobile ? (
@@ -609,7 +618,7 @@ export const VideoPlayer = () => {
           <ReferenceDialog
             onCreate={() => {}}
             onClickAway={closeVidRefDialog}
-            player={playerRef.current}
+            getCurrentVideoTime={getCurrentVideoTime}
             selection={vidRefControl}
             cm={cmRef.current}
             topic_id={selectedTopic}

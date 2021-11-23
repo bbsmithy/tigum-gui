@@ -55,7 +55,7 @@ type Props = {
     selection: CursorState,
     cm: any,
     topic_id: number,
-    player: any,
+    getCurrentVideoTime: () => number,
     onClickAway: Function,
     onCreate: Function
 }
@@ -64,7 +64,7 @@ type Props = {
 const ReferenceDialog = ({ 
     selection: { absPos, cursorPos },
     cm, topic_id,
-    player,
+    getCurrentVideoTime,
     onClickAway,
 }: Props) => {
 
@@ -73,7 +73,7 @@ const ReferenceDialog = ({
 
 
     const createReference = (ref) => {
-        const currentVidTime = player.getCurrentTime()
+        const currentVidTime = getCurrentVideoTime()
         const refLink = `#### [${refTitle}](https://tigum.io/${window.location.pathname}/?t=${currentVidTime})`
         cm.replaceRange(refLink, cursorPos)
         onClickAway()

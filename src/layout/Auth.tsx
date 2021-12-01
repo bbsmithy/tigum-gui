@@ -23,7 +23,7 @@ export const Auth = () => {
     if (!state.user.loggedIn && loginCheckedRef.current) {
       checkForAuthScreenUpdate()
     }
-  }, [path])
+  }, [path, showSplash])
 
   const checkForAuthScreenUpdate = () => {
     const pathVars = window.location.pathname.split(/\//)

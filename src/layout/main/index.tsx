@@ -24,6 +24,7 @@ import Notification from '../../components/Notification';
 const useStyles = createUseStyles({
   topicContainer: {
     height: '100%',
+    position: "relative"
   },
   notFoundContainer: {
     width: '100%',
@@ -155,6 +156,7 @@ export const MainContent = (props) => {
           width: showSidebar && !useFullWidth ? '80%' : '100%',
           position: 'absolute',
           left: showSidebar && !useFullWidth ? '20%' : '0%',
+          height: "100%"
         }}
       >
         {topic && (

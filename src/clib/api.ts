@@ -692,3 +692,19 @@ export const updatePassword = async (password: { new_password: string, old_passw
     throw err
   }
 }
+
+export const giveFeedback = async (feedback: String) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/user/feedback`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ feedback }),
+      credentials: 'include'
+    })
+    return await res.json()
+  } catch (err) {
+    throw err
+  }
+}

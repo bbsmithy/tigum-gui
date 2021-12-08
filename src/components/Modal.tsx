@@ -85,7 +85,7 @@ interface ModalProps {
   actions: Array<ModalAction>;
   onClickAction?: () => void;
   title: string;
-  buttonText: string;
+  buttonText?: string;
   actionDisabled?: boolean;
   children: ReactNode;
   loadingAction?: string;

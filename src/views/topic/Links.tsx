@@ -6,6 +6,7 @@ import { getLinks, createLink } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
 import { NewLink } from '../../clib/models';
 import { setPageTitle } from '../../util';
+import FeedbackButton from '../../components/FeedbackButton';
 
 const useStyles = createUseStyles({
   headerLoadingLink: {
@@ -124,6 +125,7 @@ export const Links = (props: any) => {
 
   return (
     <div className='ph2 mt4 pt3 w-100'>
+      <FeedbackButton />
       <NewButton onClick={toggleModal} text='New Link' />
       {renderLinks()}
       <Modal

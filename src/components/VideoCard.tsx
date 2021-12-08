@@ -18,16 +18,28 @@ type VideoCardProps = {
 const useStyles = createUseStyles({
   videoCardTitle: {
     '@media (max-width: 1196px)': {
-      fontSize: 12,
+      justifyContent: "center",
+      alignItem: "center"
+    },
+    '@media (min-width: 1196px)': {
+      marginTop: 12,
+      marginBottom: 0
     },
     fontSize: 12,
-    marginTop: 12,
-    marginBottom: 0
   },
   videoCardImage: {
     backgroundColor: "black",
     height: "100%"
   },
+  videoCardTextContent: { 
+    flex: 2, 
+    margin: "0px 10px 0px 10px", 
+    '@media (max-width: 1196px)': {
+      height: "100%",
+      justifyContent: "center",
+      alignItems: "center"
+    }
+},
   subTitle: {
     color: 'gray',
     fontSize: 11,
@@ -38,6 +50,9 @@ const useStyles = createUseStyles({
     /* Required for text-overflow to do anything */
     whiteSpace: 'nowrap',
     overflow: 'hidden',
+    '@media (max-width: 1196px)': {
+      display: "none",
+    }
   },
 });
 
@@ -64,7 +79,7 @@ export const VideoCard = (props: VideoCardProps) => {
         <div style={{ flex: 1, height: 90}}>
           <img src={props.thumbnail_img} className={`${classes.videoCardImage}`} />
         </div>
-        <div style={{ flex: 2, margin: "0px 10px 0px 10px" }}>
+        <div className={classes.videoCardTextContent}>
           <h6 className={`white ${classes.videoCardTitle}`}>{title}</h6>
           <p className={`${classes.subTitle} white`}>{renderDate()}</p>
         </div>

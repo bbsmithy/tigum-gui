@@ -8,6 +8,7 @@ import { NewArticleSnippet } from '../../clib/models';
 import { useStateValue } from '../../state/StateProvider';
 import { setPageTitle } from '../../util';
 import { UPDATE_SNIPPET } from '../../state/ActionTypes';
+import FeedbackButton from '../../components/FeedbackButton';
 
 const useStyles = createUseStyles({
   paragraphLoading: {
@@ -274,6 +275,7 @@ export const ArticleSnippets = (props: any) => {
         </Modal>
       )}
       <NewButton onClick={toggleModal} text='New Snippet' />
+      <FeedbackButton />
       <div className={classes.snippetsContainer}>
         <Snippets snippets={article_snippets} loading={loading} onEdit={onEditOpen} />
       </div>

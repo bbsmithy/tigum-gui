@@ -9,6 +9,7 @@ import { createUseStyles } from 'react-jss';
 import { useStateValue } from '../../state/StateProvider';
 import { DELETE_VIDEO } from '../../state/ActionTypes';
 import { LoadingVideo } from '../../components/LoadingVideo';
+import FeedbackButton from '../../components/FeedbackButton';
 
 const useStyles = createUseStyles({
   videoLoadingCover: {
@@ -138,7 +139,8 @@ export const AllVideos = (props: any) => {
 
   return (
     <>
-      <div className='ph2 mt4 pt3'>
+      <div className='ph2 mt4 pt3' style={{height: "100%"}}>
+        <FeedbackButton />
         <NewButton onClick={toggleModal} text='New Video' />
         <div className='center w-100 ph1'>
           {loadingVideos ? renderLoadingVidoes() : renderVideoResources()}

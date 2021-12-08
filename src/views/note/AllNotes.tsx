@@ -6,6 +6,7 @@ import { createNote, getNotes } from '../../clib/api';
 import { useStateValue } from '../../state/StateProvider';
 import { ADD_NOTE } from '../../state/ActionTypes';
 import { setPageTitle } from '../../util';
+import FeedbackButton from '../../components/FeedbackButton';
 
 export const AllNotes = (props: any) => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
@@ -91,6 +92,7 @@ export const AllNotes = (props: any) => {
   return (
     <div className='ph2 pb4 mb4 mt4 pt3'>
       <NewButton onClick={toggleModal} />
+      <FeedbackButton />
       {renderNotes()}
       <Modal
         title='New Note'

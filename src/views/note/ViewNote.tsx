@@ -9,6 +9,11 @@ import { notify } from '../../state/Actions';
 import { CursorState } from "../../types";
 import { createUseStyles } from 'react-jss';
 
+import '@toast-ui/editor/dist/toastui-editor.css';
+import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
+
+import { Editor } from '@toast-ui/react-editor';
+
 const theme = {
   toolbar: {
     background: '#333',

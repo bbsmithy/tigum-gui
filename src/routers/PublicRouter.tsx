@@ -25,6 +25,8 @@ export const PublicRouter = ({ screen, navigate }: NoteRouterType) => {
       return <Verify navigate={navigate} />
     case PUBLIC_SCREENS.REQUEST_ACCESS:
       return <RequestAccess navigate={navigate} />
+    case PUBLIC_SCREENS.PROFILE:
+      return <Profile />
     default:
       return null
   }

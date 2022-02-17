@@ -5,6 +5,15 @@ body {
   background-color: #1f1f1f;
 }
 
+body,
+html,
+#root,
+.App {
+  height: 100%;
+}
+
+
+
 .display-inline {
   display: inline-block;
 }

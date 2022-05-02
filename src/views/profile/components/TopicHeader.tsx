@@ -1,21 +1,23 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
-import { NavLink, useResolvedPath } from "react-router-dom";
+import { NavLink, useLocation, useResolvedPath } from "react-router-dom";
 
 const useStyles = createUseStyles({
   searchInput: {
     "@media (max-width: 420px)": {
-      display: "none",
+      height: 10,
+      width: "60%",
+      marginRight: 20,
     },
+    maxWidth: 250,
     color: "white",
     width: "100%",
-    border: "1px solid white",
     padding: 7,
     fontSize: 14,
-    boxShadow: "2px 2px 1px 0px rgb(0 0 0 / 75%)",
-    borderRadius: 5,
-    marginRight: 20,
-    backgroundColor: "#333",
+    borderRadius: 7,
+    border: "none",
+    backgroundColor: "#414a4c",
+    float: "right",
   },
   selectedTopicNavBarItem: {
     marginLeft: 4,
@@ -31,51 +33,137 @@ const useStyles = createUseStyles({
     borderBottom: "3px solid rgb(36, 107, 248)",
   },
   selectedTopicHeader: {
+    margin: 10,
+    "@media (max-width: 420px)": {
+      // position: "fixed",
+      zIndex: 10,
+    },
+  },
+  selectTopicTitle: {
+    fontSize: 20,
+    margin: 4,
+    padding: 0,
+    display: "inline-block",
+  },
+  tabBtn: {
+    color: "white",
+    textDecoration: "none",
+    padding: 7,
+    marginRight: 5,
+    borderRadius: 7,
+    whiteSpace: "nowrap",
+    fontSize: 15,
+  },
+  tabActiveBtn: {
+    color: "white",
+    textDecoration: "none",
+    padding: 7,
+    backgroundColor: "rgb(36, 107, 248)",
+    marginRight: 5,
+    borderRadius: 7,
+    fontSize: 15,
+    whiteSpace: "nowrap",
+    "-webkit-tap-highlight-color": "rgba(255, 255, 255, 0)",
+  },
+  tabsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    overflowX: "scroll",
+    "@media (max-width: 420px)": {
+      width: window.innerWidth,
+    },
+  },
+  titleAndSearchContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    "@media (max-width: 420px)": {
+      width: window.innerWidth,
+    },
+    width: "100%",
+    marginBottom: 15,
+    alignItems: "center",
   },
-  selectTopicTitle: {
-    fontSize: 30,
-    margin: 4,
-    marginBottom: 20,
-    padding: 0,
+  menuIcon: {
+    fontSize: 18,
+    marginRight: 8,
+    "-webkit-tap-highlight-color": "rgba(255, 255, 255, 0)",
   },
 });
 
-const TopicHeader = ({ selectedTopic }) => {
+const SearchBar = ({ classes }) => {
+  return (
+    <input placeholder="Search All" className={classes.searchInput}></input>
+  );
+};
+
+const TopicHeader = ({ selectedTopic, onClickMenu }) => {
   const classes = useStyles();
+
+  const location = useLocation();
+  const { pathname } = location;
+  const route = pathname ? pathname.split("/")[4] : "";
+
+  console.log("selectedTopic: ", selectedTopic);
 
   return (
     <div className={classes.selectedTopicHeader}>
-      <div>
-        <h2 className={classes.selectTopicTitle}>{selectedTopic.title}</h2>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <NavLink to="notes">
-            <i className="fas fa-pen-square" />
-            <span style={{ marginLeft: 6 }}>Notes</span>
-          </NavLink>
-          <NavLink to="snippets">
-            <i className="fas fa-newspaper" />
-            <span style={{ marginLeft: 6 }}>Snippets</span>
-          </NavLink>
-          <NavLink to="videos">
-            <i className="fab fa-youtube" />
-            <span style={{ marginLeft: 6 }}>Videos</span>
-          </NavLink>
-          <NavLink to="links">
-            <i className="fas fa-link" />
-            <span style={{ marginLeft: 6 }}>Links</span>
-          </NavLink>
+      <div className={classes.titleAndSearchContainer}>
+        <div
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            <i
+              className={`fas fa-bars white pointer ${classes.menuIcon}`}
+              onClick={onClickMenu}
+            />
+          </div>
+          <div>
+            <h1 className={classes.selectTopicTitle}>{selectedTopic.title}</h1>
+          </div>
+        </div>
+        <div style={{ flex: 1, justifyContent: "center" }}>
+          <SearchBar classes={classes} />
         </div>
       </div>
-      <div style={{ padding: 16 }}>
-        <div style={{ width: 250 }}>
-          <input
-            placeholder="Search All 🔎"
-            className={classes.searchInput}
-          ></input>
-        </div>
+
+      <div className={classes.tabsContainer}>
+        {selectedTopic?.notes.length && (
+          <NavLink
+            to="notes"
+            className={
+              route === "notes" ? classes.tabActiveBtn : classes.tabBtn
+            }
+          >
+            <span>📝 Notes</span>
+          </NavLink>
+        )}
+
+        <NavLink
+          to="videos"
+          className={route === "videos" ? classes.tabActiveBtn : classes.tabBtn}
+        >
+          <span>📺 Videos</span>
+        </NavLink>
+        <NavLink
+          to="snippets"
+          className={
+            route === "snippets" ? classes.tabActiveBtn : classes.tabBtn
+          }
+        >
+          <span>📋 Snippets</span>
+        </NavLink>
+        <NavLink
+          to="links"
+          className={route === "links" ? classes.tabActiveBtn : classes.tabBtn}
+        >
+          <span>🔗 Links</span>
+        </NavLink>
       </div>
     </div>
   );

@@ -55,7 +55,7 @@ export const NotesList = ({ selectedTopic }: { selectedTopic: any }) => {
     });
   } else {
     return (
-      <div className="no-resources-message">
+      <div>
         <i className="fas fa-pen-square" /> <span>No notes yet</span>
       </div>
     );

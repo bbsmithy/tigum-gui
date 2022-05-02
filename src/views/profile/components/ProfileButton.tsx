@@ -3,12 +3,10 @@ import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles({
   menuIcon: {
-    "@media (max-width: 1000px)": {
-      marginTop: 20,
-    },
     "@media (min-width: 1000px)": {
       display: "none",
     },
+    fontSize: 20,
   },
 });
 
@@ -18,23 +16,33 @@ const ProfileButton = ({ openMenu, userName }) => {
   return (
     <div
       style={{
-        textAlign: "center",
         display: "flex",
         flexDirection: "row",
+        justifyContent: "space-between",
         color: "white",
-        padding: 10,
-        borderBottom: "1px solid gray",
+        paddingLeft: 20,
+        paddingRight: 5,
+        paddingTop: 5,
+        paddingBottom: 5,
+        // borderBottom: "1px solid gray",
+        alignItems: "center",
       }}
     >
-      <i
-        className={`fas fa-bars white pointer pr3 ${classes.menuIcon}`}
-        onClick={openMenu}
-      ></i>
-      <img
-        src="https://avatars.githubusercontent.com/u/30689746?v=4"
-        style={{ height: 40, marginTop: 7, borderRadius: 20 }}
-      ></img>
-      <h3 style={{ marginLeft: 10 }}>{userName}</h3>
+      <div
+        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+      >
+        <img
+          src="https://avatars.githubusercontent.com/u/30689746?v=4"
+          style={{ height: 30, borderRadius: 15 }}
+        ></img>
+        <h3 style={{ marginLeft: 10 }}>{userName}</h3>
+      </div>
+      <div style={{ textAlign: "center" }}>
+        <i
+          className={`fas fa-times white pointer pr3 ${classes.menuIcon}`}
+          onClick={openMenu}
+        ></i>
+      </div>
     </div>
   );
 };

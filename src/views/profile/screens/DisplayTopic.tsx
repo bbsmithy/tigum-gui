@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import TopicHeader from "../components/TopicHeader";
 
-const DisplayTopic = ({ classes, selectedTopic }) => {
+const DisplayTopic = ({ classes, selectedTopic, onClickMenu, topics }) => {
   return (
     <>
       <>
@@ -16,40 +16,19 @@ const DisplayTopic = ({ classes, selectedTopic }) => {
             }}
           >
             <div style={{ width: "100%" }}>
-              {selectedTopic && <TopicHeader selectedTopic={selectedTopic} />}
+              {selectedTopic && (
+                <TopicHeader
+                  selectedTopic={selectedTopic}
+                  onClickMenu={onClickMenu}
+                />
+              )}
               <div style={{ marginTop: 15 }}>
                 <Outlet />
               </div>
             </div>
-            {/* {topics.length === 0 && (
-                <div
-                  style={{
-                    textAlign: "center",
-                    color: "gray",
-                    margin: "auto",
-                    marginTop: "15%",
-                  }}
-                >
-                  <i
-                    className="far fa-folder-open"
-                    style={{ fontSize: 35, marginBottom: 5 }}
-                  ></i>
-                  <h3>{user} hasn't published any topics yet</h3>
-                </div>
-              )} */}
           </div>
         </div>
       </>
-      {/* {!loading && userNotFound && <UserNotFound userName={user} />} */}
-      {/* {loading && (
-        <div className={classes.loadingProfile}>
-          <i
-            className={`fas fa-circle-notch fa-spin white`}
-            style={{ fontSize: 35, marginTop: 20 }}
-          ></i>
-          <h3 style={{ textAlign: "center" }}>Searching the cosmos</h3>
-        </div>
-      )} */}
     </>
   );
 };

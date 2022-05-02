@@ -24,27 +24,31 @@ const TopicList = ({
     onSelectTopic(topic);
   };
 
-  useEffect(() => {
-    if (topics) {
-      const intialTopic = findIntialTopic(currentTopicId, topics);
-      navigateToTopic(intialTopic);
-    }
-  }, [topics]);
-
   return (
-    <div style={{ padding: 8 }}>
-      <h4 style={{ color: "white", padding: 4 }}>Topics</h4>
+    <div style={{ paddingLeft: 15, paddingRight: 15 }}>
+      <i className="fa-solid fa-book-open-cover"></i>
+      <div
+        style={{
+          color: "#d0d0d0",
+          padding: 4,
+          marginTop: 10,
+          marginBottom: 1,
+          fontSize: 15,
+        }}
+      >
+        📚 Topics
+      </div>
       {topics.map((topic) => {
         const isSelected = topic.id == currentTopicId;
         return (
           <div
             onClick={() => {
-              navigateToTopic(topic);
+              onSelectTopic(topic);
             }}
             style={{
               cursor: "pointer",
-              padding: 10,
-              margin: "10px 0px",
+              padding: 7,
+              margin: "7px 0px",
               color: isSelected ? "white" : "#F8F0E3",
               borderRadius: 5,
               backgroundColor: isSelected ? "rgb(36, 107, 248)" : "#333",

@@ -56,7 +56,7 @@ export const NotesList = ({ selectedTopic }: { selectedTopic: any }) => {
   } else {
     return (
       <div>
-        <i className="fas fa-pen-square" /> <span>No notes yet</span>
+        <span>No notes yet</span>
       </div>
     );
   }

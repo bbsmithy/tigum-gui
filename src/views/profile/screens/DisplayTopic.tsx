@@ -1,8 +1,14 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import TopicHeader from "../components/TopicHeader";
+import { usePublicResourcesForTopic } from "../hooks";
 
 const DisplayTopic = ({ classes, selectedTopic, onClickMenu, topics }) => {
+  const [resources, error, isLoading] =
+    usePublicResourcesForTopic(selectedTopic);
+
+  console.log("resources: ", resources);
+
   return (
     <>
       <>

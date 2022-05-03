@@ -6,6 +6,7 @@ import {
   getPublicVideos,
   getArticleSnippets,
   getPublicTopics,
+  getPublicResources,
 } from "../../../clib/api";
 
 export const useNotes = (topicId: number) => {
@@ -125,4 +126,33 @@ export const useProfile = (userName: string) => {
   }, []);
 
   return [topics, error, isLoading];
+};
+
+export const usePublicResourcesForTopic = (topic: any) => {
+  const [resources, setResources] = useState();
+  const [error, setError] = useState<any>();
+  const [isLoading, setLoading] = useState(false);
+
+  const findPublicResourcesForTopic = async (topic_id: number) => {
+    try {
+      const resources = await getPublicResources(topic_id);
+      if (resources.error) {
+        throw resources.error;
+      } else if (resources) {
+        setResources(resources);
+      }
+      setLoading(false);
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (topic) {
+      findPublicResourcesForTopic(topic.id);
+    }
+  }, [topic]);
+
+  return [resources, error, isLoading];
 };

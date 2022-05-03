@@ -48,7 +48,7 @@ const useStyles = createUseStyles({
   tabBtn: {
     color: "white",
     textDecoration: "none",
-    padding: 7,
+    padding: "5px 7px 5px 7px",
     marginRight: 5,
     borderRadius: 7,
     whiteSpace: "nowrap",
@@ -57,7 +57,9 @@ const useStyles = createUseStyles({
   tabActiveBtn: {
     color: "white",
     textDecoration: "none",
-    padding: 7,
+    padding: "5px 7px 5px 7px",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "rgb(36, 107, 248)",
     marginRight: 5,
     borderRadius: 7,
@@ -140,7 +142,7 @@ const TopicHeader = ({ selectedTopic, onClickMenu }) => {
               route === "notes" ? classes.tabActiveBtn : classes.tabBtn
             }
           >
-            <span>📝 Notes</span>
+            📝 Notes
           </NavLink>
         )}
 
@@ -148,7 +150,7 @@ const TopicHeader = ({ selectedTopic, onClickMenu }) => {
           to="videos"
           className={route === "videos" ? classes.tabActiveBtn : classes.tabBtn}
         >
-          <span>📺 Videos</span>
+          📺 Videos
         </NavLink>
         <NavLink
           to="snippets"
@@ -156,13 +158,13 @@ const TopicHeader = ({ selectedTopic, onClickMenu }) => {
             route === "snippets" ? classes.tabActiveBtn : classes.tabBtn
           }
         >
-          <span>📋 Snippets</span>
+          📋 Snippets
         </NavLink>
         <NavLink
           to="links"
           className={route === "links" ? classes.tabActiveBtn : classes.tabBtn}
         >
-          <span>🔗 Links</span>
+          🔗 Links
         </NavLink>
       </div>
     </div>

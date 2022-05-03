@@ -3,6 +3,7 @@ import { createUseStyles } from "react-jss";
 import {
   getPublicLinks,
   getPublicNotes,
+  getPublicResources,
   getPublicSnippets,
   getPublicTopics,
   getPublicVideos,
@@ -140,6 +141,8 @@ const ProfileRouter = ({}) => {
   const [menuOpen, setMenu] = useState(window.innerWidth > 1000);
   const [selectedTopic, setSelectedTopic] = useState<any>();
 
+  const topicResourcesCache = useRef<Map<number, any>>(new Map());
+
   const navigate = useNavigate();
 
   const currentTopicId = window.location.pathname.split("/")[3];
@@ -155,9 +158,22 @@ const ProfileRouter = ({}) => {
     onSelectTopic(topic);
   };
 
-  const onSelectTopic = (topic) => {
+  const closeMenu = () => {
+    setMenu(false);
+  };
+
+  const onSelectTopic = async (topic) => {
     if (window.innerWidth < 1000) {
       setMenu(false);
+    }
+    const cachedResourcesForTopic = topicResourcesCache.current.get(topic.id);
+    if (cachedResourcesForTopic) {
+      setSelectedTopic(cachedResourcesForTopic);
+    } else {
+      const resources = await getPublicResources(topic.id);
+      const topicData = { ...topic, resources };
+      topicResourcesCache.current.set(topic.id, topicData);
+      setSelectedTopic(topicData);
     }
     setSelectedTopic(topic);
   };
@@ -177,12 +193,7 @@ const ProfileRouter = ({}) => {
         {menuOpen && (
           <>
             <div className={classes.topicSidebar}>
-              <ProfileButton
-                openMenu={() => {
-                  setMenu(false);
-                }}
-                userName={getUserName()}
-              />
+              <ProfileButton openMenu={closeMenu} userName={getUserName()} />
               {topics && topics.length > 0 && (
                 <TopicList
                   topics={topics}
@@ -191,7 +202,7 @@ const ProfileRouter = ({}) => {
                 />
               )}
             </div>
-            <div className={classes.backgroundBlur}></div>
+            <div className={classes.backgroundBlur} onClick={closeMenu}></div>
           </>
         )}
 

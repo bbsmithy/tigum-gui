@@ -1,13 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
-import {
-  getPublicLinks,
-  getPublicNotes,
-  getPublicResources,
-  getPublicSnippets,
-  getPublicTopics,
-  getPublicVideos,
-} from "../../clib/api";
+import { getPublicResources } from "../../clib/api";
 import { getDate } from "../../util";
 import UserNotFound from "./components/UserNotFound";
 import LoadingSnippet from "../../components/LoadingSnippet";
@@ -29,6 +22,7 @@ import {
 import { useProfile } from "./hooks";
 import { topic } from "firebase-functions/v1/pubsub";
 import Sidebar from "./components/Sidebar";
+import DisplayVideo from "./screens/DisplayVideo";
 
 const useStyles = createUseStyles({
   mainContainer: {
@@ -175,7 +169,6 @@ const ProfileRouter = ({}) => {
       topicResourcesCache.current.set(topic.id, topicData);
       setSelectedTopic(topicData);
     }
-    setSelectedTopic(topic);
   };
 
   useEffect(() => {
@@ -239,6 +232,10 @@ const ProfileRouter = ({}) => {
                   element={<LinkList selectedTopic={selectedTopic} />}
                 />
               </Route>
+              <Route
+                path=":topic_id/videos/:video_id/"
+                element={<DisplayVideo />}
+              />
               <Route path="bio" element={<h1>View profile</h1>} />
             </Route>
           </Routes>

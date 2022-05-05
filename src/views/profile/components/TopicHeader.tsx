@@ -106,8 +106,6 @@ const TopicHeader = ({ selectedTopic, onClickMenu }) => {
   const { pathname } = location;
   const route = pathname ? pathname.split("/")[4] : "";
 
-  console.log("selectedTopic: ", selectedTopic);
-
   return (
     <div className={classes.selectedTopicHeader}>
       <div className={classes.titleAndSearchContainer}>
@@ -135,7 +133,7 @@ const TopicHeader = ({ selectedTopic, onClickMenu }) => {
       </div>
 
       <div className={classes.tabsContainer}>
-        {selectedTopic?.notes.length && (
+        {selectedTopic?.resources.notes.length > 0 && (
           <NavLink
             to="notes"
             className={
@@ -145,27 +143,36 @@ const TopicHeader = ({ selectedTopic, onClickMenu }) => {
             📝 Notes
           </NavLink>
         )}
-
-        <NavLink
-          to="videos"
-          className={route === "videos" ? classes.tabActiveBtn : classes.tabBtn}
-        >
-          📺 Videos
-        </NavLink>
-        <NavLink
-          to="snippets"
-          className={
-            route === "snippets" ? classes.tabActiveBtn : classes.tabBtn
-          }
-        >
-          📋 Snippets
-        </NavLink>
-        <NavLink
-          to="links"
-          className={route === "links" ? classes.tabActiveBtn : classes.tabBtn}
-        >
-          🔗 Links
-        </NavLink>
+        {selectedTopic?.resources.videos.length > 0 && (
+          <NavLink
+            to="videos"
+            className={
+              route === "videos" ? classes.tabActiveBtn : classes.tabBtn
+            }
+          >
+            📺 Videos
+          </NavLink>
+        )}
+        {selectedTopic?.resources.snippets.length > 0 && (
+          <NavLink
+            to="snippets"
+            className={
+              route === "snippets" ? classes.tabActiveBtn : classes.tabBtn
+            }
+          >
+            📋 Snippets
+          </NavLink>
+        )}
+        {selectedTopic?.resources.links.length > 0 && (
+          <NavLink
+            to="links"
+            className={
+              route === "links" ? classes.tabActiveBtn : classes.tabBtn
+            }
+          >
+            🔗 Links
+          </NavLink>
+        )}
       </div>
     </div>
   );

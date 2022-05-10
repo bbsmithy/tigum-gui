@@ -5,7 +5,7 @@ import { LinkCard, VideoCard } from "../../../components";
 import { getPublicNotes } from "../../../clib/api";
 import { useNotes, useVideos } from "../hooks";
 import { createUseStyles } from "react-jss";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const NotesList = ({ selectedTopic }: { selectedTopic: any }) => {
   if (selectedTopic?.resources.notes) {
@@ -51,13 +51,16 @@ export const NotesList = ({ selectedTopic }: { selectedTopic: any }) => {
 const snippetListUseStyles = createUseStyles({
   snippetCardContainer: {
     maxWidth: "100%",
+    paddingBottom: 10,
   },
   snippetCard: {
     padding: 10,
-    marginTop: 10,
     borderRadius: 12,
     backgroundColor: "#333",
     boxShadow: "0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%)",
+    "& a": {
+      color: "white",
+    },
   },
 });
 
@@ -108,8 +111,8 @@ export const SnippetList = ({ selectedTopic }) => {
 
     return (
       <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
-        <div style={{ padding: 10 }}>{LHS}</div>
-        <div style={{ padding: 10 }}>{RHS}</div>
+        <div style={{ padding: 5, flex: 1 }}>{LHS}</div>
+        <div style={{ padding: 5, flex: 1 }}>{RHS}</div>
       </div>
     );
   } else {
@@ -163,9 +166,16 @@ const videoListUseStyles = createUseStyles({
   },
 });
 
-export const VideoList = ({ selectedTopic }) => {
+export const VideoList = ({ selectedTopic, closeMenu }) => {
   const classes = videoListUseStyles();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const onSelectVideo = (video: any) => {
+    closeMenu();
+    const newLink = `${location.pathname}/${video.resource_id}`;
+    navigate(newLink, { state: video });
+  };
 
   if (
     selectedTopic &&
@@ -177,7 +187,7 @@ export const VideoList = ({ selectedTopic }) => {
         <div
           className={classes.videoCardContainer}
           onClick={() => {
-            navigate(`/test`);
+            onSelectVideo(video);
           }}
         >
           <div className={classes.videoCard}>

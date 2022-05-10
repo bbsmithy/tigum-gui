@@ -225,7 +225,12 @@ const ProfileRouter = ({}) => {
                 />
                 <Route
                   path="videos"
-                  element={<VideoList selectedTopic={selectedTopic} />}
+                  element={
+                    <VideoList
+                      selectedTopic={selectedTopic}
+                      closeMenu={closeMenu}
+                    />
+                  }
                 />
                 <Route
                   path="links"

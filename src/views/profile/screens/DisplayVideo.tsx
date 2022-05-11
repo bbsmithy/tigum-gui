@@ -6,6 +6,7 @@ import { dragElement } from "../util";
 import { createUseStyles } from "react-jss";
 import hljs from "highlight.js";
 import "highlight.js/styles/a11y-dark.css";
+import { useYoutubeVideoPlayer } from "../../../hooks";
 
 const useStyles = createUseStyles({
   videoNotesContainer: {
@@ -54,8 +55,14 @@ const useStyles = createUseStyles({
 const DisplayVideo = (props) => {
   const [markdown, setMarkdown] = useState("");
   const location = useLocation();
+  // @ts-ignore
+  const locationState: { misc: string; title: string; resource_id: number } =
+    location.state;
 
-  const navigate = useNavigate();
+  const { playerRef } = useYoutubeVideoPlayer(
+    locationState?.misc,
+    "video-iframe-container"
+  );
 
   marked.setOptions({
     langPrefix: "hljs language-",
@@ -65,11 +72,26 @@ const DisplayVideo = (props) => {
     },
   });
 
-  const classes = useStyles();
+  const onClickNote = (evt) => {
+    evt.preventDefault();
+    const el = evt.target;
+    if (el.tagName === "A" && el.href) {
+      if (el.href.includes("tigum.io")) {
+        const localUrl = el.href.split("tigum.io")[1];
+        if (localUrl) {
+          const timeParam = el.href.split("t=")[1];
+          if (timeParam) {
+            // @ts-ignore
+            playerRef.current.seekTo(timeParam);
+          }
+        }
+      } else {
+        window.open(el.href, "blank");
+      }
+    }
+  };
 
-  // @ts-ignore
-  const locationState: { misc: string; title: string; resource_id: number } =
-    location.state;
+  const classes = useStyles();
 
   const loadNotes = async (id: number) => {
     const resMD = await getFile(`${id}_video.md`, "video-notes");
@@ -82,7 +104,7 @@ const DisplayVideo = (props) => {
 
   useEffect(() => {
     loadNotes(locationState.resource_id);
-    dragElement(document.getElementById("video-iframe"));
+    dragElement(document.getElementById("video-iframe-container"));
   }, [locationState.resource_id]);
 
   return (
@@ -96,16 +118,12 @@ const DisplayVideo = (props) => {
         <div
           dangerouslySetInnerHTML={{ __html: marked(markdown) }}
           className={classes.videoNotes}
+          onClick={onClickNote}
           style={{ maxWidth: 1000 }}
         />
       </div>
 
-      <div id="video-iframe" className={classes.videoFrame}>
-        <iframe
-          src={locationState.misc}
-          style={{ width: "100%", height: "90%", border: "none" }}
-        />
-      </div>
+      <div id="video-iframe-container" className={classes.videoFrame}></div>
     </div>
   );
 };

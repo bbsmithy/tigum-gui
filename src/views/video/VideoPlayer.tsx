@@ -1,42 +1,47 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { MarkdownEditor } from '../../components/MarkdownEditor/lib';
-import { useStateValue } from '../../state/StateProvider';
-import { createUseStyles } from 'react-jss';
-import { goto, setPageTitle } from '../../util';
-import { getVideos, deleteVideo, updateVideo, updateTopicModDate } from '../../clib/api';
-import ResourceDialog from '../../components/ResourceDialog';
-import ReferenceDialog from '../../components/ReferenceDialog';
-import { uploadToBucket, getFile } from '../../clib/S3';
-import { notify } from '../../state/Actions';
+import React, { useState, useEffect, useRef } from "react";
+import { MarkdownEditor } from "../../components/MarkdownEditor/lib";
+import { useStateValue } from "../../state/StateProvider";
+import { createUseStyles } from "react-jss";
+import { goto, setPageTitle } from "../../util";
+import {
+  getVideos,
+  deleteVideo,
+  updateVideo,
+  updateTopicModDate,
+} from "../../clib/api";
+import ResourceDialog from "../../components/ResourceDialog";
+import ReferenceDialog from "../../components/ReferenceDialog";
+import { uploadToBucket, getFile } from "../../clib/S3";
+import { notify } from "../../state/Actions";
 import { CursorState } from "../../types";
 
 const useStyles = createUseStyles({
   videoTitleContainer: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   videoNotesContainer: {
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     left: 0,
-    width: '45%',
+    width: "45%",
     padding: 2,
-    height: '100%',
+    height: "100%",
   },
   iframeContainer: {
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     right: 0,
-    width: '55%',
-    height: '100%',
+    width: "55%",
+    height: "100%",
   },
-  iframeMobileContainer:{
+  iframeMobileContainer: {
     height: 300,
-    marginBottom: 3
+    marginBottom: 3,
   },
   title: {
     padding: 0,
-    margin: '5px 0px 12px 0px',
-    color: 'white',
+    margin: "5px 0px 12px 0px",
+    color: "white",
   },
   header: {
     background: "#333",
@@ -44,35 +49,35 @@ const useStyles = createUseStyles({
     display: "flex",
     color: "white",
     fontSize: 13,
-    padding: 10
+    padding: 10,
   },
   backBtn: {
     padding: 5,
     cursor: "pointer",
-    marginRight: 10
+    marginRight: 10,
   },
   videoTitleMobile: {
-    padding: 4
-  }
+    padding: 4,
+  },
 });
 
 const toolbarOptions = [
-  'bold',
-  'italic',
-  'heading',
-  '|',
-  'quote',
-  'ordered-list',
-  'unordered-list',
-  '|',
-  'code',
-  'link',
-  'image',
-  'table',
-  '|',
-  'preview',
-  'guide',
-  '|',
+  "bold",
+  "italic",
+  "heading",
+  "|",
+  "quote",
+  "ordered-list",
+  "unordered-list",
+  "|",
+  "code",
+  "link",
+  "image",
+  "table",
+  "|",
+  "preview",
+  "guide",
+  "|",
 ];
 
 const MobileLayout = ({
@@ -86,31 +91,30 @@ const MobileLayout = ({
   video,
   goBack,
   onDoubleClick,
-  onClickNote
- }) => {
-
-  const classes = useStyles()
-  const vidIDRef = useRef()
-  const playerRef = useRef()
-
+  onClickNote,
+}) => {
+  const classes = useStyles();
+  const vidIDRef = useRef();
+  const playerRef = useRef();
 
   useEffect(() => {
     if (video && video.id !== vidIDRef.current) {
-      const videoId = video.iframe.slice(30)
-      const iframeContainer = document.getElementById('mobile-vid').parentElement
-      document.getElementById('mobile-vid').remove()
-      const newDiv = document.createElement('div')
-      newDiv.id = "mobile-vid"
-      iframeContainer.insertAdjacentElement("beforeend", newDiv)
+      const videoId = video.iframe.slice(30);
+      const iframeContainer =
+        document.getElementById("mobile-vid").parentElement;
+      document.getElementById("mobile-vid").remove();
+      const newDiv = document.createElement("div");
+      newDiv.id = "mobile-vid";
+      iframeContainer.insertAdjacentElement("beforeend", newDiv);
       // @ts-ignore
-      playerRef.current = new window.YT.Player('mobile-vid', {
+      playerRef.current = new window.YT.Player("mobile-vid", {
         videoId,
         height: "100%",
-        width: "100%"
-      })
-      vidIDRef.current = videoId
+        width: "100%",
+      });
+      vidIDRef.current = videoId;
     }
-  }, [video])
+  }, [video]);
 
   return (
     <>
@@ -121,50 +125,45 @@ const MobileLayout = ({
         <div className={classes.videoTitleMobile}>{video.title}</div>
       </div>
       <div className={classes.iframeMobileContainer}>
-        <div id="mobile-vid">
-        </div>
+        <div id="mobile-vid"></div>
       </div>
-      <div
-        onDoubleClick={onDoubleClick}
-        onClick={onClickNote}
-      >
-      {noteMd && !loadingNote && (
-            <MarkdownEditor
-              initialValue={noteMd}
-              onSave={onSave}
-              onDelete={onDelete}
-              codeMirrorHandle={codeMirrorHandle}
-              simpleMdeHandle={simpleMdeHandle}
-              spellChecker={false}
-              toolbarOptions={toolbarOptions}
-              useHighlightJS
-              title={false}
-              highlightTheme='agate'
-              defaultView="editor-preview-side"
-              theme={theme}
-            />
-          )}
-          {!noteMd && !loadingNote && (
-            <MarkdownEditor
-              initialValue={''}
-              onSave={onSave}
-              defaultView="editor-preview-side"
-              previewClassName="editor-preview-side"
-              onDelete={onDelete}
-              codeMirrorHandle={codeMirrorHandle}
-              simpleMdeHandle={simpleMdeHandle}
-              spellChecker={false}
-              toolbarOptions={toolbarOptions}
-              useHighlightJS
-              highlightTheme='agate'
-              theme={theme}
-            />
-      )}
+      <div onDoubleClick={onDoubleClick} onClick={onClickNote}>
+        {noteMd && !loadingNote && (
+          <MarkdownEditor
+            initialValue={noteMd}
+            onSave={onSave}
+            onDelete={onDelete}
+            codeMirrorHandle={codeMirrorHandle}
+            simpleMdeHandle={simpleMdeHandle}
+            spellChecker={false}
+            toolbarOptions={toolbarOptions}
+            useHighlightJS
+            title={false}
+            highlightTheme="agate"
+            defaultView="editor-preview-side"
+            theme={theme}
+          />
+        )}
+        {!noteMd && !loadingNote && (
+          <MarkdownEditor
+            initialValue={""}
+            onSave={onSave}
+            defaultView="editor-preview-side"
+            previewClassName="editor-preview-side"
+            onDelete={onDelete}
+            codeMirrorHandle={codeMirrorHandle}
+            simpleMdeHandle={simpleMdeHandle}
+            spellChecker={false}
+            toolbarOptions={toolbarOptions}
+            useHighlightJS
+            highlightTheme="agate"
+            theme={theme}
+          />
+        )}
       </div>
     </>
-  )
-
-}
+  );
+};
 
 const DesktopLayout = ({
   noteMd,
@@ -178,48 +177,50 @@ const DesktopLayout = ({
   video,
   goBack,
   onDoubleClick,
-  onClickNote
+  onClickNote,
 }) => {
-
-  const classes = useStyles()
-  const vidIDRef = useRef()
-  const playerRef = useRef()
+  const classes = useStyles();
+  const vidIDRef = useRef();
+  const playerRef = useRef();
 
   useEffect(() => {
     if (video && video.id !== vidIDRef.current) {
-      const videoId = video.iframe.split("?")[0].slice(30)
-      const iframeContainer = document.getElementById('desktop-vid').parentElement
-      document.getElementById('desktop-vid').remove()
-      const newDiv = document.createElement('div')
-      newDiv.id = "desktop-vid"
-      iframeContainer.insertAdjacentElement("beforeend", newDiv)
+      debugger;
+      const videoId = video.iframe.split("?")[0].slice(30);
+      const iframeContainer =
+        document.getElementById("desktop-vid").parentElement;
+      document.getElementById("desktop-vid").remove();
+      const newDiv = document.createElement("div");
+      newDiv.id = "desktop-vid";
+      iframeContainer.insertAdjacentElement("beforeend", newDiv);
       // @ts-ignore
-      playerRef.current = new window.YT.Player('desktop-vid', {
+      playerRef.current = new window.YT.Player("desktop-vid", {
         videoId,
         height: "100%",
-        width: "100%"
-      })
-      playerHandle(playerRef.current)
-      vidIDRef.current = videoId
+        width: "100%",
+      });
+      playerHandle(playerRef.current);
+      vidIDRef.current = videoId;
+      debugger;
     }
-  }, [video])
+  }, [video]);
 
   const checkForRefLinks = (evt) => {
     // @ts-ignore
-    onClickNote(evt, playerRef.current)
-  }
+    onClickNote(evt, playerRef.current);
+  };
 
   const onEditTitle = (newTitle) => {
     if (newTitle) {
-      updateVideo({ ...video, title: newTitle })
+      updateVideo({ ...video, title: newTitle });
     }
-  }
+  };
 
   return (
     <>
       <div
         className={classes.videoNotesContainer}
-        id='video-notes-container'
+        id="video-notes-container"
         onDoubleClick={onDoubleClick}
         onClick={checkForRefLinks}
       >
@@ -235,7 +236,7 @@ const DesktopLayout = ({
             previewClassName="editor-preview"
             useHighlightJS
             defaultView="preview"
-            highlightTheme='agate'
+            highlightTheme="agate"
             theme={theme}
             title={video.title}
             editTitleWidth={"90%"}
@@ -245,7 +246,7 @@ const DesktopLayout = ({
         )}
         {!noteMd && !loadingNote && (
           <MarkdownEditor
-            initialValue={''}
+            initialValue={""}
             onSave={onSave}
             onDelete={onDelete}
             codeMirrorHandle={codeMirrorHandle}
@@ -255,7 +256,7 @@ const DesktopLayout = ({
             previewClassName="editor-preview"
             useHighlightJS
             defaultView="preview"
-            highlightTheme='agate'
+            highlightTheme="agate"
             theme={theme}
             title={video.title}
             onEditTitle={onEditTitle}
@@ -265,28 +266,25 @@ const DesktopLayout = ({
         )}
       </div>
       <div className={classes.iframeContainer}>
-        <div id="desktop-vid">
-        </div>
+        <div id="desktop-vid"></div>
       </div>
     </>
-  )
-}
-
-
+  );
+};
 
 const theme = {
   toolbar: {
-    background: '#333',
-    color: 'white',
-    activeBtnBackground: '#242020',
-    activeBtnColor: 'white',
-    disabledBtnBackground: 'gray',
-    disabledBtnColor: '#333',
+    background: "#333",
+    color: "white",
+    activeBtnBackground: "#242020",
+    activeBtnColor: "white",
+    disabledBtnBackground: "gray",
+    disabledBtnColor: "#333",
   },
-  preview: { background: '#333', color: 'white' },
-  editor: { background: '#333', color: 'white' },
-  cursorColor: 'white',
-  height: '95vh',
+  preview: { background: "#333", color: "white" },
+  editor: { background: "#333", color: "white" },
+  cursorColor: "white",
+  height: "95vh",
 };
 
 export const VideoPlayer = () => {
@@ -300,101 +298,98 @@ export const VideoPlayer = () => {
   const [loadingNote, setLoadingNote] = useState(true);
   const [cmdControl, setCMDControl] = useState<CursorState>();
   const [vidRefControl, setVidRefControl] = useState<CursorState>();
-  const [isMobile, setIsMobile] = useState(null)
+  const [isMobile, setIsMobile] = useState(null);
 
-  const cmRef = useRef()
-  const simpleMDERef = useRef()
-  const playerRef = useRef()
-  const initialNoteMDRef = useRef<string>()
-
+  const cmRef = useRef();
+  const simpleMDERef = useRef();
+  const playerRef = useRef();
+  const initialNoteMDRef = useRef<string>();
 
   const video = videos.data ? videos.data[selectedResourceId] : false;
 
   const toolbarOptions = [
     {
       name: "home",
-      action: function customFunction(editor){
-        goto(`topic/${selectedTopic}/videos`)
+      action: function customFunction(editor) {
+        goto(`topic/${selectedTopic}/videos`);
       },
       className: "fa fa-home",
       title: "Home",
     },
-    'bold',
-    'italic',
-    'heading',
-    '|',
-    'quote',
-    'ordered-list',
-    'unordered-list',
-    '|',
+    "bold",
+    "italic",
+    "heading",
+    "|",
+    "quote",
+    "ordered-list",
+    "unordered-list",
+    "|",
     {
       name: "resource",
-      action: function customFunction(editor){
-        showReferenceDialog()
+      action: function customFunction(editor) {
+        showReferenceDialog();
       },
       className: "fa fa-book",
       title: "Find Resource",
     },
     {
       name: "reference",
-      action: function customFunction(editor){
-        showVidReference()
+      action: function customFunction(editor) {
+        showVidReference();
       },
       className: "fa fa-flag",
       title: "Video Reference",
     },
-    'code',
+    "code",
     {
       name: "latex",
       action: () => {
         // @ts-ignore
-        const cursorPos = cmRef.current.getCursor()
+        const cursorPos = cmRef.current.getCursor();
         if (cmRef.current) {
           // @ts-ignore
-          cmRef.current.replaceRange(`$$\n\n$$`, cursorPos)
+          cmRef.current.replaceRange(`$$\n\n$$`, cursorPos);
           // @ts-ignore
-          cmRef.current.focus()
+          cmRef.current.focus();
           // @ts-ignore
           cmRef.current.setCursor({
             line: cursorPos.line + 1,
-            ch: 0
-          })
+            ch: 0,
+          });
         }
       },
       className: "fas fa-square-root-alt",
-      title: "LaTex"
+      title: "LaTex",
     },
-    'link',
-    'image',
-    '|',
-    'preview',
-    'guide',
-    '|',
+    "link",
+    "image",
+    "|",
+    "preview",
+    "guide",
+    "|",
   ];
 
-  
   useEffect(() => {
     // @ts-ignore
     if (window.innerWidth < 1108) {
-      setIsMobile(true)
+      setIsMobile(true);
     } else {
-      setIsMobile(false)
+      setIsMobile(false);
     }
-    window.addEventListener("resize", checkDisplaySize)
-    document.addEventListener('keydown', commandListener)
+    window.addEventListener("resize", checkDisplaySize);
+    document.addEventListener("keydown", commandListener);
     return () => {
       if (cmRef.current) {
         // @ts-ignore
-        const currentMD = cmRef.current.getValue()
+        const currentMD = cmRef.current.getValue();
         if (currentMD !== initialNoteMDRef.current) {
-          save(currentMD)
+          save(currentMD);
         }
       }
-      document.removeEventListener('keydown', commandListener)
-      window.removeEventListener("resize", checkDisplaySize)
-      
-    }
-  }, [])
+      document.removeEventListener("keydown", commandListener);
+      window.removeEventListener("resize", checkDisplaySize);
+    };
+  }, []);
 
   useEffect(() => {
     if (videos.length === 0) {
@@ -406,63 +401,61 @@ export const VideoPlayer = () => {
 
   const checkDisplaySize = (evt) => {
     if (evt.target.innerWidth < 1108) {
-      setIsMobile(true)
+      setIsMobile(true);
     } else {
-      setIsMobile(false)
+      setIsMobile(false);
     }
-  }
-  
+  };
 
   const closeCMDDialog = () => {
-    setCMDControl(null)
-    document.removeEventListener("click", closeCMDDialog)
-  }
+    setCMDControl(null);
+    document.removeEventListener("click", closeCMDDialog);
+  };
 
   const closeVidRefDialog = () => {
-    setVidRefControl(null)
-    document.removeEventListener("click", closeCMDDialog)
-  }
+    setVidRefControl(null);
+    document.removeEventListener("click", closeCMDDialog);
+  };
 
   const showReferenceDialog = () => {
     // @ts-ignore
-    const absPos = cmRef.current.cursorCoords(true)
+    const absPos = cmRef.current.cursorCoords(true);
     // @ts-ignore
-    const cursorPos = cmRef.current.getCursor()
-    setCMDControl({ absPos, cursorPos })
-  }
-
+    const cursorPos = cmRef.current.getCursor();
+    setCMDControl({ absPos, cursorPos });
+  };
 
   const showVidReference = () => {
     // @ts-ignore
-    const absPos = cmRef.current.cursorCoords(true)
+    const absPos = cmRef.current.cursorCoords(true);
     // @ts-ignore
-    const cursorPos = cmRef.current.getCursor()
-    setVidRefControl({ absPos, cursorPos })
-  }
+    const cursorPos = cmRef.current.getCursor();
+    setVidRefControl({ absPos, cursorPos });
+  };
 
   const commandListener = (event) => {
     if (event.ctrlKey) {
       switch (event.key) {
         case "/": {
-          showReferenceDialog()
+          showReferenceDialog();
           break;
         }
         case "t": {
-          showVidReference()
+          showVidReference();
           break;
         }
-      }   
+      }
     }
-  }
+  };
 
   const fetchNoteData = async (file) => {
     setPageTitle(`${video.title} | ${topics.data[selectedTopic].title}`);
     try {
       setLoadingNote(true);
-      const noteData = await getFile(file, 'video-notes');
+      const noteData = await getFile(file, "video-notes");
       setNoteMd(noteData);
       setLoadingNote(false);
-      initialNoteMDRef.current = noteData
+      initialNoteMDRef.current = noteData;
     } catch (e) {
       setLoadingNote(false);
       return;
@@ -472,29 +465,22 @@ export const VideoPlayer = () => {
   const fetchVideos = async () => {
     try {
       const videoData = await getVideos(topics.data[selectedTopic].videos);
-      dispatch({ type: 'SET_VIDEOS', payload: videoData });
+      dispatch({ type: "SET_VIDEOS", payload: videoData });
     } catch (e) {
-      notify(dispatch, 'Could not retrieve video', 'error', 'right');
+      notify(dispatch, "Could not retrieve video", "error", "right");
     }
   };
 
   const save = async (md) => {
     if (md) {
-      notify(dispatch, 'Saving notes', 'progress', 'right');
-      await uploadToBucket(
-        md,
-        `${selectedResourceId}_video.md`,
-        'video-notes'
-      );
-      await updateTopicModDate(selectedTopic)
-      setTimeout(
-        () => {
-          // @ts-ignore
-          simpleMDERef.current.togglePreview()
-          notify(dispatch, 'Saved successfully', 'success', 'right')
-        },
-        300
-      );
+      notify(dispatch, "Saving notes", "progress", "right");
+      await uploadToBucket(md, `${selectedResourceId}_video.md`, "video-notes");
+      await updateTopicModDate(selectedTopic);
+      setTimeout(() => {
+        // @ts-ignore
+        simpleMDERef.current.togglePreview();
+        notify(dispatch, "Saved successfully", "success", "right");
+      }, 300);
     }
   };
 
@@ -502,80 +488,82 @@ export const VideoPlayer = () => {
     try {
       save(md);
     } catch (e) {
-      notify(dispatch, 'Could not upload notes', 'error', 'right');
+      notify(dispatch, "Could not upload notes", "error", "right");
     }
   };
 
   const onDelete = async () => {
-    const yesDelete = window.confirm("Are you sure you want to delete this video")
+    const yesDelete = window.confirm(
+      "Are you sure you want to delete this video"
+    );
     try {
       if (yesDelete) {
-        await deleteVideo(videos.data[selectedResourceId].id)
-        goBack()
+        await deleteVideo(videos.data[selectedResourceId].id);
+        goBack();
       }
-    } catch(e) {
-      notify(dispatch, 'Could not delete video', 'error', 'right');
+    } catch (e) {
+      notify(dispatch, "Could not delete video", "error", "right");
     }
   };
 
   const codeMirrorHandle = (cm) => {
-    cmRef.current = cm
+    cmRef.current = cm;
   };
 
   const simpleMdeHandle = (simpleMDE) => {
-    simpleMDERef.current = simpleMDE
-  }
+    simpleMDERef.current = simpleMDE;
+  };
 
   const playerHandle = (player) => {
-    playerRef.current = player
-  }
+    playerRef.current = player;
+  };
 
   const goBack = () => {
     if (window.history.length > 1) {
-      window.history.back()
+      window.history.back();
     } else {
-      goto(`topic/${selectedTopic}/videos`) 
+      goto(`topic/${selectedTopic}/videos`);
     }
   };
 
   const onClickNote = (evt, player) => {
-    evt.preventDefault()
-    const el = evt.target
+    evt.preventDefault();
+    const el = evt.target;
     if (el.tagName === "A" && el.href) {
-      const baseUrl = "tigum.io"
+      const baseUrl = "tigum.io";
       if (el.href.includes(baseUrl)) {
-        const timeParam = el.href.split("t=")[1]
+        const timeParam = el.href.split("t=")[1];
         if (timeParam) {
-            player.seekTo(timeParam)
+          player.seekTo(timeParam);
         } else {
-          const localUrl = el.href.split(baseUrl)[1]
-          goto(localUrl)
+          const localUrl = el.href.split(baseUrl)[1];
+          goto(localUrl);
         }
       } else {
-        window.open(el.href, "blank")
+        window.open(el.href, "blank");
       }
     }
-  }
+  };
 
   const switchToPreview = () => {
     // @ts-ignore
     if (simpleMDERef.current && simpleMDERef.current.isPreviewActive()) {
       // @ts-ignore
-      simpleMDERef.current.togglePreview()
+      simpleMDERef.current.togglePreview();
     }
-  }
+  };
 
   const getCurrentVideoTime = () => {
     if (playerRef.current) {
       // @ts-ignore
-      return playerRef.current.getCurrentTime()
+      return playerRef.current.getCurrentTime();
     } else {
-      return 0
+      return 0;
     }
-  }
+  };
 
   return (
-    <div className='center w-100 h-100 video-page-container'>
+    <div className="center w-100 h-100 video-page-container">
       {isMobile ? (
         <MobileLayout
           video={video}
@@ -590,7 +578,7 @@ export const VideoPlayer = () => {
           onDoubleClick={switchToPreview}
           goBack={goBack}
         />
-      ): (
+      ) : (
         <DesktopLayout
           noteMd={noteMd}
           loadingNote={loadingNote}
@@ -607,22 +595,22 @@ export const VideoPlayer = () => {
         />
       )}
       {cmdControl && (
-          <ResourceDialog
-            selection={cmdControl}
-            onClickAway={closeCMDDialog}
-            cm={cmRef.current}
-            topic_id={selectedTopic}
-          />
+        <ResourceDialog
+          selection={cmdControl}
+          onClickAway={closeCMDDialog}
+          cm={cmRef.current}
+          topic_id={selectedTopic}
+        />
       )}
       {vidRefControl && (
-          <ReferenceDialog
-            onCreate={() => {}}
-            onClickAway={closeVidRefDialog}
-            getCurrentVideoTime={getCurrentVideoTime}
-            selection={vidRefControl}
-            cm={cmRef.current}
-            topic_id={selectedTopic}
-          />
+        <ReferenceDialog
+          onCreate={() => {}}
+          onClickAway={closeVidRefDialog}
+          getCurrentVideoTime={getCurrentVideoTime}
+          selection={vidRefControl}
+          cm={cmRef.current}
+          topic_id={selectedTopic}
+        />
       )}
     </div>
   );

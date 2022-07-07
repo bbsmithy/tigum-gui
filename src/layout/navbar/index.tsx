@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { OptionsButton, Option } from '../../components/OptionsButton';
-import { SCREENS } from '../../routers/MainRouter';
-import { deleteTopic } from '../../clib/api';
-import { useStateValue } from '../../state/StateProvider';
-import { createUseStyles } from 'react-jss';
-import { goto } from '../../util';
-import './styles.css';
-import { SearchBar } from './SearchBar';
+import React, { useState, useEffect } from "react";
+import { OptionsButton, Option } from "../../components/OptionsButton";
+import { SCREENS } from "../../routers/MainRouter";
+import { deleteTopic } from "../../clib/api";
+import { useStateValue } from "../../state/StateProvider";
+import { createUseStyles } from "react-jss";
+import { goto } from "../../util";
+import "./styles.css";
+import { SearchBar } from "./SearchBar";
 
 interface TopicNavigationBarProps {
   title: string;
@@ -15,32 +15,32 @@ interface TopicNavigationBarProps {
 
 const useStyles = createUseStyles({
   mobileNavItemsContainer: {
-    float: 'right',
+    float: "right",
   },
   mobileNavItemsButton: {
-    color: 'white',
+    color: "white",
     fontSize: 12,
-    backgroundColor: '#333',
-    textAlign: 'center',
+    backgroundColor: "#333",
+    textAlign: "center",
     padding: 5,
     borderRadius: 3,
-    cursor: 'pointer',
+    cursor: "pointer",
   },
   mobileNavDropdown: {
-    backgroundColor: '#333',
+    backgroundColor: "#333",
     borderRadius: 5,
-    boxShadow: '2px 2px 1px 0px rgba(0, 0, 0, 0.75)',
-    position: 'absolute',
+    boxShadow: "2px 2px 1px 0px rgba(0, 0, 0, 0.75)",
+    position: "absolute",
     right: 15,
     marginTop: 3,
-    color: 'white',
+    color: "white",
     fontSize: 12,
     padding: 5,
   },
   mobileNavItem: {
     padding: 7,
-    textAlign: 'center',
-    cursor: 'pointer',
+    textAlign: "center",
+    cursor: "pointer",
   },
   selectedNavItem: {
     marginRight: 5,
@@ -48,68 +48,67 @@ const useStyles = createUseStyles({
   selectedNavIcon: {
     marginRight: 5,
   },
-  searchBarContainer:{
-    flex: 2
+  searchBarContainer: {
+    flex: 2,
   },
   titleContainer: {
     flex: 1.5,
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
-  titleTextContainer:{
+  titleTextContainer: {
     flex: 6,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
     maxWidth: 200,
-    display: 'block'
+    display: "block",
   },
-  navbarContainer:{
+  navbarContainer: {
     display: "flex",
     flexDirection: "row",
-    backgroundColor: "#1f1f1f"
+    backgroundColor: "#1f1f1f",
   },
-  navItemsContainer:{
+  navItemsContainer: {
     flex: 2,
     float: "right",
-    marginTop: 8
+    marginTop: 8,
   },
-  navIconContainer:{
+  navIconContainer: {
     flex: 1,
     marginTop: 15,
-    maxWidth: 30
+    maxWidth: 30,
   },
-  optionsButtonContainer:{
+  optionsButtonContainer: {
     flex: 2,
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
 
 const navItems = [
   {
-    title: 'Links',
-    icon: 'fas fa-link',
+    title: "Links",
+    icon: "🔗",
     screen: SCREENS.LINKS,
   },
   {
-    title: 'Snippets',
-    icon: 'fas fa-newspaper',
+    title: "Snippets",
+    icon: "📋",
     screen: SCREENS.ARTICLE_SNIPPETS,
   },
   {
-    title: 'Videos',
-    icon: 'fab fa-youtube',
+    title: "Videos",
+    icon: "📺",
     screen: SCREENS.ALL_VIDEOS,
   },
   {
-    title: 'Notes',
-    icon: 'fas fa-pen-square',
+    title: "Notes",
+    icon: "📝",
     screen: SCREENS.ALL_NOTES,
-  }
+  },
 ];
 
 export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
-  
   const [useMobileNavItems, setMobileNavItems] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
   const [displayMobileNavOptions, setDisplayMobileNavOptions] = useState(false);
@@ -124,23 +123,23 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
 
   const topicMenuOptions: Array<Option> = [
     {
-      title: 'Delete',
-      icon: 'fas fa-trash',
+      title: "Delete",
+      icon: "fas fa-trash",
       onClick: () => deleteTopicAndNavToNextTopic(),
     },
   ];
 
   useEffect(() => {
     setNavOptionsType(window.innerWidth);
-    window.addEventListener('resize', handleWindowResize);
-    return () => window.removeEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
   const setNavOptionsType = (width: number) => {
-    if(width < 600){
-      setShowSearch(false)
+    if (width < 600) {
+      setShowSearch(false);
     } else {
-      setShowSearch(true)
+      setShowSearch(true);
     }
     if (width < 1000) {
       setMobileNavItems(true);
@@ -152,10 +151,10 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
   const deleteTopicAndNavToNextTopic = async () => {
     try {
       await deleteTopic(selectedTopic);
-      dispatch({ type: 'DELETE_TOPIC', payload: selectedTopic });
+      dispatch({ type: "DELETE_TOPIC", payload: selectedTopic });
       goto(`/topic/${topics.keys[0]}/notes`);
     } catch (e) {
-      return
+      return;
     }
   };
 
@@ -167,11 +166,11 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
     const shouldUseFullWidth = window.innerWidth < 960;
     showSidebar
       ? dispatch({
-          type: 'HIDE_SIDEBAR',
+          type: "HIDE_SIDEBAR",
           payload: { useFullWidth: shouldUseFullWidth },
         })
       : dispatch({
-          type: 'SHOW_SIDEBAR',
+          type: "SHOW_SIDEBAR",
           payload: { useFullWidth: shouldUseFullWidth },
         });
   };
@@ -185,14 +184,14 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
       return (
         <div
           className={`btn topic-nav-btn fr f6 f5-ns dib mr3 mr4-ns ${
-            navItem.screen === topicScreen && 'selected'
+            navItem.screen === topicScreen && "selected"
           }`}
           key={navItem.title}
           onClick={() => {
             goto(`/topic/${selectedTopic}/${navItem.title.toLowerCase()}`);
           }}
         >
-          <i className={navItem.icon} /> {navItem.title}
+          {navItem.icon} {navItem.title}
         </div>
       );
     });
@@ -212,7 +211,9 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
             {navItems[topicScreen].title}
           </span>
           <i
-            className={`fas ${displayMobileNavOptions ? 'fa-chevron-up' : 'fa-chevron-down'}`}
+            className={`fas ${
+              displayMobileNavOptions ? "fa-chevron-up" : "fa-chevron-down"
+            }`}
           ></i>
         </div>
         {displayMobileNavOptions && (
@@ -227,8 +228,9 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
                     setDisplayMobileNavOptions(false);
                   }}
                 >
-                  <i className={`${item.icon} ${classes.selectedNavIcon}`} />
-                  <span className={classes.selectedNavItem}>{item.title}</span>
+                  <span className={classes.selectedNavItem}>
+                    {item.icon} {item.title}
+                  </span>
                 </div>
               );
             })}
@@ -239,13 +241,17 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
   };
 
   return (
-    <nav className={`fixed ${classes.navbarContainer} ${
-        showSidebar && !useFullWidth ? 'w-80' : 'w-100'
+    <nav
+      className={`fixed ${classes.navbarContainer} ${
+        showSidebar && !useFullWidth ? "w-80" : "w-100"
       } border-box ph3 z-2`}
     >
       <div className={classes.titleContainer}>
         <div className={classes.navIconContainer}>
-          <i className='fas fa-bars white pointer pr3' onClick={toggleSidebar}></i>
+          <i
+            className="fas fa-bars white pointer pr3"
+            onClick={toggleSidebar}
+          ></i>
         </div>
         <div className={classes.titleTextContainer}>
           <h2 id="topic-header">{title}</h2>

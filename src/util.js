@@ -1,18 +1,18 @@
-import { SCREENS } from './routers/MainRouter';
+import { SCREENS } from "./routers/MainRouter";
 
 const months_arr = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 const emailRegExp = RegExp(
@@ -32,30 +32,20 @@ export const getDate = (date) => {
   const hours = date.getHours();
 
   // Minutes
-  const minutes = '0' + date.getMinutes();
+  const minutes = "0" + date.getMinutes();
 
   // Seconds
-  const seconds = '0' + date.getSeconds();
+  const seconds = "0" + date.getSeconds();
 
   // Display date time in MM-dd-yyyy h:m:s format
-  const convdataTime =
-    month +
-    '-' +
-    day +
-    '-' +
-    year +
-    ' ' +
-    hours +
-    ':' +
-    minutes.substr(-2) +
-    ':' +
-    seconds.substr(-2);
+  const convdataTime = month + "-" + day + "-" + year;
 
   return convdataTime;
 };
 
 export const getEmbedFromUrl = (url) => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const regExp =
+    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);
 
   if (match && match[2].length == 11) {
@@ -76,7 +66,7 @@ export const truncated = (title, cutAt) => {
 };
 
 export const deleteJWT = () => {
-  document.cookie = 'jwt= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+  document.cookie = "jwt= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 };
 
 export const debounce = (func, wait, immediate) => {
@@ -102,29 +92,29 @@ export const debounce = (func, wait, immediate) => {
 };
 
 export const goto = (url) => {
-  window.history.pushState({}, '', `${url}`);
-  window.dispatchEvent(new Event('locationChange'));
+  window.history.pushState({}, "", `${url}`);
+  window.dispatchEvent(new Event("locationChange"));
 };
 
 export const getJsonFromUrl = (url) => {
   var query = url.substr(1);
   var result = {};
-  query.split("&").forEach(function(part) {
-      var item = part.split("=");
-      result[item[0]] = decodeURIComponent(item[1]);
+  query.split("&").forEach(function (part) {
+    var item = part.split("=");
+    result[item[0]] = decodeURIComponent(item[1]);
   });
   return result;
-}
+};
 
 export const resourceTypeToScreen = (type) => {
   switch (type) {
-    case 'notes':
+    case "notes":
       return SCREENS.ALL_NOTES;
-    case 'videos':
+    case "videos":
       return SCREENS.ALL_VIDEOS;
-    case 'snippets':
+    case "snippets":
       return SCREENS.ARTICLE_SNIPPETS;
-    case 'links':
+    case "links":
       return SCREENS.LINKS;
     default:
       return false;
@@ -134,21 +124,21 @@ export const resourceTypeToScreen = (type) => {
 export const screenToResourceType = (screen) => {
   switch (screen) {
     case SCREENS.ALL_NOTES:
-      return 'notes';
+      return "notes";
     case SCREENS.ALL_VIDEOS:
-      return 'videos';
+      return "videos";
     case SCREENS.ARTICLE_SNIPPETS:
-      return 'snippets';
+      return "snippets";
     case SCREENS.LINKS:
-      return 'links';
+      return "links";
     default:
       return false;
   }
 };
 
 export const setPageTitle = (title) => {
-  document.title = title
-}
+  document.title = title;
+};
 
 export const validateEmail = (email) => {
   return emailRegExp.test(email);

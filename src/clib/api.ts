@@ -10,9 +10,7 @@ import {
 const DEV = process.env.NODE_ENV === "development";
 // const DEV = false;
 
-const BASE_API_URL = DEV
-  ? "https://bsmithapp.ngrok.io"
-  : "https://api.tigum.io";
+const BASE_API_URL = DEV ? "http://localhost:8000" : "https://api.tigum.io";
 
 export const getTopics = async (topicIds: Array<number>) => {
   try {

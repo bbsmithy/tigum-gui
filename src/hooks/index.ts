@@ -27,6 +27,7 @@ export const useYoutubeVideoPlayer = (
   useEffect(() => {
     if (iframeUrl) {
       const videoId = iframeUrl.split("?")[0].slice(30);
+      alert(videoId)
       // @ts-ignore
       playerRef.current = new window.YT.Player(iframeContainerId, {
         videoId,

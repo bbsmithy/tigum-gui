@@ -10,6 +10,7 @@ export type Topic = {
   images: [];
   links: number[];
   excercises: number[];
+  published: boolean;
 };
 
 export type NewVideo = {

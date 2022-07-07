@@ -55,7 +55,7 @@
 // // See https://draftjs.org/docs/advanced-topics-block-components/ from more details
 // // const customBlockRender = contentBlock => {
 // //   const type = contentBlock.getType();
-// //   debugger;
+// //   ;
 // //   if (type === 'code-block') {
 // //     const content = contentBlock.getText();
 // //     return {

@@ -1,64 +1,68 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ArticleCard, NewButton, Modal } from '../../components';
-import { MarkdownEditor } from 'devkeep-md-editor';
-import { createUseStyles } from 'react-jss';
-import { getArticleSnippets, createArticleSnippet, updateArticleSnippet } from '../../clib/api';
-import { NewArticleSnippet } from '../../clib/models';
+import React, { useState, useEffect, useRef } from "react";
+import { ArticleCard, NewButton, Modal } from "../../components";
+import { MarkdownEditor } from "devkeep-md-editor";
+import { createUseStyles } from "react-jss";
+import {
+  getArticleSnippets,
+  createArticleSnippet,
+  updateArticleSnippet,
+} from "../../clib/api";
+import { NewArticleSnippet } from "../../clib/models";
 
-import { useStateValue } from '../../state/StateProvider';
-import { setPageTitle } from '../../util';
-import { UPDATE_SNIPPET } from '../../state/ActionTypes';
-import FeedbackButton from '../../components/FeedbackButton';
+import { useStateValue } from "../../state/StateProvider";
+import { setPageTitle } from "../../util";
+import { UPDATE_SNIPPET } from "../../state/ActionTypes";
+import FeedbackButton from "../../components/FeedbackButton";
 
 const useStyles = createUseStyles({
   paragraphLoading: {
-    width: '100%',
+    width: "100%",
     marginTop: 10,
     height: 8,
     borderRadius: 5,
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
   },
   linkLoading: {
-    width: '60%',
+    width: "60%",
     marginTop: 30,
     height: 8,
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     marginBottom: 10,
   },
   snippetBox: {
     height: 250,
     color: "white",
     border: "1px solid white",
-    resize: "none"
+    resize: "none",
   },
   snippetsContainer: {
-    paddingBottom: 200
+    paddingBottom: 200,
   },
   snippetLoading: {
     width: "85%",
     maxWidth: 1000,
-    '@media (max-width: 600px)':{
-      width: "100%"
+    "@media (max-width: 600px)": {
+      width: "100%",
     },
     margin: "auto",
     marginTop: 15,
-    padding: "8px 15px"
-  }
+    padding: "8px 15px",
+  },
 });
 
 const theme = {
   toolbar: {
-    background: '#424242',
-    color: 'white',
-    activeBtnBackground: '#242020',
-    activeBtnColor: 'white',
-    disabledBtnBackground: 'gray',
-    disabledBtnColor: '#333',
+    background: "#424242",
+    color: "white",
+    activeBtnBackground: "#242020",
+    activeBtnColor: "white",
+    disabledBtnBackground: "gray",
+    disabledBtnColor: "#333",
   },
-  preview: { background: '#424242', color: 'white' },
-  editor: { background: '#424242', color: 'white' },
-  cursorColor: 'white',
-  height: '40vh'
+  preview: { background: "#424242", color: "white" },
+  editor: { background: "#424242", color: "white" },
+  cursorColor: "white",
+  height: "40vh",
 };
 
 const Snippets = (props) => {
@@ -74,41 +78,45 @@ const Snippets = (props) => {
               title={snippet.title}
               content={snippet.content}
               origin={snippet.origin}
+              published={snippet.published}
               index={idx}
               id={snippet.id}
               key={snippet.id}
             />
           );
         } else {
-          return null
+          return null;
         }
-        
       });
     } else {
       return (
-        <div className='no-resources-message'>
-          <i className='fas fa-newspaper' /> <span>No snippets yet</span>
+        <div className="no-resources-message">
+          <i className="fas fa-newspaper" /> <span>No snippets yet</span>
         </div>
       );
     }
   } else {
     return (
       <>
-      <article className={`shadow-card mw5 mw7-ns hidden br3 ba dark-gray b--black-10  mv3 ${classes.snippetLoading}`}>
+        <article
+          className={`shadow-card mw5 mw7-ns hidden br3 ba dark-gray b--black-10  mv3 ${classes.snippetLoading}`}
+        >
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.linkLoading}></div>
-      </article>
-      <article className={`shadow-card mw5 mw7-ns hidden br3 ba dark-gray b--black-10  mv3 ${classes.snippetLoading}`}>
+        </article>
+        <article
+          className={`shadow-card mw5 mw7-ns hidden br3 ba dark-gray b--black-10  mv3 ${classes.snippetLoading}`}
+        >
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.paragraphLoading}></div>
           <div className={classes.linkLoading}></div>
-      </article>
+        </article>
       </>
     );
   }
@@ -117,12 +125,12 @@ const Snippets = (props) => {
 export const ArticleSnippets = (props: any) => {
   const [loading, setLoading] = useState(true);
   const [createSnippetModalOpen, setCreateSnippetModalOpen] = useState(false);
-  const [snippetTitle, setSnippetTitle] = useState('')
-  const [editTitle, setEditTitle] = useState('')
-  const [editContent, setEditContent] = useState('')
-  const [snippetToEdit, setSnippetToEdit] = useState()
-  const [edit, setEdit] = useState(false)
-  const cmRef = useRef()
+  const [snippetTitle, setSnippetTitle] = useState("");
+  const [editTitle, setEditTitle] = useState("");
+  const [editContent, setEditContent] = useState("");
+  const [snippetToEdit, setSnippetToEdit] = useState();
+  const [edit, setEdit] = useState(false);
+  const cmRef = useRef();
 
   const classes = useStyles();
   // @ts-ignore
@@ -134,13 +142,13 @@ export const ArticleSnippets = (props: any) => {
   const fetchArticleSnippets = async (ids: number[]) => {
     setLoading(true);
     const res = await getArticleSnippets(ids);
-    dispatch({ type: 'SET_SNIPPETS', payload: res });
+    dispatch({ type: "SET_SNIPPETS", payload: res });
     setLoading(false);
   };
 
   useEffect(() => {
     if (topics.data[selectedTopic].article_snippets) {
-      setPageTitle(`${topics.data[selectedTopic].title} | Snippets`)
+      setPageTitle(`${topics.data[selectedTopic].title} | Snippets`);
       fetchArticleSnippets(topics.data[selectedTopic].article_snippets);
     }
   }, [selectedTopic, topics.data]);
@@ -150,83 +158,85 @@ export const ArticleSnippets = (props: any) => {
   };
 
   const onChangeSnippetTitle = (val) => {
-    setSnippetTitle(val)
-  }
+    setSnippetTitle(val);
+  };
 
   const onChangeSnippetEditTitle = (val) => {
-    setEditTitle(val)
-  }
+    setEditTitle(val);
+  };
 
   const codeMirrorHandle = (cm) => {
-    cmRef.current = cm
-  }
+    cmRef.current = cm;
+  };
 
   const onCreateSnippet = async () => {
     try {
-        if (cmRef.current) {
-          // @ts-ignore
-          const snippetValue = cmRef.current.getValue()
-          if (snippetValue) {
-            const newSnippet: NewArticleSnippet = {
-              title: snippetTitle,
-              content: snippetValue,
-              origin: 'TIGUM',
-              topic_id: topics.data[selectedTopic].id,
-            };
-            const res = await createArticleSnippet(newSnippet);
-            dispatch({ type: 'ADD_SNIPPET', payload: res });
-            toggleModal();
-          }
+      if (cmRef.current) {
+        // @ts-ignore
+        const snippetValue = cmRef.current.getValue();
+        if (snippetValue) {
+          const newSnippet: NewArticleSnippet = {
+            title: snippetTitle,
+            content: snippetValue,
+            origin: "TIGUM",
+            topic_id: topics.data[selectedTopic].id,
+          };
+          const res = await createArticleSnippet(newSnippet);
+          dispatch({ type: "ADD_SNIPPET", payload: res });
+          toggleModal();
         }
+      }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   const onEditSnippet = async () => {
     if (cmRef.current) {
       // @ts-ignore
-      const snippetValue = cmRef.current.getValue()
+      const snippetValue = cmRef.current.getValue();
       if (snippetValue) {
         const editedSnippet: NewArticleSnippet = {
           // @ts-ignore
           id: snippetToEdit.id,
           title: editTitle,
           content: snippetValue,
-          origin: 'TIGUM',
+          origin: "TIGUM",
           topic_id: topics.data[selectedTopic].id,
         };
         const res = await updateArticleSnippet(editedSnippet);
         dispatch({ type: UPDATE_SNIPPET, payload: res });
-        toggleEdit()
+        toggleEdit();
       }
     }
-  }
+  };
 
   const onEditOpen = (snippet) => {
-    setEditTitle(snippet.title)
-    setEditContent(snippet.content)
-    setSnippetToEdit(snippet)
-    toggleEdit()
-  }
+    setEditTitle(snippet.title);
+    setEditContent(snippet.content);
+    setSnippetToEdit(snippet);
+    toggleEdit();
+  };
 
   const toggleEdit = () => {
-    setEdit(!edit)
-  }
+    setEdit(!edit);
+  };
 
   return (
-    <div className='ph2 mt4 pt3'>
+    <div className="ph2 mt4 pt3">
       {edit && (
         <Modal
-          title='Edit snippet'
-          buttonText='Edit Snippet'
-          actions={[{
-            action: onEditSnippet,
-            text: 'Edit Snippet',
-            textColor: "white",
-            btnColor: "blue",
-            position: "white"
-          }]}
+          title="Edit snippet"
+          buttonText="Edit Snippet"
+          actions={[
+            {
+              action: onEditSnippet,
+              text: "Edit Snippet",
+              textColor: "white",
+              btnColor: "blue",
+              position: "white",
+            },
+          ]}
           display={edit}
           onClickAction={onEditSnippet}
           toggleModal={toggleEdit}
@@ -237,47 +247,53 @@ export const ArticleSnippets = (props: any) => {
             codeMirrorHandle={codeMirrorHandle}
             spellChecker={false}
             useHighlightJS
-            highlightTheme='agate'
+            highlightTheme="agate"
             theme={theme}
             title={editTitle}
             onEditTitle={onChangeSnippetEditTitle}
             autoFocusEditTitle={true}
           />
-      </Modal>
+        </Modal>
       )}
       {createSnippetModalOpen && (
         <Modal
-          title='Create snippet'
-          buttonText='Create Snippet'
-          actions={[{
-            action: onEditSnippet,
-            text: 'Edit Snippet',
-            textColor: "white",
-            btnColor: "blue",
-            position: "white"
-          }]}
+          title="Create snippet"
+          buttonText="Create Snippet"
+          actions={[
+            {
+              action: onEditSnippet,
+              text: "Edit Snippet",
+              textColor: "white",
+              btnColor: "blue",
+              position: "white",
+            },
+          ]}
           display={createSnippetModalOpen}
           onClickAction={onCreateSnippet}
           toggleModal={toggleModal}
         >
-            <MarkdownEditor
-              initialValue={''}
-              onSave={onCreateSnippet}
-              codeMirrorHandle={codeMirrorHandle}
-              spellChecker={false}
-              useHighlightJS
-              highlightTheme='agate'
-              theme={theme}
-              title={''}
-              onEditTitle={onChangeSnippetTitle}
-              autoFocusEditTitle={true}
-            />
+          <MarkdownEditor
+            initialValue={""}
+            onSave={onCreateSnippet}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            useHighlightJS
+            highlightTheme="agate"
+            theme={theme}
+            title={""}
+            onEditTitle={onChangeSnippetTitle}
+            autoFocusEditTitle={true}
+          />
         </Modal>
       )}
-      <NewButton onClick={toggleModal} text='New Snippet' />
+      <NewButton onClick={toggleModal} text="New Snippet" />
       <FeedbackButton />
       <div className={classes.snippetsContainer}>
-        <Snippets snippets={article_snippets} loading={loading} onEdit={onEditOpen} />
+        <Snippets
+          snippets={article_snippets}
+          loading={loading}
+          onEdit={onEditOpen}
+        />
       </div>
     </div>
   );

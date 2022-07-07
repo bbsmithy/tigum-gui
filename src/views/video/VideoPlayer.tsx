@@ -185,7 +185,6 @@ const DesktopLayout = ({
 
   useEffect(() => {
     if (video && video.id !== vidIDRef.current) {
-      debugger;
       const videoId = video.iframe.split("?")[0].slice(30);
       const iframeContainer =
         document.getElementById("desktop-vid").parentElement;
@@ -201,7 +200,6 @@ const DesktopLayout = ({
       });
       playerHandle(playerRef.current);
       vidIDRef.current = videoId;
-      debugger;
     }
   }, [video]);
 

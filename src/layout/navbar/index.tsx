@@ -256,9 +256,11 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
         <div className={classes.titleTextContainer}>
           <h2 id="topic-header">{title}</h2>
         </div>
-        <div className={classes.optionsButtonContainer}>
-          <OptionsButton options={topicMenuOptions} />
-        </div>
+        {!displayMobileNavOptions && (
+          <div className={classes.optionsButtonContainer}>
+            <OptionsButton options={topicMenuOptions} />
+          </div>
+        )}
       </div>
       {showSearch && (
         <div className={classes.searchBarContainer}>

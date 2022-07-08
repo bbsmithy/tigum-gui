@@ -729,3 +729,25 @@ export const giveFeedback = async (feedback: String) => {
     throw err;
   }
 };
+
+export const setPublishStatusResource = async (
+  type: String,
+  id: number,
+  publish_flag: boolean
+) => {
+  try {
+    const res = await fetch(
+      `${BASE_API_URL}/${type}/publish/${id}/${publish_flag}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    return await res.json();
+  } catch (err) {
+    throw err;
+  }
+};

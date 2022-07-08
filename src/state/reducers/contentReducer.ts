@@ -8,7 +8,7 @@ import {
   deleteTopic,
   deleteVideo,
   notesToKeys,
-} from '../StateHelpers';
+} from "../StateHelpers";
 
 import {
   FETCHING_TOPICS,
@@ -20,6 +20,7 @@ import {
   UPDATE_SNIPPET,
   ADD_SNIPPET,
   SET_NOTES,
+  UPDATE_NOTE,
   ADD_NOTE,
   SET_VIDEOS,
   ADD_VIDEO,
@@ -33,7 +34,7 @@ import {
   DELETE_VIDEO,
   DISPLAY_NOTIFICATION,
   HIDE_NOTIFICATION,
-} from '../ActionTypes';
+} from "../ActionTypes";
 
 const ContentReducer = (state: any, action: any) => {
   switch (action.type) {
@@ -94,17 +95,24 @@ const ContentReducer = (state: any, action: any) => {
       };
     }
     case UPDATE_SNIPPET: {
-      const newArticleSnippets = state.article_snippets
-      const snippetToUpdateIndex = state.article_snippets.findIndex((snippet) => snippet.id === action.payload.id)
-      newArticleSnippets[snippetToUpdateIndex] = action.payload
+      const newArticleSnippets = state.article_snippets;
+      const snippetToUpdateIndex = state.article_snippets.findIndex(
+        (snippet) => snippet.id === action.payload.id
+      );
+      newArticleSnippets[snippetToUpdateIndex] = action.payload;
       return {
         ...state,
-        article_snippets: newArticleSnippets
-      }
+        article_snippets: newArticleSnippets,
+      };
     }
     case SET_NOTES: {
       const { data, keys } = notesToKeys(action.payload);
       return { ...state, notes: { data, keys } };
+    }
+    case UPDATE_NOTE: {
+      const newState = state;
+      newState.notes.data[action.payload.id] = action.payload;
+      return newState;
     }
     case ADD_NOTE: {
       const { updatedNotesData, updatedTopicWithNoteId } = addNote(

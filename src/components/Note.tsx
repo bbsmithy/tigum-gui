@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { getDate, goto } from "../util";
 import { createUseStyles } from "react-jss";
 import PublishedBadge from "./PublishedBadge";
 import { OptionsButton } from "./OptionsButton";
+import { setPublishStatusResource } from "../clib/api";
+import { useStateValue } from "../state/StateProvider";
+import { UPDATE_NOTE } from "../state/ActionTypes";
 
 const useStyles = createUseStyles({
   noteTitle: {
@@ -46,6 +49,11 @@ const useStyles = createUseStyles({
 export const Note = (props: any) => {
   const classes = useStyles();
 
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+
+  const [uploadingNote, setUploadingNote] = useState(false);
+
   const navigateToNote = () => {
     goto(`${window.location.pathname}/${props.note.id}`);
   };
@@ -55,17 +63,43 @@ export const Note = (props: any) => {
     return getDate(dateText);
   };
 
+  const unpublish = async () => {
+    try {
+      const updatedNote = await setPublishStatusResource(
+        "notes",
+        props.note.id,
+        false
+      );
+      dispatch({ type: UPDATE_NOTE, payload: updatedNote });
+    } catch (err) {
+      console.log("err: ", err);
+    }
+  };
+
+  const publish = async () => {
+    try {
+      const updatedNote = await setPublishStatusResource(
+        "notes",
+        props.note.id,
+        true
+      );
+      dispatch({ type: UPDATE_NOTE, payload: updatedNote });
+    } catch (err) {
+      console.log("err: ", err);
+    }
+  };
+
   const PUBLISHED_OPTIONS = [
     {
       title: "Unpublish",
-      onClick: () => {},
+      onClick: unpublish,
       icon: "fas fa-download",
     },
     { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
   ];
 
   const UNPUBLISHED_OPTIONS = [
-    { title: "Publish", onClick: () => {}, icon: "fas fa-upload" },
+    { title: "Publish", onClick: publish, icon: "fas fa-upload" },
     { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
   ];
 

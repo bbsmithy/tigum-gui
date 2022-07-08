@@ -1,4 +1,4 @@
-import { Topic, Video, Note } from '../clib/models';
+import { Topic, Video, Note } from "../clib/models";
 
 export const topicsToKeys = (topics: Array<Topic>) => {
   const keys = [];
@@ -8,7 +8,7 @@ export const topicsToKeys = (topics: Array<Topic>) => {
       keys.push(topic.id);
       data[topic.id] = topic;
     });
-  
+
     return { data, keys };
   } else {
     return { data: {}, keys: [] };
@@ -29,7 +29,7 @@ export const notesToKeys = (notes: Array<Note>) => {
     keys.unshift(n.id);
     data[n.id] = n;
   });
-  return { data, keys};
+  return { data, keys };
 };
 
 export const addNote = (note: any, state: any) => {

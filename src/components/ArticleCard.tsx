@@ -37,7 +37,7 @@ const useStyles = createUseStyles({
     overflow: "hidden",
   },
   deleteBtn: {
-    borderRadius: 3,
+    borderRadius: 5,
     border: "none",
     backgroundColor: "#dc3545",
     color: "white",
@@ -48,7 +48,7 @@ const useStyles = createUseStyles({
     cursor: "pointer",
   },
   editBtn: {
-    borderRadius: 3,
+    borderRadius: 5,
     border: "none",
     backgroundColor: "#246bf8",
     fontFamily: "Montserrat, sans-serif",
@@ -127,9 +127,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
         }}
       >
         <div>
-          {props.title && <h2 className={classes.title}>{props.title}</h2>}
+          {props.title && (
+            <h2 className={classes.title}>
+              {props.published && <PublishedBadge />} {props.title}
+            </h2>
+          )}
         </div>
-        <div>{props.published && <PublishedBadge />}</div>
       </div>
 
       <div
@@ -147,8 +150,18 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
           )}
         </div>
         <div className={classes.btnsConatiner}>
+          {props.published ? (
+            <button className={classes.editBtn} onClick={onEditSnippet}>
+              <i className="fas fa-download" /> Unpublish
+            </button>
+          ) : (
+            <button className={classes.editBtn} onClick={onEditSnippet}>
+              <i className="fas fa-upload" /> Publish
+            </button>
+          )}
+
           <button className={classes.editBtn} onClick={onEditSnippet}>
-            <i className="fa fa-trash" /> Edit
+            <i className="fa fa-edit" /> Edit
           </button>
           <button className={classes.deleteBtn} onClick={deleteSnippet}>
             <i className="fa fa-trash" /> Delete

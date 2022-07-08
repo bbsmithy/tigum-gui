@@ -36,6 +36,8 @@ const useStyles = createUseStyles({
   },
   videoCardTextContent: {
     flex: 2,
+    display: "flex",
+    flexDirection: "column",
     margin: "0px 10px 0px 10px",
     "@media (max-width: 1196px)": {
       height: "100%",
@@ -47,7 +49,6 @@ const useStyles = createUseStyles({
     color: "#bfbfbf",
     fontSize: 12,
     fontStyle: "italic",
-    marginBottom: 10,
     textOverflow: "ellipsis",
     /* Required for text-overflow to do anything */
     whiteSpace: "nowrap",
@@ -57,16 +58,6 @@ const useStyles = createUseStyles({
   },
 });
 
-const PUBLISHED_OPTIONS = [
-  { title: "Unpublish", onClick: () => {}, icon: null },
-  { title: "Delete", onClick: () => {}, icon: null },
-];
-
-const UNPUBLISHED_OPTIONS = [
-  { title: "Unpublish", onClick: () => {}, icon: null },
-  { title: "Delete", onClick: () => {}, icon: null },
-];
-
 const VideoCard = (props: any) => {
   const classes = useStyles();
 
@@ -74,10 +65,21 @@ const VideoCard = (props: any) => {
     props.onClick({ title: props.title, iframe: props.iframe, id: props.id });
   };
 
-  const onContextMenu = (e) => {
-    e.preventDefault();
-    alert("YEE");
-  };
+  const onContextMenu = (e) => {};
+
+  const PUBLISHED_OPTIONS = [
+    {
+      title: "Unpublish",
+      onClick: () => {},
+      icon: "fas fa-download",
+    },
+    { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
+  ];
+
+  const UNPUBLISHED_OPTIONS = [
+    { title: "Publish", onClick: () => {}, icon: "fas fa-upload" },
+    { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
+  ];
 
   const renderDate = () => {
     const dateText = new Date(props.date_updated);
@@ -97,31 +99,40 @@ const VideoCard = (props: any) => {
         onClick={onSelect}
         onContextMenu={onContextMenu}
       >
-        <div style={{ flex: 1, height: 90 }}>
+        <div style={{ flex: 1, height: 100 }}>
           <img
             src={props.thumbnail_img}
             className={`${classes.videoCardImage}`}
           />
         </div>
         <div className={classes.videoCardTextContent}>
-          <h6 className={`white ${classes.videoCardTitle}`}>{title}</h6>
-          <div style={{ display: "flex", marginTop: 10 }}>
-            <div className={`${classes.subTitle} white`}>{renderDate()}</div>
-            {props.published && <PublishedBadge />}
+          <div style={{ flex: 3 }}>
+            <h6 className={`white ${classes.videoCardTitle}`}>
+              {props.published && <PublishedBadge style={{ fontSize: 16 }} />}{" "}
+              {title}
+            </h6>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              marginTop: 10,
+              flex: 3,
+              alignItems: "center",
+            }}
+          >
+            <div style={{ flex: 8, alignItems: "center" }}>
+              <div className={`${classes.subTitle} white`}>{renderDate()}</div>
+            </div>
+            <div style={{ flex: 2, color: "#333" }}>
+              <OptionsButton
+                options={
+                  props.published ? PUBLISHED_OPTIONS : UNPUBLISHED_OPTIONS
+                }
+              />
+            </div>
           </div>
         </div>
       </article>
-      <div
-        style={{
-          position: "absolute",
-          bottom: 15,
-          right: 10,
-        }}
-      >
-        <OptionsButton
-          options={props.published ? PUBLISHED_OPTIONS : UNPUBLISHED_OPTIONS}
-        />
-      </div>
     </div>
   );
 };

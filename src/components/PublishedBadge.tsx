@@ -2,17 +2,17 @@ import React from "react";
 import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles({
-  badge: {
-    fontSize: 12,
-    color: "#bfbfbf",
-    marginLeft: 12,
-  },
+  badge: { color: "#39ff14" },
 });
 
-const PublishedBadge = () => {
+const PublishedBadge = ({ style }: { style?: any }) => {
   const classes = useStyles();
 
-  return <div className={classes.badge}>✅ Published</div>;
+  return (
+    <span className={classes.badge} style={style}>
+      ●
+    </span>
+  );
 };
 
 export default PublishedBadge;

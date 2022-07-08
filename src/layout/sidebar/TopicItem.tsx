@@ -2,6 +2,7 @@ import React from "react";
 import { getDate } from "../../util";
 import { Topic } from "../../clib/models";
 import { createUseStyles } from "react-jss";
+import PublishedBadge from "../../components/PublishedBadge";
 
 interface TopicItemProps {
   topic: Topic;
@@ -19,9 +20,9 @@ const useStyles = createUseStyles({
   },
   topicItemSelected: {
     borderRight: "7px solid #246bf8",
-    borderTop: "1px solid gray",
-    borderBottom: "1px solid gray",
-    borderLeft: "1px solid gray",
+    borderTop: "1px solid #d3d3d3",
+    borderBottom: "1px solid #d3d3d3",
+    borderLeft: "1px solid #d3d3d3",
     boxShadow: "2px 2px 1px 0px rgb(0 0 0 / 75%)",
   },
 });
@@ -52,15 +53,12 @@ export const TopicItem = ({
       onClick={onSelect}
     >
       <div className="topic-item-name-container">
-        <span className={classes.topicTitle}>{topic.title}</span>
+        <span className={classes.topicTitle}>
+          {topic.published && <PublishedBadge />} {topic.title}
+        </span>
       </div>
 
       <i className="topic-item-date">{renderDate()}</i>
-      {topic?.published && (
-        <div style={{ fontSize: 12, color: "#bfbfbf", flex: 5, marginTop: 10 }}>
-          ✅ Published
-        </div>
-      )}
     </div>
   );
 };

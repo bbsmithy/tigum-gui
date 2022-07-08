@@ -1,5 +1,6 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
+import { OptionsButton } from "./OptionsButton";
 import PublishedBadge from "./PublishedBadge";
 
 const useStyles = createUseStyles({
@@ -17,7 +18,6 @@ const useStyles = createUseStyles({
   documentSubTitle: {
     color: "gray",
     fontSize: 12,
-    fontStyle: "italic",
     display: "block",
     marginBottom: 10,
   },
@@ -30,18 +30,43 @@ export const LinkCard = (props: any) => {
     window.open(props.link.source, "blank");
   };
 
+  const PUBLISHED_OPTIONS = [
+    {
+      title: "Unpublish",
+      onClick: () => {},
+      icon: "fas fa-download",
+    },
+    { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
+  ];
+
+  const UNPUBLISHED_OPTIONS = [
+    { title: "Publish", onClick: () => {}, icon: "fas fa-upload" },
+    { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
+  ];
+
   return (
     <div className="fl w-100 w-50-m w-33-l ph2 pv1">
       <div onClick={onClick} className="card link-card pointer w-100">
         <div className="mw9 center">
           <div className="cf ph2-ns">
-            <div className="fl ph2 w-90 pv1">
-              <div>
+            <div className="fl ph2 w-100 pv1">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  position: "relative",
+                }}
+              >
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    flex: 19,
                   }}
                 >
                   <img
@@ -52,29 +77,30 @@ export const LinkCard = (props: any) => {
                   />
                   <h4 className={classes.documentTitle}>{props.link.title}</h4>
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div
-                    style={{
-                      flex: 4,
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <b className={classes.documentSubTitle}>
-                      {props.link.source}
-                    </b>
-                  </div>
-                  <div style={{ flex: 2 }}>
-                    {props.link.published && <PublishedBadge />}
-                  </div>
+                <div style={{ flex: 1, color: "#333" }}>
+                  <OptionsButton
+                    options={
+                      props.link.published
+                        ? PUBLISHED_OPTIONS
+                        : UNPUBLISHED_OPTIONS
+                    }
+                  />
                 </div>
+              </div>
+              <div
+                style={{
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  width: "90%",
+                }}
+              >
+                <span className={classes.documentSubTitle}>
+                  {props.link.published && (
+                    <PublishedBadge style={{ marginRight: 5, fontSize: 16 }} />
+                  )}
+                  {props.link.source}
+                </span>
               </div>
             </div>
           </div>

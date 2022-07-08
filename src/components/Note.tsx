@@ -35,6 +35,7 @@ const useStyles = createUseStyles({
   noteTitleContainer: {
     flex: 9,
     padding: "5px 15px",
+    maxWidth: 320,
   },
   optionsButtonContainer: {
     flex: 2,
@@ -77,7 +78,7 @@ export const Note = (props: any) => {
               <h4 className={classes.noteTitle}>
                 {props.note.published && <PublishedBadge />} {props.note.title}
               </h4>
-              <div style={{ display: "flex" }}>
+              <div>
                 <b className={classes.noteSubTitle}>{renderDate()}</b>
               </div>
             </div>

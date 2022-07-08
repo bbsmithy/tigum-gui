@@ -35,7 +35,7 @@ const useStyles = createUseStyles({
   noteTitleContainer: {
     flex: 9,
     padding: "5px 15px",
-    maxWidth: 320,
+    width: 280,
   },
   optionsButtonContainer: {
     flex: 2,

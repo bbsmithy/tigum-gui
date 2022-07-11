@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { TopicNavigationBar } from '../navbar';
-import { MainRouter, SCREENS } from '../../routers/MainRouter';
-import { getTopics, createTopic } from '../../clib/api';
-import { SideBar } from '../sidebar';
-import { Button, Modal } from '../../components';
-import { useStateValue } from '../../state/StateProvider';
-import { createUseStyles } from 'react-jss';
-import { resourceTypeToScreen } from '../../util';
-import { useReactPath } from '../../hooks';
+import React, { useState, useEffect } from "react";
+import { TopicNavigationBar } from "../navbar";
+import { MainRouter, SCREENS } from "../../routers/MainRouter";
+import { getTopics, createTopic } from "../../clib/api";
+import { SideBar } from "../sidebar";
+import { Button, Modal } from "../../components";
+import { useStateValue } from "../../state/StateProvider";
+import { createUseStyles } from "react-jss";
+import { resourceTypeToScreen } from "../../util";
+import { useReactPath } from "../../hooks";
 import {
   SET_SELECTED_RESOURCE,
   FULL_SCREEN,
@@ -18,21 +18,21 @@ import {
   SET_TOPICS_FAILURE,
   HIDE_SIDEBAR,
   SHOW_SIDEBAR,
-} from '../../state/ActionTypes';
-import Notification from '../../components/Notification';
+} from "../../state/ActionTypes";
+import Notification from "../../components/Notification";
 
 const useStyles = createUseStyles({
   topicContainer: {
-    height: '100%',
-    position: "relative"
+    height: "100%",
+    position: "relative",
   },
   notFoundContainer: {
-    width: '100%',
-    marginTop: '20%',
-    textAlign: 'center',
+    width: "100%",
+    marginTop: "20%",
+    textAlign: "center",
   },
   couldNotFindTopic: {
-    color: 'white',
+    color: "white",
   },
 });
 
@@ -49,7 +49,7 @@ const TopicNotFound = () => {
 
 export const MainContent = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [topicTitle, setTopicTitle] = useState('');
+  const [topicTitle, setTopicTitle] = useState("");
   const path = useReactPath();
   const classes = useStyles();
 
@@ -67,7 +67,7 @@ export const MainContent = (props) => {
   ] = useStateValue();
 
   const topic = data[selectedTopic];
-  const isMobile = window.innerWidth < 960
+  const isMobile = window.innerWidth < 960;
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
@@ -82,7 +82,7 @@ export const MainContent = (props) => {
       dispatch({ type: SET_TOPICS_FAILURE });
     }
   };
-  
+
   const handleLocationChange = (path) => {
     const pathVars = path.split(/\//);
     const topicId = Number(pathVars[2]);
@@ -94,11 +94,11 @@ export const MainContent = (props) => {
     }
     if (pathVars.length === 4) {
       const newTopicScreen = resourceTypeToScreen(resourceType);
-      dispatch({ type: "SHOW_TOPIC_NAVBAR", payload: true })
+      dispatch({ type: "SHOW_TOPIC_NAVBAR", payload: true });
       if (isMobile) {
-        dispatch({ type: HIDE_SIDEBAR, payload: { useFullWidth: true } })
+        dispatch({ type: HIDE_SIDEBAR, payload: { useFullWidth: true } });
       } else {
-        dispatch({ type: SHOW_SIDEBAR, payload: { useFullWidth: false } })
+        dispatch({ type: SHOW_SIDEBAR, payload: { useFullWidth: false } });
       }
       dispatch({
         type: SET_TOPIC_SCREEN,
@@ -107,12 +107,12 @@ export const MainContent = (props) => {
     } else if (pathVars.length === 5) {
       dispatch({ type: SET_SELECTED_RESOURCE, payload: resourceId });
       dispatch({ type: FULL_SCREEN, payload: true });
-      if (resourceType === 'videos') {
+      if (resourceType === "videos") {
         dispatch({
           type: SET_TOPIC_SCREEN,
           payload: SCREENS.VIDEO_PLAYER,
         });
-      } else if (resourceType === 'notes') {
+      } else if (resourceType === "notes") {
         dispatch({
           type: SET_TOPIC_SCREEN,
           payload: SCREENS.VIEW_NOTE,
@@ -122,7 +122,7 @@ export const MainContent = (props) => {
   };
 
   useEffect(() => {
-    console.log("path: ", path)
+    console.log("path: ", path);
     handleLocationChange(path);
   }, [path]);
 
@@ -146,17 +146,27 @@ export const MainContent = (props) => {
     setTopicTitle(e.currentTarget.value);
   };
 
-  const actions = [{ text: "Create", action: () => {onClickCreateTopic()}, textColor: "white", "btnColor": "blue", position: 'right' }]
+  const actions = [
+    {
+      text: "Create",
+      action: () => {
+        onClickCreateTopic();
+      },
+      textColor: "white",
+      btnColor: "#246bf8",
+      position: "right",
+    },
+  ];
 
   return (
-    <div id='main-content'>
+    <div id="main-content">
       <SideBar screen={topicScreen} toggleModal={toggleModal} />
       <div
         style={{
-          width: showSidebar && !useFullWidth ? '80%' : '100%',
-          position: 'absolute',
-          left: showSidebar && !useFullWidth ? '20%' : '0%',
-          height: "100%"
+          width: showSidebar && !useFullWidth ? "80%" : "100%",
+          position: "absolute",
+          left: showSidebar && !useFullWidth ? "20%" : "0%",
+          height: "100%",
         }}
       >
         {topic && (
@@ -171,16 +181,26 @@ export const MainContent = (props) => {
         )}
         {!topic && !loading && keys.length > 0 && <TopicNotFound />}
         {!topic && !loading && keys.length === 0 && (
-          <div className='no-resources-message mt-1'>
-              <div style={{marginBottom: 12}}>Welcome to Tigum 🎉🥂</div>
-              <div style={{ fontSize: 17, marginTop: 70, maxWidth: 600, margin: "auto", lineHeight: 1.3, marginBottom: 10 }}>
-                  Thanks for joing the beta programme! I will be emailing you about Tigums progress weekly,
-                  and you can email me with bug reports or feature suggestions any time at briansmith.work578@gmail.com
-              </div>
-              <div style={{ fontSize: 12, fontStyle: "italic"}}>
-                Founder and Creator of Tigum - Brian Smith
-              </div>
-              <Button buttonText="Create Topic" onClickAction={toggleModal} />
+          <div className="no-resources-message mt-1">
+            <div style={{ marginBottom: 12 }}>Welcome to Tigum 🎉🥂</div>
+            <div
+              style={{
+                fontSize: 17,
+                marginTop: 70,
+                maxWidth: 600,
+                margin: "auto",
+                lineHeight: 1.3,
+                marginBottom: 10,
+              }}
+            >
+              Thanks for joing the beta programme! I will be emailing you about
+              Tigums progress weekly, and you can email me with bug reports or
+              feature suggestions any time at briansmith.work578@gmail.com
+            </div>
+            <div style={{ fontSize: 12, fontStyle: "italic" }}>
+              Founder and Creator of Tigum - Brian Smith
+            </div>
+            <Button buttonText="Create Topic" onClickAction={toggleModal} />
           </div>
         )}
       </div>
@@ -189,13 +209,13 @@ export const MainContent = (props) => {
         toggleModal={toggleModal}
         actions={actions}
         actionDisabled={!topicTitle}
-        buttonText='Create'
-        title='Create Topic'
+        buttonText="Create"
+        title="Create Topic"
       >
         <input
-          type='text'
-          placeholder='Enter Topic Title'
-          id='topic-title-input'
+          type="text"
+          placeholder="Enter Topic Title"
+          id="topic-title-input"
           value={topicTitle}
           onChange={onChangeTitle}
         />

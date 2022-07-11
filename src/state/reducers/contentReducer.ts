@@ -6,6 +6,7 @@ import {
   addVideo,
   addLink,
   deleteTopic,
+  deleteResource,
   deleteVideo,
   notesToKeys,
 } from "../StateHelpers";
@@ -34,6 +35,8 @@ import {
   DELETE_VIDEO,
   DISPLAY_NOTIFICATION,
   HIDE_NOTIFICATION,
+  DELETE_LINK,
+  DELETE_NOTE,
 } from "../ActionTypes";
 
 const ContentReducer = (state: any, action: any) => {
@@ -131,6 +134,25 @@ const ContentReducer = (state: any, action: any) => {
         },
       };
     }
+    case DELETE_NOTE: {
+      const { updatedResourceData, updatedTopic } = deleteResource(
+        action.payload.id,
+        action.payload.topic_id,
+        "notes",
+        state
+      );
+      return {
+        ...state,
+        notes: { data: updatedResourceData, keys: updatedTopic.notes },
+        topics: {
+          ...state.topics,
+          data: {
+            [action.payload.topic_id]: updatedTopic,
+            ...state.topics.data,
+          },
+        },
+      };
+    }
     case SET_VIDEOS: {
       const videos = videosToKey(action.payload);
       return { ...state, videos };
@@ -160,7 +182,7 @@ const ContentReducer = (state: any, action: any) => {
       );
       return {
         ...state,
-        videos: { data: updatedVideoData },
+        videos: { data: updatedVideoData, keys: updatedTopic.videos },
         topics: {
           ...state.topics,
           data: {
@@ -206,7 +228,6 @@ const ContentReducer = (state: any, action: any) => {
       const updatedTopicWithLink = addLink(id, topic_id, state);
       return {
         ...state,
-        codes: [action.payload, ...state.links],
         topics: {
           ...state.topics,
           data: {
@@ -214,6 +235,11 @@ const ContentReducer = (state: any, action: any) => {
             ...state.topics.data,
           },
         },
+      };
+    }
+    case DELETE_LINK: {
+      return {
+        ...state,
       };
     }
     case DISPLAY_NOTIFICATION: {

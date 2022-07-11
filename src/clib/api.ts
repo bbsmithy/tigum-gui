@@ -561,6 +561,21 @@ export const createLink = async (newLink: NewLink) => {
   }
 };
 
+export const deleteLink = async (id: number) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/links/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
 export const loginUser = async (email: string, password: string) => {
   try {
     return await fetch(`${BASE_API_URL}/user/login`, {

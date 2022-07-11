@@ -1,4 +1,8 @@
-import { DISPLAY_NOTIFICATION, HIDE_NOTIFICATION } from './ActionTypes';
+import {
+  DELETE_LINK,
+  DISPLAY_NOTIFICATION,
+  HIDE_NOTIFICATION,
+} from "./ActionTypes";
 
 export const notify = (dispatch, message, variant, position) => {
   dispatch({
@@ -11,3 +15,8 @@ export const notify = (dispatch, message, variant, position) => {
     });
   }, 2000);
 };
+
+export const deleteLinkAction = (id: number) => ({
+  type: DELETE_LINK,
+  payload: id,
+});

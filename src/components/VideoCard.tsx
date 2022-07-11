@@ -3,6 +3,7 @@ import { getDate, truncated } from "../util";
 import { createUseStyles } from "react-jss";
 import PublishedBadge from "./PublishedBadge";
 import { OptionsButton } from "./OptionsButton";
+import { deleteVideo } from "../clib/api";
 
 type VideoCardProps = {
   date_created: string;
@@ -58,14 +59,16 @@ const useStyles = createUseStyles({
   },
 });
 
-const VideoCard = (props: any) => {
+const VideoCard = (props: VideoCardProps) => {
   const classes = useStyles();
 
   const onSelect = () => {
     props.onClick({ title: props.title, iframe: props.iframe, id: props.id });
   };
 
-  const onContextMenu = (e) => {};
+  const del = async () => {
+    props.onDelete(props.id, props.topicId);
+  };
 
   const PUBLISHED_OPTIONS = [
     {
@@ -73,12 +76,12 @@ const VideoCard = (props: any) => {
       onClick: () => {},
       icon: "fas fa-download",
     },
-    { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
+    { title: "Delete", onClick: del, icon: "fas fa-trash" },
   ];
 
   const UNPUBLISHED_OPTIONS = [
     { title: "Publish", onClick: () => {}, icon: "fas fa-upload" },
-    { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
+    { title: "Delete", onClick: del, icon: "fas fa-trash" },
   ];
 
   const renderDate = () => {
@@ -97,7 +100,6 @@ const VideoCard = (props: any) => {
         style={{ display: "flex", flexDirection: "row", overflow: "hidden" }}
         className="br2 video-card w-100 pointer"
         onClick={onSelect}
-        onContextMenu={onContextMenu}
       >
         <div style={{ flex: 1, height: 100 }}>
           <img

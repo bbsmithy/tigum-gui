@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NewButton } from "../../components";
 import { Modal, VideoCard } from "../../components";
-import { createVideo, getVideos } from "../../clib/api";
+import { createVideo, deleteVideo, getVideos } from "../../clib/api";
 import { getVideoTitle } from "../../clib/yt";
 import { getEmbedFromUrl, goto, setPageTitle } from "../../util";
 
@@ -99,8 +99,13 @@ export const AllVideos = (props: any) => {
     goto(`${window.location.pathname}/${video.id}`);
   };
 
-  const onDeleteVideoCard = (id: number, topic_id: number) => {
-    dispatch({ type: DELETE_VIDEO, payload: { id, topic_id } });
+  const onDeleteVideoCard = async (id: number, topic_id: number) => {
+    try {
+      await deleteVideo(id);
+      dispatch({ type: DELETE_VIDEO, payload: { id, topic_id } });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const renderVideoResources = () => {
@@ -155,7 +160,7 @@ export const AllVideos = (props: any) => {
           {
             text: "Create",
             textColor: "white",
-            btnColor: "blue",
+            btnColor: "#246bf8",
             action: createVideoResource,
             position: "right",
           },

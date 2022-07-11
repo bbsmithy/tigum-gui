@@ -23,15 +23,16 @@ const useStyles = createUseStyles({
     position: "fixed",
     top: 0,
     left: 0,
-    width: "45%",
+    width: "50%",
     padding: 2,
     height: "100%",
+    paddingBottom: 200,
   },
   iframeContainer: {
     position: "fixed",
     top: 0,
     right: 0,
-    width: "55%",
+    width: "50%",
     height: "100%",
   },
   iframeMobileContainer: {

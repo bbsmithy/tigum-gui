@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { createUseStyles } from 'react-jss';
-import { NewButton, LinkCard, LoadingCard } from '../../components';
-import { Modal } from '../../components/Modal';
-import { getLinks, createLink } from '../../clib/api';
-import { useStateValue } from '../../state/StateProvider';
-import { NewLink } from '../../clib/models';
-import { setPageTitle } from '../../util';
-import FeedbackButton from '../../components/FeedbackButton';
+import React, { useState, useEffect } from "react";
+import { createUseStyles } from "react-jss";
+import { NewButton, LinkCard, LoadingCard } from "../../components";
+import { Modal } from "../../components/Modal";
+import { getLinks, createLink } from "../../clib/api";
+import { useStateValue } from "../../state/StateProvider";
+import { NewLink } from "../../clib/models";
+import { setPageTitle } from "../../util";
+import FeedbackButton from "../../components/FeedbackButton";
 
 const useStyles = createUseStyles({
   headerLoadingLink: {
-    width: '70%',
+    width: "70%",
     padding: 6,
     marginTop: 10,
-    background: '#efefef',
+    background: "#efefef",
     height: 6,
   },
   dateLoadingLink: {
-    width: '50%',
+    width: "50%",
     padding: 3,
     marginTop: 10,
-    background: '#efefef',
+    background: "#efefef",
     height: 6,
   },
 });
 
 export const Links = (props: any) => {
   const [newLinkModalIsOpen, setNewLinkModalOpen] = useState(false);
-  const [linkTitle, setLinkTitle] = useState('');
-  const [linkSrc, setLinkSrc] = useState('');
+  const [linkTitle, setLinkTitle] = useState("");
+  const [linkSrc, setLinkSrc] = useState("");
   const [loading, setLoading] = useState(true);
   const [creatingLink, setCreatingLink] = useState(false);
-  const [runningAction, setRunningAction] = useState("")
+  const [runningAction, setRunningAction] = useState("");
   const classes = useStyles();
 
   // @ts-ignore
@@ -53,41 +53,42 @@ export const Links = (props: any) => {
   const fetchLinks = async (topic_content: Array<number>) => {
     try {
       const res = await getLinks(topic_content);
-      dispatch({ type: 'SET_LINKS', payload: res });
+      dispatch({ type: "SET_LINKS", payload: res });
       setLoading(false);
     } catch (e) {
-      dispatch({ type: 'SET_LINKS', payload: [] });
+      dispatch({ type: "SET_LINKS", payload: [] });
       setLoading(false);
     }
   };
 
   useEffect(() => {
     if (topic.links.length) {
-      setPageTitle(`${topic.title} | Links`)
+      setPageTitle(`${topic.title} | Links`);
       fetchLinks(topic.links);
     } else {
-      dispatch({ type: 'SET_LINKS', payload: [] });
+      dispatch({ type: "SET_LINKS", payload: [] });
       setLoading(false);
     }
   }, [topic.links]);
 
   const resetAddLink = () => {
-    setLinkTitle('');
-    setLinkSrc('');
+    setLinkTitle("");
+    setLinkSrc("");
   };
 
   const createNewLink = async () => {
     try {
-      setRunningAction("")
+      setRunningAction("");
       setCreatingLink(true);
       const newLink: NewLink = {
         topic_id: selectedTopic,
         source: linkSrc,
         title: linkTitle,
+        favicon_source: "",
       };
       const res = await createLink(newLink);
-      dispatch({ type: 'ADD_LINK', payload: res });
-      setRunningAction("")
+      dispatch({ type: "ADD_LINK", payload: res });
+      setRunningAction("");
       toggleModal();
       resetAddLink();
     } catch (e) {
@@ -106,7 +107,9 @@ export const Links = (props: any) => {
   const renderLinks = () => {
     if (!loading) {
       if (links.length) {
-        return links.map((link: any) => <LinkCard link={link} key={link.id} />);
+        return links.map((link: any, index: number) => (
+          <LinkCard link={link} key={link.id} index={index} />
+        ));
       } else {
         return renderNoLinks();
       }
@@ -117,43 +120,45 @@ export const Links = (props: any) => {
 
   const renderNoLinks = () => {
     return (
-      <div className='no-resources-message'>
-        <i className='fas fa-link' /> <span>No links yet</span>
+      <div className="no-resources-message">
+        <i className="fas fa-link" /> <span>No links yet</span>
       </div>
     );
   };
 
   return (
-    <div className='ph2 mt4 pt3 w-100'>
+    <div className="ph2 mt4 pt3 w-100">
       <FeedbackButton />
-      <NewButton onClick={toggleModal} text='New Link' />
+      <NewButton onClick={toggleModal} text="New Link" />
       {renderLinks()}
       <Modal
-        title='New Link'
+        title="New Link"
         display={newLinkModalIsOpen}
         toggleModal={toggleModal}
-        actions={[{
-          action: createNewLink,
-          text: 'Create Link',
-          textColor: "white",
-          btnColor: "blue",
-          position: "white"
-        }]}
-        buttonText='Create Link'
+        actions={[
+          {
+            action: createNewLink,
+            text: "Create Link",
+            textColor: "white",
+            btnColor: "#246bf8",
+            position: "white",
+          },
+        ]}
+        buttonText="Create Link"
         loadingAction={runningAction}
         onClickAction={createNewLink}
       >
         <input
-          type='text'
-          placeholder='Title'
-          id='topic-title-input'
+          type="text"
+          placeholder="Title"
+          id="topic-title-input"
           value={linkTitle}
           onChange={onChangeTitle}
         />
         <input
-          type='text'
-          placeholder='URL'
-          id='topic-title-input'
+          type="text"
+          placeholder="URL"
+          id="topic-title-input"
           value={linkSrc}
           onChange={onChangeSrc}
         />

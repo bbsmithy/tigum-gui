@@ -1,5 +1,9 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
+import { deleteLink, setPublishStatusResource } from "../clib/api";
+import { deleteLinkAction } from "../state/Actions";
+import { SET_LINKS, UPDATE_NOTE } from "../state/ActionTypes";
+import { useStateValue } from "../state/StateProvider";
 import { OptionsButton } from "./OptionsButton";
 import PublishedBadge from "./PublishedBadge";
 
@@ -26,22 +30,67 @@ const useStyles = createUseStyles({
 export const LinkCard = (props: any) => {
   const classes = useStyles();
 
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+
   const onClick = () => {
     window.open(props.link.source, "blank");
+  };
+
+  const del = async () => {
+    try {
+      const reply = window.confirm(
+        `Are you sure you want to delete this link "${props.link.title}"`
+      );
+      if (reply) {
+        await deleteLink(props.link.id);
+        const newLinksList = state.content.links;
+        delete newLinksList[props.index];
+        dispatch({ type: SET_LINKS, payload: newLinksList });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const unpublish = async () => {
+    try {
+      const updatedNote = await setPublishStatusResource(
+        "links",
+        props.link.id,
+        false
+      );
+      dispatch({ type: UPDATE_NOTE, payload: updatedNote });
+    } catch (err) {
+      console.log("err: ", err);
+    }
+  };
+
+  const publish = async () => {
+    try {
+      const updatedNote = await setPublishStatusResource(
+        "links",
+        props.link.id,
+        true
+      );
+      dispatch({ type: UPDATE_NOTE, payload: updatedNote });
+    } catch (err) {
+      console.log("err: ", err);
+    }
   };
 
   const PUBLISHED_OPTIONS = [
     {
       title: "Unpublish",
-      onClick: () => {},
+      onClick: unpublish,
       icon: "fas fa-download",
     },
-    { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
+    { title: "Delete", onClick: del, icon: "fas fa-trash" },
   ];
 
   const UNPUBLISHED_OPTIONS = [
-    { title: "Publish", onClick: () => {}, icon: "fas fa-upload" },
-    { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
+    { title: "Publish", onClick: publish, icon: "fas fa-upload" },
+    { title: "Delete", onClick: del, icon: "fas fa-trash" },
   ];
 
   return (

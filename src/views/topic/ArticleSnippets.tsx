@@ -233,7 +233,7 @@ export const ArticleSnippets = (props: any) => {
               action: onEditSnippet,
               text: "Edit Snippet",
               textColor: "white",
-              btnColor: "blue",
+              btnColor: "#246bf8",
               position: "white",
             },
           ]}
@@ -264,7 +264,7 @@ export const ArticleSnippets = (props: any) => {
               action: onEditSnippet,
               text: "Edit Snippet",
               textColor: "white",
-              btnColor: "blue",
+              btnColor: "#246bf8",
               position: "white",
             },
           ]}

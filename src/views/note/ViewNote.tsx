@@ -1,71 +1,78 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { MarkdownEditor } from '../../components/MarkdownEditor/lib';
-import { deleteNote, getNotes, updateNote, updateTopicModDate } from '../../clib/api';
-import { deleteImage, getFile, uploadImageandGetPublicUrl, uploadToBucket } from '../../clib/S3';
-import { debounce, goto, setPageTitle } from '../../util';
-import { useStateValue } from '../../state/StateProvider';
-import ResourceDialog from '../../components/ResourceDialog';
-import { notify } from '../../state/Actions';
+import React, { useEffect, useRef, useState } from "react";
+import { MarkdownEditor } from "../../components/MarkdownEditor/lib";
+import {
+  deleteNote,
+  getNotes,
+  updateNote,
+  updateTopicModDate,
+} from "../../clib/api";
+import {
+  deleteImage,
+  getFile,
+  uploadImageandGetPublicUrl,
+  uploadToBucket,
+} from "../../clib/S3";
+import { debounce, goto, setPageTitle } from "../../util";
+import { useStateValue } from "../../state/StateProvider";
+import ResourceDialog from "../../components/ResourceDialog";
+import { notify } from "../../state/Actions";
 import { CursorState } from "../../types";
-import { createUseStyles } from 'react-jss';
+import { createUseStyles } from "react-jss";
 
-import '@toast-ui/editor/dist/toastui-editor.css';
-import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
-
-import { Editor } from '@toast-ui/react-editor';
+import "@toast-ui/editor/dist/toastui-editor.css";
+import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
 
 const theme = {
   toolbar: {
-    background: '#333',
-    color: 'white',
-    activeBtnBackground: '#242020',
-    activeBtnColor: 'white',
-    disabledBtnBackground: 'gray',
-    disabledBtnColor: '#333',
+    background: "#333",
+    color: "white",
+    activeBtnBackground: "#242020",
+    activeBtnColor: "white",
+    disabledBtnBackground: "gray",
+    disabledBtnColor: "#333",
   },
-  preview: { background: '#333', color: 'white' },
-  editor: { background: '#333', color: 'white' },
-  cursorColor: 'white',
-  height: '90vh'
+  preview: { background: "#333", color: "white" },
+  editor: { background: "#333", color: "white" },
+  cursorColor: "white",
+  height: "90vh",
 };
 
 const useStyles = createUseStyles({
   loadingSpinner: {
     fontSize: 40,
-    marginTop: "30%"
+    marginTop: "30%",
   },
   loadingSpinnerContainer: {
     textAlign: "center",
     height: window.innerHeight,
-    width: "100%"
-  }
-})
-
+    width: "100%",
+  },
+});
 
 export const ViewNote = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
-  const [md, setNoteMD] = useState<any>('');
+  const [md, setNoteMD] = useState<any>("");
   const [loadingHTML, setLoadingHTML] = useState(true);
   const [saving, setSaving] = useState(false);
   const [cmdControl, setCMDControl] = useState<CursorState>();
-  const diffCheckerWorkerRef = useRef<Worker>()
-  const cmRef = useRef()
-  const simpleMDERef = useRef()
-  const initialNoteMDRef = useRef<string>()
-  const classes = useStyles()
+  const diffCheckerWorkerRef = useRef<Worker>();
+  const cmRef = useRef();
+  const simpleMDERef = useRef();
+  const initialNoteMDRef = useRef<string>();
+  const classes = useStyles();
   const {
     content: { selectedResourceId, notes, selectedTopic, topics },
   } = state;
   const note = notes.data ? notes.data[selectedResourceId] : false;
   const currentTopic = topics.data ? topics.data[selectedTopic] : false;
-  
+
   const openImageFiles = () => {
-    var input = document.createElement("input")
-    input.setAttribute("type", "file")
-    input.setAttribute("accept", "image/*")
+    var input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
     // add onchange handler if you wish to get the file :)
-    input.id = "image-input-uploader"
+    input.id = "image-input-uploader";
     input.onchange = async (evt) => {
       // @ts-ignore
       var files = evt.target.files; // FileList object
@@ -75,106 +82,106 @@ export const ViewNote = (props: any) => {
           // @ts-ignore
           data: file,
           type: file.type,
-          fileName: file.name.replaceAll(" ", "_")
-        })
+          fileName: file.name.replaceAll(" ", "_"),
+        });
         // @ts-ignore
-        insertNewImageUrl(imageUrl)
-        input.remove()
+        insertNewImageUrl(imageUrl);
+        input.remove();
       } catch (err) {
-        console.log("Error: ", err)
+        console.log("Error: ", err);
       }
-    }
-    input.click()
-  }
+    };
+    input.click();
+  };
 
   const toolbarOptions = [
     {
       name: "home",
-      action: function customFunction(editor){
-        goto(`topic/${selectedTopic}/notes`)
+      action: function customFunction(editor) {
+        goto(`topic/${selectedTopic}/notes`);
       },
       className: "fa fa-home",
       title: "Custom Button",
     },
-    'bold',
-    'italic',
-    'heading',
-    '|',
-    'quote',
-    'ordered-list',
-    'unordered-list',
-    '|',
+    "bold",
+    "italic",
+    "heading",
+    "|",
+    "quote",
+    "ordered-list",
+    "unordered-list",
+    "|",
     {
       name: "resource",
-      action: function customFunction(editor){
-        showReferenceDialog()
+      action: function customFunction(editor) {
+        showReferenceDialog();
       },
       className: "fa fa-book",
       title: "Find Resource",
     },
-    'code',
+    "code",
     {
       name: "latex",
       action: () => {
         // @ts-ignore
-        const cursorPos = cmRef.current.getCursor()
+        const cursorPos = cmRef.current.getCursor();
         if (cmRef.current) {
           // @ts-ignore
-          cmRef.current.replaceRange(`$$\n\n$$`, cursorPos)
+          cmRef.current.replaceRange(`$$\n\n$$`, cursorPos);
           // @ts-ignore
-          cmRef.current.focus()
+          cmRef.current.focus();
           // @ts-ignore
           cmRef.current.setCursor({
             line: cursorPos.line + 1,
-            ch: 0
-          })
+            ch: 0,
+          });
         }
       },
       className: "fas fa-square-root-alt",
-      title: "LaTex"
+      title: "LaTex",
     },
-    'link',
+    "link",
     {
       name: "image",
       action: openImageFiles,
       className: "fa fa-picture-o",
       title: "Upload Image",
     },
-    'table',
-    '|',
-    'preview',
-    'fullscreen',
-    'side-by-side',
-    'guide',
-    '|',
+    "table",
+    "|",
+    "preview",
+    "fullscreen",
+    "side-by-side",
+    "guide",
+    "|",
   ];
 
   useEffect(() => {
     return () => {
       if (cmRef.current) {
         // @ts-ignore
-        const currentMD = cmRef.current.getValue()
+        const currentMD = cmRef.current.getValue();
         if (currentMD !== initialNoteMDRef.current) {
-          save(currentMD)
+          save(currentMD);
         }
       }
       if (diffCheckerWorkerRef.current) {
         // @ts-ignore
-        diffCheckerWorkerRef.current.terminate()
-        diffCheckerWorkerRef.current = null
+        diffCheckerWorkerRef.current.terminate();
+        diffCheckerWorkerRef.current = null;
       }
-    }
+    };
   }, []);
 
   useEffect(() => {
-    setupNote()
-  }, [selectedResourceId])
+    setupNote();
+  }, [selectedResourceId]);
 
   useEffect(() => {
     if (note) {
-      setPageTitle(`${note.title} | ${currentTopic.title}`)
+      setPageTitle(`${note.title} | ${currentTopic.title}`);
     }
-  }, [note])
+  }, [note]);
 
   const setupNote = () => {
     if (!note && notes.keys.length === 0) {
@@ -182,49 +189,49 @@ export const ViewNote = (props: any) => {
     } else {
       getNoteData(note.id);
     }
-    document.addEventListener('keydown', commandListener);
+    document.addEventListener("keydown", commandListener);
     return () => {
-      document.removeEventListener('keydown', commandListener)
-    }
-  }
+      document.removeEventListener("keydown", commandListener);
+    };
+  };
 
   const closeCMDDialog = () => {
-    setCMDControl(null)
-  }
+    setCMDControl(null);
+  };
 
   const commandListener = (event) => {
-    if (event.ctrlKey && event.key === '/') {
+    if (event.ctrlKey && event.key === "/") {
       if (cmRef.current !== undefined) {
-        showReferenceDialog()
+        showReferenceDialog();
       }
-    } else if (event.ctrlKey && event.key === 'i'){
-      openImageFiles()
+    } else if (event.ctrlKey && event.key === "i") {
+      openImageFiles();
     }
-  }
+  };
 
   const insertNewImageUrl = (url) => {
-    let parsedUrl = url.replaceAll(" ", "%20")
+    let parsedUrl = url.replaceAll(" ", "%20");
     // @ts-ignore
-    const cursorPos = cmRef.current.getCursor()
+    const cursorPos = cmRef.current.getCursor();
     // @ts-ignore
-    cmRef.current.replaceRange(`![](${parsedUrl})`, cursorPos)
-  }
+    cmRef.current.replaceRange(`![](${parsedUrl})`, cursorPos);
+  };
 
   const showReferenceDialog = () => {
     // @ts-ignore
-    const absPos = cmRef.current.cursorCoords(true)
+    const absPos = cmRef.current.cursorCoords(true);
     // @ts-ignore
-    const cursorPos = cmRef.current.getCursor()
-    setCMDControl({ absPos, cursorPos })
-  }
+    const cursorPos = cmRef.current.getCursor();
+    setCMDControl({ absPos, cursorPos });
+  };
 
   const getNoteData = async (noteId: number) => {
     try {
-      setLoadingHTML(true)
-      const noteHTML = await getFile(`${noteId}.md`, 'notes');
+      setLoadingHTML(true);
+      const noteHTML = await getFile(`${noteId}.md`, "notes");
       setNoteMD(noteHTML);
       setLoadingHTML(false);
-      initialNoteMDRef.current = noteHTML
+      initialNoteMDRef.current = noteHTML;
     } catch (e) {
       setLoadingHTML(false);
     }
@@ -233,7 +240,7 @@ export const ViewNote = (props: any) => {
   const fetchNotes = async () => {
     try {
       const topicNotes = await getNotes(topics.data[selectedTopic].notes);
-      dispatch({ type: 'SET_NOTES', payload: topicNotes });
+      dispatch({ type: "SET_NOTES", payload: topicNotes });
       getNoteData(selectedResourceId);
     } catch (e) {
       console.log(e);
@@ -242,16 +249,16 @@ export const ViewNote = (props: any) => {
 
   const save = async (MD) => {
     try {
-      notify(dispatch, 'Saving notes', 'progress', 'right');
+      notify(dispatch, "Saving notes", "progress", "right");
       setNoteMD(MD);
-      await uploadToBucket(MD, `${selectedResourceId}.md`, 'notes');
-      await updateTopicModDate(selectedTopic)
+      await uploadToBucket(MD, `${selectedResourceId}.md`, "notes");
+      await updateTopicModDate(selectedTopic);
       setTimeout(
-        () => notify(dispatch, 'Saved successfully', 'success', 'right'),
+        () => notify(dispatch, "Saved successfully", "success", "right"),
         150
       );
     } catch (e) {
-      notify(dispatch, 'Could not upload notes', 'error', 'right');
+      notify(dispatch, "Could not upload notes", "error", "right");
     }
   };
 
@@ -269,9 +276,9 @@ export const ViewNote = (props: any) => {
 
   const onEditTitle = (newTitle) => {
     if (newTitle) {
-      updateNote({ ...note, title: newTitle })
+      updateNote({ ...note, title: newTitle });
     }
-  }
+  };
 
   const onClickDelete = async () => {
     try {
@@ -283,79 +290,87 @@ export const ViewNote = (props: any) => {
   };
 
   const codeMirrorHandle = (cm) => {
-    cmRef.current = cm
+    cmRef.current = cm;
   };
 
   const handleCodeMirrorChanges = debounce((val) => {
-    diffCheckerWorkerRef.current.postMessage(val)
-  }, 1000)
+    diffCheckerWorkerRef.current.postMessage(val);
+  }, 1000);
 
   const autoSaveOnChangeFinished = debounce((val) => {
-    save(val)
-  }, 3500)
+    save(val);
+  }, 3500);
 
   const simpleMdeHandle = (simpleMDE) => {
-    simpleMDERef.current = simpleMDE
+    simpleMDERef.current = simpleMDE;
     if (simpleMDERef.current) {
-      diffCheckerWorkerRef.current = new Worker("./documentDiffListener.js")
+      diffCheckerWorkerRef.current = new Worker("./documentDiffListener.js");
       diffCheckerWorkerRef.current.addEventListener("message", (msg) => {
         switch (msg.data.action) {
           case "DELETE_IMAGES": {
             const deleteImageReqs = msg.data.deletedImageUrls.map((url) => {
-              let fileName = url.replace("https://images-tigum.cellar-c2.services.clever-cloud.com/", "")
-              return deleteImage(fileName)
-            })
-            Promise.all(deleteImageReqs).then((res) => {
-              console.log("Success", res)
-            }).catch((err) => {
-              console.log("Error: ", err)
-            })
-            console.log("received ww urls: ", )
+              let fileName = url.replace(
+                "https://images-tigum.cellar-c2.services.clever-cloud.com/",
+                ""
+              );
+              return deleteImage(fileName);
+            });
+            Promise.all(deleteImageReqs)
+              .then((res) => {
+                console.log("Success", res);
+              })
+              .catch((err) => {
+                console.log("Error: ", err);
+              });
+            console.log("received ww urls: ");
             break;
           }
         }
-      })
+      });
       // @ts-ignore
-      simpleMDERef.current.codemirror.on("changes", () =>  {
+      simpleMDERef.current.codemirror.on("changes", () => {
         // @ts-ignore
-        const val = simpleMDERef.current.value()
-        handleCodeMirrorChanges(val)
-        autoSaveOnChangeFinished(val)
+        const val = simpleMDERef.current.value();
+        handleCodeMirrorChanges(val);
+        autoSaveOnChangeFinished(val);
       });
     }
-  }
+  };
 
   const onClickNote = (evt) => {
-    evt.preventDefault()
-    const el = evt.target
+    evt.preventDefault();
+    const el = evt.target;
     if (el.tagName === "A" && el.href) {
       if (el.href.includes("tigum.io")) {
-        const localUrl = el.href.split("tigum.io")[1]
-        goto(localUrl)
+        const localUrl = el.href.split("tigum.io")[1];
+        goto(localUrl);
       } else {
-        window.open(el.href, "blank")
+        window.open(el.href, "blank");
       }
     }
-  }
+  };
 
   const onDoubleClick = () => {
     // @ts-ignore
     if (simpleMDERef.current && simpleMDERef.current.isPreviewActive()) {
       // @ts-ignore
-      simpleMDERef.current.togglePreview()
+      simpleMDERef.current.togglePreview();
     }
-  }
+  };
 
   if (note) {
     return (
       <div
-        className='z-1 center w-100-m w-70-l w-100' id='view-note-container' 
+        className="z-1 center w-100-m w-70-l w-100"
+        id="view-note-container"
         onClick={onClickNote}
         onDoubleClick={onDoubleClick}
       >
         {loadingHTML && (
           <div className={classes.loadingSpinnerContainer}>
-            <i className={`fas fa-circle-notch fa-spin white ${classes.loadingSpinner}`}></i>
+            <i
+              className={`fas fa-circle-notch fa-spin white ${classes.loadingSpinner}`}
+            ></i>
           </div>
         )}
         {!loadingHTML && selectedResourceId && (
@@ -368,7 +383,7 @@ export const ViewNote = (props: any) => {
             spellChecker={false}
             useHighlightJS
             toolbarOptions={toolbarOptions}
-            highlightTheme='agate'
+            highlightTheme="agate"
             previewClassName="editor-preview-side"
             theme={theme}
             onBack={goBack}

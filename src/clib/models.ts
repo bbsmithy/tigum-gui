@@ -97,4 +97,5 @@ export type NewLink = {
   title: string;
   topic_id: number;
   source: string;
+  favicon_source: string;
 };

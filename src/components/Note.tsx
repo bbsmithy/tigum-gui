@@ -3,9 +3,9 @@ import { getDate, goto } from "../util";
 import { createUseStyles } from "react-jss";
 import PublishedBadge from "./PublishedBadge";
 import { OptionsButton } from "./OptionsButton";
-import { setPublishStatusResource } from "../clib/api";
+import { deleteNote, setPublishStatusResource } from "../clib/api";
 import { useStateValue } from "../state/StateProvider";
-import { UPDATE_NOTE } from "../state/ActionTypes";
+import { DELETE_NOTE, UPDATE_NOTE } from "../state/ActionTypes";
 
 const useStyles = createUseStyles({
   noteTitle: {
@@ -52,8 +52,6 @@ export const Note = (props: any) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
 
-  const [uploadingNote, setUploadingNote] = useState(false);
-
   const navigateToNote = () => {
     goto(`${window.location.pathname}/${props.note.id}`);
   };
@@ -89,18 +87,31 @@ export const Note = (props: any) => {
     }
   };
 
+  const del = async () => {
+    try {
+      console.log("Notes: ", props);
+      await deleteNote(props.note.id);
+      dispatch({
+        type: DELETE_NOTE,
+        payload: { id: props.note.id, topic_id: props.note.topic_id },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const PUBLISHED_OPTIONS = [
     {
       title: "Unpublish",
       onClick: unpublish,
       icon: "fas fa-download",
     },
-    { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
+    { title: "Delete", onClick: del, icon: "fas fa-trash" },
   ];
 
   const UNPUBLISHED_OPTIONS = [
     { title: "Publish", onClick: publish, icon: "fas fa-upload" },
-    { title: "Delete", onClick: () => {}, icon: "fas fa-trash" },
+    { title: "Delete", onClick: del, icon: "fas fa-trash" },
   ];
 
   return (

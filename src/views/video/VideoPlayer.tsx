@@ -27,6 +27,7 @@ const useStyles = createUseStyles({
     padding: 2,
     height: "100%",
     paddingBottom: 200,
+    background: "#333",
   },
   iframeContainer: {
     position: "fixed",

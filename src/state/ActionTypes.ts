@@ -17,6 +17,7 @@ export const UPDATE_NOTE = "UPDATE_NOTE";
 export const ADD_VIDEO = "ADD_VIDEO";
 export const SET_VIDEOS = "SET_VIDEOS";
 export const DELETE_VIDEO = "DELETE_VIDEO";
+export const UPDATE_VIDEO = "UPDATE_VIDEO";
 
 export const SET_CODES = "SET_CODES";
 export const ADD_CODE = "ADD_CODE";

@@ -37,6 +37,7 @@ import {
   HIDE_NOTIFICATION,
   DELETE_LINK,
   DELETE_NOTE,
+  UPDATE_VIDEO,
 } from "../ActionTypes";
 
 const ContentReducer = (state: any, action: any) => {
@@ -191,6 +192,11 @@ const ContentReducer = (state: any, action: any) => {
           },
         },
       };
+    }
+    case UPDATE_VIDEO: {
+      const newState = state;
+      newState.videos.data[action.payload.id] = action.payload;
+      return newState;
     }
     case SET_CODES:
       return { ...state, codes: action.payload };

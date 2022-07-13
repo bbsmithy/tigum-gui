@@ -3,7 +3,9 @@ import { getDate, truncated } from "../util";
 import { createUseStyles } from "react-jss";
 import PublishedBadge from "./PublishedBadge";
 import { OptionsButton } from "./OptionsButton";
-import { deleteVideo } from "../clib/api";
+import { deleteVideo, setPublishStatusResource } from "../clib/api";
+import { useStateValue } from "../state/StateProvider";
+import { UPDATE_VIDEO } from "../state/ActionTypes";
 
 type VideoCardProps = {
   date_created: string;
@@ -62,8 +64,37 @@ const useStyles = createUseStyles({
 const VideoCard = (props: VideoCardProps) => {
   const classes = useStyles();
 
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+
   const onSelect = () => {
     props.onClick({ title: props.title, iframe: props.iframe, id: props.id });
+  };
+
+  const pub = async () => {
+    try {
+      const updatedNote = await setPublishStatusResource(
+        "videos",
+        props.id,
+        true
+      );
+      dispatch({ type: UPDATE_VIDEO, payload: updatedNote });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const unpub = async () => {
+    try {
+      const updatedNote = await setPublishStatusResource(
+        "videos",
+        props.id,
+        false
+      );
+      dispatch({ type: UPDATE_VIDEO, payload: updatedNote });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const del = async () => {
@@ -73,14 +104,14 @@ const VideoCard = (props: VideoCardProps) => {
   const PUBLISHED_OPTIONS = [
     {
       title: "Unpublish",
-      onClick: () => {},
+      onClick: unpub,
       icon: "fas fa-download",
     },
     { title: "Delete", onClick: del, icon: "fas fa-trash" },
   ];
 
   const UNPUBLISHED_OPTIONS = [
-    { title: "Publish", onClick: () => {}, icon: "fas fa-upload" },
+    { title: "Publish", onClick: pub, icon: "fas fa-upload" },
     { title: "Delete", onClick: del, icon: "fas fa-trash" },
   ];
 

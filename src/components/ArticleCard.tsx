@@ -1,9 +1,10 @@
 import React, { ReactElement } from "react";
 import { createUseStyles } from "react-jss";
-import { deleteArticleSnippet } from "../clib/api";
+import { deleteArticleSnippet, setPublishStatusResource } from "../clib/api";
 import { useStateValue } from "../state/StateProvider";
 import marked from "marked";
 import PublishedBadge from "./PublishedBadge";
+import { UPDATE_SNIPPET } from "../state/ActionTypes";
 
 const useStyles = createUseStyles({
   divider: {
@@ -95,14 +96,36 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
         "Are you sure you want to delete this snippet?"
       );
       if (yesDelete) {
+        await deleteArticleSnippet(props.id);
         let newSnippets = article_snippets;
         delete newSnippets[props.index];
         dispatch({ type: "SET_SNIPPETS", payload: newSnippets });
-        await deleteArticleSnippet(props.id);
       }
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const pub = async () => {
+    try {
+      const updatedSnippet = await setPublishStatusResource(
+        "article_snippets",
+        props.id,
+        true
+      );
+      dispatch({ type: UPDATE_SNIPPET, payload: updatedSnippet });
+    } catch (error) {}
+  };
+
+  const unpub = async () => {
+    try {
+      const updatedSnippet = await setPublishStatusResource(
+        "article_snippets",
+        props.id,
+        false
+      );
+      dispatch({ type: UPDATE_SNIPPET, payload: updatedSnippet });
+    } catch (error) {}
   };
 
   const onEditSnippet = () => {
@@ -151,11 +174,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
         </div>
         <div className={classes.btnsConatiner}>
           {props.published ? (
-            <button className={classes.editBtn} onClick={onEditSnippet}>
+            <button className={classes.editBtn} onClick={unpub}>
               <i className="fas fa-download" /> Unpublish
             </button>
           ) : (
-            <button className={classes.editBtn} onClick={onEditSnippet}>
+            <button className={classes.editBtn} onClick={pub}>
               <i className="fas fa-upload" /> Publish
             </button>
           )}

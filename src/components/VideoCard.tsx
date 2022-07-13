@@ -97,7 +97,7 @@ const VideoCard = (props: VideoCardProps) => {
     }
   };
 
-  const del = async () => {
+  const del = () => {
     props.onDelete(props.id, props.topicId);
   };
 

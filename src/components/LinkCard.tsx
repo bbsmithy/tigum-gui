@@ -2,7 +2,7 @@ import React from "react";
 import { createUseStyles } from "react-jss";
 import { deleteLink, setPublishStatusResource } from "../clib/api";
 import { deleteLinkAction } from "../state/Actions";
-import { SET_LINKS, UPDATE_NOTE } from "../state/ActionTypes";
+import { SET_LINKS, UPDATE_LINK, UPDATE_NOTE } from "../state/ActionTypes";
 import { useStateValue } from "../state/StateProvider";
 import { OptionsButton } from "./OptionsButton";
 import PublishedBadge from "./PublishedBadge";
@@ -55,12 +55,12 @@ export const LinkCard = (props: any) => {
 
   const unpublish = async () => {
     try {
-      const updatedNote = await setPublishStatusResource(
+      const updatedLink = await setPublishStatusResource(
         "links",
         props.link.id,
         false
       );
-      dispatch({ type: UPDATE_NOTE, payload: updatedNote });
+      dispatch({ type: UPDATE_LINK, payload: updatedLink });
     } catch (err) {
       console.log("err: ", err);
     }
@@ -68,12 +68,12 @@ export const LinkCard = (props: any) => {
 
   const publish = async () => {
     try {
-      const updatedNote = await setPublishStatusResource(
+      const updatedLink = await setPublishStatusResource(
         "links",
         props.link.id,
         true
       );
-      dispatch({ type: UPDATE_NOTE, payload: updatedNote });
+      dispatch({ type: UPDATE_LINK, payload: updatedLink });
     } catch (err) {
       console.log("err: ", err);
     }
@@ -120,7 +120,11 @@ export const LinkCard = (props: any) => {
                 >
                   <img
                     src={props.link.favicon_source}
-                    style={{ display: "inline", marginRight: 8 }}
+                    style={{
+                      display: "inline",
+                      marginRight: 8,
+                      border: "none",
+                    }}
                     height="25px"
                     width="25px"
                   />

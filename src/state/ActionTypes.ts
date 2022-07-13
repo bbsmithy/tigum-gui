@@ -28,6 +28,7 @@ export const ADD_IMAGE = "ADD_IMAGE";
 export const SET_LINKS = "SET_LINKS";
 export const ADD_LINK = "ADD_LINK";
 export const DELETE_LINK = "DELETE_LINK";
+export const UPDATE_LINK = "UPDATE_LINK";
 
 export const DISPLAY_NOTIFICATION = "DISPLAY_NOTIFICATION";
 export const HIDE_NOTIFICATION = "HIDE_NOTIFICATION";

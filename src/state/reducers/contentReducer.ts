@@ -38,6 +38,7 @@ import {
   DELETE_LINK,
   DELETE_NOTE,
   UPDATE_VIDEO,
+  UPDATE_LINK,
 } from "../ActionTypes";
 
 const ContentReducer = (state: any, action: any) => {
@@ -241,6 +242,17 @@ const ContentReducer = (state: any, action: any) => {
             ...state.topics.data,
           },
         },
+      };
+    }
+    case UPDATE_LINK: {
+      const newLinksState = state.links;
+      const linkToUpdateIndex = state.links.findIndex(
+        (snippet) => snippet.id === action.payload.id
+      );
+      newLinksState[linkToUpdateIndex] = action.payload;
+      return {
+        ...state,
+        links: newLinksState,
       };
     }
     case DELETE_LINK: {

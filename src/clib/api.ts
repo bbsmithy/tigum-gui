@@ -766,3 +766,21 @@ export const setPublishStatusResource = async (
     throw err;
   }
 };
+
+export const setProfilePicture = async (profilePictureUrl: string) => {
+  try {
+    const res = await fetch(
+      `${BASE_API_URL}/profile-picture/${profilePictureUrl}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    return await res.json();
+  } catch (err) {
+    throw err;
+  }
+};

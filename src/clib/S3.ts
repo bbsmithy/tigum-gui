@@ -1,12 +1,11 @@
-const AWS = require('aws-sdk');
+const AWS = require("aws-sdk");
 
 AWS.config.update({
-  accessKeyId: 'MI4KC197Y2IGVDWCY4ZR',
-  secretAccessKey: 'e4Jb6HMD6EeLDZwC2b4AGl4DbuLLzBKFKotxQAOX',
+  accessKeyId: "MI4KC197Y2IGVDWCY4ZR",
+  secretAccessKey: "e4Jb6HMD6EeLDZwC2b4AGl4DbuLLzBKFKotxQAOX",
 });
 
-
-const endpoint = new AWS.Endpoint('cellar-c2.services.clever-cloud.com');
+const endpoint = new AWS.Endpoint("cellar-c2.services.clever-cloud.com");
 
 const s3 = new AWS.S3({ endpoint: "cellar-c2.services.clever-cloud.com" });
 
@@ -18,13 +17,13 @@ export const getBuckets = () => {
 
 export const uploadToBucket = (data: any, fileKey: string, bucket: string) => {
   return new Promise((resolve, reject) => {
-    const base64data = new Buffer(data, 'binary');
+    const base64data = new Buffer(data, "binary");
     s3.putObject(
       {
-        Bucket: 'notes',
+        Bucket: "notes",
         Key: fileKey,
         Body: base64data,
-        ContentType: 'text/html;charset=utf-8',
+        ContentType: "text/html;charset=utf-8",
       },
       (err: any, data: any) => {
         if (err) {
@@ -39,11 +38,11 @@ export const uploadToBucket = (data: any, fileKey: string, bucket: string) => {
 
 export const getFile = (file: string, bucket: string): Promise<string> => {
   return new Promise((resolve, reject) => {
-    s3.getObject({ Bucket: 'notes', Key: file }, (err: any, data: any) => {
+    s3.getObject({ Bucket: "notes", Key: file }, (err: any, data: any) => {
       if (err) {
         reject(err);
       } else {
-        const file = new TextDecoder('utf-8').decode(data.Body);
+        const file = new TextDecoder("utf-8").decode(data.Body);
         resolve(file);
       }
     });
@@ -69,21 +68,21 @@ export const deleteFile = (file: string, bucket: string) => {
  */
 export const getSignedPublicUrl = (bucket, key) => {
   return new Promise((resolve, reject) => {
-    s3.getSignedUrl('getObject', { Bucket: bucket, Key: key }, (err, url) => {
+    s3.getSignedUrl("getObject", { Bucket: bucket, Key: key }, (err, url) => {
       if (err) {
-        reject(err)
+        reject(err);
       } else {
-        resolve(url)
+        resolve(url);
       }
-    })
-  })
-}
+    });
+  });
+};
 
 export const uploadImage = (data, type, fileName) => {
   return new Promise((resolve, reject) => {
     s3.putObject(
       {
-        Bucket: 'images-tigum',
+        Bucket: "images-tigum",
         Key: fileName,
         Body: data,
         ContentType: type,
@@ -96,33 +95,78 @@ export const uploadImage = (data, type, fileName) => {
         }
       }
     );
-  })
-}
+  });
+};
 
 export const deleteImage = (fileName) => {
   return new Promise((resolve, reject) => {
     s3.deleteObject(
       {
-        Bucket: 'images-tigum',
+        Bucket: "images-tigum",
         Key: fileName,
       },
       (err: any, data: any) => {
         if (err) {
-          console.log(err)
-          reject(err)
+          console.log(err);
+          reject(err);
         } else {
-          resolve(data)
+          resolve(data);
         }
       }
-    )
-  })
-}
+    );
+  });
+};
 
-export const uploadImageandGetPublicUrl = async ({
-  data,
-  type,
-  fileName
-}) => {
+export const uploadImageandGetPublicUrl = async ({ data, type, fileName }) => {
   await uploadImage(data, type, fileName);
-  return `https://images-tigum.cellar-c2.services.clever-cloud.com/${fileName}`
-}
+  return `https://images-tigum.cellar-c2.services.clever-cloud.com/${fileName}`;
+};
+
+const sendProfilePic = async (userName, data, type) => {
+  return new Promise((resolve, reject) => {
+    s3.putObject(
+      {
+        Bucket: "profile-pictures",
+        Key: userName,
+        Body: data,
+        ContentType: type,
+      },
+      (err: any, data: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      }
+    );
+  });
+};
+
+const openImagePicker = () => {
+  return new Promise((resolve, reject) => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    // add onchange handler if you wish to get the file :)
+    input.id = "profile-input-uploader";
+    input.onchange = async (evt) => {
+      // @ts-ignore
+      var files = evt.target.files; // FileList object
+      var file = files[0];
+      resolve(file);
+    };
+    input.click();
+  });
+};
+
+export const uploadProfilePictureAndUpdateUser = async () => {
+  try {
+    const file = await openImagePicker();
+    // @ts-ignore
+    const imageUploadResult = await sendProfilePic("bbsmithy", file, file.type);
+    console.log("imageUploadResult", imageUploadResult);
+    console.log("file: ", file);
+  } catch (err) {
+    console.log("FILE ERR: ", err);
+  }
+};

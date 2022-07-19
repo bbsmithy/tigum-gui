@@ -10,6 +10,7 @@ import {
   deleteImage,
   getFile,
   uploadImageandGetPublicUrl,
+  uploadProfilePictureAndUpdateUser,
   uploadToBucket,
 } from "../../clib/S3";
 import { debounce, goto, setPageTitle } from "../../util";
@@ -68,7 +69,7 @@ export const ViewNote = (props: any) => {
   const currentTopic = topics.data ? topics.data[selectedTopic] : false;
 
   const openImageFiles = () => {
-    var input = document.createElement("input");
+    const input = document.createElement("input");
     input.setAttribute("type", "file");
     input.setAttribute("accept", "image/*");
     // add onchange handler if you wish to get the file :)
@@ -123,19 +124,20 @@ export const ViewNote = (props: any) => {
     {
       name: "latex",
       action: () => {
+        uploadProfilePictureAndUpdateUser();
         // @ts-ignore
-        const cursorPos = cmRef.current.getCursor();
-        if (cmRef.current) {
-          // @ts-ignore
-          cmRef.current.replaceRange(`$$\n\n$$`, cursorPos);
-          // @ts-ignore
-          cmRef.current.focus();
-          // @ts-ignore
-          cmRef.current.setCursor({
-            line: cursorPos.line + 1,
-            ch: 0,
-          });
-        }
+        // const cursorPos = cmRef.current.getCursor();
+        // if (cmRef.current) {
+        //   // @ts-ignore
+        //   cmRef.current.replaceRange(`$$\n\n$$`, cursorPos);
+        //   // @ts-ignore
+        //   cmRef.current.focus();
+        //   // @ts-ignore
+        //   cmRef.current.setCursor({
+        //     line: cursorPos.line + 1,
+        //     ch: 0,
+        //   });
+        // }
       },
       className: "fas fa-square-root-alt",
       title: "LaTex",

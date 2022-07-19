@@ -1,3 +1,5 @@
+import { setProfilePicture } from "./api";
+
 const AWS = require("aws-sdk");
 
 AWS.config.update({
@@ -117,16 +119,20 @@ export const deleteImage = (fileName) => {
   });
 };
 
+const getUploadedFileUrl = (fileName) => {
+  return `https://images-tigum.cellar-c2.services.clever-cloud.com/${fileName}`;
+};
+
 export const uploadImageandGetPublicUrl = async ({ data, type, fileName }) => {
   await uploadImage(data, type, fileName);
-  return `https://images-tigum.cellar-c2.services.clever-cloud.com/${fileName}`;
+  return getUploadedFileUrl(fileName);
 };
 
 const sendProfilePic = async (userName, data, type) => {
   return new Promise((resolve, reject) => {
     s3.putObject(
       {
-        Bucket: "profile-pictures",
+        Bucket: "images-tigum",
         Key: userName,
         Body: data,
         ContentType: type,
@@ -164,8 +170,11 @@ export const uploadProfilePictureAndUpdateUser = async () => {
     const file = await openImagePicker();
     // @ts-ignore
     const imageUploadResult = await sendProfilePic("bbsmithy", file, file.type);
-    console.log("imageUploadResult", imageUploadResult);
-    console.log("file: ", file);
+    const res = await setProfilePicture(
+      // @ts-ignore
+      getUploadedFileUrl("bbsmithy")
+    );
+    console.log("pp", res);
   } catch (err) {
     console.log("FILE ERR: ", err);
   }

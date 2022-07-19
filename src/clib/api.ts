@@ -769,16 +769,16 @@ export const setPublishStatusResource = async (
 
 export const setProfilePicture = async (profilePictureUrl: string) => {
   try {
-    const res = await fetch(
-      `${BASE_API_URL}/profile-picture/${profilePictureUrl}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      }
-    );
+    const res = await fetch(`${BASE_API_URL}/user/profile-picture`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: profilePictureUrl,
+      }),
+      credentials: "include",
+    });
     return await res.json();
   } catch (err) {
     throw err;

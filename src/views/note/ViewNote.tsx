@@ -124,20 +124,19 @@ export const ViewNote = (props: any) => {
     {
       name: "latex",
       action: () => {
-        uploadProfilePictureAndUpdateUser();
         // @ts-ignore
-        // const cursorPos = cmRef.current.getCursor();
-        // if (cmRef.current) {
-        //   // @ts-ignore
-        //   cmRef.current.replaceRange(`$$\n\n$$`, cursorPos);
-        //   // @ts-ignore
-        //   cmRef.current.focus();
-        //   // @ts-ignore
-        //   cmRef.current.setCursor({
-        //     line: cursorPos.line + 1,
-        //     ch: 0,
-        //   });
-        // }
+        const cursorPos = cmRef.current.getCursor();
+        if (cmRef.current) {
+          // @ts-ignore
+          cmRef.current.replaceRange(`$$\n\n$$`, cursorPos);
+          // @ts-ignore
+          cmRef.current.focus();
+          // @ts-ignore
+          cmRef.current.setCursor({
+            line: cursorPos.line + 1,
+            ch: 0,
+          });
+        }
       },
       className: "fas fa-square-root-alt",
       title: "LaTex",

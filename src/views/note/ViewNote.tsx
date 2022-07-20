@@ -381,7 +381,7 @@ export const ViewNote = (props: any) => {
             onDelete={onClickDelete}
             codeMirrorHandle={codeMirrorHandle}
             simplemdeHandle={simpleMdeHandle}
-            spellChecker={false}
+            spellChecker
             useHighlightJS
             toolbarOptions={toolbarOptions}
             highlightTheme="agate"

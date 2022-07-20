@@ -121,7 +121,7 @@ const MarkdownEditor = (props) => {
         codeSyntaxHighlighting: true,
       },
       toolbar,
-      spellChecker: false,
+      spellChecker: true,
       initialValue,
       autofocus: !props.autoFocusEditTitle,
       previewRender: function (plainText) {

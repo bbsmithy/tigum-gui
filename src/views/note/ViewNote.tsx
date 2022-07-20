@@ -66,6 +66,7 @@ export const ViewNote = (props: any) => {
     height: number;
     width: number;
   }>();
+  const [uploadingImageFile, setUploadingImageFile] = useState(false);
   const diffCheckerWorkerRef = useRef<Worker>();
   const cmRef = useRef();
   const simpleMDERef = useRef();
@@ -88,6 +89,7 @@ export const ViewNote = (props: any) => {
       var files = evt.target.files; // FileList object
       var file = files[0];
       try {
+        setUploadingImageFile(true);
         const imageUrl = await uploadImageandGetPublicUrl({
           // @ts-ignore
           data: file,
@@ -96,6 +98,7 @@ export const ViewNote = (props: any) => {
         });
         // @ts-ignore
         insertNewImageUrl(imageUrl);
+        setUploadingImageFile(false);
         input.remove();
         setImageSelectionDialog(null);
       } catch (err) {
@@ -372,8 +375,6 @@ export const ViewNote = (props: any) => {
     }
   };
 
-  console.log("imageSelectionDialog:", imageSelectionDialog);
-
   if (note) {
     return (
       <div
@@ -385,8 +386,8 @@ export const ViewNote = (props: any) => {
         {imageSelectionDialog && (
           <ImageSelectionDialog
             x={imageSelectionDialog.x}
-            y={imageSelectionDialog.y}
-            height={imageSelectionDialog.height}
+            y={imageSelectionDialog.y - imageSelectionDialog.height + 15}
+            uploading={uploadingImageFile}
             onClickAway={() => {
               setImageSelectionDialog(null);
             }}

@@ -11,9 +11,15 @@ import {
 } from "../../clib/api";
 import ResourceDialog from "../../components/ResourceDialog";
 import ReferenceDialog from "../../components/ReferenceDialog";
-import { uploadToBucket, getFile } from "../../clib/S3";
+
+import {
+  uploadToBucket,
+  getFile,
+  uploadImageandGetPublicUrl,
+} from "../../clib/S3";
 import { notify } from "../../state/Actions";
 import { CursorState } from "../../types";
+import { ImageSelectionDialog } from "../../components/ImageSelectionDialog";
 
 const useStyles = createUseStyles({
   videoTitleContainer: {
@@ -299,6 +305,13 @@ export const VideoPlayer = () => {
   const [cmdControl, setCMDControl] = useState<CursorState>();
   const [vidRefControl, setVidRefControl] = useState<CursorState>();
   const [isMobile, setIsMobile] = useState(null);
+  const [imageSelectionDialog, setImageSelectionDialog] = useState<{
+    x: number;
+    y: number;
+    height: number;
+    width: number;
+  }>();
+  const [uploadingImageFile, setUploadingImageFile] = useState(false);
 
   const cmRef = useRef();
   const simpleMDERef = useRef();
@@ -362,7 +375,15 @@ export const VideoPlayer = () => {
       title: "LaTex",
     },
     "link",
-    "image",
+    {
+      name: "image",
+      action: function openImageSelectionDialog() {
+        const imageBtn = document.getElementsByClassName("fa fa-picture-o")[0];
+        setImageSelectionDialog(imageBtn.getBoundingClientRect());
+      },
+      className: "fa fa-picture-o",
+      title: "Upload Image",
+    },
     "|",
     "preview",
     "guide",
@@ -562,8 +583,58 @@ export const VideoPlayer = () => {
     }
   };
 
+  const insertNewImageUrl = (url) => {
+    let parsedUrl = url.replaceAll(" ", "%20");
+    // @ts-ignore
+    const cursorPos = cmRef.current.getCursor();
+    // @ts-ignore
+    cmRef.current.replaceRange(`![](${parsedUrl})`, cursorPos);
+  };
+
+  const openImageFiles = () => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    // add onchange handler if you wish to get the file :)
+    input.id = "image-input-uploader";
+    input.onchange = async (evt) => {
+      // @ts-ignore
+      var files = evt.target.files; // FileList object
+      var file = files[0];
+      try {
+        setUploadingImageFile(true);
+        const imageUrl = await uploadImageandGetPublicUrl({
+          // @ts-ignore
+          data: file,
+          type: file.type,
+          fileName: file.name.replaceAll(" ", "_"),
+        });
+        // @ts-ignore
+        insertNewImageUrl(imageUrl);
+        input.remove();
+        setUploadingImageFile(false);
+        setImageSelectionDialog(null);
+      } catch (err) {
+        console.log("Error: ", err);
+      }
+    };
+    input.click();
+  };
+
   return (
     <div className="center w-100 h-100 video-page-container">
+      {imageSelectionDialog && (
+        <ImageSelectionDialog
+          x={imageSelectionDialog.x}
+          y={imageSelectionDialog.y + imageSelectionDialog.height}
+          uploading={uploadingImageFile}
+          onClickAway={() => {
+            setImageSelectionDialog(null);
+          }}
+          insertNewImageUrl={insertNewImageUrl}
+          openImageFiles={openImageFiles}
+        />
+      )}
       {isMobile ? (
         <MobileLayout
           video={video}

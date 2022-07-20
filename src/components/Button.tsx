@@ -36,7 +36,10 @@ export const Button = (props) => {
       onClick={onClickAction}
     >
       {loadingAction ? (
-        <i className="fas fa-circle-notch fa-spin"></i>
+        <>
+          <i className="fas fa-circle-notch fa-spin mr1"></i>
+          {buttonText}
+        </>
       ) : (
         <>
           {buttonText}

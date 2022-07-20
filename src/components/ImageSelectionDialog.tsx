@@ -5,10 +5,17 @@ import ClickAwayListener from "./ClickAwayListener";
 export const ImageSelectionDialog = ({
   y,
   x,
-  height,
   onClickAway,
   openImageFiles,
   insertNewImageUrl,
+  uploading,
+}: {
+  y: number;
+  x: number;
+  onClickAway: () => void;
+  openImageFiles: () => void;
+  insertNewImageUrl: (url: string) => void;
+  uploading?: boolean;
 }) => {
   const [imageUrl, setImageUrl] = useState("");
 
@@ -29,7 +36,7 @@ export const ImageSelectionDialog = ({
           border: "1px solid gray",
           zIndex: 10000,
           width: 250,
-          top: y - height + 15,
+          top: y,
           left: x,
           textAlign: "center",
         }}
@@ -79,7 +86,8 @@ export const ImageSelectionDialog = ({
           or
         </p>
         <Button
-          buttonText="Upload Image"
+          loadingAction={uploading}
+          buttonText={uploading ? "Uploading" : "Upload Image"}
           onClickAction={openImageFiles}
           style={{ width: "100%" }}
         ></Button>

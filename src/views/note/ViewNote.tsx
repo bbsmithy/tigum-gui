@@ -22,6 +22,9 @@ import { createUseStyles } from "react-jss";
 
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
+import ClickAwayListener from "../../components/ClickAwayListener";
+import { Button } from "../../components";
+import { ImageSelectionDialog } from "../../components/ImageSelectionDialog";
 
 const theme = {
   toolbar: {
@@ -57,6 +60,12 @@ export const ViewNote = (props: any) => {
   const [loadingHTML, setLoadingHTML] = useState(true);
   const [saving, setSaving] = useState(false);
   const [cmdControl, setCMDControl] = useState<CursorState>();
+  const [imageSelectionDialog, setImageSelectionDialog] = useState<{
+    x: number;
+    y: number;
+    height: number;
+    width: number;
+  }>();
   const diffCheckerWorkerRef = useRef<Worker>();
   const cmRef = useRef();
   const simpleMDERef = useRef();
@@ -88,6 +97,7 @@ export const ViewNote = (props: any) => {
         // @ts-ignore
         insertNewImageUrl(imageUrl);
         input.remove();
+        setImageSelectionDialog(null);
       } catch (err) {
         console.log("Error: ", err);
       }
@@ -144,7 +154,10 @@ export const ViewNote = (props: any) => {
     "link",
     {
       name: "image",
-      action: openImageFiles,
+      action: function openImageSelectionDialog() {
+        const imageBtn = document.getElementsByClassName("fa fa-picture-o")[0];
+        setImageSelectionDialog(imageBtn.getBoundingClientRect());
+      },
       className: "fa fa-picture-o",
       title: "Upload Image",
     },
@@ -359,6 +372,8 @@ export const ViewNote = (props: any) => {
     }
   };
 
+  console.log("imageSelectionDialog:", imageSelectionDialog);
+
   if (note) {
     return (
       <div
@@ -367,6 +382,18 @@ export const ViewNote = (props: any) => {
         onClick={onClickNote}
         onDoubleClick={onDoubleClick}
       >
+        {imageSelectionDialog && (
+          <ImageSelectionDialog
+            x={imageSelectionDialog.x}
+            y={imageSelectionDialog.y}
+            height={imageSelectionDialog.height}
+            onClickAway={() => {
+              setImageSelectionDialog(null);
+            }}
+            insertNewImageUrl={insertNewImageUrl}
+            openImageFiles={openImageFiles}
+          />
+        )}
         {loadingHTML && (
           <div className={classes.loadingSpinnerContainer}>
             <i

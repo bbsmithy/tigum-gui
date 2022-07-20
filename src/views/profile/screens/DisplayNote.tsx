@@ -32,6 +32,7 @@ const useStyles = createUseStyles({
     },
     "& pre": {
       marginBottom: "20px !important",
+      background: "#2b2b2b",
     },
     "& code": {
       borderRadius: 12,

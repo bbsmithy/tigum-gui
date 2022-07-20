@@ -384,7 +384,7 @@ export const ViewNote = (props: any) => {
             spellChecker
             useHighlightJS
             toolbarOptions={toolbarOptions}
-            highlightTheme="agate"
+            highlightTheme="ally-dark"
             previewClassName="editor-preview-side"
             theme={theme}
             onBack={goBack}

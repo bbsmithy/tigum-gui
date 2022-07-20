@@ -247,7 +247,7 @@ export const ArticleSnippets = (props: any) => {
             codeMirrorHandle={codeMirrorHandle}
             spellChecker={false}
             useHighlightJS
-            highlightTheme="agate"
+            highlightTheme="ally-dark"
             theme={theme}
             title={editTitle}
             onEditTitle={onChangeSnippetEditTitle}
@@ -278,7 +278,7 @@ export const ArticleSnippets = (props: any) => {
             codeMirrorHandle={codeMirrorHandle}
             spellChecker={false}
             useHighlightJS
-            highlightTheme="agate"
+            highlightTheme="ally-dark"
             theme={theme}
             title={""}
             onEditTitle={onChangeSnippetTitle}

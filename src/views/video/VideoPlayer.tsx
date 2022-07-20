@@ -141,7 +141,7 @@ const MobileLayout = ({
             toolbarOptions={toolbarOptions}
             useHighlightJS
             title={false}
-            highlightTheme="agate"
+            highlightTheme="ally-dark"
             defaultView="editor-preview-side"
             theme={theme}
           />
@@ -158,7 +158,7 @@ const MobileLayout = ({
             spellChecker={false}
             toolbarOptions={toolbarOptions}
             useHighlightJS
-            highlightTheme="agate"
+            highlightTheme="ally-dark"
             theme={theme}
           />
         )}
@@ -236,7 +236,7 @@ const DesktopLayout = ({
             previewClassName="editor-preview"
             useHighlightJS
             defaultView="preview"
-            highlightTheme="agate"
+            highlightTheme="ally-dark"
             theme={theme}
             title={video.title}
             editTitleWidth={"90%"}
@@ -256,7 +256,7 @@ const DesktopLayout = ({
             previewClassName="editor-preview"
             useHighlightJS
             defaultView="preview"
-            highlightTheme="agate"
+            highlightTheme="ally-dark"
             theme={theme}
             title={video.title}
             onEditTitle={onEditTitle}

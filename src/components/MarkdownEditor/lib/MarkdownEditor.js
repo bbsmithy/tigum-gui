@@ -288,7 +288,7 @@ const MarkdownEditor = (props) => {
   };
 
   const createPreviewStyles = ({
-    codeBlockBackground = "black",
+    codeBlockBackground = "#2b2b2b",
     background = "white",
     color = "black",
     height = "100%",
@@ -296,7 +296,11 @@ const MarkdownEditor = (props) => {
     return `
     #editor-container .editor-preview-side pre {
       background: ${codeBlockBackground};
-      padding: 5px
+      padding: 5px;
+      border-radius: 12px;
+      padding: 1em;
+      line-height: 17px;
+      margin-bottom: 20px;
     }
     #editor-container .editor-preview-side {
       background-color: ${background} !important;
@@ -314,23 +318,15 @@ const MarkdownEditor = (props) => {
     }
     #editor-container .editor-preview pre {
       background: ${codeBlockBackground};
-      padding: 5px
+      padding: 5px;
+      border-radius: 12px;
+      padding: 1em;
+      line-height: 17px;
+      margin-bottom: 20px;
     }
     #editor-container .editor-preview.fullscreen {
       background-color: ${background} !important;
       color: ${color} !important;
-    }
-    #editor-container .editor-preview h1,
-    #editor-container .editor-preview h2 {
-      border-bottom: 1px solid ${color};
-    }
-    #editor-container .editor-preview-side h1,
-    #editor-container .editor-preview-side h2 {
-      border-bottom: 1px solid ${color};
-    }
-    #editor-container .editor-preview .fullscreen h1,
-    #editor-container .editor-preview .fullscreen h2 {
-      border-bottom: 1px solid ${color};
     }
     `;
   };

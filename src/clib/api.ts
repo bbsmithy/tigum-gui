@@ -767,6 +767,21 @@ export const setPublishStatusResource = async (
   }
 };
 
+export const setSubdomain = async (domain: string) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/user/subdomain/${domain}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    return await res.json();
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const setProfilePicture = async (profilePictureUrl: string) => {
   try {
     const res = await fetch(`${BASE_API_URL}/user/profile-picture`, {

@@ -165,17 +165,18 @@ const openImagePicker = () => {
   });
 };
 
-export const uploadProfilePictureAndUpdateUser = async () => {
+export const uploadProfilePictureAndUpdateUser = async (userName) => {
   try {
     const file = await openImagePicker();
     // @ts-ignore
-    const imageUploadResult = await sendProfilePic("bbsmithy", file, file.type);
-    const res = await setProfilePicture(
+    const imageUploadResult = await sendProfilePic(userName, file, file.type);
+    const ppURL = getUploadedFileUrl(userName);
+    await setProfilePicture(
       // @ts-ignore
-      getUploadedFileUrl("bbsmithy")
+      ppURL
     );
-    console.log("pp", res);
+    return ppURL;
   } catch (err) {
-    console.log("FILE ERR: ", err);
+    throw err;
   }
 };

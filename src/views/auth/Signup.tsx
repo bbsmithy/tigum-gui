@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { setSubdomain, signupUser } from "../../clib/api";
 import { useStateValue } from "../../state/StateProvider";
 import { useEvervault } from "@evervault/react";
@@ -57,6 +57,7 @@ const useStyles = createUseStyles({
   },
   profilePic: {
     background: "gray",
+    resizeMode: "contain",
     height: 100,
     width: 100,
     borderRadius: 50,
@@ -131,8 +132,12 @@ const SubdomainInput = ({ classes, onChange, value }) => {
 };
 
 const ProfilePicture = ({ classes, userName, setPPURL, ppURL }) => {
+  const [uploading, setUploading] = useState(false);
+
   const onSelectProfile = async () => {
+    setUploading(true);
     const profilePic = await uploadProfilePictureAndUpdateUser("bbsmithy");
+    setUploading(false);
     setPPURL(profilePic);
   };
 
@@ -147,7 +152,14 @@ const ProfilePicture = ({ classes, userName, setPPURL, ppURL }) => {
       )}
       {!ppURL && (
         <div className={classes.profilePic} onClick={onSelectProfile}>
-          <i className="fas fa-plus" style={{ marginTop: 40 }} />
+          {uploading ? (
+            <i
+              className={`fas fa-circle-notch fa-spin white`}
+              style={{ marginTop: 40 }}
+            ></i>
+          ) : (
+            <i className="fas fa-plus" style={{ marginTop: 40 }} />
+          )}
         </div>
       )}
 
@@ -165,6 +177,7 @@ function validateUrl(value) {
 const ProfileForm = ({ classes }) => {
   const [domain, setDomain] = useState("");
   const [ppURL, setPPURL] = useState("");
+  const [subdomainError, setSubdomainError] = useState("");
 
   const disabled = domain === "" || ppURL === "";
 
@@ -182,7 +195,8 @@ const ProfileForm = ({ classes }) => {
       await setSubdomain(domain);
       window.location.assign("/");
     } catch (err) {
-      console.log(err);
+      // @ts-ignore
+      setSubdomainError(err.error);
     }
   };
 
@@ -199,6 +213,9 @@ const ProfileForm = ({ classes }) => {
         onChange={onChangeSubdomain}
         value={domain}
       />
+      {subdomainError && (
+        <LoginCardResult type="ERROR" message={subdomainError} />
+      )}
       <button
         className={`${
           disabled ? classes.disabledBtn : classes.activeBtn
@@ -246,13 +263,21 @@ const PasswordInput = ({ onChangePassword, password, classes }) => {
 
 const SignupForm = ({ classes, onComplete }) => {
   const params = new URLSearchParams(window.location.search);
+  const emailParam = params.get("email");
+  const nameParam = params.get("name");
   const evervault = useEvervault();
-  const [email, setEmail] = useState(params.get("email"));
-  const [name, setName] = useState(params.get("name"));
+  const [email, setEmail] = useState(emailParam);
+  const [name, setName] = useState(nameParam);
   const [password, setPassword] = useState("");
   const [signupError, setSignupError] = useState("");
   const [signupSuccess, setSignupSuccess] = useState("");
   const [authing, setAuthing] = useState(false);
+
+  useEffect(() => {
+    if (emailParam && nameParam) {
+      document.getElementById("password").focus();
+    }
+  }, []);
 
   const onClickSignUp = async () => {
     if (isValidForm && !authing) {
@@ -263,11 +288,10 @@ const SignupForm = ({ classes, onComplete }) => {
         await signupUser(name, email, encrypted.email, password);
         onComplete();
         setAuthing(false);
-      } catch (e) {
+      } catch (err) {
         setAuthing(false);
-        setSignupError(
-          "Failed to create account, contact briansmith.work578@gmail.com for support"
-        );
+        // @ts-ignore
+        setSignupError(err.error);
       }
     }
   };

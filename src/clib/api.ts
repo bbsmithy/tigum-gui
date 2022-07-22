@@ -622,7 +622,11 @@ export const signupUser = async (
       credentials: "include",
       body: JSON.stringify({ email, password, email_encrypted, name }),
     });
-    return await res.json();
+    if (res.status === 200) {
+      return await res.json();
+    } else {
+      throw await res.json();
+    }
   } catch (e) {
     throw e;
   }
@@ -776,7 +780,11 @@ export const setSubdomain = async (domain: string) => {
       },
       credentials: "include",
     });
-    return await res.json();
+    if (res.status === 200) {
+      return await res.json();
+    } else {
+      throw await res.json();
+    }
   } catch (err) {
     throw err;
   }

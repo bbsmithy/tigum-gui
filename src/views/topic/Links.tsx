@@ -108,7 +108,7 @@ export const Links = (props: any) => {
     if (!loading) {
       if (links.length) {
         return links.map((link: any, index: number) => (
-          <LinkCard link={link} key={link.id} index={index} />
+          <LinkCard {...link} key={link.id} index={index} />
         ));
       } else {
         return renderNoLinks();

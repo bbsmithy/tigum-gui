@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { createUseStyles } from "react-jss";
 import { NewButton, Note, LoadingCard } from "../../components";
 import { Modal } from "../../components/Modal";
 import { createNote, getNotes } from "../../clib/api";
@@ -8,7 +7,7 @@ import { ADD_NOTE } from "../../state/ActionTypes";
 import { setPageTitle } from "../../util";
 import FeedbackButton from "../../components/FeedbackButton";
 
-export const AllNotes = (props: any) => {
+export const AllNotes = () => {
   const [newNoteModalIsOpen, setNewNoteModalOpen] = useState(false);
   const [noteTitle, setNoteTitle] = useState("");
   const [loading, setLoading] = useState(true);

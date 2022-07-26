@@ -212,7 +212,7 @@ export const LinkList = ({ selectedTopic }) => {
     selectedTopic?.resources.links.length > 0
   ) {
     return selectedTopic?.resources.links.map((link, idx) => {
-      return <LinkCard link={link} onClick={() => {}} />;
+      return <LinkCard {...link} onClick={() => {}} />;
     });
   } else {
     return (

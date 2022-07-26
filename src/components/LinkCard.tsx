@@ -1,7 +1,6 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
 import { deleteLink, setPublishStatusResource } from "../clib/api";
-import { deleteLinkAction } from "../state/Actions";
 import { SET_LINKS, UPDATE_LINK, UPDATE_NOTE } from "../state/ActionTypes";
 import { useStateValue } from "../state/StateProvider";
 import { OptionsButton } from "./OptionsButton";
@@ -11,13 +10,8 @@ const useStyles = createUseStyles({
   documentTitle: {
     display: "block",
     fontSize: 16,
-    textOverflow: "ellipsis",
-    /* Required for text-overflow to do anything */
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    "@media (max-width: 1196px)": {
-      fontSize: 14,
-    },
+    marginTop: 12,
+    marginBottom: 12,
   },
   documentSubTitle: {
     color: "gray",
@@ -25,27 +19,82 @@ const useStyles = createUseStyles({
     display: "block",
     marginBottom: 10,
   },
+  linkContentContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  linkTitleAndFaviconContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 6,
+  },
+  linkCard: {
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 20,
+    width: "100%",
+    backgroundColor: "#333333",
+    color: "white",
+    "& a": {
+      "&:hover": {
+        backgroundColor: "#333333 !important",
+        color: "white",
+      },
+    },
+  },
+  linkImage: {
+    marginRight: 8,
+    border: "none",
+  },
+  linkOptionsContainer: {
+    flex: 1,
+    color: "#333",
+  },
+  sourceContainer: {
+    textOverflow: "ellipsis",
+    maxWidth: 400,
+    /* Required for text-overflow to do anything */
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+  },
 });
 
-export const LinkCard = (props: any) => {
-  const classes = useStyles();
+type LinkCardProps = {
+  favicon_source: string;
+  title: string;
+  source: string;
+  id: number;
+  index: number;
+  published: boolean;
+};
 
+export const LinkCard = ({
+  favicon_source,
+  title,
+  source,
+  id,
+  index,
+  published,
+}: LinkCardProps) => {
+  const classes = useStyles();
   // @ts-ignore
   const [state, dispatch] = useStateValue();
 
   const onClick = () => {
-    window.open(props.link.source, "blank");
+    window.open(source, "blank");
   };
 
   const del = async () => {
     try {
       const reply = window.confirm(
-        `Are you sure you want to delete this link "${props.link.title}"`
+        `Are you sure you want to delete this link "${title}"`
       );
       if (reply) {
-        await deleteLink(props.link.id);
+        await deleteLink(id);
         const newLinksList = state.content.links;
-        delete newLinksList[props.index];
+        delete newLinksList[index];
         dispatch({ type: SET_LINKS, payload: newLinksList });
       }
     } catch (err) {
@@ -53,13 +102,9 @@ export const LinkCard = (props: any) => {
     }
   };
 
-  const unpublish = async () => {
+  const unpublish = async ({ id }: any) => {
     try {
-      const updatedLink = await setPublishStatusResource(
-        "links",
-        props.link.id,
-        false
-      );
+      const updatedLink = await setPublishStatusResource("links", id, false);
       dispatch({ type: UPDATE_LINK, payload: updatedLink });
     } catch (err) {
       console.log("err: ", err);
@@ -68,11 +113,7 @@ export const LinkCard = (props: any) => {
 
   const publish = async () => {
     try {
-      const updatedLink = await setPublishStatusResource(
-        "links",
-        props.link.id,
-        true
-      );
+      const updatedLink = await setPublishStatusResource("links", id, true);
       dispatch({ type: UPDATE_LINK, payload: updatedLink });
     } catch (err) {
       console.log("err: ", err);
@@ -94,69 +135,31 @@ export const LinkCard = (props: any) => {
   ];
 
   return (
-    <div className="fl w-100 w-50-m w-33-l ph2 pv1">
-      <div onClick={onClick} className="card link-card pointer w-100">
-        <div className="mw9 center">
-          <div className="cf ph2-ns">
-            <div className="fl ph2 w-100 pv1">
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  position: "relative",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    flex: 19,
-                  }}
-                >
-                  <img
-                    src={props.link.favicon_source}
-                    style={{
-                      display: "inline",
-                      marginRight: 8,
-                      border: "none",
-                    }}
-                    height="25px"
-                    width="25px"
-                  />
-                  <h4 className={classes.documentTitle}>{props.link.title}</h4>
-                </div>
-                <div style={{ flex: 1, color: "#333" }}>
-                  <OptionsButton
-                    options={
-                      props.link.published
-                        ? PUBLISHED_OPTIONS
-                        : UNPUBLISHED_OPTIONS
-                    }
-                  />
-                </div>
-              </div>
-              <div
-                style={{
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  width: "90%",
-                }}
-              >
-                <span className={classes.documentSubTitle}>
-                  {props.link.published && (
-                    <PublishedBadge style={{ marginRight: 5, fontSize: 16 }} />
-                  )}
-                  {props.link.source}
-                </span>
-              </div>
-            </div>
+    <div className="ph2 pv1">
+      <div onClick={onClick} className={`card pointer ${classes.linkCard}`}>
+        <div className={classes.linkContentContainer}>
+          <div className={classes.linkTitleAndFaviconContainer}>
+            <img
+              className={classes.linkImage}
+              src={favicon_source}
+              height="25px"
+              width="25px"
+            />
+            <h4 className={classes.documentTitle}>{title}</h4>
           </div>
+          <div className={classes.linkOptionsContainer}>
+            <OptionsButton
+              options={published ? PUBLISHED_OPTIONS : UNPUBLISHED_OPTIONS}
+            />
+          </div>
+        </div>
+        <div className={classes.sourceContainer}>
+          <span className={classes.documentSubTitle}>
+            {published && (
+              <PublishedBadge style={{ marginRight: 5, fontSize: 16 }} />
+            )}
+            {source}
+          </span>
         </div>
       </div>
     </div>

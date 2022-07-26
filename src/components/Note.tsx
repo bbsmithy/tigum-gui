@@ -8,9 +8,17 @@ import { useStateValue } from "../state/StateProvider";
 import { DELETE_NOTE, UPDATE_NOTE } from "../state/ActionTypes";
 
 const useStyles = createUseStyles({
+  noteCard: {
+    paddingLeft: 20,
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: "100%",
+    backgroundColor: "#333",
+    color: "white",
+  },
   noteTitle: {
     display: "block",
-    fontSize: 15,
+    fontSize: 18,
     textOverflow: "ellipsis",
     /* Required for text-overflow to do anything */
     whiteSpace: "nowrap",
@@ -36,12 +44,11 @@ const useStyles = createUseStyles({
     alignItems: "center",
   },
   noteTitleContainer: {
-    flex: 9,
-    padding: "5px 15px",
+    flex: 6,
     width: 280,
   },
   optionsButtonContainer: {
-    flex: 2,
+    flex: 1,
     color: "#333",
   },
 });
@@ -115,25 +122,26 @@ export const Note = (props: any) => {
   ];
 
   return (
-    <div className="fl w-100 w-50-m w-33-l ph2 pv1">
-      <div className="card w-100 note-card pointer" onClick={navigateToNote}>
-        <div className="mw9 center">
-          <div className={classes.noteInfoContainer}>
-            <div className={classes.noteTitleContainer}>
-              <h4 className={classes.noteTitle}>
-                {props.note.published && <PublishedBadge />} {props.note.title}
-              </h4>
-              <div>
-                <b className={classes.noteSubTitle}>{renderDate()}</b>
-              </div>
+    <div className="ph2 pv1">
+      <div
+        className={`card pointer ${classes.noteCard}`}
+        onClick={navigateToNote}
+      >
+        <div className={classes.noteInfoContainer}>
+          <div className={classes.noteTitleContainer}>
+            <h4 className={classes.noteTitle}>
+              {props.note.published && <PublishedBadge />} {props.note.title}
+            </h4>
+            <div>
+              <b className={classes.noteSubTitle}>{renderDate()}</b>
             </div>
-            <div className={classes.optionsButtonContainer}>
-              <OptionsButton
-                options={
-                  props.note.published ? PUBLISHED_OPTIONS : UNPUBLISHED_OPTIONS
-                }
-              />
-            </div>
+          </div>
+          <div className={classes.optionsButtonContainer}>
+            <OptionsButton
+              options={
+                props.note.published ? PUBLISHED_OPTIONS : UNPUBLISHED_OPTIONS
+              }
+            />
           </div>
         </div>
       </div>

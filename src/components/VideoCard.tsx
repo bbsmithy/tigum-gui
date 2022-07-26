@@ -123,10 +123,7 @@ const VideoCard = (props: VideoCardProps) => {
   const title = truncated(props.title, 100);
 
   return (
-    <div
-      className="fl w-100 w-50-m w-33-l ph2 pv1"
-      style={{ position: "relative" }}
-    >
+    <div className="ph2 pv1" style={{ position: "relative" }}>
       <article
         style={{ display: "flex", flexDirection: "row", overflow: "hidden" }}
         className="br2 video-card w-100 pointer"

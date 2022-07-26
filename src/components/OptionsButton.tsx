@@ -3,7 +3,7 @@ import React, { useState } from "react";
 export type Option = {
   title: string;
   icon: string;
-  onClick: () => void;
+  onClick: any;
 };
 
 type OptionsListProps = {

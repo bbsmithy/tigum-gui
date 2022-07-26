@@ -807,3 +807,18 @@ export const setProfilePicture = async (profilePictureUrl: string) => {
     throw err;
   }
 };
+
+export const getAllTopicResources = async (topicId: number) => {
+  try {
+    const res = await fetch(`${BASE_API_URL}/topics/${topicId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    return await res.json();
+  } catch (err) {
+    throw err;
+  }
+};

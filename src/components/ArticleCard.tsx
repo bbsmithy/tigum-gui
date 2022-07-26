@@ -12,13 +12,7 @@ const useStyles = createUseStyles({
   },
   snippet: {
     fontFamily: "Arial",
-    width: "80%",
-    maxWidth: 1000,
-    "@media (max-width: 600px)": {
-      width: "100%",
-    },
-    margin: "auto",
-    marginTop: 15,
+    maxWidth: 600,
     padding: "8px 15px",
     "& a": {
       color: "white !important",
@@ -138,59 +132,61 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
   };
 
   return (
-    <article
-      className={`shadow-card hidden br3 ba b--black-10 text mv3 ${classes.snippet}`}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+    <div className="ph2 pv1">
+      <article
+        className={`shadow-card hidden br3 ba b--black-10 text ${classes.snippet}`}
       >
-        <div>
-          {props.title && (
-            <h2 className={classes.title}>
-              {props.published && <PublishedBadge />} {props.title}
-            </h2>
-          )}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div>
+            {props.title && (
+              <h2 className={classes.title}>
+                {props.published && <PublishedBadge />} {props.title}
+              </h2>
+            )}
+          </div>
         </div>
-      </div>
 
-      <div
-        className="f6 f5-ns lh-copy white"
-        dangerouslySetInnerHTML={{ __html: marked(props.content) }}
-      />
-      <div className={classes.controlsContainer}>
-        <div className={classes.sourceContainer}>
-          {props.origin === "TIGUM" ? (
-            <span className={classes.source}>Source: You</span>
-          ) : (
-            <a href={props.origin} target="blank" className={classes.source}>
-              Source: {props.origin}
-            </a>
-          )}
-        </div>
-        <div className={classes.btnsConatiner}>
-          {props.published ? (
-            <button className={classes.editBtn} onClick={unpub}>
-              <i className="fas fa-download" /> Unpublish
-            </button>
-          ) : (
-            <button className={classes.editBtn} onClick={pub}>
-              <i className="fas fa-upload" /> Publish
-            </button>
-          )}
+        <div
+          className="f6 f5-ns lh-copy white"
+          dangerouslySetInnerHTML={{ __html: marked(props.content) }}
+        />
+        <div className={classes.controlsContainer}>
+          <div className={classes.sourceContainer}>
+            {props.origin === "TIGUM" ? (
+              <span className={classes.source}>Source: You</span>
+            ) : (
+              <a href={props.origin} target="blank" className={classes.source}>
+                Source: {props.origin}
+              </a>
+            )}
+          </div>
+          <div className={classes.btnsConatiner}>
+            {props.published ? (
+              <button className={classes.editBtn} onClick={unpub}>
+                <i className="fas fa-download" /> Unpublish
+              </button>
+            ) : (
+              <button className={classes.editBtn} onClick={pub}>
+                <i className="fas fa-upload" /> Publish
+              </button>
+            )}
 
-          <button className={classes.editBtn} onClick={onEditSnippet}>
-            <i className="fa fa-edit" /> Edit
-          </button>
-          <button className={classes.deleteBtn} onClick={deleteSnippet}>
-            <i className="fa fa-trash" /> Delete
-          </button>
+            <button className={classes.editBtn} onClick={onEditSnippet}>
+              <i className="fa fa-edit" /> Edit
+            </button>
+            <button className={classes.deleteBtn} onClick={deleteSnippet}>
+              <i className="fa fa-trash" /> Delete
+            </button>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </div>
   );
 };

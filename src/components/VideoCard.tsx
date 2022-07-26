@@ -23,15 +23,8 @@ type VideoCardProps = {
 
 const useStyles = createUseStyles({
   videoCardTitle: {
-    "@media (max-width: 1196px)": {
-      justifyContent: "center",
-      alignItem: "center",
-    },
-    "@media (min-width: 1196px)": {
-      marginTop: 12,
-      marginBottom: 0,
-    },
-    fontSize: 12,
+    marginTop: 16,
+    fontSize: 15,
   },
   videoCardImage: {
     backgroundColor: "black",
@@ -41,12 +34,8 @@ const useStyles = createUseStyles({
     flex: 2,
     display: "flex",
     flexDirection: "column",
-    margin: "0px 10px 0px 10px",
-    "@media (max-width: 1196px)": {
-      height: "100%",
-      justifyContent: "center",
-      alignItems: "center",
-    },
+    margin: "0px 13px 0px 13px",
+    justifyContent: "center",
   },
   subTitle: {
     color: "#bfbfbf",
@@ -115,28 +104,23 @@ const VideoCard = (props: VideoCardProps) => {
     { title: "Delete", onClick: del, icon: "fas fa-trash" },
   ];
 
-  const renderDate = () => {
-    const dateText = new Date(props.date_updated);
-    return getDate(dateText);
-  };
-
   const title = truncated(props.title, 100);
 
   return (
-    <div className="ph2 pv1" style={{ position: "relative" }}>
-      <article
+    <div className="ph2 pv1">
+      <div
         style={{ display: "flex", flexDirection: "row", overflow: "hidden" }}
         className="br2 video-card w-100 pointer"
         onClick={onSelect}
       >
-        <div style={{ flex: 1, height: 100 }}>
+        <div style={{ flex: 1, height: 130 }}>
           <img
             src={props.thumbnail_img}
             className={`${classes.videoCardImage}`}
           />
         </div>
         <div className={classes.videoCardTextContent}>
-          <div style={{ flex: 3 }}>
+          <div style={{ flex: 5 }}>
             <h6 className={`white ${classes.videoCardTitle}`}>
               {props.published && <PublishedBadge style={{ fontSize: 16 }} />}{" "}
               {title}
@@ -151,7 +135,9 @@ const VideoCard = (props: VideoCardProps) => {
             }}
           >
             <div style={{ flex: 8, alignItems: "center" }}>
-              <div className={`${classes.subTitle} white`}>{renderDate()}</div>
+              <div className={`${classes.subTitle} white`}>
+                {props.date_updated}
+              </div>
             </div>
             <div style={{ flex: 2, color: "#333" }}>
               <OptionsButton
@@ -162,7 +148,7 @@ const VideoCard = (props: VideoCardProps) => {
             </div>
           </div>
         </div>
-      </article>
+      </div>
     </div>
   );
 };

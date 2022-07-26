@@ -63,6 +63,8 @@ const useStyles = createUseStyles({
   },
   title: {
     color: "white",
+    marginTop: 15,
+    marginBottom: 0,
   },
 });
 
@@ -146,9 +148,9 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
         >
           <div>
             {props.title && (
-              <h2 className={classes.title}>
+              <h4 className={classes.title}>
                 {props.published && <PublishedBadge />} {props.title}
-              </h2>
+              </h4>
             )}
           </div>
         </div>
@@ -163,7 +165,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
               <span className={classes.source}>Source: You</span>
             ) : (
               <a href={props.origin} target="blank" className={classes.source}>
-                Source: {props.origin}
+                View Source
               </a>
             )}
           </div>

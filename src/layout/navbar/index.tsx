@@ -49,7 +49,7 @@ const useStyles = createUseStyles({
     marginRight: 5,
   },
   searchBarContainer: {
-    flex: 2,
+    flex: 1,
   },
   titleContainer: {
     flex: 1.5,
@@ -256,20 +256,15 @@ export const TopicNavigationBar = ({ title }: TopicNavigationBarProps) => {
         <div className={classes.titleTextContainer}>
           <h2 id="topic-header">{title}</h2>
         </div>
-        {!displayMobileNavOptions && (
-          <div className={classes.optionsButtonContainer}>
-            <OptionsButton options={topicMenuOptions} />
-          </div>
-        )}
+        <div className={classes.optionsButtonContainer}>
+          <OptionsButton options={topicMenuOptions} />
+        </div>
       </div>
       {showSearch && (
         <div className={classes.searchBarContainer}>
           <SearchBar />
         </div>
       )}
-      <div className={classes.navItemsContainer}>
-        {useMobileNavItems ? renderNavItemsMobile() : renderNavItemsDesktop()}
-      </div>
     </nav>
   );
 };

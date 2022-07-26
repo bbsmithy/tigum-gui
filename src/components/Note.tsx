@@ -53,28 +53,19 @@ const useStyles = createUseStyles({
   },
 });
 
-export const Note = (props: any) => {
+export const Note = ({ id, topicId, date_updated, title, published }) => {
   const classes = useStyles();
 
   // @ts-ignore
   const [state, dispatch] = useStateValue();
 
   const navigateToNote = () => {
-    goto(`${window.location.pathname}/${props.note.id}`);
-  };
-
-  const renderDate = () => {
-    const dateText = new Date(props.note.date_updated);
-    return getDate(dateText);
+    goto(`${window.location.pathname}/${id}`);
   };
 
   const unpublish = async () => {
     try {
-      const updatedNote = await setPublishStatusResource(
-        "notes",
-        props.note.id,
-        false
-      );
+      const updatedNote = await setPublishStatusResource("notes", id, false);
       dispatch({ type: UPDATE_NOTE, payload: updatedNote });
     } catch (err) {
       console.log("err: ", err);
@@ -83,11 +74,7 @@ export const Note = (props: any) => {
 
   const publish = async () => {
     try {
-      const updatedNote = await setPublishStatusResource(
-        "notes",
-        props.note.id,
-        true
-      );
+      const updatedNote = await setPublishStatusResource("notes", id, true);
       dispatch({ type: UPDATE_NOTE, payload: updatedNote });
     } catch (err) {
       console.log("err: ", err);
@@ -96,11 +83,10 @@ export const Note = (props: any) => {
 
   const del = async () => {
     try {
-      console.log("Notes: ", props);
-      await deleteNote(props.note.id);
+      await deleteNote(id);
       dispatch({
         type: DELETE_NOTE,
-        payload: { id: props.note.id, topic_id: props.note.topic_id },
+        payload: { id: id, topic_id: topicId },
       });
     } catch (err) {
       console.log(err);
@@ -130,17 +116,15 @@ export const Note = (props: any) => {
         <div className={classes.noteInfoContainer}>
           <div className={classes.noteTitleContainer}>
             <h4 className={classes.noteTitle}>
-              {props.note.published && <PublishedBadge />} {props.note.title}
+              {published && <PublishedBadge />} 📝 {title}
             </h4>
             <div>
-              <b className={classes.noteSubTitle}>{renderDate()}</b>
+              <b className={classes.noteSubTitle}>{date_updated}</b>
             </div>
           </div>
           <div className={classes.optionsButtonContainer}>
             <OptionsButton
-              options={
-                props.note.published ? PUBLISHED_OPTIONS : UNPUBLISHED_OPTIONS
-              }
+              options={published ? PUBLISHED_OPTIONS : UNPUBLISHED_OPTIONS}
             />
           </div>
         </div>

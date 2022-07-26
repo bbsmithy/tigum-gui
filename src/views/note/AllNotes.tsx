@@ -65,6 +65,7 @@ export const AllNotes = () => {
       if (notes.keys && notes.keys.length && notes.data) {
         return notes.keys.map((noteKey: number) => {
           if (notes.data[noteKey]) {
+            // @ts-ignore
             return <Note note={notes.data[noteKey]} key={noteKey} />;
           }
         });

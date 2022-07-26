@@ -31,8 +31,8 @@ const useStyles = createUseStyles({
     flex: 6,
   },
   linkCard: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingLeft: 20,
     width: "100%",
     backgroundColor: "#333333",

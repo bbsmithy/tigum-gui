@@ -3,6 +3,7 @@ import { Topic } from "../../clib/models";
 import { getAllTopicResources } from "../../clib/api";
 import { ArticleCard, LinkCard, Note, VideoCard } from "../../components";
 import { createUseStyles } from "react-jss";
+import { goto } from "../../util";
 
 export enum SCREENS {
   LINKS,
@@ -58,7 +59,9 @@ const Column = ({ resources }) => {
               id={r.resource_id}
               topicId={r.topicId}
               index={0}
-              onClick={() => {}}
+              onClick={(video: any) => {
+                goto(`topic/${r.topicId}/videos/${video.id}`);
+              }}
               onDelete={() => {}}
             />
           );

@@ -1,9 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Topic } from "../../clib/models";
 import { getAllTopicResources } from "../../clib/api";
-import { ArticleCard, LinkCard, Note, VideoCard } from "../../components";
+import {
+  ArticleCard,
+  LinkCard,
+  LoadingCard,
+  Note,
+  VideoCard,
+} from "../../components";
 import { createUseStyles } from "react-jss";
 import { goto } from "../../util";
+import LoadingSnippet from "../../components/LoadingSnippet";
+import { LoadingVideo } from "../../components/LoadingVideo";
 
 export enum SCREENS {
   LINKS,
@@ -60,7 +68,7 @@ const Column = ({ resources }) => {
               topicId={r.topicId}
               index={0}
               onClick={(video: any) => {
-                goto(`topic/${r.topicId}/videos/${video.id}`);
+                goto(`topic/${r.topic_id}/videos/${video.id}`);
               }}
               onDelete={() => {}}
             />
@@ -95,6 +103,8 @@ const Column = ({ resources }) => {
 };
 
 const MainTopicScreen = ({ topic }: RouterProps) => {
+  const [loading, setLoading] = useState(false);
+
   const [topicResources, setTopicResources] = useState({
     col1: [],
     col2: [],
@@ -123,10 +133,12 @@ const MainTopicScreen = ({ topic }: RouterProps) => {
     if (cachedTopic) {
       setTopicResources(cachedTopic);
     } else {
+      setLoading(true);
       const topicResources = await getAllTopicResources(topicId);
       const topicResourceColumns = splitToMasonaryRows(topicResources);
       topicsCache.current.set(topicId, topicResourceColumns);
       setTopicResources(topicResourceColumns);
+      setLoading(false);
     }
   };
 
@@ -134,12 +146,28 @@ const MainTopicScreen = ({ topic }: RouterProps) => {
     fetchTopicResources(topic.id);
   }, [topic]);
 
-  return (
-    <div className={classes.container}>
-      <Column resources={topicResources.col1} />
-      <Column resources={topicResources.col2} />
-    </div>
-  );
+  if (loading) {
+    return (
+      <div className={classes.container}>
+        <div style={{ flex: 1 }}>
+          <LoadingCard />
+          <LoadingSnippet />
+          <LoadingVideo />
+        </div>
+        <div style={{ flex: 1 }}>
+          <LoadingSnippet />
+          <LoadingCard />
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className={classes.container}>
+        <Column resources={topicResources.col1} />
+        <Column resources={topicResources.col2} />
+      </div>
+    );
+  }
 };
 
 export default MainTopicScreen;

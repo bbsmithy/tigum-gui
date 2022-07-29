@@ -259,7 +259,9 @@ const SearchModal = ({ results, loading, reset }) => {
               <LinkResult
                 result={result}
                 reset={reset}
-                onSelectResult={() => {}}
+                onSelectResult={() => {
+                  window.open(result.misc, "blank");
+                }}
               />
             );
           } else if (result.result_type === "snippet") {

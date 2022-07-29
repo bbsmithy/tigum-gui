@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Topic } from "../../clib/models";
-import { getAllTopicResources } from "../../clib/api";
+import { getAllTopicResources, updateArticleSnippet } from "../../clib/api";
 import {
   ArticleCard,
   LinkCard,
   LoadingCard,
+  Modal,
   Note,
   VideoCard,
 } from "../../components";
@@ -12,6 +13,24 @@ import { createUseStyles } from "react-jss";
 import { goto } from "../../util";
 import LoadingSnippet from "../../components/LoadingSnippet";
 import { LoadingVideo } from "../../components/LoadingVideo";
+import { MarkdownEditor } from "../../components/MarkdownEditor/lib";
+import { UPDATE_SNIPPET } from "../../state/ActionTypes";
+import { useStateValue } from "../../state/StateProvider";
+
+const theme = {
+  toolbar: {
+    background: "#424242",
+    color: "white",
+    activeBtnBackground: "#242020",
+    activeBtnColor: "white",
+    disabledBtnBackground: "gray",
+    disabledBtnColor: "#333",
+  },
+  preview: { background: "#424242", color: "white" },
+  editor: { background: "#424242", color: "white" },
+  cursorColor: "white",
+  height: "40vh",
+};
 
 export enum SCREENS {
   LINKS,
@@ -41,7 +60,7 @@ const useStyles = createUseStyles({
   },
 });
 
-const Column = ({ resources }) => {
+const Column = ({ resources, onEditSnippet }) => {
   return (
     <div style={{ flex: 1 }}>
       {resources?.map((r) => {
@@ -87,7 +106,7 @@ const Column = ({ resources }) => {
         } else {
           return (
             <ArticleCard
-              onEdit={() => {}}
+              onEdit={onEditSnippet}
               content={r.title}
               origin={r.misc}
               id={0}
@@ -104,6 +123,17 @@ const Column = ({ resources }) => {
 
 const MainTopicScreen = ({ topic }: RouterProps) => {
   const [loading, setLoading] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
+  const [editContent, setEditContent] = useState("");
+  const [snippetToEdit, setSnippetToEdit] = useState();
+  const [edit, setEdit] = useState(false);
+  const cmRef = useRef();
+
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+  const {
+    content: { topics, selectedTopic },
+  } = state;
 
   const [topicResources, setTopicResources] = useState({
     col1: [],
@@ -146,6 +176,45 @@ const MainTopicScreen = ({ topic }: RouterProps) => {
     fetchTopicResources(topic.id);
   }, [topic]);
 
+  const onEditSnippet = async () => {
+    if (cmRef.current) {
+      // @ts-ignore
+      const snippetValue = cmRef.current.getValue();
+      if (snippetValue) {
+        const editedSnippet = {
+          // @ts-ignore
+          id: snippetToEdit.id,
+          title: editTitle,
+          content: snippetValue,
+          origin: "TIGUM",
+          topic_id: topics.data[selectedTopic].id,
+        };
+        const res = await updateArticleSnippet(editedSnippet);
+        dispatch({ type: UPDATE_SNIPPET, payload: res });
+        toggleEdit();
+      }
+    }
+  };
+
+  const codeMirrorHandle = (cm) => {
+    cmRef.current = cm;
+  };
+
+  const onEditOpen = (snippet) => {
+    setEditTitle(snippet.title);
+    setEditContent(snippet.content);
+    setSnippetToEdit(snippet);
+    toggleEdit();
+  };
+
+  const onChangeSnippetEditTitle = (val) => {
+    setEditTitle(val);
+  };
+
+  const toggleEdit = () => {
+    setEdit(!edit);
+  };
+
   if (loading) {
     return (
       <div className={classes.container}>
@@ -162,10 +231,43 @@ const MainTopicScreen = ({ topic }: RouterProps) => {
     );
   } else {
     return (
-      <div className={classes.container}>
-        <Column resources={topicResources.col1} />
-        <Column resources={topicResources.col2} />
-      </div>
+      <>
+        <div className={classes.container}>
+          <Column resources={topicResources.col1} onEditSnippet={onEditOpen} />
+          <Column resources={topicResources.col2} onEditSnippet={onEditOpen} />
+        </div>
+        {edit && editContent && (
+          <Modal
+            title="Edit snippet"
+            buttonText="Edit Snippet"
+            actions={[
+              {
+                action: onEditSnippet,
+                text: "Edit Snippet",
+                textColor: "white",
+                btnColor: "#246bf8",
+                position: "white",
+              },
+            ]}
+            display={edit}
+            onClickAction={onEditSnippet}
+            toggleModal={toggleEdit}
+          >
+            <MarkdownEditor
+              initialValue={editContent}
+              onSave={onEditSnippet}
+              codeMirrorHandle={codeMirrorHandle}
+              spellChecker={false}
+              useHighlightJS
+              highlightTheme="ally-dark"
+              theme={theme}
+              title={editTitle}
+              onEditTitle={onChangeSnippetEditTitle}
+              autoFocusEditTitle={true}
+            />
+          </Modal>
+        )}
+      </>
     );
   }
 };

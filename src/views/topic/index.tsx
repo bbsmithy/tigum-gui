@@ -14,7 +14,10 @@ import { goto } from "../../util";
 import LoadingSnippet from "../../components/LoadingSnippet";
 import { LoadingVideo } from "../../components/LoadingVideo";
 import { MarkdownEditor } from "../../components/MarkdownEditor/lib";
-import { UPDATE_SNIPPET } from "../../state/ActionTypes";
+import {
+  SET_RESOURCES_FOR_TOPIC,
+  UPDATE_SNIPPET,
+} from "../../state/ActionTypes";
 import { useStateValue } from "../../state/StateProvider";
 
 const theme = {
@@ -109,7 +112,7 @@ const Column = ({ resources, onEditSnippet }) => {
               onEdit={onEditSnippet}
               content={r.title}
               origin={r.misc}
-              id={0}
+              id={r.resource_id}
               index={0}
               published={r.published}
               title={r.misc2}
@@ -132,7 +135,7 @@ const MainTopicScreen = ({ topic }: RouterProps) => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { topics, selectedTopic },
+    content: { topics, selectedTopic, resources },
   } = state;
 
   const [topicResources, setTopicResources] = useState({
@@ -165,12 +168,22 @@ const MainTopicScreen = ({ topic }: RouterProps) => {
     } else {
       setLoading(true);
       const topicResources = await getAllTopicResources(topicId);
-      const topicResourceColumns = splitToMasonaryRows(topicResources);
-      topicsCache.current.set(topicId, topicResourceColumns);
-      setTopicResources(topicResourceColumns);
+      dispatch({
+        type: SET_RESOURCES_FOR_TOPIC,
+        payload: { topicId, resources: topicResources },
+      });
+
+      // const topicResourceColumns = splitToMasonaryRows(topicResources);
+      // topicsCache.current.set(topicId, topicResourceColumns);
+      // setTopicResources(topicResourceColumns);
       setLoading(false);
     }
   };
+
+  // Topic changes
+  // Fetch or use cached
+  // If fetch save topic to state with topic ID and this shape
+  // { topicID: { resourceType_id: {} }}
 
   useEffect(() => {
     fetchTopicResources(topic.id);
@@ -186,7 +199,8 @@ const MainTopicScreen = ({ topic }: RouterProps) => {
           id: snippetToEdit.id,
           title: editTitle,
           content: snippetValue,
-          origin: "TIGUM",
+          // @ts-ignore
+          origin: snippetToEdit.origin,
           topic_id: topics.data[selectedTopic].id,
         };
         const res = await updateArticleSnippet(editedSnippet);
@@ -233,6 +247,7 @@ const MainTopicScreen = ({ topic }: RouterProps) => {
     return (
       <>
         <div className={classes.container}>
+          {JSON.stringify(resources)}
           <Column resources={topicResources.col1} onEditSnippet={onEditOpen} />
           <Column resources={topicResources.col2} onEditSnippet={onEditOpen} />
         </div>

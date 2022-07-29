@@ -15,6 +15,14 @@ export const topicsToKeys = (topics: Array<Topic>) => {
   }
 };
 
+export const resourceResponseToState = (resources) => {
+  const resourcesForTopic = {};
+  resources.forEach((r) => {
+    resourcesForTopic[`${r.result_type}_${r.resource_id}`] = r;
+  });
+  return resourcesForTopic;
+};
+
 export const deleteTopic = (data: any, keys: Array<number>, id: number) => {
   const newTopicData = { ...data };
   delete newTopicData[id];

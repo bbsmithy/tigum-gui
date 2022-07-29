@@ -8,6 +8,7 @@ export const SET_SELECTED_RESOURCE = "SET_SELECTED_RESOURCE";
 export const SET_SNIPPETS = "SET_SNIPPETS";
 export const ADD_SNIPPET = "ADD_SNIPPET";
 export const UPDATE_SNIPPET = "UPDATE_SNIPPET";
+export const SET_RESOURCES_FOR_TOPIC = "SET_RESOURCES_FOR_TOPIC";
 
 export const SET_NOTES = "SET_NOTES";
 export const ADD_NOTE = "ADD_NOTE";

@@ -79,7 +79,7 @@ const Snippets = (props) => {
               content={snippet.content}
               origin={snippet.origin}
               published={snippet.published}
-              index={idx}
+              topicId={0}
               id={snippet.id}
               key={snippet.id}
             />
@@ -224,37 +224,6 @@ export const ArticleSnippets = (props: any) => {
 
   return (
     <div className="ph2 mt4 pt3">
-      {edit && (
-        <Modal
-          title="Edit snippet"
-          buttonText="Edit Snippet"
-          actions={[
-            {
-              action: onEditSnippet,
-              text: "Edit Snippet",
-              textColor: "white",
-              btnColor: "#246bf8",
-              position: "white",
-            },
-          ]}
-          display={edit}
-          onClickAction={onEditSnippet}
-          toggleModal={toggleEdit}
-        >
-          <MarkdownEditor
-            initialValue={editContent}
-            onSave={onEditSnippet}
-            codeMirrorHandle={codeMirrorHandle}
-            spellChecker={false}
-            useHighlightJS
-            highlightTheme="ally-dark"
-            theme={theme}
-            title={editTitle}
-            onEditTitle={onChangeSnippetEditTitle}
-            autoFocusEditTitle={true}
-          />
-        </Modal>
-      )}
       {createSnippetModalOpen && (
         <Modal
           title="Create snippet"

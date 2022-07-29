@@ -1,7 +1,7 @@
-import { SCREENS } from '../routers/MainRouter';
-import ContentReducer from './reducers/ContentReducer';
-import NavigationReducer from './reducers/NavigationReducer';
-import UserReducer from './reducers/UserReducer';
+import { SCREENS } from "../routers/MainRouter";
+import ContentReducer from "./reducers/ContentReducer";
+import NavigationReducer from "./reducers/NavigationReducer";
+import UserReducer from "./reducers/UserReducer";
 
 export type InitialState = typeof initialState;
 
@@ -9,17 +9,13 @@ export const initialState = {
   content: {
     topics: { data: {}, keys: [], loading: true },
     selectedTopic: null,
-    notes: { data: {}, keys: [] },
-    videos: { data: {}, keys: [] },
-    codes: [],
-    article_snippets: [],
-    images: [],
-    links: [],
+    resources: null,
+    loadingResources: false,
   },
   user: {
-    name: '',
+    name: "",
     id: null,
-    email: '',
+    email: "",
     loggedIn: false,
   },
   navigation: {
@@ -30,12 +26,12 @@ export const initialState = {
 };
 
 export const reducer = ({ content, navigation, user }, action: any) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     console.log(
       `Action: ${action.type}`,
-      'Payload: ',
+      "Payload: ",
       action.payload,
-      'State: ',
+      "State: ",
       { content, navigation, user }
     );
   }

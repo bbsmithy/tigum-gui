@@ -40,7 +40,6 @@ export const TopicItem = ({
   };
 
   const renderDate = () => {
-    console.log(topic);
     const dateText = new Date(topic.date_updated);
     return getDate(dateText);
   };

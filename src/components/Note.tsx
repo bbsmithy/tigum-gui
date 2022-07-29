@@ -5,7 +5,11 @@ import PublishedBadge from "./PublishedBadge";
 import { OptionsButton } from "./OptionsButton";
 import { deleteNote, setPublishStatusResource } from "../clib/api";
 import { useStateValue } from "../state/StateProvider";
-import { DELETE_NOTE, UPDATE_NOTE } from "../state/ActionTypes";
+import {
+  DELETE_NOTE,
+  DELETE_RESOURCE,
+  UPDATE_NOTE,
+} from "../state/ActionTypes";
 
 const useStyles = createUseStyles({
   noteCard: {
@@ -83,11 +87,13 @@ export const Note = ({ id, topicId, date_updated, title, published }) => {
 
   const del = async () => {
     try {
-      await deleteNote(id);
-      dispatch({
-        type: DELETE_NOTE,
-        payload: { id: id, topic_id: topicId },
-      });
+      if (window.confirm(`Are you sure you want to delete "${title}"`)) {
+        await deleteNote(id);
+        dispatch({
+          type: DELETE_RESOURCE,
+          payload: { resourceKey: `note_${id}`, topicId },
+        });
+      }
     } catch (err) {
       console.log(err);
     }

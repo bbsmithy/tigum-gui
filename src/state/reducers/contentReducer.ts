@@ -1,8 +1,4 @@
-import {
-  topicsToKeys,
-  deleteTopic,
-  resourceResponseToState,
-} from "../StateHelpers";
+import { topicsToKeys, deleteTopic, deleteResource } from "../StateHelpers";
 
 import {
   FETCHING_TOPICS,
@@ -14,6 +10,9 @@ import {
   DISPLAY_NOTIFICATION,
   HIDE_NOTIFICATION,
   SET_RESOURCES_FOR_TOPIC,
+  LOADING_RESOURCES_FOR_TOPIC,
+  UPDATE_RESOURCE,
+  DELETE_RESOURCE,
 } from "../ActionTypes";
 
 // const initState = {
@@ -57,14 +56,33 @@ const ContentReducer = (state: any, action: any) => {
         selectedResourceId: null,
         topics,
       };
-    case SET_RESOURCES_FOR_TOPIC:
-      const resources = resourceResponseToState(action.payload.resources);
+    case LOADING_RESOURCES_FOR_TOPIC:
       return {
         ...state,
+        loadingResources: true,
+      };
+    case SET_RESOURCES_FOR_TOPIC:
+      return {
+        ...state,
+        loadingResources: false,
         resources: {
           ...state.resources,
-          [action.payload.topicId]: resources,
+          [action.payload.topicId]: action.payload.resources,
         },
+      };
+    case UPDATE_RESOURCE:
+      return {
+        ...state,
+      };
+    case DELETE_RESOURCE:
+      const newResourceState = deleteResource(
+        state.resources,
+        action.payload.resourceKey,
+        action.payload.topicId
+      );
+      return {
+        ...state,
+        resources: newResourceState,
       };
     case SET_SELECTED_RESOURCE:
       return {

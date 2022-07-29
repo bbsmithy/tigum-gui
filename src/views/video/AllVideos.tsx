@@ -127,7 +127,6 @@ export const AllVideos = (props: any) => {
               id={videoId}
               index={index}
               onClick={onClickVideoCard}
-              onDelete={onDeleteVideoCard}
             />
           );
         }

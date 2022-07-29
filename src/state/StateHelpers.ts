@@ -23,6 +23,12 @@ export const resourceResponseToState = (resources) => {
   return resourcesForTopic;
 };
 
+export const deleteResource = (state, resourceKey, topicId) => {
+  let resourceState = state;
+  delete resourceState[topicId][resourceKey];
+  return resourceState;
+};
+
 export const deleteTopic = (data: any, keys: Array<number>, id: number) => {
   const newTopicData = { ...data };
   delete newTopicData[id];
@@ -85,22 +91,6 @@ export const addVideo = (video: any, state: any) => {
   };
   updatedTopicWithVideoId.videos = updatedVideoKeys;
   return { updatedVideoData, updatedTopicWithVideoId };
-};
-
-export const deleteResource = (
-  id: number,
-  topic_id: number,
-  resourceType: "notes" | "videos",
-  state: any
-) => {
-  const updatedTopic = state.topics.data[topic_id];
-  const updatedResourceData = state[resourceType].data;
-  delete updatedResourceData[id];
-  const updatedResourceKeys = state[resourceType].keys.filter(
-    (key) => key !== id
-  );
-  updatedTopic[resourceType] = updatedResourceKeys;
-  return { updatedResourceData, updatedTopic };
 };
 
 export const deleteVideo = (id: number, topic_id: number, state: any) => {

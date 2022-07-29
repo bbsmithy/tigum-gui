@@ -4,7 +4,7 @@ import { deleteArticleSnippet, setPublishStatusResource } from "../clib/api";
 import { useStateValue } from "../state/StateProvider";
 import marked from "marked";
 import PublishedBadge from "./PublishedBadge";
-import { UPDATE_SNIPPET } from "../state/ActionTypes";
+import { DELETE_RESOURCE, UPDATE_SNIPPET } from "../state/ActionTypes";
 
 const useStyles = createUseStyles({
   divider: {
@@ -74,7 +74,7 @@ export type ArticleCardProps = {
   content: string;
   origin: string;
   id: number;
-  index: number;
+  topicId: number;
   published: boolean;
 };
 
@@ -88,14 +88,15 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
 
   const deleteSnippet = async () => {
     try {
-      const yesDelete = window.confirm(
-        "Are you sure you want to delete this snippet?"
-      );
-      if (yesDelete) {
+      if (window.confirm("Are you sure you want to delete this snippet?")) {
         await deleteArticleSnippet(props.id);
-        let newSnippets = article_snippets;
-        delete newSnippets[props.index];
-        dispatch({ type: "SET_SNIPPETS", payload: newSnippets });
+        dispatch({
+          type: DELETE_RESOURCE,
+          payload: {
+            resourceKey: `snippet_${props.id}`,
+            topicId: props.topicId,
+          },
+        });
       }
     } catch (e) {
       console.log(e);

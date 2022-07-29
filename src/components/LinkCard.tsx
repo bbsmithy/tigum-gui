@@ -1,7 +1,12 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
 import { deleteLink, setPublishStatusResource } from "../clib/api";
-import { SET_LINKS, UPDATE_LINK, UPDATE_NOTE } from "../state/ActionTypes";
+import {
+  DELETE_RESOURCE,
+  SET_LINKS,
+  UPDATE_LINK,
+  UPDATE_NOTE,
+} from "../state/ActionTypes";
 import { useStateValue } from "../state/StateProvider";
 import { OptionsButton } from "./OptionsButton";
 import PublishedBadge from "./PublishedBadge";
@@ -66,7 +71,7 @@ type LinkCardProps = {
   title: string;
   source: string;
   id: number;
-  index: number;
+  topicId: number;
   published: boolean;
 };
 
@@ -75,7 +80,7 @@ export const LinkCard = ({
   title,
   source,
   id,
-  index,
+  topicId,
   published,
 }: LinkCardProps) => {
   const classes = useStyles();
@@ -88,14 +93,14 @@ export const LinkCard = ({
 
   const del = async () => {
     try {
-      const reply = window.confirm(
-        `Are you sure you want to delete this link "${title}"`
-      );
-      if (reply) {
+      if (
+        window.confirm(`Are you sure you want to delete this link "${title}"`)
+      ) {
         await deleteLink(id);
-        const newLinksList = state.content.links;
-        delete newLinksList[index];
-        dispatch({ type: SET_LINKS, payload: newLinksList });
+        dispatch({
+          type: DELETE_RESOURCE,
+          payload: { resourceKey: `link_${id}`, topicId },
+        });
       }
     } catch (err) {
       console.log(err);

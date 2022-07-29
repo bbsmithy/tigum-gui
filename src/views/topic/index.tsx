@@ -15,10 +15,12 @@ import LoadingSnippet from "../../components/LoadingSnippet";
 import { LoadingVideo } from "../../components/LoadingVideo";
 import { MarkdownEditor } from "../../components/MarkdownEditor/lib";
 import {
+  LOADING_RESOURCES_FOR_TOPIC,
   SET_RESOURCES_FOR_TOPIC,
   UPDATE_SNIPPET,
 } from "../../state/ActionTypes";
 import { useStateValue } from "../../state/StateProvider";
+import { resourceResponseToState } from "../../state/StateHelpers";
 
 const theme = {
   toolbar: {
@@ -87,12 +89,11 @@ const Column = ({ resources, onEditSnippet }) => {
               title={r.title}
               thumbnail_img={r.misc2}
               id={r.resource_id}
-              topicId={r.topicId}
+              topicId={r.topic_id}
               index={0}
               onClick={(video: any) => {
                 goto(`topic/${r.topic_id}/videos/${video.id}`);
               }}
-              onDelete={() => {}}
             />
           );
         } else if (r.result_type === "link") {
@@ -102,7 +103,7 @@ const Column = ({ resources, onEditSnippet }) => {
               id={r.resource_id}
               source={r.misc}
               favicon_source={r.misc2}
-              index={0}
+              topicId={r.topic_id}
               published={r.published}
             />
           );
@@ -113,7 +114,7 @@ const Column = ({ resources, onEditSnippet }) => {
               content={r.title}
               origin={r.misc}
               id={r.resource_id}
-              index={0}
+              topicId={r.topic_id}
               published={r.published}
               title={r.misc2}
             />
@@ -124,70 +125,36 @@ const Column = ({ resources, onEditSnippet }) => {
   );
 };
 
-const MainTopicScreen = ({ topic }: RouterProps) => {
-  const [loading, setLoading] = useState(false);
+const splitToMasonaryRows = (resources) => {
+  const columns = {
+    col1: [],
+    col2: [],
+  };
+  Object.keys(resources).forEach((key, idx) => {
+    if (idx % 2 === 0) {
+      columns.col2.push({ key, ...resources[key] });
+    } else {
+      columns.col1.push({ key, ...resources[key] });
+    }
+  });
+  return columns;
+};
+
+const MasonaryLayout = ({ topicResources }) => {
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
   const [snippetToEdit, setSnippetToEdit] = useState();
   const [edit, setEdit] = useState(false);
   const cmRef = useRef();
 
+  const classes = useStyles();
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
     content: { topics, selectedTopic, resources },
   } = state;
 
-  const [topicResources, setTopicResources] = useState({
-    col1: [],
-    col2: [],
-  });
-
-  const classes = useStyles();
-
-  const topicsCache = useRef(new Map<number, any>());
-  const splitToMasonaryRows = (resources) => {
-    const columns = {
-      col1: [],
-      col2: [],
-    };
-    resources.forEach((r, idx) => {
-      if (idx % 2 === 0) {
-        columns.col2.push(r);
-      } else {
-        columns.col1.push(r);
-      }
-    });
-    return columns;
-  };
-
-  const fetchTopicResources = async (topicId: number) => {
-    const cachedTopic = topicsCache.current.get(topicId);
-    if (cachedTopic) {
-      setTopicResources(cachedTopic);
-    } else {
-      setLoading(true);
-      const topicResources = await getAllTopicResources(topicId);
-      dispatch({
-        type: SET_RESOURCES_FOR_TOPIC,
-        payload: { topicId, resources: topicResources },
-      });
-
-      // const topicResourceColumns = splitToMasonaryRows(topicResources);
-      // topicsCache.current.set(topicId, topicResourceColumns);
-      // setTopicResources(topicResourceColumns);
-      setLoading(false);
-    }
-  };
-
-  // Topic changes
-  // Fetch or use cached
-  // If fetch save topic to state with topic ID and this shape
-  // { topicID: { resourceType_id: {} }}
-
-  useEffect(() => {
-    fetchTopicResources(topic.id);
-  }, [topic]);
+  const resourceCols = splitToMasonaryRows(topicResources);
 
   const onEditSnippet = async () => {
     if (cmRef.current) {
@@ -229,7 +196,83 @@ const MainTopicScreen = ({ topic }: RouterProps) => {
     setEdit(!edit);
   };
 
-  if (loading) {
+  return (
+    <>
+      <div className={classes.container}>
+        <Column resources={resourceCols.col1} onEditSnippet={onEditOpen} />
+        <Column resources={resourceCols.col2} onEditSnippet={onEditOpen} />
+      </div>
+      {edit && editContent && (
+        <Modal
+          title="Edit snippet"
+          buttonText="Edit Snippet"
+          actions={[
+            {
+              action: onEditSnippet,
+              text: "Edit Snippet",
+              textColor: "white",
+              btnColor: "#246bf8",
+              position: "white",
+            },
+          ]}
+          display={edit}
+          onClickAction={onEditSnippet}
+          toggleModal={toggleEdit}
+        >
+          <MarkdownEditor
+            initialValue={editContent}
+            onSave={onEditSnippet}
+            codeMirrorHandle={codeMirrorHandle}
+            spellChecker={false}
+            useHighlightJS
+            highlightTheme="ally-dark"
+            theme={theme}
+            title={editTitle}
+            onEditTitle={onChangeSnippetEditTitle}
+            autoFocusEditTitle={true}
+          />
+        </Modal>
+      )}
+    </>
+  );
+};
+
+const MainTopicScreen = ({ topic }: RouterProps) => {
+  const classes = useStyles();
+  // @ts-ignore
+  const [state, dispatch] = useStateValue();
+  const {
+    content: { resources, loadingResources },
+  } = state;
+
+  const fetchTopicResources = async (topicId: number) => {
+    try {
+      if (resources && resources[topicId]) {
+        dispatch({
+          type: SET_RESOURCES_FOR_TOPIC,
+          payload: { topicId, resources: resources[topicId] },
+        });
+      } else {
+        dispatch({ type: LOADING_RESOURCES_FOR_TOPIC });
+        const topicResourcesResponse = await getAllTopicResources(topicId);
+        const parsedResourcesResponse = resourceResponseToState(
+          topicResourcesResponse
+        );
+        dispatch({
+          type: SET_RESOURCES_FOR_TOPIC,
+          payload: { topicId, resources: parsedResourcesResponse },
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchTopicResources(topic.id);
+  }, [topic]);
+
+  if (loadingResources) {
     return (
       <div className={classes.container}>
         <div style={{ flex: 1 }}>
@@ -243,47 +286,10 @@ const MainTopicScreen = ({ topic }: RouterProps) => {
         </div>
       </div>
     );
+  } else if (resources && resources[topic.id]) {
+    return <MasonaryLayout topicResources={resources[topic.id]} />;
   } else {
-    return (
-      <>
-        <div className={classes.container}>
-          {JSON.stringify(resources)}
-          <Column resources={topicResources.col1} onEditSnippet={onEditOpen} />
-          <Column resources={topicResources.col2} onEditSnippet={onEditOpen} />
-        </div>
-        {edit && editContent && (
-          <Modal
-            title="Edit snippet"
-            buttonText="Edit Snippet"
-            actions={[
-              {
-                action: onEditSnippet,
-                text: "Edit Snippet",
-                textColor: "white",
-                btnColor: "#246bf8",
-                position: "white",
-              },
-            ]}
-            display={edit}
-            onClickAction={onEditSnippet}
-            toggleModal={toggleEdit}
-          >
-            <MarkdownEditor
-              initialValue={editContent}
-              onSave={onEditSnippet}
-              codeMirrorHandle={codeMirrorHandle}
-              spellChecker={false}
-              useHighlightJS
-              highlightTheme="ally-dark"
-              theme={theme}
-              title={editTitle}
-              onEditTitle={onChangeSnippetEditTitle}
-              autoFocusEditTitle={true}
-            />
-          </Modal>
-        )}
-      </>
-    );
+    return null;
   }
 };
 

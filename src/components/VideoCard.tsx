@@ -5,7 +5,7 @@ import PublishedBadge from "./PublishedBadge";
 import { OptionsButton } from "./OptionsButton";
 import { deleteVideo, setPublishStatusResource } from "../clib/api";
 import { useStateValue } from "../state/StateProvider";
-import { UPDATE_VIDEO } from "../state/ActionTypes";
+import { DELETE_RESOURCE, UPDATE_VIDEO } from "../state/ActionTypes";
 
 type VideoCardProps = {
   date_created: string;
@@ -18,7 +18,6 @@ type VideoCardProps = {
   index: number;
   published: boolean;
   onClick: (video: any) => void;
-  onDelete: (id: number, topic_id: number) => void;
 };
 
 const useStyles = createUseStyles({
@@ -86,8 +85,16 @@ const VideoCard = (props: VideoCardProps) => {
     }
   };
 
-  const del = () => {
-    props.onDelete(props.id, props.topicId);
+  const del = async () => {
+    try {
+      await deleteVideo(props.id);
+      dispatch({
+        type: DELETE_RESOURCE,
+        payload: { topicId: props.topicId, resourceKey: `video_${props.id}` },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const PUBLISHED_OPTIONS = [

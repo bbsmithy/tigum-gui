@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { MarkdownEditor } from "../../components/MarkdownEditor/lib";
 import {
   deleteNote,
+  getAllTopicResources,
   getNotes,
   updateNote,
   updateTopicModDate,
@@ -25,6 +26,8 @@ import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
 import ClickAwayListener from "../../components/ClickAwayListener";
 import { Button } from "../../components";
 import { ImageSelectionDialog } from "../../components/ImageSelectionDialog";
+import { resourceResponseToState } from "../../state/StateHelpers";
+import { SET_RESOURCES_FOR_TOPIC } from "../../state/ActionTypes";
 
 const theme = {
   toolbar: {
@@ -73,10 +76,24 @@ export const ViewNote = (props: any) => {
   const initialNoteMDRef = useRef<string>();
   const classes = useStyles();
   const {
-    content: { selectedResourceId, notes, selectedTopic, topics },
+    content: {
+      selectedResourceKey,
+      selectedResourceId,
+      notes,
+      selectedTopic,
+      topics,
+      resources,
+      isLoadingResources,
+    },
   } = state;
-  const note = notes.data ? notes.data[selectedResourceId] : false;
+
   const currentTopic = topics.data ? topics.data[selectedTopic] : false;
+  const note =
+    currentTopic && !isLoadingResources && resources
+      ? resources[currentTopic.id][selectedResourceKey]
+      : false;
+
+  console.log("note: ", note, selectedResourceKey);
 
   const openImageFiles = () => {
     const input = document.createElement("input");
@@ -201,10 +218,10 @@ export const ViewNote = (props: any) => {
   }, [note]);
 
   const setupNote = () => {
-    if (!note && notes.keys.length === 0) {
+    if (!note) {
       fetchNotes();
     } else {
-      getNoteData(note.id);
+      getNoteData(selectedResourceId);
     }
     document.addEventListener("keydown", commandListener);
     return () => {
@@ -256,8 +273,15 @@ export const ViewNote = (props: any) => {
 
   const fetchNotes = async () => {
     try {
-      const topicNotes = await getNotes(topics.data[selectedTopic].notes);
-      dispatch({ type: "SET_NOTES", payload: topicNotes });
+      const topicId = topics.data[selectedTopic].id;
+      const resourcesForTopic = await getAllTopicResources(topicId);
+      dispatch({
+        type: SET_RESOURCES_FOR_TOPIC,
+        payload: {
+          topicId,
+          resources: resourceResponseToState(resourcesForTopic),
+        },
+      });
       getNoteData(selectedResourceId);
     } catch (e) {
       console.log(e);

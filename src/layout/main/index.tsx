@@ -105,14 +105,27 @@ export const MainContent = (props) => {
         payload: newTopicScreen,
       });
     } else if (pathVars.length === 5) {
-      dispatch({ type: SET_SELECTED_RESOURCE, payload: resourceId });
       dispatch({ type: FULL_SCREEN, payload: true });
       if (resourceType === "videos") {
+        dispatch({
+          type: SET_SELECTED_RESOURCE,
+          payload: {
+            key: `video_${resourceId}`,
+            id: resourceId,
+          },
+        });
         dispatch({
           type: SET_TOPIC_SCREEN,
           payload: SCREENS.VIDEO_PLAYER,
         });
       } else if (resourceType === "notes") {
+        dispatch({
+          type: SET_SELECTED_RESOURCE,
+          payload: {
+            key: `note_${resourceId}`,
+            id: resourceId,
+          },
+        });
         dispatch({
           type: SET_TOPIC_SCREEN,
           payload: SCREENS.VIEW_NOTE,

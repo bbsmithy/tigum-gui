@@ -8,6 +8,7 @@ import {
   deleteVideo,
   updateVideo,
   updateTopicModDate,
+  getAllTopicResources,
 } from "../../clib/api";
 import ResourceDialog from "../../components/ResourceDialog";
 import ReferenceDialog from "../../components/ReferenceDialog";
@@ -20,6 +21,8 @@ import {
 import { notify } from "../../state/Actions";
 import { CursorState } from "../../types";
 import { ImageSelectionDialog } from "../../components/ImageSelectionDialog";
+import { SET_RESOURCES_FOR_TOPIC } from "../../state/ActionTypes";
+import { resourceResponseToState } from "../../state/StateHelpers";
 
 const useStyles = createUseStyles({
   videoTitleContainer: {
@@ -106,8 +109,8 @@ const MobileLayout = ({
   const playerRef = useRef();
 
   useEffect(() => {
-    if (video && video.id !== vidIDRef.current) {
-      const videoId = video.iframe.slice(30);
+    if (video && video.resource_id !== vidIDRef.current) {
+      const videoId = video.misc.slice(30);
       const iframeContainer =
         document.getElementById("mobile-vid").parentElement;
       document.getElementById("mobile-vid").remove();
@@ -192,8 +195,8 @@ const DesktopLayout = ({
   const playerRef = useRef();
 
   useEffect(() => {
-    if (video && video.id !== vidIDRef.current) {
-      const videoId = video.iframe.split("?")[0].slice(30);
+    if (video && video.resource_id !== vidIDRef.current) {
+      const videoId = video.misc.split("?")[0].slice(30);
       const iframeContainer =
         document.getElementById("desktop-vid").parentElement;
       document.getElementById("desktop-vid").remove();
@@ -297,7 +300,14 @@ export const VideoPlayer = () => {
   // @ts-ignore
   const [state, dispatch] = useStateValue();
   const {
-    content: { selectedResourceId, videos, selectedTopic, topics },
+    content: {
+      selectedResourceId,
+      selectedResourceKey,
+      isLoadingResources,
+      selectedTopic,
+      topics,
+      resources,
+    },
   } = state;
 
   const [noteMd, setNoteMd] = useState<any>();
@@ -318,7 +328,11 @@ export const VideoPlayer = () => {
   const playerRef = useRef();
   const initialNoteMDRef = useRef<string>();
 
-  const video = videos.data ? videos.data[selectedResourceId] : false;
+  const currentTopic = topics.data ? topics.data[selectedTopic] : false;
+  const video =
+    resources && !isLoadingResources && currentTopic
+      ? resources[currentTopic.id][selectedResourceKey]
+      : false;
 
   const toolbarOptions = [
     {
@@ -413,12 +427,13 @@ export const VideoPlayer = () => {
   }, []);
 
   useEffect(() => {
-    if (videos.length === 0) {
+    if (!resources) {
       fetchVideos();
     } else if (video) {
-      fetchNoteData(`${video.id}_video.md`);
+      setPageTitle(`${video.title} | ${topics.data[selectedTopic].title}`);
+      fetchNoteData(`${selectedResourceId}_video.md`);
     }
-  }, [video, videos]);
+  }, [selectedResourceId]);
 
   const checkDisplaySize = (evt) => {
     if (evt.target.innerWidth < 1108) {
@@ -470,7 +485,6 @@ export const VideoPlayer = () => {
   };
 
   const fetchNoteData = async (file) => {
-    setPageTitle(`${video.title} | ${topics.data[selectedTopic].title}`);
     try {
       setLoadingNote(true);
       const noteData = await getFile(file, "video-notes");
@@ -485,8 +499,19 @@ export const VideoPlayer = () => {
 
   const fetchVideos = async () => {
     try {
-      const videoData = await getVideos(topics.data[selectedTopic].videos);
-      dispatch({ type: "SET_VIDEOS", payload: videoData });
+      const topicId = topics.data[selectedTopic].id;
+      const resourcesForTopic = await getAllTopicResources(topicId);
+      const parsedResources = resourceResponseToState(resourcesForTopic);
+      const video = parsedResources[`video_${selectedResourceId}`];
+      dispatch({
+        type: SET_RESOURCES_FOR_TOPIC,
+        payload: {
+          topicId,
+          resources: parsedResources,
+        },
+      });
+      setPageTitle(`${video.title} | ${topics.data[selectedTopic].title}`);
+      fetchNoteData(`${selectedResourceId}_video.md`);
     } catch (e) {
       notify(dispatch, "Could not retrieve video", "error", "right");
     }
@@ -519,7 +544,7 @@ export const VideoPlayer = () => {
     );
     try {
       if (yesDelete) {
-        await deleteVideo(videos.data[selectedResourceId].id);
+        await deleteVideo(selectedResourceId);
         goBack();
       }
     } catch (e) {

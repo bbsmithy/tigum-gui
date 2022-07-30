@@ -100,7 +100,8 @@ const ContentReducer = (state: any, action: any) => {
     case SET_SELECTED_RESOURCE:
       return {
         ...state,
-        selectedResourceId: action.payload,
+        selectedResourceKey: action.payload.key,
+        selectedResourceId: action.payload.id,
       };
     case DISPLAY_NOTIFICATION: {
       return {

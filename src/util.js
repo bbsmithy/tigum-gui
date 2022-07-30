@@ -38,7 +38,7 @@ export const getDate = (date) => {
   const seconds = "0" + date.getSeconds();
 
   // Display date time in MM-dd-yyyy h:m:s format
-  const convdataTime = month + "-" + day + "-" + year;
+  const convdataTime = day + " " + month + " " + year;
 
   return convdataTime;
 };

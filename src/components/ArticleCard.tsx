@@ -5,6 +5,8 @@ import { useStateValue } from "../state/StateProvider";
 import marked from "marked";
 import PublishedBadge from "./PublishedBadge";
 import { DELETE_RESOURCE, UPDATE_SNIPPET } from "../state/ActionTypes";
+import { snippetToResourceResult } from "../state/StateHelpers";
+import { updateResource } from "../state/Actions";
 
 const useStyles = createUseStyles({
   divider: {
@@ -110,8 +112,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
         props.id,
         true
       );
-      dispatch({ type: UPDATE_SNIPPET, payload: updatedSnippet });
-    } catch (error) {}
+      const resource = snippetToResourceResult(updatedSnippet);
+      dispatch(updateResource(resource, "snippet"));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const unpub = async () => {
@@ -121,8 +126,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
         props.id,
         false
       );
-      dispatch({ type: UPDATE_SNIPPET, payload: updatedSnippet });
-    } catch (error) {}
+      const resource = snippetToResourceResult(updatedSnippet);
+      dispatch(updateResource(resource, "snippet"));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onEditSnippet = () => {

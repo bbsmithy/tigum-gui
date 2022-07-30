@@ -1,12 +1,9 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
 import { deleteLink, setPublishStatusResource } from "../clib/api";
-import {
-  DELETE_RESOURCE,
-  SET_LINKS,
-  UPDATE_LINK,
-  UPDATE_NOTE,
-} from "../state/ActionTypes";
+import { updateResource } from "../state/Actions";
+import { DELETE_RESOURCE, UPDATE_RESOURCE } from "../state/ActionTypes";
+import { linkToResourceResult } from "../state/StateHelpers";
 import { useStateValue } from "../state/StateProvider";
 import { OptionsButton } from "./OptionsButton";
 import PublishedBadge from "./PublishedBadge";
@@ -93,24 +90,21 @@ export const LinkCard = ({
 
   const del = async () => {
     try {
-      if (
-        window.confirm(`Are you sure you want to delete this link "${title}"`)
-      ) {
-        await deleteLink(id);
-        dispatch({
-          type: DELETE_RESOURCE,
-          payload: { resourceKey: `link_${id}`, topicId },
-        });
-      }
+      await deleteLink(id);
+      dispatch({
+        type: DELETE_RESOURCE,
+        payload: { resourceKey: `link_${id}`, topicId },
+      });
     } catch (err) {
       console.log(err);
     }
   };
 
-  const unpublish = async ({ id }: any) => {
+  const unpublish = async () => {
     try {
       const updatedLink = await setPublishStatusResource("links", id, false);
-      dispatch({ type: UPDATE_LINK, payload: updatedLink });
+      const resource = linkToResourceResult(updatedLink);
+      dispatch(updateResource(resource, "link"));
     } catch (err) {
       console.log("err: ", err);
     }
@@ -119,7 +113,8 @@ export const LinkCard = ({
   const publish = async () => {
     try {
       const updatedLink = await setPublishStatusResource("links", id, true);
-      dispatch({ type: UPDATE_LINK, payload: updatedLink });
+      const resource = linkToResourceResult(updatedLink);
+      dispatch(updateResource(resource, "link"));
     } catch (err) {
       console.log("err: ", err);
     }

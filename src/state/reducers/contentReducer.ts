@@ -1,4 +1,9 @@
-import { topicsToKeys, deleteTopic, deleteResource } from "../StateHelpers";
+import {
+  topicsToKeys,
+  deleteTopic,
+  deleteResource,
+  updateResourceHelper,
+} from "../StateHelpers";
 
 import {
   FETCHING_TOPICS,
@@ -70,19 +75,27 @@ const ContentReducer = (state: any, action: any) => {
           [action.payload.topicId]: action.payload.resources,
         },
       };
-    case UPDATE_RESOURCE:
+    case UPDATE_RESOURCE: {
+      const { resourceKey, topicId, resource } = action.payload;
       return {
         ...state,
+        resources: updateResourceHelper(
+          state.resources,
+          resourceKey,
+          topicId,
+          resource
+        ),
       };
+    }
+
     case DELETE_RESOURCE:
-      const newResourceState = deleteResource(
-        state.resources,
-        action.payload.resourceKey,
-        action.payload.topicId
-      );
       return {
         ...state,
-        resources: newResourceState,
+        resources: deleteResource(
+          state.resources,
+          action.payload.resourceKey,
+          action.payload.topicId
+        ),
       };
     case SET_SELECTED_RESOURCE:
       return {

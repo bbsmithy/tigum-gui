@@ -6,6 +6,8 @@ import { OptionsButton } from "./OptionsButton";
 import { deleteVideo, setPublishStatusResource } from "../clib/api";
 import { useStateValue } from "../state/StateProvider";
 import { DELETE_RESOURCE, UPDATE_VIDEO } from "../state/ActionTypes";
+import { videoToResourceResult } from "../state/StateHelpers";
+import { updateResource } from "../state/Actions";
 
 type VideoCardProps = {
   date_created: string;
@@ -61,12 +63,13 @@ const VideoCard = (props: VideoCardProps) => {
 
   const pub = async () => {
     try {
-      const updatedNote = await setPublishStatusResource(
+      const updatedVideo = await setPublishStatusResource(
         "videos",
         props.id,
         true
       );
-      dispatch({ type: UPDATE_VIDEO, payload: updatedNote });
+      const resource = videoToResourceResult(updatedVideo);
+      dispatch(updateResource(resource, "video"));
     } catch (err) {
       console.log(err);
     }
@@ -74,12 +77,13 @@ const VideoCard = (props: VideoCardProps) => {
 
   const unpub = async () => {
     try {
-      const updatedNote = await setPublishStatusResource(
+      const updatedVideo = await setPublishStatusResource(
         "videos",
         props.id,
         false
       );
-      dispatch({ type: UPDATE_VIDEO, payload: updatedNote });
+      const resource = videoToResourceResult(updatedVideo);
+      dispatch(updateResource(resource, "video"));
     } catch (err) {
       console.log(err);
     }

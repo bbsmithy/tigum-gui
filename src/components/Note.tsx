@@ -10,6 +10,8 @@ import {
   DELETE_RESOURCE,
   UPDATE_NOTE,
 } from "../state/ActionTypes";
+import { noteToResourceResult } from "../state/StateHelpers";
+import { updateResource } from "../state/Actions";
 
 const useStyles = createUseStyles({
   noteCard: {
@@ -70,7 +72,8 @@ export const Note = ({ id, topicId, date_updated, title, published }) => {
   const unpublish = async () => {
     try {
       const updatedNote = await setPublishStatusResource("notes", id, false);
-      dispatch({ type: UPDATE_NOTE, payload: updatedNote });
+      const resource = noteToResourceResult(updatedNote);
+      dispatch(updateResource(resource, "note"));
     } catch (err) {
       console.log("err: ", err);
     }
@@ -79,7 +82,8 @@ export const Note = ({ id, topicId, date_updated, title, published }) => {
   const publish = async () => {
     try {
       const updatedNote = await setPublishStatusResource("notes", id, true);
-      dispatch({ type: UPDATE_NOTE, payload: updatedNote });
+      const resource = noteToResourceResult(updatedNote);
+      dispatch(updateResource(resource, "note"));
     } catch (err) {
       console.log("err: ", err);
     }

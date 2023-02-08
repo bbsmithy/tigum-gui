@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { findByTitle } from "../../clib/api";
 import { goto } from "../../util";
-import marked from "marked";
+import { marked } from "marked";
 import ResultTypeIcon from "../../components/ResultTypeIcon";
 import ClickAwayListener from "../../components/ClickAwayListener";
 

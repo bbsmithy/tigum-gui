@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
-import marked from "marked";
+import { marked } from "marked";
 import {
   findByTitle,
   findByTopicId,

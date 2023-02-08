@@ -1,7 +1,7 @@
 import { SCREENS } from "../routers/MainRouter";
-import ContentReducer from "./reducers/ContentReducer";
-import NavigationReducer from "./reducers/NavigationReducer";
-import UserReducer from "./reducers/UserReducer";
+import ContentReducer from "./reducers/contentReducer";
+import NavigationReducer from "./reducers/navigationReducer";
+import UserReducer from "./reducers/userReducer";
 
 export type InitialState = typeof initialState;
 

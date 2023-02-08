@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getDate } from "../../../util";
-import marked from "marked";
+import { marked } from "marked";
 import { LinkCard, VideoCard } from "../../../components";
 import { getPublicNotes } from "../../../clib/api";
 import { useNotes, useVideos } from "../hooks";

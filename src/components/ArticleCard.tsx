@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import { createUseStyles } from "react-jss";
 import { deleteArticleSnippet, setPublishStatusResource } from "../clib/api";
 import { useStateValue } from "../state/StateProvider";
-import marked from "marked";
+import { marked } from "marked";
 import PublishedBadge from "./PublishedBadge";
 import { DELETE_RESOURCE, UPDATE_SNIPPET } from "../state/ActionTypes";
 import { snippetToResourceResult } from "../state/StateHelpers";

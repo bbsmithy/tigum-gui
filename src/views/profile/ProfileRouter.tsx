@@ -4,7 +4,7 @@ import { getPublicResources } from "../../clib/api";
 import { getDate } from "../../util";
 import UserNotFound from "./components/UserNotFound";
 import LoadingSnippet from "../../components/LoadingSnippet";
-import marked from "marked";
+import { marked } from "marked";
 import { LoadingVideo } from "../../components/LoadingVideo";
 import { LinkCard, LoadingCard, VideoCard } from "../../components";
 import ProfileButton from "./components/ProfileButton";
@@ -20,7 +20,6 @@ import {
   VideoList,
 } from "./components/ResourceList";
 import { useProfile } from "./hooks";
-import { topic } from "firebase-functions/v1/pubsub";
 import Sidebar from "./components/Sidebar";
 import DisplayVideo from "./screens/DisplayVideo";
 

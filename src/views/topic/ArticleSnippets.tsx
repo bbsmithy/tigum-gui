@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ArticleCard, NewButton, Modal } from "../../components";
-import { MarkdownEditor } from "devkeep-md-editor";
 import { createUseStyles } from "react-jss";
 import {
   getArticleSnippets,
@@ -241,7 +240,7 @@ export const ArticleSnippets = (props: any) => {
           onClickAction={onCreateSnippet}
           toggleModal={toggleModal}
         >
-          <MarkdownEditor
+          {/* <MarkdownEditor
             initialValue={""}
             onSave={onCreateSnippet}
             codeMirrorHandle={codeMirrorHandle}
@@ -252,7 +251,7 @@ export const ArticleSnippets = (props: any) => {
             title={""}
             onEditTitle={onChangeSnippetTitle}
             autoFocusEditTitle={true}
-          />
+          /> */}
         </Modal>
       )}
       <NewButton onClick={toggleModal} text="New Snippet" />

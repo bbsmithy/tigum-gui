@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import marked from "marked";
+import { marked } from "marked";
 import { getFile } from "../../../clib/S3";
 import { dragElement } from "../util";
 import { createUseStyles } from "react-jss";

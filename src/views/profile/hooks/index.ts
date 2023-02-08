@@ -1,4 +1,3 @@
-import { topic } from "firebase-functions/v1/pubsub";
 import { useEffect, useState } from "react";
 import {
   getPublicNotes,

@@ -20,11 +20,6 @@ import ResourceDialog from "../../components/ResourceDialog";
 import { notify } from "../../state/Actions";
 import { CursorState } from "../../types";
 import { createUseStyles } from "react-jss";
-
-import "@toast-ui/editor/dist/toastui-editor.css";
-import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
-import ClickAwayListener from "../../components/ClickAwayListener";
-import { Button } from "../../components";
 import { ImageSelectionDialog } from "../../components/ImageSelectionDialog";
 import { resourceResponseToState } from "../../state/StateHelpers";
 import { SET_RESOURCES_FOR_TOPIC } from "../../state/ActionTypes";

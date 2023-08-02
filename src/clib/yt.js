@@ -1,5 +1,5 @@
 import Youtube from 'simple-youtube-api';
-const youtube = new Youtube('AIzaSyCFE_UHkFBB6I1unCD4oI5_gnr8b4FT1gU');
+const youtube = new Youtube(process.env.YOUTUBE_ACCESS_KEY);
 
 export const getVideoTitle = async (url) => {
   try {

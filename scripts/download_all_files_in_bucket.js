@@ -2,8 +2,8 @@ const AWS = require('aws-sdk');
 const fs = require('fs');
 
 AWS.config.update({
-  accessKeyId: 'MI4KC197Y2IGVDWCY4ZR',
-  secretAccessKey: 'e4Jb6HMD6EeLDZwC2b4AGl4DbuLLzBKFKotxQAOX',
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
 }); 
 
 const endpoint = new AWS.Endpoint('cellar-c2.services.clever-cloud.com');

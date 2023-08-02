@@ -2,8 +2,8 @@ const AWS = require('aws-sdk');
 const convertor = require('html-to-markdown');
 
 AWS.config.update({
-  accessKeyId: 'MI4KC197Y2IGVDWCY4ZR',
-  secretAccessKey: 'lAVozczUatRDEQ1RAcAvVcbhmh1u3N1W1UIPYkC8',
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
 });
 const endpoint = new AWS.Endpoint('cellar-c2.services.clever-cloud.com');
 

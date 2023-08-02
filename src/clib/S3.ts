@@ -3,8 +3,8 @@ import { setProfilePicture } from "./api";
 const AWS = require("aws-sdk");
 
 AWS.config.update({
-  accessKeyId: "MI4KC197Y2IGVDWCY4ZR",
-  secretAccessKey: "e4Jb6HMD6EeLDZwC2b4AGl4DbuLLzBKFKotxQAOX",
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
 });
 
 const endpoint = new AWS.Endpoint("cellar-c2.services.clever-cloud.com");
